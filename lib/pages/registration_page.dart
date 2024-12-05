@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../utils/my_text_widgets.dart';
+import '../utils/my_buttons_widgets.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -25,54 +28,56 @@ class _RegistrationPageState extends State<RegistrationPage> {
         child: Column(
           children: [
             //Logo
-            // Padding(
-            //   padding: const EdgeInsets.only(top: 15.0),
-            //   child: SafeArea(child: SvgPicture.asset('lib/assets/domus_logo.svg', width: 200,)),
-            // ),
+            Padding(
+              padding: const EdgeInsets.only(top: 70.0),
+              // child: SafeArea(child: SvgPicture.asset('lib/assets/house_logo.svg', width: 150,)),
+              child: SafeArea(child: Image.asset('lib/assets/HouseHunter.png', height: 170,)),
+            ),
       
             //nomeTextField
             Padding(
               padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 70.0),
-              child: nomeTextField(),
+              child: MyTextFieldWidget(controller: nomeController, text: "nome", icon: const Icon(Icons.face))
             ),
 
+            //cognomeTextField
             Padding(
               padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 10.0),
-              child: cognomeTextField(),
+              child: MyTextFieldWidget(controller: cognomeController, text: "cognome", icon: const Icon(FontAwesomeIcons.idCard))
             ),
 
-
-            //mailTextField
+            //emailTextField
             Padding(
               padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 10.0),
-              child: mailTextField(),
+              child: MyTextFieldWidget(controller: mailController, text: "email", icon: const Icon(Icons.person))
             ),
       
             //passwordTextField
             Padding(
               padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 10.0),
-              child: passwordTextField(),
+              child: MyPasswordFieldWidget(controller: passwordController, text: "password", icon: const Icon(Icons.lock))
             ),
       
-            //passwordDimenticataButton
+            //Altre Opzioni
             Padding(
               padding: const EdgeInsets.only(left: 15.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  haiGiaUnAccountButton(context),    
+                  MyTextButtonWidget(text: "Hai già un account?", 
+                    onPressed: (){Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);}),
                 ],
               ),
             ),
       
-            //RegistrationButton
+            //RegistratiButton
             Padding(
               padding: const EdgeInsets.only(top: 30.0),
-              child: registratiButton(context),
+              child: MyElevatedButtonWidget(text: "Registrati", onPressed: (){}),
             ),
       
             Padding(
-              padding: const EdgeInsets.only(top: 20.0),
+              padding: const EdgeInsets.only(top: 50.0),
               child: Text("------------------ oppure ------------------"),
             ),
       
@@ -87,100 +92,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 ],
               ),
             ),
-      
-            Padding(
-              padding: const EdgeInsets.only(top: 108.0),
-              child: SafeArea(child: Image.asset('lib/assets/houses_login.png')),
-            ),
-
           ],
         ),
       ),
     );
   }
 
-  ElevatedButton registratiButton(BuildContext context) {
-    return ElevatedButton(
-              onPressed: (){},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                fixedSize: Size(MediaQuery.sizeOf(context).width/2, MediaQuery.sizeOf(context).height/18),
-              ),
-              child: Text("Registrati",
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  fontSize: 18.0),
-              ),
-            );
-  }
-
-  TextButton haiGiaUnAccountButton(BuildContext context) {
-    return TextButton(
-                  onPressed: (){
-                    Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);
-                  }, 
-                  child: Text("Hai già un account?",
-                    style: TextStyle(
-                      decoration: TextDecoration.underline),
-                      ),
-                );
-  }
-
-  TextFormField passwordTextField() {
-    return TextFormField(
-              controller: passwordController,
-              style: TextStyle(fontSize: 18.0),
-              obscureText: _isObscured,
-              decoration: InputDecoration(
-                hintText: "password",
-                icon: Icon(Icons.lock),
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _isObscured = !_isObscured;
-                    });
-                  }, 
-                  icon: _isObscured ? Icon(Icons.visibility) : Icon(Icons.visibility_off))
-              ),
-            );
-  }
-
-  TextFormField mailTextField() {
-    return TextFormField(
-              controller: mailController,
-              style: TextStyle(
-                fontSize: 18.0,
-              ),
-              decoration: InputDecoration(
-                hintText: "email",
-                icon: Icon(Icons.person),
-              ),
-            );
-  }
-
-  TextFormField cognomeTextField() {
-    return TextFormField(
-              controller: cognomeController,
-              style: TextStyle(fontSize: 18.0),
-              obscureText: _isObscured,
-              decoration: InputDecoration(
-                hintText: "cognome",
-                icon: Icon(Icons.recent_actors),
-              ),
-            );
-  }
-
-  SafeArea nomeTextField() {
-    return SafeArea(
-              child: TextFormField(
-                controller: nomeController,
-                style: TextStyle(fontSize: 18.0),
-                obscureText: _isObscured,
-                decoration: InputDecoration(
-                  hintText: "nome",
-                  icon: Icon(Icons.face),
-                ),
-              ),
-            );
-  }
 }

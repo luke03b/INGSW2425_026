@@ -1,5 +1,7 @@
+import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../utils/my_text_widgets.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -9,7 +11,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool _isPasswordObscured = true;
 
   TextEditingController mailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -24,20 +25,21 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             //Logo
             Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: SafeArea(child: SvgPicture.asset('lib/assets/house_logo.svg', width: 150,)),
+              padding: const EdgeInsets.only(top: 70.0),
+              // child: SafeArea(child: SvgPicture.asset('lib/assets/house_logo.svg', width: 150,)),
+              child: SafeArea(child: Image.asset('lib/assets/HouseHunter.png', height: 170,)),
             ),
       
             //mailTextField
             Padding(
-              padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 20.0),
-              child: mailTextField(),
+              padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 70.0),
+              child: MyTextFieldWidget(controller: mailController, text: "email", icon: Icon(Icons.person))
             ),
       
             //passwordTextField
             Padding(
               padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 10.0),
-              child: passwordTextField(),
+              child: MyPasswordFieldWidget(controller: passwordController, text: "password", icon: Icon(Icons.lock))
             ),
       
             //Altre Opzioni
@@ -46,8 +48,9 @@ class _LoginPageState extends State<LoginPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  nonHaiUnAccountButton(context),
-                  passwordDimenticataButton(),
+                  MyTextButtonWidget(text: "Non hai un account?", 
+                    onPressed: (){Navigator.pushNamedAndRemoveUntil(context, '/RegistrationPage', (r) => false);}),
+                  MyTextButtonWidget(text: "Password dimenticata", onPressed: (){})
                 ],
               ),
             ),
@@ -55,11 +58,11 @@ class _LoginPageState extends State<LoginPage> {
             //LoginButton
             Padding(
               padding: const EdgeInsets.only(top: 30.0),
-              child: loginButton(context),
+              child: MyElevatedButtonWidget(text: "Login", onPressed: (){}),
             ),
       
             Padding(
-              padding: const EdgeInsets.only(top: 20.0),
+              padding: const EdgeInsets.only(top: 50.0),
               child: Text("------------------ oppure ------------------"),
             ),
       
@@ -74,85 +77,9 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
             ),
-      
-            Padding(
-              padding: const EdgeInsets.only(top: 120.0),
-              child: SafeArea(child: Image.asset('lib/assets/houses_login.png')),
-            ),
-      
           ],
         ),
       ),
     );
-  }
-
-  TextFormField mailTextField() {
-    return TextFormField(
-              controller: mailController,
-              style: TextStyle(
-                fontSize: 18.0, 
-              ),
-              decoration: InputDecoration(
-                hintText: "email",
-                icon: Icon(Icons.person),
-              ),
-            );
-  }
-
-  TextButton passwordDimenticataButton() {
-    return TextButton(
-                  onPressed: (){}, 
-                  child: Text("Password dimenticata?",
-                    style: TextStyle(
-                      decoration: TextDecoration.underline),
-                      ),
-                );
-  }
-
-  TextButton nonHaiUnAccountButton(BuildContext context) {
-    return TextButton(
-                  onPressed: (){
-                    Navigator.pushNamedAndRemoveUntil(context, '/RegistrationPage', (r) => false);
-                  }, 
-                  child: Text("Non hai un account?",
-                    style: TextStyle(
-                      decoration: TextDecoration.underline),
-                      ),
-                );
-  }
-
-  ElevatedButton loginButton(BuildContext context) {
-    return ElevatedButton(
-              onPressed: (){},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                fixedSize: Size(MediaQuery.sizeOf(context).width/2, MediaQuery.sizeOf(context).height/18),
-              ),
-              child: Text("Login",
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  fontSize: 18.0),
-              ),
-            );
-  }
-
-  TextFormField passwordTextField() {
-    return TextFormField(
-              controller: passwordController,
-              style: TextStyle(fontSize: 18.0),
-              obscureText: _isPasswordObscured,
-              decoration: InputDecoration(
-                hintText: "password",
-                // contentPadding: EdgeInsets.only(left: 10.0),
-                icon: Icon(Icons.lock),
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _isPasswordObscured = !_isPasswordObscured;
-                    });
-                  }, 
-                  icon: _isPasswordObscured ? Icon(Icons.visibility) : Icon(Icons.visibility_off))
-              ),
-            );
   }
 }
