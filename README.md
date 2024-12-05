@@ -1,4 +1,4 @@
-# domus_app
+# House Hunters
 
 A new Flutter project.
 
