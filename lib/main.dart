@@ -1,4 +1,4 @@
-import 'package:domus_app/pages/prova_page.dart';
+import 'package:domus_app/pages/registration_page.dart';
 import 'package:flutter/material.dart';
 import 'pages/login_page.dart';
 
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
           onPrimary:  Color.fromARGB(255, 231, 236, 239), 
           secondary:  Color.fromARGB(255, 96, 150, 186),
           onSecondary:  Color.fromARGB(255, 39, 76, 119), 
-          tertiary:  Color.fromARGB(255, 255, 192, 117),
+          tertiary:  Color.fromARGB(255, 255, 214, 10),
           onTertiary:  Color.fromARGB(255, 39, 76, 119),
           error:  Color.fromARGB(255, 218, 41, 28), 
           onError:  Color.fromARGB(255, 231, 236, 239), 
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       home: LoginPage(),
       routes: {
         '/LoginPage': (context) => LoginPage(),
-        '/ProvaPage': (context) => ProvaPage(),
+        '/RegistrationPage': (context) => RegistrationPage(),
       },
     );
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginPage extends StatefulWidget {
@@ -10,7 +9,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool _isObscured = false;
+  bool _isPasswordObscured = true;
 
   TextEditingController mailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -26,78 +25,29 @@ class _LoginPageState extends State<LoginPage> {
             //Logo
             Padding(
               padding: const EdgeInsets.only(top: 15.0),
-              child: SafeArea(child: SvgPicture.asset('lib/assets/domus_logo.svg', width: 200,)),
+              child: SafeArea(child: SvgPicture.asset('lib/assets/house_logo.svg', width: 150,)),
             ),
       
             //mailTextField
             Padding(
-              padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 50.0),
-              child: TextFormField(
-                controller: mailController,
-                style: TextStyle(
-                  fontSize: 18.0, 
-                  // color: Theme.of(context).colorScheme.surface,
-                ),
-                decoration: InputDecoration(
-                  hintText: "email",
-                  // contentPadding: EdgeInsets.only(left: 10.0),
-                  icon: Icon(Icons.person),
-                  // iconColor: Theme.of(context).colorScheme.surface,
-                  // enabledBorder: UnderlineInputBorder(
-                  //   borderSide: BorderSide(color: Theme.of(context).colorScheme.surface),),
-                  // disabledBorder: UnderlineInputBorder(
-                  //   borderSide: BorderSide(color: Theme.of(context).colorScheme.surface),),
-                  // focusedBorder: UnderlineInputBorder(
-                  //   borderSide: BorderSide(color: Theme.of(context).colorScheme.surface, width: 2.0),),
-                  // errorBorder: UnderlineInputBorder(
-                  //   borderSide: BorderSide(color: Colors.red, width: 2.0),),
-                ),
-              ),
+              padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 20.0),
+              child: mailTextField(),
             ),
       
             //passwordTextField
             Padding(
               padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 10.0),
-              child: TextFormField(
-                controller: passwordController,
-                style: TextStyle(fontSize: 18.0),
-                obscureText: _isObscured,
-                decoration: InputDecoration(
-                  hintText: "password",
-                  // contentPadding: EdgeInsets.only(left: 10.0),
-                  icon: Icon(Icons.lock),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _isObscured = !_isObscured;
-                      });
-                    }, 
-                    icon: _isObscured ? Icon(Icons.visibility) : Icon(Icons.visibility_off))
-                ),
-              ),
+              child: passwordTextField(),
             ),
       
-            //passwordDimenticataButton
+            //Altre Opzioni
             Padding(
               padding: const EdgeInsets.only(left: 15.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  TextButton(
-                    onPressed: (){}, 
-                    child: Text("Non hai un account?",
-                      style: TextStyle(
-                        decoration: TextDecoration.underline),
-                        ),
-                  ),
-                  TextButton(
-                    onPressed: (){}, 
-                    child: Text("Password dimenticata?",
-                      style: TextStyle(
-                        decoration: TextDecoration.underline),
-                        ),
-                  ),
-              
+                  nonHaiUnAccountButton(context),
+                  passwordDimenticataButton(),
                 ],
               ),
             ),
@@ -105,20 +55,7 @@ class _LoginPageState extends State<LoginPage> {
             //LoginButton
             Padding(
               padding: const EdgeInsets.only(top: 30.0),
-              child: ElevatedButton(
-                onPressed: (){
-                  Navigator.pushNamed(context, '/ProvaPage');
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  fixedSize: Size(MediaQuery.sizeOf(context).width/2, MediaQuery.sizeOf(context).height/18),
-                ),
-                child: Text("Login",
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    fontSize: 18.0),
-                ),
-              ),
+              child: loginButton(context),
             ),
       
             Padding(
@@ -147,5 +84,75 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  TextFormField mailTextField() {
+    return TextFormField(
+              controller: mailController,
+              style: TextStyle(
+                fontSize: 18.0, 
+              ),
+              decoration: InputDecoration(
+                hintText: "email",
+                icon: Icon(Icons.person),
+              ),
+            );
+  }
+
+  TextButton passwordDimenticataButton() {
+    return TextButton(
+                  onPressed: (){}, 
+                  child: Text("Password dimenticata?",
+                    style: TextStyle(
+                      decoration: TextDecoration.underline),
+                      ),
+                );
+  }
+
+  TextButton nonHaiUnAccountButton(BuildContext context) {
+    return TextButton(
+                  onPressed: (){
+                    Navigator.pushNamedAndRemoveUntil(context, '/RegistrationPage', (r) => false);
+                  }, 
+                  child: Text("Non hai un account?",
+                    style: TextStyle(
+                      decoration: TextDecoration.underline),
+                      ),
+                );
+  }
+
+  ElevatedButton loginButton(BuildContext context) {
+    return ElevatedButton(
+              onPressed: (){},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                fixedSize: Size(MediaQuery.sizeOf(context).width/2, MediaQuery.sizeOf(context).height/18),
+              ),
+              child: Text("Login",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontSize: 18.0),
+              ),
+            );
+  }
+
+  TextFormField passwordTextField() {
+    return TextFormField(
+              controller: passwordController,
+              style: TextStyle(fontSize: 18.0),
+              obscureText: _isPasswordObscured,
+              decoration: InputDecoration(
+                hintText: "password",
+                // contentPadding: EdgeInsets.only(left: 10.0),
+                icon: Icon(Icons.lock),
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _isPasswordObscured = !_isPasswordObscured;
+                    });
+                  }, 
+                  icon: _isPasswordObscured ? Icon(Icons.visibility) : Icon(Icons.visibility_off))
+              ),
+            );
   }
 }
