@@ -27,12 +27,12 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: const EdgeInsets.only(top: 70.0),
               // child: SafeArea(child: SvgPicture.asset('lib/assets/house_logo.svg', width: 150,)),
-              child: SafeArea(child: Image.asset('lib/assets/HouseHunter.png', height: 170,)),
+              child: SafeArea(child: Image.asset('lib/assets/HouseHunter.png', height: 140,)),
             ),
       
             //mailTextField
             Padding(
-              padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 70.0),
+              padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 50.0),
               child: MyTextFieldWidget(controller: mailController, text: "email", icon: Icon(Icons.person))
             ),
       
@@ -67,13 +67,13 @@ class _LoginPageState extends State<LoginPage> {
             ),
       
             Padding(
-              padding: const EdgeInsets.only(top: 10.0),
+              padding: const EdgeInsets.only(top: 20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/google_logo.svg', width: 50, ),),
-                  IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/facebook_logo.svg', width: 50,)),
-                  IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/apple_logo.svg', width: 50,),)
+                  IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/google_logo.svg', width: 40, ),),
+                  IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/facebook_logo.svg', width: 40,)),
+                  IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/apple_logo.svg', width: 40,),)
                 ],
               ),
             ),

@@ -31,12 +31,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
             Padding(
               padding: const EdgeInsets.only(top: 70.0),
               // child: SafeArea(child: SvgPicture.asset('lib/assets/house_logo.svg', width: 150,)),
-              child: SafeArea(child: Image.asset('lib/assets/HouseHunter.png', height: 170,)),
+              child: SafeArea(child: Image.asset('lib/assets/HouseHunter.png', height: 140,)),
             ),
       
             //nomeTextField
             Padding(
-              padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 70.0),
+              padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 30.0),
               child: MyTextFieldWidget(controller: nomeController, text: "nome", icon: const Icon(Icons.face))
             ),
 
@@ -59,16 +59,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
             ),
       
             //Altre Opzioni
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  MyTextButtonWidget(text: "Hai già un account?", 
-                    onPressed: (){Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);}),
-                ],
-              ),
-            ),
+            MyTextButtonWidget(text: "Hai già un account?", 
+              onPressed: (){Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);}),
       
             //RegistratiButton
             Padding(
@@ -82,13 +74,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
             ),
       
             Padding(
-              padding: const EdgeInsets.only(top: 10.0),
+              padding: const EdgeInsets.only(top: 20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/google_logo.svg', width: 50, ),),
-                  IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/facebook_logo.svg', width: 50,)),
-                  IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/apple_logo.svg', width: 50,),)
+                  IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/google_logo.svg', width: 40, ),),
+                  IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/facebook_logo.svg', width: 40,)),
+                  IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/apple_logo.svg', width: 40,),)
                 ],
               ),
             ),
@@ -97,5 +89,4 @@ class _RegistrationPageState extends State<RegistrationPage> {
       ),
     );
   }
-
 }

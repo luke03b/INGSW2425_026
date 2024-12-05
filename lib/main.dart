@@ -1,5 +1,6 @@
 import 'package:domus_app/pages/registration_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'pages/login_page.dart';
 
 void main() {
@@ -11,8 +12,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return MaterialApp(
-      title: 'Domus360',
+      title: 'House Hunters',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
