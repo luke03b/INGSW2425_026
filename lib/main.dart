@@ -1,3 +1,4 @@
+import 'package:domus_app/pages/home_page.dart';
 import 'package:domus_app/pages/registration_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/LoginPage': (context) => LoginPage(),
         '/RegistrationPage': (context) => RegistrationPage(),
+        '/HomePage' : (context) => HomePage(),
       },
     );
   }

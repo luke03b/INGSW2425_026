@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
-class MyTextFieldWidget extends StatefulWidget {
+class MyTextFieldPrefixIcon extends StatefulWidget {
   final TextEditingController controller;
   final String text;
   final Icon icon;
 
-  const MyTextFieldWidget({super.key,
+  const MyTextFieldPrefixIcon({super.key,
   required this.controller,
   required this.text,
   required this.icon,
   });
 
   @override
-  State<MyTextFieldWidget> createState() => _MyTextFieldWidgetState();
+  State<MyTextFieldPrefixIcon> createState() => _MyTextFieldPrefixIconState();
 }
 
-class _MyTextFieldWidgetState extends State<MyTextFieldWidget> {
+class _MyTextFieldPrefixIconState extends State<MyTextFieldPrefixIcon> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -51,20 +51,51 @@ class _MyPasswordFieldWidgetState extends State<MyPasswordFieldWidget> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-              controller: widget.controller,
-              style: TextStyle(fontSize: 18.0),
-              obscureText: _isPasswordObscured,
-              decoration: InputDecoration(
-                hintText: widget.text,
-                icon: widget.icon,
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _isPasswordObscured = !_isPasswordObscured;
-                    });
-                  }, 
-                  icon: _isPasswordObscured ? Icon(Icons.visibility) : Icon(Icons.visibility_off))
-              ),
-            );
+      controller: widget.controller,
+      style: TextStyle(fontSize: 18.0),
+      obscureText: _isPasswordObscured,
+      decoration: InputDecoration(
+        hintText: widget.text,
+        icon: widget.icon,
+        suffixIcon: IconButton(
+          onPressed: () {
+            setState(() {
+              _isPasswordObscured = !_isPasswordObscured;
+            });
+          }, 
+          icon: _isPasswordObscured ? Icon(Icons.visibility) : Icon(Icons.visibility_off))
+      ),
+    );
+  }
+}
+
+class MyTextFieldSuffixIcon extends StatefulWidget {
+  final TextEditingController controller;
+  final String text;
+  final Icon icon;
+
+  const MyTextFieldSuffixIcon({super.key,
+  required this.controller,
+  required this.text,
+  required this.icon,
+  });
+
+  @override
+  State<MyTextFieldSuffixIcon> createState() => _MyTextFieldSuffixIconState();
+}
+
+class _MyTextFieldSuffixIconState extends State<MyTextFieldSuffixIcon> {
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: widget.controller,
+      style: TextStyle(
+        fontSize: 18.0, 
+      ),
+      decoration: InputDecoration(
+        hintText: widget.text,
+        suffixIcon: widget.icon,
+      ),
+    );
   }
 }
