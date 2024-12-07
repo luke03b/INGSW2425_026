@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MyTextFieldPrefixIcon extends StatefulWidget {
   final TextEditingController controller;
@@ -95,6 +96,37 @@ class _MyTextFieldSuffixIconState extends State<MyTextFieldSuffixIcon> {
       decoration: InputDecoration(
         hintText: widget.text,
         suffixIcon: widget.icon,
+      ),
+    );
+  }
+}
+
+class MyTextFieldOnlyPositiveNumbers extends StatefulWidget {
+  final TextEditingController controller;
+  final String text;
+
+  const MyTextFieldOnlyPositiveNumbers({super.key,
+  required this.controller,
+  required this.text,
+  });
+
+  @override
+  State<MyTextFieldOnlyPositiveNumbers> createState() => _MyTextFieldOnlyPositiveNumbersState();
+}
+
+class _MyTextFieldOnlyPositiveNumbersState extends State<MyTextFieldOnlyPositiveNumbers> {
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      // keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
+      keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
+      inputFormatters: [FilteringTextInputFormatter.allow(RegExp("^(0|[1-9][0-9]*)"))],
+      controller: widget.controller,
+      style: TextStyle(
+        fontSize: 18.0, 
+      ),
+      decoration: InputDecoration(
+        hintText: widget.text,
       ),
     );
   }

@@ -24,24 +24,22 @@ class _LoginPageState extends State<LoginPage> {
         child: Center(
           child: Column(
             children: [
+              const Spacer(flex: 5),
               //Logo
-              Padding(
-                padding: const EdgeInsets.only(top: 70.0),
-                // child: SafeArea(child: SvgPicture.asset('lib/assets/house_logo.svg', width: 150,)),
-                child: SafeArea(child: Image.asset('lib/assets/HouseHunter.png', height: 140,)),
-              ),
+              SafeArea(child: Image.asset('lib/assets/HouseHunter.png', height: 140)),
+              const Spacer(flex: 5),
         
               //mailTextField
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 50.0),
-                child: MyTextFieldPrefixIcon(controller: mailController, text: "email", icon: Icon(Icons.person))
-              ),
+              SizedBox(
+                width: MediaQuery.sizeOf(context).width * 0.92,
+                child: MyTextFieldPrefixIcon(controller: mailController, text: "email", icon: Icon(Icons.person))),
+              const Spacer(flex: 1),
         
               //passwordTextField
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0, right: 30.0, top: 10.0),
-                child: MyPasswordFieldWidget(controller: passwordController, text: "password", icon: Icon(Icons.lock))
-              ),
+              SizedBox(
+                width: MediaQuery.sizeOf(context).width * 0.92,
+                child: MyPasswordFieldWidget(controller: passwordController, text: "password", icon: Icon(Icons.lock))),
+              const Spacer(flex: 1),
         
               //Altre Opzioni
               Row(
@@ -52,29 +50,29 @@ class _LoginPageState extends State<LoginPage> {
                   MyTextButtonWidget(text: "Password dimenticata", onPressed: (){})
                 ],
               ),
-        
+
+              const Spacer(flex: 8),
+
               //LoginButton
-              Padding(
-                padding: const EdgeInsets.only(top: 30.0),
-                child: MyElevatedButtonWidget(text: "Login", onPressed: (){Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (r) => false);}),
-              ),
+              MyElevatedButtonWidget(text: "Login", onPressed: (){Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (r) => false);}),
+
+              const Spacer(flex: 8),
+
+              Text("oppure"),
+              Divider(height: 50, thickness: 2, indent: 10, endIndent: 10,),
+
+              const Spacer(flex: 3),
         
-              Padding(
-                padding: const EdgeInsets.only(top: 50.0),
-                child: Text("------------------ oppure ------------------"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/google_logo.svg', width: 40, ),),
+                  IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/facebook_logo.svg', width: 40,)),
+                  IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/apple_logo.svg', width: 40,),)
+                ],
               ),
-        
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/google_logo.svg', width: 40, ),),
-                    IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/facebook_logo.svg', width: 40,)),
-                    IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/apple_logo.svg', width: 40,),)
-                  ],
-                ),
-              ),
+
+              const Spacer(flex: 10),
             ],
           ),
         ),
