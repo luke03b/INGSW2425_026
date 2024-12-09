@@ -57,14 +57,16 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
               //Altre Opzioni
               MyTextButtonWidget(text: "Hai già un account?", 
-                onPressed: (){Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);}),
+                onPressed: (){Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);},
+                color: Theme.of(context).colorScheme.primary),
               const Spacer(flex: 5),
 
               //RegistratiButton
-              MyElevatedButtonWidget(text: "Registrati", onPressed: (){}),
+              MyElevatedButtonWidget(text: "Registrati", onPressed: (){}, color: Theme.of(context).colorScheme.tertiary,),
               const Spacer(flex: 3),
 
-              Text("------------------ oppure ------------------"),
+              Text("oppure"),
+              Divider(height: 50, thickness: 2, indent: 10, endIndent: 10,),
               const Spacer(flex: 3),
 
               Row(

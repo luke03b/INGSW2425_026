@@ -45,16 +45,21 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  MyTextButtonWidget(text: "Non hai un account?", 
-                    onPressed: (){Navigator.pushNamedAndRemoveUntil(context, '/RegistrationPage', (r) => false);}),
-                  MyTextButtonWidget(text: "Password dimenticata", onPressed: (){})
+                  MyTextButtonWidget(
+                    text: "Non hai un account?", 
+                    onPressed: (){Navigator.pushNamedAndRemoveUntil(context, '/RegistrationPage', (r) => false);},
+                    color: Theme.of(context).colorScheme.primary,),
+                  MyTextButtonWidget(
+                    text: "Password dimenticata", 
+                    onPressed: (){}, 
+                    color: Theme.of(context).colorScheme.primary)
                 ],
               ),
 
               const Spacer(flex: 8),
 
               //LoginButton
-              MyElevatedButtonWidget(text: "Login", onPressed: (){Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (r) => false);}),
+              MyElevatedButtonWidget(text: "Login", onPressed: (){Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (r) => false);}, color: Theme.of(context).colorScheme.tertiary),
 
               const Spacer(flex: 8),
 

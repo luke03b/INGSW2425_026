@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
@@ -45,10 +46,40 @@ class _CercaPageState extends State<CercaPage> {
 
   bool _isBalconeSelected = false;
 
-  List<Widget> fruits = <Widget>[Text('Compra'), Text('Affitta')];
-  final List<bool> _selectedFruits = <bool>[true, false];
+  final List<Widget> _widgetCompraAffitta = <Widget>[Text('Compra'), Text('Affitta')];
+  final List<bool> _selectedCompraAffitta = <bool>[true, false];
 
   String sceltaClasseEnergetica = listaClassiEnergetiche.first;
+
+  int _currentSliderIndex = 0;
+
+  final List<Map<String, dynamic>> listaCase = [
+    {
+      'image1': 'lib/assets/casa1_1_placeholder.png',
+      'image2' : 'lib/assets/casa1_2_placeholder.png',
+      'image3' : 'lib/assets/casa1_3_placeholder.png',
+      'prezzo': '275.000',
+      'indirizzo': 'Via Dalmazia 13,\nCavalleggeri 80124 (NA)',
+      'superficie': '100 mq'
+    },
+    {
+      'image1': 'lib/assets/casa2_1_placeholder.png',
+      'image2' : 'lib/assets/casa2_2_placeholder.png',
+      'image3' : 'lib/assets/casa2_3_placeholder.png',
+      'prezzo': '300.000',
+      'indirizzo': 'Via Dalmazia 14,\nCavalleggeri 80124 (NA)',
+      'superficie': '120 mq'
+    },
+    {
+      'image1': 'lib/assets/casa3_1_placeholder.png',
+      'image2' : 'lib/assets/casa3_2_placeholder.png',
+      'image3' : 'lib/assets/casa3_3_placeholder.png',
+      'prezzo': '250.000',
+      'indirizzo': 'Via Dalmazia 10,\nCavalleggeri 80124 (NA)',
+      'superficie': '80 mq'
+    },
+
+  ];
 
   void _navigateBottomBar(){
     setState(() {
@@ -62,15 +93,17 @@ class _CercaPageState extends State<CercaPage> {
       initialIndex: 0,
       length: 2,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text("House Hunters", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
           centerTitle: true,
           backgroundColor: Theme.of(context).colorScheme.primary,
           elevation: 5,
           shadowColor: Colors.black,
-        ),
+          ),
         body: Column(
           children: [
+            //tasto Compra Affitta
             Align(
               alignment: Alignment.centerLeft,
               widthFactor: 2.37,
@@ -78,8 +111,8 @@ class _CercaPageState extends State<CercaPage> {
               child: ToggleButtons(
                 onPressed: (int index){
                   setState(() {
-                    for (int i = 0; i < _selectedFruits.length; i++){
-                      _selectedFruits[i] = i == index;
+                    for (int i = 0; i < _selectedCompraAffitta.length; i++){
+                      _selectedCompraAffitta[i] = i == index;
                     }
                   });
                 },
@@ -92,9 +125,11 @@ class _CercaPageState extends State<CercaPage> {
                   minHeight: 40.0,
                   minWidth: 80.0,
                 ),
-                isSelected: _selectedFruits,
-                children: fruits),
+                isSelected: _selectedCompraAffitta,
+                children: _widgetCompraAffitta),
             ),
+
+            //TextBox
             SizedBox(
               width: MediaQuery.sizeOf(context).width * 0.92,
               child: MyTextFieldSuffixIcon(
@@ -104,18 +139,23 @@ class _CercaPageState extends State<CercaPage> {
               )
             ),
 
+            //Tasto ricerca avanzata
             Align(
               alignment: Alignment.centerRight,
               child: MyTextButtonWidget(
                 text: "Ricerca Avanzata", 
-                onPressed: _navigateBottomBar
+                onPressed: _navigateBottomBar,
+                color: Theme.of(context).colorScheme.primary
               )
             ),
 
+            //parametri ricerca avanzata
             Visibility(
               visible: _ricercaAvanzataVisibile,
               child: Column(
                 children: [
+
+                  //prezzo
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -131,6 +171,7 @@ class _CercaPageState extends State<CercaPage> {
                     ],
                   ),
 
+                  //superficie
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -146,6 +187,7 @@ class _CercaPageState extends State<CercaPage> {
                     ],
                   ),
 
+                  //Stanze
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -161,8 +203,9 @@ class _CercaPageState extends State<CercaPage> {
                     ],
                   ),
                   
-                  Divider(height: 50, thickness: 2, indent: 10, endIndent: 10,),
+                  Divider(height: 50, thickness: 2, indent: 10, endIndent: 10, color: Theme.of(context).colorScheme.tertiary,),
 
+                  //Selettore Garage e Giardino
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -183,6 +226,7 @@ class _CercaPageState extends State<CercaPage> {
                     ],
                   ),
                   
+                  //Selettore Ascensore Piscina
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -203,6 +247,7 @@ class _CercaPageState extends State<CercaPage> {
                     ],
                   ),
 
+                  //Selettore Arredato Balcone
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -223,6 +268,7 @@ class _CercaPageState extends State<CercaPage> {
                     ],
                   ),
 
+                  //Selettore Classe Energetica
                   SizedBox(
                     height: 80,
                     child: Row(
@@ -241,9 +287,108 @@ class _CercaPageState extends State<CercaPage> {
                       ],
                     ),
                   ),
+
                 ],
               ),
             ),
+
+            MyElevatedButtonWidget(
+              text: "Cerca",
+              onPressed: (){Navigator.pushNamed(context, '/RisultatiCercaPage');},
+              color: Theme.of(context).colorScheme.tertiary
+            ),
+
+            SizedBox(
+              height: MediaQuery.of(context).size.height/13,
+            ),
+
+            Visibility(
+              visible: !_ricercaAvanzataVisibile, 
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(width: MediaQuery.of(context).size.width/9,),
+                      Icon(Icons.history, color: Theme.of(context).colorScheme.primary,),
+                      Text('Ultime Visite', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                    ],
+                  ),
+                  GestureDetector(
+                    onTap: (){},
+                    child: CarouselSlider(
+                      items: listaCase.asMap().entries.map((entry) {
+                        int indice = entry.key;
+                        Map<String, dynamic> indiceCasaCorrente = entry.value;
+                        double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.7;
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.symmetric(horizontal: 5),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.tertiary, 
+                            borderRadius: BorderRadius.circular(10),
+                            shape: BoxShape.rectangle,
+                            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2),
+                              spreadRadius: 5,
+                              blurRadius: 15,
+                              offset: Offset(0, 10),)],
+                          ),
+                          child: Column(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
+                                child: SizedBox(
+                                  child: Image.asset(indiceCasaCorrente['image1']))),
+                              Row(
+                                children: [
+                                  Expanded(child: Image.asset(indiceCasaCorrente['image2'])),
+                                  Expanded(child: Image.asset(indiceCasaCorrente['image3'])),
+                                ],
+                              ),
+                              SizedBox(
+                                height: scaleFactor * MediaQuery.of(context).size.height/50,
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(width: MediaQuery.of(context).size.width/45,),
+                                  Icon(Icons.euro, size: scaleFactor * 22, color: Theme.of(context).colorScheme.surface,),
+                                  SizedBox(width: MediaQuery.of(context).size.width/45,),
+                                  Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.surface),),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(width: MediaQuery.of(context).size.width/45,),
+                                  Icon(Icons.location_on, size: scaleFactor * 22, color: Theme.of(context).colorScheme.surface,),
+                                  SizedBox(width: MediaQuery.of(context).size.width/45,),
+                                  Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.surface)),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(width: MediaQuery.of(context).size.width/45,),
+                                  Icon(FontAwesomeIcons.arrowsUpDownLeftRight, size: scaleFactor * 22, color: Theme.of(context).colorScheme.surface,),
+                                  SizedBox(width: MediaQuery.of(context).size.width/45,),
+                                  Text(indiceCasaCorrente['superficie'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.surface)),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                      options: CarouselOptions(
+                        height: 400,
+                        enlargeCenterPage: true,
+                        onPageChanged: (indiceCasaCorrente, reason) {
+                          setState(() {
+                            _currentSliderIndex = indiceCasaCorrente;
+                          });
+                        }
+                      )),
+                  ),
+                ],
+              ))
+
           ],
         )
       ),

@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 class MyElevatedButtonWidget extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
+  final Color color;
 
   const MyElevatedButtonWidget({super.key,
   required this.text,
-  required this.onPressed});
+  required this.onPressed,
+  required this.color});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: color,
         fixedSize: Size(MediaQuery.sizeOf(context).width/2, MediaQuery.sizeOf(context).height/18),
       ),
       child: Text(text,
@@ -28,19 +30,24 @@ class MyElevatedButtonWidget extends StatelessWidget {
 class MyTextButtonWidget extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
+  final Color color;
+
   const MyTextButtonWidget({super.key,
   required this.text,
-  required this.onPressed
+  required this.onPressed,
+  required this.color
   });
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: onPressed, 
-      child: Text(text,
+      child: Text(
+        text,
         style: TextStyle(
-          decoration: TextDecoration.underline),
-          ),
+          decoration: TextDecoration.underline,
+          color: color),
+        ),
     );
   }
 }

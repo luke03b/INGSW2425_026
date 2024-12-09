@@ -1,5 +1,6 @@
 import 'package:domus_app/pages/home_page.dart';
 import 'package:domus_app/pages/registration_page.dart';
+import 'package:domus_app/pages/risultati_cerca_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'pages/login_page.dart';
@@ -23,22 +24,23 @@ class MyApp extends StatelessWidget {
         colorScheme: const ColorScheme(
           brightness: Brightness.light, 
           // primary: Color.fromARGB(255, 71, 148, 214),
-          primary:  Color.fromARGB(255, 39, 76, 119), 
+          primary:  Color.fromARGB(255, 8, 79, 161), 
           onPrimary:  Color.fromARGB(255, 231, 236, 239), 
-          secondary:  Color.fromARGB(255, 96, 150, 186),
-          onSecondary:  Color.fromARGB(255, 39, 76, 119), 
-          tertiary:  Color.fromARGB(255, 255, 214, 10),
-          onTertiary:  Color.fromARGB(255, 39, 76, 119),
+          secondary:  Color.fromARGB(255, 155, 178, 194),
+          onSecondary:  Color.fromARGB(255, 8, 79, 161), 
+          tertiary:  Color.fromARGB(255, 233, 135, 7),
+          onTertiary:  Color.fromARGB(255, 8, 79, 161),
           error:  Color.fromARGB(255, 218, 41, 28), 
           onError:  Color.fromARGB(255, 231, 236, 239), 
           surface:  Color.fromARGB(255, 231, 236, 239), 
-          onSurface:  Color.fromARGB(255, 39, 76, 119))
+          onSurface:  Color.fromARGB(255, 8, 79, 161))
           ),
       home: LoginPage(),
       routes: {
         '/LoginPage': (context) => LoginPage(),
         '/RegistrationPage': (context) => RegistrationPage(),
         '/HomePage' : (context) => HomePage(),
+        '/RisultatiCercaPage' : (context) => RisultatiCercaPage(),
       },
     );
   }
