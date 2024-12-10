@@ -74,11 +74,13 @@ class MyTextFieldSuffixIcon extends StatefulWidget {
   final TextEditingController controller;
   final String text;
   final Icon icon;
+  final Color colore;
 
   const MyTextFieldSuffixIcon({super.key,
   required this.controller,
   required this.text,
   required this.icon,
+  required this.colore,
   });
 
   @override
@@ -92,10 +94,13 @@ class _MyTextFieldSuffixIconState extends State<MyTextFieldSuffixIcon> {
       controller: widget.controller,
       style: TextStyle(
         fontSize: 18.0, 
+        color: widget.colore,
       ),
       decoration: InputDecoration(
+        hintStyle: TextStyle(color: widget.colore),
         hintText: widget.text,
         suffixIcon: widget.icon,
+        suffixIconColor: widget.colore
       ),
     );
   }
@@ -104,10 +109,12 @@ class _MyTextFieldSuffixIconState extends State<MyTextFieldSuffixIcon> {
 class MyTextFieldOnlyPositiveNumbers extends StatefulWidget {
   final TextEditingController controller;
   final String text;
+  final Color colore;
 
   const MyTextFieldOnlyPositiveNumbers({super.key,
   required this.controller,
   required this.text,
+  required this.colore,
   });
 
   @override
@@ -123,10 +130,12 @@ class _MyTextFieldOnlyPositiveNumbersState extends State<MyTextFieldOnlyPositive
       inputFormatters: [FilteringTextInputFormatter.allow(RegExp("^(0|[1-9][0-9]*)"))],
       controller: widget.controller,
       style: TextStyle(
-        fontSize: 18.0, 
+        fontSize: 18.0,
+        color: widget.colore, 
       ),
       decoration: InputDecoration(
         hintText: widget.text,
+        hintStyle: TextStyle(color: widget.colore)
       ),
     );
   }

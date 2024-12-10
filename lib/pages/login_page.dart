@@ -48,11 +48,11 @@ class _LoginPageState extends State<LoginPage> {
                   MyTextButtonWidget(
                     text: "Non hai un account?", 
                     onPressed: (){Navigator.pushNamedAndRemoveUntil(context, '/RegistrationPage', (r) => false);},
-                    color: Theme.of(context).colorScheme.primary,),
+                    colore: Theme.of(context).colorScheme.primary,),
                   MyTextButtonWidget(
                     text: "Password dimenticata", 
                     onPressed: (){}, 
-                    color: Theme.of(context).colorScheme.primary)
+                    colore: Theme.of(context).colorScheme.primary)
                 ],
               ),
 

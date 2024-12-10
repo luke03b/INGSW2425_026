@@ -30,12 +30,12 @@ class MyElevatedButtonWidget extends StatelessWidget {
 class MyTextButtonWidget extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
-  final Color color;
+  final Color colore;
 
   const MyTextButtonWidget({super.key,
   required this.text,
   required this.onPressed,
-  required this.color
+  required this.colore
   });
 
   @override
@@ -46,7 +46,7 @@ class MyTextButtonWidget extends StatelessWidget {
         text,
         style: TextStyle(
           decoration: TextDecoration.underline,
-          color: color),
+          color: colore),
         ),
     );
   }

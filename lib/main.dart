@@ -33,8 +33,12 @@ class MyApp extends StatelessWidget {
           error:  Color.fromARGB(255, 218, 41, 28), 
           onError:  Color.fromARGB(255, 231, 236, 239), 
           surface:  Color.fromARGB(255, 231, 236, 239), 
-          onSurface:  Color.fromARGB(255, 8, 79, 161))
-          ),
+          onSurface:  Color.fromARGB(255, 8, 79, 161),
+          // outline: Colors.black,
+          outline: Colors.black,
+
+          )
+        ),
       home: LoginPage(),
       routes: {
         '/LoginPage': (context) => LoginPage(),

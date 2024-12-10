@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
         type: BottomNavigationBarType.fixed,
         backgroundColor: Theme.of(context).colorScheme.primary,
         selectedItemColor: Theme.of(context).colorScheme.onPrimary,
-        unselectedItemColor: Colors.black,
+        unselectedItemColor: Colors.black87,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Cerca'),
           BottomNavigationBarItem(icon: Icon(Icons.payments), label: 'Offerte'),

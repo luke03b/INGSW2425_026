@@ -15,6 +15,7 @@ class CercaPage extends StatefulWidget {
 
 class _CercaPageState extends State<CercaPage> {
 
+
   final TextEditingController _affittaController = TextEditingController();
 
   final TextEditingController _prezzoMaxController = TextEditingController();
@@ -89,6 +90,7 @@ class _CercaPageState extends State<CercaPage> {
   
   @override
   Widget build(BuildContext context) {
+    Color coloriPulsanti = Theme.of(context).colorScheme.outline;
     return DefaultTabController(
       initialIndex: 0,
       length: 2,
@@ -135,7 +137,8 @@ class _CercaPageState extends State<CercaPage> {
               child: MyTextFieldSuffixIcon(
                 controller: _affittaController, 
                 text: "Inserisci una zona di ricerca", 
-                icon: Icon(Icons.search)
+                icon: Icon(Icons.search),
+                colore: coloriPulsanti,
               )
             ),
 
@@ -145,7 +148,7 @@ class _CercaPageState extends State<CercaPage> {
               child: MyTextButtonWidget(
                 text: "Ricerca Avanzata", 
                 onPressed: _navigateBottomBar,
-                color: Theme.of(context).colorScheme.primary
+                colore: coloriPulsanti
               )
             ),
 
@@ -159,14 +162,14 @@ class _CercaPageState extends State<CercaPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Icon(Icons.euro, size: 22, color: Theme.of(context).colorScheme.primary,),
+                      Icon(Icons.euro, size: 22, color: coloriPulsanti,),
                       SizedBox(
                         width: MediaQuery.sizeOf(context).width * 0.40,
-                        child: MyTextFieldOnlyPositiveNumbers(controller: _prezzoMinController, text: "Prezzo Min")
+                        child: MyTextFieldOnlyPositiveNumbers(controller: _prezzoMinController, text: "Prezzo Min", colore: coloriPulsanti,)
                       ),
                       SizedBox(
                         width: MediaQuery.sizeOf(context).width * 0.40, 
-                        child: MyTextFieldOnlyPositiveNumbers(controller: _prezzoMaxController, text: "Prezzo Max")
+                        child: MyTextFieldOnlyPositiveNumbers(controller: _prezzoMaxController, text: "Prezzo Max", colore: coloriPulsanti,)
                       ),
                     ],
                   ),
@@ -175,14 +178,14 @@ class _CercaPageState extends State<CercaPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Icon(FontAwesomeIcons.arrowsUpDownLeftRight, size: 20, color: Theme.of(context).colorScheme.primary,),
+                      Icon(FontAwesomeIcons.arrowsUpDownLeftRight, size: 20, color: coloriPulsanti,),
                       SizedBox(
                         width: MediaQuery.sizeOf(context).width * 0.40,
-                        child: MyTextFieldOnlyPositiveNumbers(controller: _superficieMinController, text: "Superficie Min")
+                        child: MyTextFieldOnlyPositiveNumbers(controller: _superficieMinController, text: "Superficie Min", colore: coloriPulsanti,)
                       ),
                       SizedBox(
                         width: MediaQuery.sizeOf(context).width * 0.40,
-                        child: MyTextFieldOnlyPositiveNumbers(controller: _superficieMaxController, text: "Superficie Max")
+                        child: MyTextFieldOnlyPositiveNumbers(controller: _superficieMaxController, text: "Superficie Max", colore: coloriPulsanti,)
                       ),
                     ],
                   ),
@@ -191,33 +194,33 @@ class _CercaPageState extends State<CercaPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Icon(FontAwesomeIcons.couch, size: 20, color: Theme.of(context).colorScheme.primary,),
+                      Icon(FontAwesomeIcons.couch, size: 20, color: coloriPulsanti,),
                       SizedBox(
                         width: MediaQuery.sizeOf(context).width * 0.40,
-                        child: MyTextFieldOnlyPositiveNumbers(controller: _numeroStanzeMinController, text: "N. Stanze Min")
+                        child: MyTextFieldOnlyPositiveNumbers(controller: _numeroStanzeMinController, text: "N. Stanze Min", colore: coloriPulsanti,)
                       ),
                       SizedBox(
                         width: MediaQuery.sizeOf(context).width * 0.40,
-                        child: MyTextFieldOnlyPositiveNumbers(controller: _numeroStanzeMaxController, text: "N. Stanze Max")
+                        child: MyTextFieldOnlyPositiveNumbers(controller: _numeroStanzeMaxController, text: "N. Stanze Max", colore: coloriPulsanti,)
                       ),
                     ],
                   ),
                   
-                  Divider(height: 50, thickness: 2, indent: 10, endIndent: 10, color: Theme.of(context).colorScheme.tertiary,),
+                  Divider(height: 50, thickness: 2, indent: 10, endIndent: 10, color: Theme.of(context).colorScheme.primary,),
 
                   //Selettore Garage e Giardino
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Icon(FontAwesomeIcons.car, size: 22, color: Theme.of(context).colorScheme.primary,),
-                      Text("Garage", style: TextStyle(fontSize: 18.0),),
+                      Icon(FontAwesomeIcons.car, size: 22, color: coloriPulsanti,),
+                      Text("Garage", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
                       Switch(value: _isGarageSelected, onChanged: (value){
                         setState(() {
                           _isGarageSelected = value;
                         });
                       }),
-                      Icon(Icons.park, size: 22, color: Theme.of(context).colorScheme.primary,),
-                      Text("Giardino", style: TextStyle(fontSize: 18.0),),
+                      Icon(Icons.park, size: 22, color: coloriPulsanti,),
+                      Text("Giardino", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
                       Switch(value: _isGiardinoSelected, onChanged: (value){
                         setState(() {
                           _isGiardinoSelected = value;
@@ -230,15 +233,15 @@ class _CercaPageState extends State<CercaPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Icon(FontAwesomeIcons.elevator, size: 22, color: Theme.of(context).colorScheme.primary,),
-                      Text("Ascensore", style: TextStyle(fontSize: 18.0),),
+                      Icon(FontAwesomeIcons.elevator, size: 22, color: coloriPulsanti,),
+                      Text("Ascensore", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
                       Switch(value: _isAscensoreSelected, onChanged: (value){
                         setState(() {
                           _isAscensoreSelected = value;
                         });
                       }),
-                      Icon(Icons.pool, size: 22, color: Theme.of(context).colorScheme.primary,),
-                      Text("Piscina", style: TextStyle(fontSize: 18.0),),
+                      Icon(Icons.pool, size: 22, color: coloriPulsanti,),
+                      Text("Piscina", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
                       Switch(value: _isPiscinaSelected, onChanged: (value){
                         setState(() {
                           _isPiscinaSelected = value;
@@ -251,15 +254,15 @@ class _CercaPageState extends State<CercaPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Icon(Icons.checkroom, size: 22, color: Theme.of(context).colorScheme.primary,),
-                      Text("Arredato", style: TextStyle(fontSize: 18.0),),
+                      Icon(Icons.checkroom, size: 22, color: coloriPulsanti,),
+                      Text("Arredato", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
                       Switch(value: _isArredatoSelected, onChanged: (value){
                         setState(() {
                           _isArredatoSelected = value;
                         });
                       }),
-                      Icon(Icons.balcony, size: 22, color: Theme.of(context).colorScheme.primary,),
-                      Text("Balcone", style: TextStyle(fontSize: 18.0),),
+                      Icon(Icons.balcony, size: 22, color: coloriPulsanti,),
+                      Text("Balcone", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
                       Switch(value: _isBalconeSelected, onChanged: (value){
                         setState(() {
                           _isBalconeSelected = value;
@@ -274,16 +277,20 @@ class _CercaPageState extends State<CercaPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text("Classe Energetica", style: TextStyle(fontSize: 18.0),),
+                        Text("Classe Energetica", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
                         DropdownMenu(
+                          textStyle: TextStyle(color: coloriPulsanti),
+                          inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: coloriPulsanti), suffixIconColor: coloriPulsanti),
                           initialSelection: listaClassiEnergetiche.first,
                           onSelected: (String? value) {
                             setState(() {
                               sceltaClasseEnergetica = value!;
                             });
                           },
-                          dropdownMenuEntries: listaClassiEnergetiche.map<DropdownMenuEntry<String>>((String value) {
-                            return DropdownMenuEntry<String>(value: value, label: value);}).toList(),),
+                          dropdownMenuEntries: 
+                            listaClassiEnergetiche.map<DropdownMenuEntry<String>>((String value) {
+                            return DropdownMenuEntry<String>(value: value, label: value,);}).toList(),
+                            ),
                       ],
                     ),
                   ),
@@ -310,8 +317,8 @@ class _CercaPageState extends State<CercaPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       SizedBox(width: MediaQuery.of(context).size.width/9,),
-                      Icon(Icons.history, color: Theme.of(context).colorScheme.primary,),
-                      Text('Ultime Visite', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                      Icon(Icons.history, color: coloriPulsanti,),
+                      Text('Ultime Visite', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: coloriPulsanti),),
                     ],
                   ),
                   GestureDetector(
