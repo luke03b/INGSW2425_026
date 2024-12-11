@@ -18,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    Color coloriScritte = Theme.of(context).colorScheme.outline;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
@@ -32,13 +33,13 @@ class _LoginPageState extends State<LoginPage> {
               //mailTextField
               SizedBox(
                 width: MediaQuery.sizeOf(context).width * 0.92,
-                child: MyTextFieldPrefixIcon(controller: mailController, text: "email", icon: Icon(Icons.person))),
+                child: MyTextFieldPrefixIcon(controller: mailController, text: "email", icon: Icon(Icons.person), color: coloriScritte,)),
               const Spacer(flex: 1),
         
               //passwordTextField
               SizedBox(
                 width: MediaQuery.sizeOf(context).width * 0.92,
-                child: MyPasswordFieldWidget(controller: passwordController, text: "password", icon: Icon(Icons.lock))),
+                child: MyPasswordFieldWidget(controller: passwordController, text: "password", icon: Icon(Icons.lock), color: coloriScritte,)),
               const Spacer(flex: 1),
         
               //Altre Opzioni
@@ -48,11 +49,11 @@ class _LoginPageState extends State<LoginPage> {
                   MyTextButtonWidget(
                     text: "Non hai un account?", 
                     onPressed: (){Navigator.pushNamedAndRemoveUntil(context, '/RegistrationPage', (r) => false);},
-                    colore: Theme.of(context).colorScheme.primary,),
+                    colore: coloriScritte,),
                   MyTextButtonWidget(
                     text: "Password dimenticata", 
                     onPressed: (){}, 
-                    colore: Theme.of(context).colorScheme.primary)
+                    colore: coloriScritte)
                 ],
               ),
 
@@ -63,8 +64,13 @@ class _LoginPageState extends State<LoginPage> {
 
               const Spacer(flex: 8),
 
-              Text("oppure"),
-              Divider(height: 50, thickness: 2, indent: 10, endIndent: 10,),
+              Row(
+                children: [
+                  Expanded(child: Divider(height: 50, thickness: 2, indent: 20, endIndent: 10, color: coloriScritte,)),
+                  Text("oppure", style: TextStyle(color: coloriScritte),),
+                  Expanded(child: Divider(height: 50, thickness: 2, indent: 10, endIndent: 20, color: coloriScritte,)),
+                ],
+              ),
 
               const Spacer(flex: 3),
         

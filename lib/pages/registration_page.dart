@@ -20,6 +20,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
+    Color coloriScritte = Theme.of(context).colorScheme.outline;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
@@ -34,39 +35,44 @@ class _RegistrationPageState extends State<RegistrationPage> {
               //nomeTextField
               SizedBox(
                 width: MediaQuery.sizeOf(context).width * 0.92,
-                child: MyTextFieldPrefixIcon(controller: nomeController, text: "nome", icon: const Icon(Icons.face))),
+                child: MyTextFieldPrefixIcon(controller: nomeController, text: "nome", icon: const Icon(Icons.face), color: coloriScritte,)),
               const Spacer(),   
 
               //cognomeTextField
               SizedBox(
                 width: MediaQuery.sizeOf(context).width * 0.92,
-                child: MyTextFieldPrefixIcon(controller: cognomeController, text: "cognome", icon: const Icon(FontAwesomeIcons.idCard))),
+                child: MyTextFieldPrefixIcon(controller: cognomeController, text: "cognome", icon: const Icon(FontAwesomeIcons.idCard), color: coloriScritte,)),
               const Spacer(),
 
               //emailTextField
               SizedBox(
                 width: MediaQuery.sizeOf(context).width * 0.92,
-                child: MyTextFieldPrefixIcon(controller: mailController, text: "email", icon: const Icon(Icons.person))),
+                child: MyTextFieldPrefixIcon(controller: mailController, text: "email", icon: const Icon(Icons.person), color: coloriScritte,)),
               const Spacer(),
 
               //passwordTextField
               SizedBox(
                 width: MediaQuery.sizeOf(context).width * 0.92,
-                child: MyPasswordFieldWidget(controller: passwordController, text: "password", icon: const Icon(Icons.lock))),
+                child: MyPasswordFieldWidget(controller: passwordController, text: "password", icon: const Icon(Icons.lock), color: coloriScritte,)),
               const Spacer(),
 
               //Altre Opzioni
               MyTextButtonWidget(text: "Hai già un account?", 
                 onPressed: (){Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);},
-                colore: Theme.of(context).colorScheme.primary),
+                colore: coloriScritte),
               const Spacer(flex: 5),
 
               //RegistratiButton
               MyElevatedButtonWidget(text: "Registrati", onPressed: (){}, color: Theme.of(context).colorScheme.tertiary,),
               const Spacer(flex: 3),
 
-              Text("oppure"),
-              Divider(height: 50, thickness: 2, indent: 10, endIndent: 10,),
+              Row(
+                children: [
+                  Expanded(child: Divider(height: 50, thickness: 2, indent: 20, endIndent: 10, color: coloriScritte,)),
+                  Text("oppure", style: TextStyle(color: coloriScritte),),
+                  Expanded(child: Divider(height: 50, thickness: 2, indent: 10, endIndent: 20, color: coloriScritte,)),
+                ],
+              ),
               const Spacer(flex: 3),
 
               Row(

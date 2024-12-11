@@ -46,6 +46,7 @@ class MyTextButtonWidget extends StatelessWidget {
         text,
         style: TextStyle(
           decoration: TextDecoration.underline,
+          decorationColor: colore,
           color: colore),
         ),
     );
