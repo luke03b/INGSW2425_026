@@ -2,15 +2,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class OffertePage extends StatefulWidget {
-  const OffertePage({super.key});
+class PrenotazioniPage extends StatefulWidget {
+  const PrenotazioniPage({super.key});
 
   @override
-  State<OffertePage> createState() => _OffertePageState();
+  State<PrenotazioniPage> createState() => _PrenotazioniPageState();
 }
 
-class _OffertePageState extends State<OffertePage> {
-
+class _PrenotazioniPageState extends State<PrenotazioniPage> {
   int _currentSliderIndex = 0;
 
   final List<Map<String, dynamic>> listaCase = [
@@ -26,6 +25,9 @@ class _OffertePageState extends State<OffertePage> {
       'offerta': '270.000',
       'stato_offerta': 'Accettata',
       'valore_controproposta' : '',
+      'data_prenotazione' : '13-01-2025',
+      'data_richiesta_prenotazione' : '31-01-2025',
+      'stato_prenotazione' : 'Accettata',
     },
     {
       'image1': 'lib/assets/casa2_1_placeholder.png',
@@ -39,6 +41,9 @@ class _OffertePageState extends State<OffertePage> {
       'offerta': '250.000',
       'stato_offerta': 'Rifiutata',
       'valore_controproposta' : '',
+      'data_prenotazione' : '5-01-2025',
+      'data_richiesta_prenotazione' : '7-02-2025',
+      'stato_prenotazione' : 'Rifiutata',
     },
     {
       'image1': 'lib/assets/casa3_1_placeholder.png',
@@ -52,6 +57,9 @@ class _OffertePageState extends State<OffertePage> {
       'offerta': '245.000',
       'stato_offerta': 'Controproposta',
       'valore_controproposta' : '247.000',
+      'data_prenotazione' : '5-12-2024',
+      'data_richiesta_prenotazione' : '1-04-2025',
+      'stato_prenotazione' : 'In Attesa',
     },
 
   ];
@@ -75,14 +83,14 @@ class _OffertePageState extends State<OffertePage> {
 
     Color coloreScritte = Theme.of(context).colorScheme.outline;
 
-    Color selettoreColoreStatoOfferta(String statoOfferta) {
-      if(statoOfferta == "Accettata") {
+    Color selettoreColoreStatoPrenotazione(String statoPrenotazione) {
+      if(statoPrenotazione == "Accettata") {
         return Colors.green;
-      } else if(statoOfferta == "Rifiutata") {
+      } else if(statoPrenotazione == "Rifiutata") {
         return Theme.of(context).colorScheme.error;
-      } else if(statoOfferta == "In Attesa") {
+      } else if(statoPrenotazione == "In Attesa") {
         return Colors.grey;
-      } else if(statoOfferta == "Controproposta") {
+      } else if(statoPrenotazione == "Controproposta") {
         return Theme.of(context).colorScheme.tertiary;
       }
       return Theme.of(context).colorScheme.outline;
@@ -126,34 +134,23 @@ class _OffertePageState extends State<OffertePage> {
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text("La tua offerta: ", style: TextStyle(fontSize: scaleFactor * 25, fontWeight: FontWeight.bold, color: coloreScritte)),
-                    Icon(Icons.euro, size: scaleFactor * 27, color: coloreScritte,),
-                    Text(indiceCasaCorrente['offerta'], style: TextStyle(fontSize: scaleFactor * 25, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text("Data prenotazione: ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text(indiceCasaCorrente['data_richiesta_prenotazione'], style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: coloreScritte)),
                   ],
                 ),
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['stato_offerta'], style: TextStyle(fontSize: scaleFactor * 25, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
-                    Visibility(
-                      visible: indiceCasaCorrente['stato_offerta'] == "Controproposta",
-                      child: Row(
-                        children: [
-                          Text(": ", style: TextStyle(fontSize: scaleFactor * 25, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
-                          Icon(Icons.euro, size: scaleFactor * 27, color: Theme.of(context).colorScheme.tertiary,),
-                          Text(indiceCasaCorrente['valore_controproposta'], style: TextStyle(fontSize: scaleFactor * 25, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
-                        ],
-                      ),
-                    ),
+                    Text(indiceCasaCorrente['stato_prenotazione'], style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoPrenotazione(indiceCasaCorrente['stato_prenotazione']))),
                   ],
                 ),
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text("Data offerta: ", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
-                    Text(indiceCasaCorrente['data_offerta'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text("Richiesta effettuata in data: ", style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text(indiceCasaCorrente['data_prenotazione'], style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.bold, color: coloreScritte)),
                   ],
                 ),
                 SizedBox(

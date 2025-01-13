@@ -1,3 +1,5 @@
+import 'package:domus_app/pages/prenotazioni_page.dart';
+import 'package:domus_app/pages/profilo_page.dart';
 import 'package:domus_app/pages/risultati_cerca_page.dart';
 import 'package:flutter/material.dart';
 import 'cerca_page.dart';
@@ -22,8 +24,8 @@ class _ControllorePagine2State extends State<ControllorePagine2> {
   final List<Widget> _pages = [
     RisultatiCercaPage(),
     OffertePage(),
-    Text('Prenotazioni Page', style: TextStyle(fontSize: 50),),
-    Text('Profilo Page', style: TextStyle(fontSize: 50),),
+    PrenotazioniPage(),
+    ProfiloPage(),
   ];
 
   @override
