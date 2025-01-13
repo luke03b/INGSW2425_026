@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 const List<String> listaClassiEnergetiche = <String>['Tutte', 'A4', 'A3', 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G'];
+const List<String> listaPiani = <String>['Tutti', 'Terra', 'Intermedio', 'Ultimo'];
 
 class CercaPage extends StatefulWidget {
   const CercaPage({super.key});
@@ -51,6 +52,7 @@ class _CercaPageState extends State<CercaPage> {
   final List<bool> selectedCompraAffitta = <bool>[true, false];
 
   String sceltaClasseEnergetica = listaClassiEnergetiche.first;
+  String sceltaPiano = listaPiani.first;
 
   int _currentSliderIndex = 0;
 
@@ -132,6 +134,10 @@ class _CercaPageState extends State<CercaPage> {
             //parametri ricerca avanzata
             myParametriRicercaAvanzata(coloriPulsanti, context),
 
+            SizedBox(
+              height: MediaQuery.of(context).size.height/35,
+            ),
+            //tasto cerca
             MyElevatedButtonWidget(
               text: "Cerca",
               onPressed: (){Navigator.pushNamed(context, '/RisultatiCercaPage');},
@@ -332,7 +338,32 @@ class _CercaPageState extends State<CercaPage> {
 
                 //Selettore Classe Energetica
                 SizedBox(
-                  height: 80,
+                  height: 50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text("           Piano           ", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
+                      DropdownMenu(
+                        textStyle: TextStyle(color: coloriPulsanti),
+                        inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: coloriPulsanti), suffixIconColor: coloriPulsanti),
+                        initialSelection: listaPiani.first,
+                        onSelected: (String? value) {
+                          setState(() {
+                            sceltaClasseEnergetica = value!;
+                          });
+                        },
+                        dropdownMenuEntries: 
+                          listaPiani.map<DropdownMenuEntry<String>>((String value) {
+                          return DropdownMenuEntry<String>(value: value, label: value,);}).toList(),
+                          ),
+                    ],
+                  ),
+                ),
+
+
+                //Selettore Classe Energetica
+                SizedBox(
+                  height: 50,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
