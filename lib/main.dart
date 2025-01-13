@@ -1,4 +1,5 @@
-import 'package:domus_app/pages/home_page.dart';
+import 'package:domus_app/pages/controllore_pagine.dart';
+import 'package:domus_app/pages/controllore_pagine2.dart';
 import 'package:domus_app/pages/registration_page.dart';
 import 'package:domus_app/pages/risultati_cerca_page.dart';
 import 'package:flutter/material.dart';
@@ -43,8 +44,9 @@ class MyApp extends StatelessWidget {
       routes: {
         '/LoginPage': (context) => LoginPage(),
         '/RegistrationPage': (context) => RegistrationPage(),
-        '/HomePage' : (context) => HomePage(),
+        '/HomePage' : (context) => ControllorePagine(),
         '/RisultatiCercaPage' : (context) => RisultatiCercaPage(),
+        '/ControllorePagine2': (context) => ControllorePagine2(),
       },
     );
   }

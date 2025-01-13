@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'cerca_page.dart';
+import 'offerte_page.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class ControllorePagine extends StatefulWidget {
+  const ControllorePagine({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<ControllorePagine> createState() => _ControllorePagineState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ControllorePagineState extends State<ControllorePagine> {
   int _selectedIndex = 0;
 
   void _navigateBottomBar(int index){
@@ -19,7 +20,7 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _pages = [
     CercaPage(),
-    Text('Offerte Page', style: TextStyle(fontSize: 50),),
+    OffertePage(),
     Text('Prenotazioni Page', style: TextStyle(fontSize: 50),),
     Text('Profilo Page', style: TextStyle(fontSize: 50),),
   ];

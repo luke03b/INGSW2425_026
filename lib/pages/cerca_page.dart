@@ -140,7 +140,7 @@ class _CercaPageState extends State<CercaPage> {
             //tasto cerca
             MyElevatedButtonWidget(
               text: "Cerca",
-              onPressed: (){Navigator.pushNamed(context, '/RisultatiCercaPage');},
+              onPressed: (){Navigator.pushNamed(context, '/ControllorePagine2');},
               color: Theme.of(context).colorScheme.tertiary
             ),
 
@@ -176,6 +176,7 @@ class _CercaPageState extends State<CercaPage> {
   }
 
   GestureDetector myCarouselSlider(BuildContext context) {
+    Color coloreScritte = Theme.of(context).colorScheme.outline;
     return GestureDetector(
       onTap: (){},
       child: CarouselSlider(
@@ -187,7 +188,7 @@ class _CercaPageState extends State<CercaPage> {
             width: MediaQuery.of(context).size.width,
             margin: EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.tertiary, 
+              color: Colors.white, 
               borderRadius: BorderRadius.circular(10),
               shape: BoxShape.rectangle,
               boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2),
@@ -213,25 +214,25 @@ class _CercaPageState extends State<CercaPage> {
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.euro, size: scaleFactor * 22, color: Theme.of(context).colorScheme.surface,),
+                    Icon(Icons.euro, size: scaleFactor * 22, color: coloreScritte,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.surface),),
+                    Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte),),
                   ],
                 ),
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.location_on, size: scaleFactor * 22, color: Theme.of(context).colorScheme.surface,),
+                    Icon(Icons.location_on, size: scaleFactor * 22, color: coloreScritte,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.surface)),
+                    Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
                   ],
                 ),
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(FontAwesomeIcons.arrowsUpDownLeftRight, size: scaleFactor * 22, color: Theme.of(context).colorScheme.surface,),
+                    Icon(FontAwesomeIcons.arrowsUpDownLeftRight, size: scaleFactor * 22, color: coloreScritte,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['superficie'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.surface)),
+                    Text(indiceCasaCorrente['superficie'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
                   ],
                 ),
               ],

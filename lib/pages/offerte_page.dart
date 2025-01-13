@@ -2,14 +2,15 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class RisultatiCercaPage extends StatefulWidget {
-  const RisultatiCercaPage({super.key});
+class OffertePage extends StatefulWidget {
+  const OffertePage({super.key});
 
   @override
-  State<RisultatiCercaPage> createState() => _RisultatiCercaPageState();
+  State<OffertePage> createState() => _OffertePageState();
 }
 
-class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
+class _OffertePageState extends State<OffertePage> {
+
   int _currentSliderIndex = 0;
 
   final List<Map<String, dynamic>> listaCase = [
@@ -21,8 +22,10 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
       'indirizzo': 'Via Dalmazia 13,\nCavalleggeri 80124 (NA)',
       'superficie': '100 mq',
       'numero_stanze': '6',
-      'arredato' : "si",
-      'piano' : 'Terra',
+      'data_offerta': '13-01-2025',
+      'offerta': '270.000',
+      'stato_offerta': 'Accettata',
+      'valore_controproposta' : '',
     },
     {
       'image1': 'lib/assets/casa2_1_placeholder.png',
@@ -32,8 +35,10 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
       'indirizzo': 'Via Dalmazia 14,\nCavalleggeri 80124 (NA)',
       'superficie': '120 mq',
       'numero_stanze': '7',
-      'arredato' : "no",
-      'piano' : 'Ultimo',
+      'data_offerta': '5-01-2025',
+      'offerta': '250.000',
+      'stato_offerta': 'Rifiutata',
+      'valore_controproposta' : '',
     },
     {
       'image1': 'lib/assets/casa3_1_placeholder.png',
@@ -43,8 +48,10 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
       'indirizzo': 'Via Dalmazia 10,\nCavalleggeri 80124 (NA)',
       'superficie': '80 mq',
       'numero_stanze': '5',
-      'arredato' : "si",
-      'piano' : '3',
+      'data_offerta': '25-12-2024',
+      'offerta': '245.000',
+      'stato_offerta': 'Controproposta',
+      'valore_controproposta' : '247.000',
     },
 
   ];
@@ -54,9 +61,7 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.surface,
-        ),
+        automaticallyImplyLeading: false,
         title: Text("House Hunters", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -120,17 +125,54 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.euro, size: scaleFactor * 32, color: coloreScritte,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 30, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text("La tua offerta: ", style: TextStyle(fontSize: scaleFactor * 25, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Icon(Icons.euro, size: scaleFactor * 27, color: coloreScritte,),
+                    Text(indiceCasaCorrente['offerta'], style: TextStyle(fontSize: scaleFactor * 25, fontWeight: FontWeight.bold, color: coloreScritte)),
                   ],
                 ),
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.location_on, size: scaleFactor * 25, color: coloreScritte,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 23, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text(indiceCasaCorrente['stato_offerta'], style: TextStyle(fontSize: scaleFactor * 25, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
+                    Visibility(
+                      visible: indiceCasaCorrente['stato_offerta'] == "Controproposta",
+                      child: Row(
+                        children: [
+                          Text(": ", style: TextStyle(fontSize: scaleFactor * 25, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
+                          Icon(Icons.euro, size: scaleFactor * 27, color: Theme.of(context).colorScheme.tertiary,),
+                          Text(indiceCasaCorrente['valore_controproposta'], style: TextStyle(fontSize: scaleFactor * 25, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(width: MediaQuery.of(context).size.width/45,),
+                    SizedBox(width: MediaQuery.of(context).size.width/45,),
+                    Text("Data offerta: ", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text(indiceCasaCorrente['data_offerta'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
+                  ],
+                ),
+                SizedBox(
+                  height: scaleFactor * MediaQuery.of(context).size.height/75,
+                ),
+                Row(
+                  children: [
+                    SizedBox(width: MediaQuery.of(context).size.width/45,),
+                    Icon(Icons.euro, size: scaleFactor * 22, color: coloreScritte,),
+                    SizedBox(width: MediaQuery.of(context).size.width/45,),
+                    Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(width: MediaQuery.of(context).size.width/45,),
+                    Icon(Icons.location_on, size: scaleFactor * 22, color: coloreScritte,),
+                    SizedBox(width: MediaQuery.of(context).size.width/45,),
+                    Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
                   ],
                 ),
                 Row(
@@ -144,25 +186,9 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(FontAwesomeIcons.stairs, size: scaleFactor * 22, color: coloreScritte,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['piano'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)), 
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
                     Icon(Icons.weekend, size: scaleFactor * 22, color: coloreScritte,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     Text(indiceCasaCorrente['numero_stanze'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(FontAwesomeIcons.chair, size: scaleFactor * 22, color: coloreScritte,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['arredato'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
                   ],
                 ),
               ],
@@ -170,7 +196,6 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
           );
         }).toList(),
         options: CarouselOptions(
-          viewportFraction: 0.75,
           height: 750,
           enlargeCenterPage: true,
           scrollDirection: Axis.vertical,
