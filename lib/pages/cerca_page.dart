@@ -175,80 +175,77 @@ class _CercaPageState extends State<CercaPage> {
     );
   }
 
-  GestureDetector myCarouselSlider(BuildContext context) {
+  CarouselSlider myCarouselSlider(BuildContext context) {
     Color coloreScritte = Theme.of(context).colorScheme.outline;
-    return GestureDetector(
-      onTap: (){},
-      child: CarouselSlider(
-        items: listaCase.asMap().entries.map((entry) {
-          int indice = entry.key;
-          Map<String, dynamic> indiceCasaCorrente = entry.value;
-          double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.7;
-          return Container(
-            width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-              color: Colors.white, 
-              borderRadius: BorderRadius.circular(10),
-              shape: BoxShape.rectangle,
-              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2),
-                spreadRadius: 5,
-                blurRadius: 15,
-                offset: Offset(0, 10),)],
-            ),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
-                  child: SizedBox(
-                    child: Image.asset(indiceCasaCorrente['image1']))),
-                Row(
-                  children: [
-                    Expanded(child: Image.asset(indiceCasaCorrente['image2'])),
-                    Expanded(child: Image.asset(indiceCasaCorrente['image3'])),
-                  ],
-                ),
-                SizedBox(
-                  height: scaleFactor * MediaQuery.of(context).size.height/50,
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.euro, size: scaleFactor * 22, color: coloreScritte,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte),),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.location_on, size: scaleFactor * 22, color: coloreScritte,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(FontAwesomeIcons.arrowsUpDownLeftRight, size: scaleFactor * 22, color: coloreScritte,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['superficie'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  ],
-                ),
-              ],
-            ),
-          );
-        }).toList(),
-        options: CarouselOptions(
-          height: 400,
-          enlargeCenterPage: true,
-          onPageChanged: (indiceCasaCorrente, reason) {
-            setState(() {
-              _currentSliderIndex = indiceCasaCorrente;
-            });
-          }
-        )),
-    );
+    return CarouselSlider(
+      items: listaCase.asMap().entries.map((entry) {
+        int indice = entry.key;
+        Map<String, dynamic> indiceCasaCorrente = entry.value;
+        double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.7;
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          margin: EdgeInsets.symmetric(horizontal: 5),
+          decoration: BoxDecoration(
+            color: Colors.white, 
+            borderRadius: BorderRadius.circular(10),
+            shape: BoxShape.rectangle,
+            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2),
+              spreadRadius: 5,
+              blurRadius: 15,
+              offset: Offset(0, 10),)],
+          ),
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
+                child: SizedBox(
+                  child: Image.asset(indiceCasaCorrente['image1']))),
+              Row(
+                children: [
+                  Expanded(child: Image.asset(indiceCasaCorrente['image2'])),
+                  Expanded(child: Image.asset(indiceCasaCorrente['image3'])),
+                ],
+              ),
+              SizedBox(
+                height: scaleFactor * MediaQuery.of(context).size.height/50,
+              ),
+              Row(
+                children: [
+                  SizedBox(width: MediaQuery.of(context).size.width/45,),
+                  Icon(Icons.euro, size: scaleFactor * 22, color: coloreScritte,),
+                  SizedBox(width: MediaQuery.of(context).size.width/45,),
+                  Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte),),
+                ],
+              ),
+              Row(
+                children: [
+                  SizedBox(width: MediaQuery.of(context).size.width/45,),
+                  Icon(Icons.location_on, size: scaleFactor * 22, color: coloreScritte,),
+                  SizedBox(width: MediaQuery.of(context).size.width/45,),
+                  Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
+                ],
+              ),
+              Row(
+                children: [
+                  SizedBox(width: MediaQuery.of(context).size.width/45,),
+                  Icon(FontAwesomeIcons.arrowsUpDownLeftRight, size: scaleFactor * 22, color: coloreScritte,),
+                  SizedBox(width: MediaQuery.of(context).size.width/45,),
+                  Text(indiceCasaCorrente['superficie'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
+                ],
+              ),
+            ],
+          ),
+        );
+      }).toList(),
+      options: CarouselOptions(
+        height: 400,
+        enlargeCenterPage: true,
+        onPageChanged: (indiceCasaCorrente, reason) {
+          setState(() {
+            _currentSliderIndex = indiceCasaCorrente;
+          });
+        }
+      ));
   }
 
   Visibility myParametriRicercaAvanzata(Color coloriPulsanti, BuildContext context) {
