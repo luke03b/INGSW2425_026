@@ -24,6 +24,7 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
       'numero_stanze': '6',
       'arredato' : "si",
       'piano' : 'Terra',
+      'descrizione' : 'Nel cuore della rinomata collina di Posillipo, in una posizione dominante che regala una vista senza pari sul golfo di Napoli, Christie\'s International Real Estate propone in vendita un appartamento di 174 mq, un\'esclusiva residenza che fonde eleganza, comfort e luminosità. Questo immobile, caratterizzato da ampi spazi interni, è arricchito da una spettacolare superficie esterna di 286 mq, che include ampi balconi, un terrazzo panoramico di copertura e una veranda, tutti luoghi ideali per godere di momenti di convivialità e relax, circondati da un panorama unico. Posto all\'ultimo piano di un elegante edificio, questo appartamento si distingue per la luminosità che inonda ogni ambiente grazie all\'esposizione ideale e alle ampie vetrate che permettono di godere della vista sul mare in ogni angolo della casa. Il soggiorno doppio, spazioso e raffinato, offre un affaccio diretto sul mare, creando un ambiente perfetto per rilassarsi o intrattenere ospiti. La zona notte comprende tre camere da letto, tutte silenziose e confortevoli, mentre i due bagni e la cucina abitabile con accesso indipendente completano l\'immobile con praticità e funzionalità. Gli spazi esterni, ampi e ben progettati, offrono la possibilità di vivere all\'aperto durante tutto l\'anno, con aree ideali per cene all\'aperto, eventi sociali o semplicemente per godere di momenti di tranquillità, immersi nella bellezza naturale di Posillipo. A completare questa straordinaria proprieta\', una cantina e due posti auto coperti, per garantire il massimo della comodità e della sicurezza. Un\'opportunità imperdibile per chi cerca una residenza di lusso in uno dei quartieri più esclusivi di Napoli, dove la bellezza senza tempo del mare si fonde con il comfort moderno.'
     },
     {
       'image1': 'lib/assets/casa2_1_placeholder.png',
@@ -35,6 +36,7 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
       'numero_stanze': '7',
       'arredato' : "no",
       'piano' : 'Ultimo',
+      'descrizione' : ''
     },
     {
       'image1': 'lib/assets/casa3_1_placeholder.png',
@@ -46,6 +48,7 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
       'numero_stanze': '5',
       'arredato' : "si",
       'piano' : '3',
+      'descrizione' : ''
     },
 
   ];
@@ -155,17 +158,9 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.weekend, size: scaleFactor * 22, color: coloreScritte,),
+                    Icon(FontAwesomeIcons.couch, size: scaleFactor * 20, color: coloreScritte,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     Text(casaCorrente['numero_stanze'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(FontAwesomeIcons.chair, size: scaleFactor * 22, color: coloreScritte,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(casaCorrente['arredato'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
                   ],
                 ),
               ],
