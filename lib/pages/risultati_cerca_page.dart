@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/pages/annuncio_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:readmore/readmore.dart';
 
 class RisultatiCercaPage extends StatefulWidget {
   const RisultatiCercaPage({super.key});
@@ -11,6 +12,10 @@ class RisultatiCercaPage extends StatefulWidget {
 }
 
 class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
+  static const int GRANDEZZA_SCRITTE = 23;
+  static const int GRANDEZZA_ICONE = 25;
+  static const int GRANDEZZA_SCRITTE_PICCOLE = 18;
+  static const int GRANDEZZA_ICONE_PICCOLE = 20;
   int _currentSliderIndex = 0;
 
   final List<Map<String, dynamic>> listaCase = [
@@ -91,7 +96,7 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
       items: listaCase.asMap().entries.map((entry) {
         int indice = entry.key;
         Map<String, dynamic> casaCorrente = entry.value;
-        double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.7;
+        double scaleFactor = indice == _currentSliderIndex ? 1.0 : 1.0;
         return GestureDetector(
           onTap: (){
             Navigator.push(context, MaterialPageRoute(builder: (context) => AnnuncioPage(casaSelezionata: casaCorrente)));
@@ -126,41 +131,51 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.euro, size: scaleFactor * 32, color: coloreScritte,),
+                    Icon(Icons.euro, size: scaleFactor * GRANDEZZA_ICONE, color: coloreScritte,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(casaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 30, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text(casaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
                   ],
                 ),
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.location_on, size: scaleFactor * 25, color: coloreScritte,),
+                    Icon(Icons.location_on, size: scaleFactor * GRANDEZZA_ICONE, color: coloreScritte,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(casaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 23, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text(casaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
                   ],
                 ),
+
+                Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
+
                 Row(
+                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    Row(
+                      children: [
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Icon(FontAwesomeIcons.arrowsUpDownLeftRight, size: scaleFactor * GRANDEZZA_ICONE_PICCOLE, color: coloreScritte,),
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Text(casaCorrente['superficie'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
+                      ],
+                    ),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(FontAwesomeIcons.arrowsUpDownLeftRight, size: scaleFactor * 22, color: coloreScritte,),
+                    Row(
+                      children: [
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Icon(FontAwesomeIcons.stairs, size: scaleFactor * GRANDEZZA_ICONE_PICCOLE, color: coloreScritte,),
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Text(casaCorrente['piano'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)), 
+                      ],
+                    ),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(casaCorrente['superficie'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(FontAwesomeIcons.stairs, size: scaleFactor * 22, color: coloreScritte,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(casaCorrente['piano'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)), 
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(FontAwesomeIcons.couch, size: scaleFactor * 20, color: coloreScritte,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(casaCorrente['numero_stanze'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Row(
+                      children: [
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Icon(FontAwesomeIcons.couch, size: scaleFactor * GRANDEZZA_ICONE_PICCOLE, color: coloreScritte,),
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Text(casaCorrente['numero_stanze'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
+                      ],
+                    ),
                   ],
                 ),
               ],
@@ -170,7 +185,7 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
       }).toList(),
       options: CarouselOptions(
         enableInfiniteScroll: false,
-        viewportFraction: 0.75,
+        viewportFraction: 0.65,
         height: 750,
         enlargeCenterPage: true,
         scrollDirection: Axis.vertical,

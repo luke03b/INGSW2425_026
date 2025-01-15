@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:readmore/readmore.dart';
@@ -43,7 +44,8 @@ class _AnnuncioPageState extends State<AnnuncioPage> {
           child: Column(
             children: [
               Card(
-                color: const Color.fromARGB(255, 228, 246, 255),
+                color: Colors.white,
+                // color: const Color.fromARGB(255, 228, 246, 255),
                 child: Column(
                   children: [
                     myCarouselSlider(context, listaImmagini),
@@ -91,7 +93,9 @@ class _AnnuncioPageState extends State<AnnuncioPage> {
                       ],
                     ),
                     Card(
-                      color: const Color.fromARGB(255, 228, 246, 255),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                      // color: const Color.fromARGB(255, 228, 246, 255),
+                      color: Colors.white,
                       child: 
                         ReadMoreText(
                           widget.casaSelezionata['descrizione'],
@@ -272,6 +276,10 @@ class _AnnuncioPageState extends State<AnnuncioPage> {
                       ],
                     ),
                   Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
+
+                  SizedBox(height: 200,),
+                  Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
+                  SizedBox(height: 65,)
         
                     
                   ],
@@ -281,16 +289,44 @@ class _AnnuncioPageState extends State<AnnuncioPage> {
           )
         ),
         Positioned(
-          bottom: 16,
-          left: 16,
-          right: MediaQuery.sizeOf(context).width/1.95,
-          child: ElevatedButton(onPressed: (){}, child: Text("Offerta"))),
-        Positioned(
-          bottom: 16,
-          left: MediaQuery.sizeOf(context).width/1.95,
-          right: 16,
-          child: ElevatedButton(onPressed: (){}, child: Text(" Visita")))
-        ],
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Stack(
+            children: [
+              Card(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                color: Colors.white,
+                child: Expanded(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10,),
+                      Row(children: [
+                      SizedBox(width: 5,),
+                      Expanded(child: MyElevatedButtonRectWidget(text: "Offerta", onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
+                      SizedBox(width: 5,),
+                      Expanded(child: MyElevatedButtonRectWidget(text: "Visita", onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
+                      SizedBox(width: 5,),
+                      ],),
+                      SizedBox(height: 10,)
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          )
+        )]
+        // Positioned(
+        //   bottom: 16,
+        //   left: 16,
+        //   right: MediaQuery.sizeOf(context).width/1.95,
+        //   child: MyElevatedButtonRectWidget(text: "Offerta", onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
+        // Positioned(
+        //   bottom: 16,
+        //   left: MediaQuery.sizeOf(context).width/1.95,
+        //   right: 16,
+        //   child: MyElevatedButtonWidget(text: "Visita", onPressed: (){}, color: Theme.of(context).colorScheme.primary))
+        // ],
       )
     );
   }
