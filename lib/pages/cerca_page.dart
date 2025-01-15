@@ -265,76 +265,152 @@ class _CercaPageState extends State<CercaPage> {
                 
                 Divider(height: 50, thickness: 2, indent: 10, endIndent: 10, color: Theme.of(context).colorScheme.primary,),
 
-                //Selettore Garage e Giardino
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Icon(FontAwesomeIcons.car, size: 22, color: coloriPulsanti,),
-                    Text("Garage", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
-                    Switch(
-                      value: _isGarageSelected, 
-                      onChanged: (value){
-                        setState(() {
-                          _isGarageSelected = value;
-                        });
-                      }
+
+                    SizedBox(width: 10.0),
+
+                    //Colonna comunista
+                    Column(
+                      children: [
+
+                        //Riga contenente tre colonne
+                        Row(
+                          children: [
+
+                            //Colonna contenente icone
+                            Column(
+                              children: [
+                                Icon(FontAwesomeIcons.car, size: 22, color: coloriPulsanti,),
+                                SizedBox(height: 22,),
+                                Icon(FontAwesomeIcons.elevator, size: 22, color: coloriPulsanti,),
+                                SizedBox(height: 22,),
+                                Icon(Icons.checkroom, size: 22, color: coloriPulsanti,),
+                              ],
+                            ),
+
+                            SizedBox(width: 10,),
+                            
+                            //Colonna contenente nomi
+                            Column(
+                              children: [
+                                Text("Garage", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
+                                SizedBox(height: 22,),
+                                Text("Ascensore", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
+                                SizedBox(height: 22,),
+                                Text("Arredato", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
+                              ],
+                            ),
+                            
+                            SizedBox(width: 10,),
+
+                            //colonna contenente switch
+                            Column(
+                              children: [
+                                Switch(
+                                  value: _isGarageSelected, 
+                                  onChanged: (value){
+                                    setState(() {
+                                      _isGarageSelected = value;
+                                    });
+                                  }
+                                ),
+                                Switch(
+                                  value: _isAscensoreSelected, 
+                                  onChanged: (value){
+                                    setState(() {
+                                      _isAscensoreSelected = value;
+                                    });
+                                  }
+                                ),
+                                Switch(
+                                  value: _isArredatoSelected, 
+                                  onChanged: (value){
+                                    setState(() {
+                                      _isArredatoSelected = value;
+                                    });
+                                  }
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
+                      ],
                     ),
-                    Icon(Icons.park, size: 22, color: coloriPulsanti,),
-                    Text("Giardino", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
-                    Switch(
-                      value: _isGiardinoSelected, 
-                      onChanged: (value){
-                        setState(() {
-                          _isGiardinoSelected = value;
-                        });
-                      }
-                    )
-                  ],
-                ),
-                
-                //Selettore Ascensore Piscina
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Icon(FontAwesomeIcons.elevator, size: 22, color: coloriPulsanti,),
-                    Text("Ascensore", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
-                    Switch(value: _isAscensoreSelected, onChanged: (value){
-                      setState(() {
-                        _isAscensoreSelected = value;
-                      });
-                    }),
-                    Icon(Icons.pool, size: 22, color: coloriPulsanti,),
-                    Text("Piscina", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
-                    Switch(value: _isPiscinaSelected, onChanged: (value){
-                      setState(() {
-                        _isPiscinaSelected = value;
-                      });
-                    })
+
+                    SizedBox(width: 30.0),
+
+                    //Colonna fascista
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+
+                       Row(
+                          children: [
+
+                            //Colonna contenente icone
+                            Column(
+                              children: [
+                                Icon(Icons.park, size: 22, color: coloriPulsanti,),
+                                SizedBox(height: 22,),
+                                Icon(Icons.pool, size: 22, color: coloriPulsanti,),
+                                SizedBox(height: 22,),
+                                Icon(Icons.balcony, size: 22, color: coloriPulsanti,),
+                              ],
+                            ),
+
+                            SizedBox(width: 10,),
+                            
+                            //Colonna contenente nomi
+                            Column(
+                              children: [
+                                Text("Giardino", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
+                                SizedBox(height: 22,),
+                                Text("Piscina", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
+                                SizedBox(height: 22,),
+                                Text("Balcone", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
+                              ],
+                            ),
+                            
+                            SizedBox(width: 10,),
+
+                            //colonna contenente switch
+                            Column(
+                              children: [
+                                Switch(
+                                  value: _isGiardinoSelected, 
+                                  onChanged: (value){
+                                    setState(() {
+                                      _isGiardinoSelected = value;
+                                    });
+                                  }
+                                ),
+                                Switch(
+                                  value: _isPiscinaSelected, 
+                                  onChanged: (value){
+                                    setState(() {
+                                      _isPiscinaSelected = value;
+                                    });
+                                  }
+                                ),
+                                Switch(
+                                  value: _isBalconeSelected, 
+                                  onChanged: (value){
+                                    setState(() {
+                                      _isBalconeSelected = value;
+                                    });
+                                  }
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ],
                 ),
 
-                //Selettore Arredato Balcone
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Icon(Icons.checkroom, size: 22, color: coloriPulsanti,),
-                    Text("Arredato", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
-                    Switch(value: _isArredatoSelected, onChanged: (value){
-                      setState(() {
-                        _isArredatoSelected = value;
-                      });
-                    }),
-                    Icon(Icons.balcony, size: 22, color: coloriPulsanti,),
-                    Text("Balcone", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
-                    Switch(value: _isBalconeSelected, onChanged: (value){
-                      setState(() {
-                        _isBalconeSelected = value;
-                      });
-                    })
-                  ],
-                ),
-
-                //Selettore Classe Energetica
+                //Selettore Piano
                 SizedBox(
                   height: 50,
                   child: Row(

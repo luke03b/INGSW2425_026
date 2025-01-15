@@ -118,7 +118,7 @@ class _AnnuncioPageState extends State<AnnuncioPage> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(width: 10.0),
+                          SizedBox(width: 10.0),
                           Row(
                             children: [
                             Icon(FontAwesomeIcons.fileContract, size: 22, color: coloriPulsanti,),
