@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-househunters-dev-23f5c-authRole",
+      "UnauthRoleArn": "arn:aws:iam::396913696539:role/amplify-househunters-dev-23f5c-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::396913696539:role/amplify-househunters-dev-23f5c-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-househunters-dev-23f5c-deployment",
+      "UnauthRoleName": "amplify-househunters-dev-23f5c-unauthRole",
+      "StackName": "amplify-househunters-dev-23f5c",
+      "StackId": "arn:aws:cloudformation:eu-central-1:396913696539:stack/amplify-househunters-dev-23f5c/827e4830-d4e8-11ef-9dd5-0681d2dba19b",
+      "AmplifyAppId": "d1m36ix7dyrmw3"
+    },
+    "categories": {
+      "auth": {
+        "househuntersbfc366ab": {}
+      }
+    }
+  }
+}

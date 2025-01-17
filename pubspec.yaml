@@ -43,6 +43,8 @@ dependencies:
   carousel_slider: ^5.0.0
   smooth_page_indicator: ^1.2.0+3
   readmore: ^3.0.0
+  amplify_flutter: ^2.6.0
+  amplify_auth_cognito: ^2.6.0
 
 dev_dependencies:
   flutter_test:
