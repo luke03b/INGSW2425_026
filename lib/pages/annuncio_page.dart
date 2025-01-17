@@ -289,7 +289,7 @@ class _AnnuncioPageState extends State<AnnuncioPage> {
           )
         ),
         Positioned(
-          bottom: 0,
+          bottom: -5,
           left: 0,
           right: 0,
           child: Stack(

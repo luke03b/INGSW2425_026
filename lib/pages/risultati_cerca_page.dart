@@ -78,20 +78,6 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
   CarouselSlider myCarouselSlider(BuildContext context) {
 
     Color coloreScritte = Theme.of(context).colorScheme.outline;
-
-    Color selettoreColoreStatoOfferta(String statoOfferta) {
-      if(statoOfferta == "Accettata") {
-        return Colors.green;
-      } else if(statoOfferta == "Rifiutata") {
-        return Theme.of(context).colorScheme.error;
-      } else if(statoOfferta == "In Attesa") {
-        return Colors.grey;
-      } else if(statoOfferta == "Controproposta") {
-        return Theme.of(context).colorScheme.tertiary;
-      }
-      return Theme.of(context).colorScheme.outline;
-    }
-
     return CarouselSlider(
       items: listaCase.asMap().entries.map((entry) {
         int indice = entry.key;

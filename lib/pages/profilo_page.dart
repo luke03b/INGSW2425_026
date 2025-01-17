@@ -1,3 +1,4 @@
+import 'package:domus_app/pages/login_page.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -74,7 +75,7 @@ class _ProfiloPageState extends State<ProfiloPage> {
     
 
           SizedBox(height: MediaQuery.sizeOf(context).height/2),
-          MyElevatedButtonWidget(text: "Logout", onPressed: (){}, color: Theme.of(context).colorScheme.error),
+          MyElevatedButtonWidget(text: "Logout", onPressed: (){Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);}, color: Theme.of(context).colorScheme.error),
           SizedBox(height: MediaQuery.sizeOf(context).height/29),
           Align(
             alignment: Alignment.bottomCenter,
