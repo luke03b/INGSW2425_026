@@ -60,7 +60,29 @@ class _LoginPageState extends State<LoginPage> {
               const Spacer(flex: 8),
 
               //LoginButton
-              MyElevatedButtonWidget(text: "Login", onPressed: (){Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (r) => false);}, color: Theme.of(context).colorScheme.tertiary),
+              MyElevatedButtonWidget(text: "Login",
+              onPressed: (){
+                Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (r) => false);
+                showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: Text("Login effettuato", style: TextStyle(fontSize: 25, color: Theme.of(context).colorScheme.outline),),
+                    content: Text("Login eseguito con successo! Ora puoi usare i servizi di HouseHunters! Enjoy :)", style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.outline)),
+                    actions: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).colorScheme.primary
+                        ),
+                        onPressed: (){
+                          Navigator.pop(context);
+                        }, 
+                        child: Text("Ok", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary,),)
+                      ),
+                    ],
+                  )
+                );
+                }, color: Theme.of(context).colorScheme.tertiary),
 
               const Spacer(flex: 8),
 
