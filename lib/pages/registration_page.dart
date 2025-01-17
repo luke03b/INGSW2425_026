@@ -1,3 +1,4 @@
+import 'package:domus_app/services/aws_cognito.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -17,6 +18,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   TextEditingController nomeController = TextEditingController();
   TextEditingController cognomeController = TextEditingController();
 
+  register(String nome, String cognome, String email, String password) => AWSServices().register(nome, cognome, email, password);
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +65,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
               const Spacer(flex: 5),
 
               //RegistratiButton
-              MyElevatedButtonWidget(text: "Registrati", onPressed: (){}, color: Theme.of(context).colorScheme.tertiary,),
+              MyElevatedButtonWidget(text: "Registrati", onPressed: (){
+                register(nomeController.text, cognomeController.text, mailController.text, passwordController.text);
+              }, color: Theme.of(context).colorScheme.tertiary,),
               const Spacer(flex: 3),
 
               Row(
