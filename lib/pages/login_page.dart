@@ -1,5 +1,6 @@
 import 'package:domus_app/services/aws_cognito.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
+import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../utils/my_text_widgets.dart';
@@ -13,6 +14,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
+  String? userGroup;
   TextEditingController mailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -63,29 +65,29 @@ class _LoginPageState extends State<LoginPage> {
 
               //LoginButton
               MyElevatedButtonWidget(text: "Login",
-              onPressed: (){login(mailController.text, passwordController.text);},
-              // onPressed: (){
-              //   Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (r) => false);
-              //   showDialog(
-              //     barrierDismissible: false,
-              //     context: context,
-              //     builder: (BuildContext context) => AlertDialog(
-              //       title: Text("Login effettuato", style: TextStyle(fontSize: 25, color: Theme.of(context).colorScheme.outline),),
-              //       content: Text("Login eseguito con successo! Ora puoi usare i servizi di HouseHunters! Enjoy :)", style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.outline)),
-              //       actions: [
-              //         ElevatedButton(
-              //           style: ElevatedButton.styleFrom(
-              //             backgroundColor: Theme.of(context).colorScheme.primary
-              //           ),
-              //           onPressed: (){
-              //             Navigator.pop(context);
-              //           }, 
-              //           child: Text("Ok", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary,),)
-              //         ),
-              //       ],
-              //     )
-              //   );
-              //   }, 
+              onPressed: ()
+                async {
+
+                  String? group = await login(mailController.text, passwordController.text);
+                  if (group != null){
+                    setState(() {
+                      userGroup = group;
+                    });
+                  }
+                  
+                  if (userGroup == 'admin'){
+                    debugPrint('Admin action');
+                  } else if (userGroup == 'cliente') {
+                    debugPrint('Cliente action');
+                    Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (r) => false);
+                  } else {
+                    debugPrint('Errore Action');
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (BuildContext context) => MyInfoDialog(title: 'Errore', bodyText: 'Campi non validi. Riprovare', buttonText: 'Ok', onPressed: () {Navigator.pop(context);}));
+                  }
+                },
                 color: Theme.of(context).colorScheme.tertiary),
 
               const Spacer(flex: 8),
