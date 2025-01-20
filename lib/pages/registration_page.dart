@@ -1,4 +1,5 @@
 import 'package:domus_app/services/aws_cognito.dart';
+import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -65,8 +66,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
               const Spacer(flex: 5),
 
               //RegistratiButton
-              MyElevatedButtonWidget(text: "Registrati", onPressed: (){
-                register(nomeController.text, cognomeController.text, mailController.text, passwordController.text);
+              MyElevatedButtonWidget(text: "Registrati", onPressed: () async{
+                await registraETornaAlLogin(context);
               }, color: Theme.of(context).colorScheme.tertiary,),
               const Spacer(flex: 3),
 
@@ -93,5 +94,22 @@ class _RegistrationPageState extends State<RegistrationPage> {
         ),
       ),
     );
+  }
+
+  Future<void> registraETornaAlLogin(BuildContext context) async {
+    Future<bool> isAllOk = register(nomeController.text, cognomeController.text, mailController.text, passwordController.text);
+    if (await isAllOk) {
+      showDialog(
+        barrierDismissible: false,
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(title: 'Registrazione Completata', bodyText: 'Verrai reindirizzato al Login', buttonText: 'Ok', onPressed: (){Navigator.pop(context); Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);})
+      );
+    } else {
+      showDialog(
+        barrierDismissible: false,
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(title: 'Errore', bodyText: 'Qualcosa è andato storto. Riprova :/', buttonText: 'Ok', onPressed: (){Navigator.pop(context);})
+      );
+    }
   }
 }

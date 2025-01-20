@@ -55,8 +55,8 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: (){Navigator.pushNamedAndRemoveUntil(context, '/RegistrationPage', (r) => false);},
                     colore: coloriScritte,),
                   MyTextButtonWidget(
-                    text: "Password dimenticata", 
-                    onPressed: (){}, 
+                    text: "Password dimenticata?", 
+                    onPressed: (){Navigator.pushNamed(context, '/PasswordDimenticataPage');}, 
                     colore: coloriScritte)
                 ],
               ),
@@ -66,28 +66,7 @@ class _LoginPageState extends State<LoginPage> {
               //LoginButton
               MyElevatedButtonWidget(text: "Login",
               onPressed: ()
-                async {
-
-                  String? group = await login(mailController.text, passwordController.text);
-                  if (group != null){
-                    setState(() {
-                      userGroup = group;
-                    });
-                  }
-                  
-                  if (userGroup == 'admin'){
-                    debugPrint('Admin action');
-                  } else if (userGroup == 'cliente') {
-                    debugPrint('Cliente action');
-                    Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (r) => false);
-                  } else {
-                    debugPrint('Errore Action');
-                    showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) => MyInfoDialog(title: 'Errore', bodyText: 'Campi non validi. Riprovare', buttonText: 'Ok', onPressed: () {Navigator.pop(context);}));
-                  }
-                },
+                async { await loginECambioPagina(context);},
                 color: Theme.of(context).colorScheme.tertiary),
 
               const Spacer(flex: 8),
@@ -117,5 +96,27 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Future<void> loginECambioPagina(BuildContext context) async {
+    String? group = await login(mailController.text, passwordController.text);
+    if (group != null){
+      setState(() {
+        userGroup = group;
+      });
+    }
+    
+    if (userGroup == 'admin'){
+      debugPrint('Admin action');
+    } else if (userGroup == 'cliente') {
+      debugPrint('Cliente action');
+      Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (r) => false);
+    } else {
+      debugPrint('Errore Action');
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) => MyInfoDialog(title: 'Errore', bodyText: 'Campi non validi. Riprovare', buttonText: 'Ok', onPressed: () {Navigator.pop(context);}));
+    }
   }
 }

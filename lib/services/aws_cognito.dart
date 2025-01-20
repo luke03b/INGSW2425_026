@@ -1,6 +1,7 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AWSServices {
   final userPool = CognitoUserPool('eu-central-1_7QWCMoxQB', '56jim6pepm0s7g852hkn6soij2');
@@ -18,7 +19,13 @@ class AWSServices {
 
       //recupera il token dell'utente
       final idToken = session?.idToken.jwtToken;
-      Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
+
+      //salva il token in memoria
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('userToken', idToken!);
+
+      //decodifica il token
+      Map<String, dynamic> payload = JwtDecoder.decode(idToken);
 
       //recupera il gruppo dell'utente
       List<dynamic>? groups = payload['cognito:groups'];
@@ -58,7 +65,7 @@ class AWSServices {
     }
   }
 
-  Future register(name, surname, email, password) async{
+  Future<bool> register(name, surname, email, password) async{
     debugPrint('Registering User...');
     final userAttributes = [
       AttributeArg(name: 'name', value: name),
@@ -68,8 +75,101 @@ class AWSServices {
     var data;
     try {
       data = await userPool.signUp(email, password, userAttributes: userAttributes);
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future signOut() async{
+    //recupera il token dalla memoria
+    final prefs = await SharedPreferences.getInstance();
+    final idToken = prefs.getString('userToken');
+
+    //decodifica il token
+    Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
+
+    //recupera la mail
+    dynamic email = payload['email'];
+
+    //effettua il logout dell'utente (rende i token non validi)
+    final cognitoUser = CognitoUser(email, userPool);
+    await cognitoUser.signOut();
+
+    //pulisce il token dalla memoria del sistema
+    await prefs.remove('userToken');
+  }
+
+  Future<bool> startPasswordDimenticataProcedure(email) async{
+    final cognitoUser = CognitoUser(email, userPool);
+
+    //invia codice recupero per email
+    var data;
+    bool isAllOk = false;
+    try {
+      data = await cognitoUser.forgotPassword();
+      print('Code sent to $data');
+      isAllOk = true;
+      // return true;
+    } catch (e) {
+      print(e);
+      // return false;
+    }
+    return isAllOk;
+  }
+
+  Future<bool> endPasswordDimenticataProcedure(email, codice, newPassword) async {
+    final cognitoUser = CognitoUser(email, userPool);
+
+    //imposta nuova password
+    bool passwordConfirmed = false;
+    try {
+      passwordConfirmed = await cognitoUser.confirmPassword(codice, newPassword);
+      print(passwordConfirmed);
     } catch (e) {
       print(e);
     }
+    
+    return passwordConfirmed;
+  }
+
+  Future<String> recuperaEmailUtenteLoggato() async {
+    //recupera il token dalla memoria
+    final prefs = await SharedPreferences.getInstance();
+    final idToken = prefs.getString('userToken');
+
+    //decodifica il token
+    Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
+
+    //recupera la mail
+    String email = payload['email'];
+    return email;
+  }
+
+  Future<String> recuperaNomeUtenteLoggato() async {
+    //recupera il token dalla memoria
+    final prefs = await SharedPreferences.getInstance();
+    final idToken = prefs.getString('userToken');
+
+    //decodifica il token
+    Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
+
+    //recupera la mail
+    String nome = payload['name'];
+    return nome;
+  }
+
+  Future<String> recuperaCognomeUtenteLoggato() async {
+    //recupera il token dalla memoria
+    final prefs = await SharedPreferences.getInstance();
+    final idToken = prefs.getString('userToken');
+
+    //decodifica il token
+    Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
+
+    //recupera la mail
+    String cognome = payload['family_name'];
+    return cognome;
   }
 }

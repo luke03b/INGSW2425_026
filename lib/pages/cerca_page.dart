@@ -97,7 +97,7 @@ class _CercaPageState extends State<CercaPage> {
 
   ];
 
-  void _navigateBottomBar(){
+  void _toggleRicercaAvanzata(){
     setState(() {
       _ricercaAvanzataVisibile = !_ricercaAvanzataVisibile;
     });
@@ -139,7 +139,7 @@ class _CercaPageState extends State<CercaPage> {
               alignment: Alignment.centerRight,
               child: MyTextButtonWidget(
                 text: "Ricerca Avanzata", 
-                onPressed: _navigateBottomBar,
+                onPressed: _toggleRicercaAvanzata,
                 colore: coloriPulsanti
               )
             ),

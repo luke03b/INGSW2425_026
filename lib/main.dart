@@ -1,5 +1,9 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:domus_app/pages/initial_page.dart';
+import 'package:domus_app/pages/password_dimenticata_page.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'amplifyconfiguration.dart';
 
@@ -77,13 +81,15 @@ class _MyAppState extends State<MyApp> {
 
           )
         ),
-      home: LoginPage(),
+      // home: LoginPage(),
+      home: InitialPage(),
       routes: {
         '/LoginPage': (context) => LoginPage(),
         '/RegistrationPage': (context) => RegistrationPage(),
         '/HomePage' : (context) => ControllorePagine(),
         '/RisultatiCercaPage' : (context) => RisultatiCercaPage(),
         '/ControllorePagine2': (context) => ControllorePagine2(),
+        '/PasswordDimenticataPage' : (context) => PasswordDimenticataPage(),
       },
     );
   }

@@ -1,5 +1,7 @@
 import 'package:domus_app/pages/login_page.dart';
+import 'package:domus_app/services/aws_cognito.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
+import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -11,6 +13,17 @@ class ProfiloPage extends StatefulWidget {
 }
 
 class _ProfiloPageState extends State<ProfiloPage> {
+  logout() => AWSServices().signOut();
+  String? nomeUtenteLoggato;
+  String? cognomeUtenteLoggato;
+  String? mailUtenteLoggato;
+
+   @override
+  void initState() {
+    super.initState();
+    recuperaCredenzialiUtenteLoggato();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,13 +52,13 @@ class _ProfiloPageState extends State<ProfiloPage> {
                           Row(
                             children: [
                               Text("Nome: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.outline),),
-                              Text("Luca", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.outline),),
+                              Text(nomeUtenteLoggato ?? "Non disponibile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.outline),),
                             ],
                           ),
                           Row(
                             children: [
                               Text("Cognome: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.outline),),
-                              Text("Alessio", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.outline),),
+                              Text(cognomeUtenteLoggato ?? "Non disponibile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.outline),),
                             ],
                           ),
                           
@@ -61,7 +74,7 @@ class _ProfiloPageState extends State<ProfiloPage> {
                         fit: BoxFit.scaleDown,
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text("luca.e.alessio@gmail.com", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.outline),))),
+                          child: Text(mailUtenteLoggato ?? "Non disponibile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.outline),))),
                     ),
                       ],
                     ),
@@ -81,32 +94,15 @@ class _ProfiloPageState extends State<ProfiloPage> {
               showDialog(
                   barrierDismissible: false,
                   context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                    title: Text("Logout", style: TextStyle(fontSize: 25, color: Theme.of(context).colorScheme.outline),),
-                    content: Text("Sei sicuro di voler uscire?", style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.outline)),
-                    actions: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          fixedSize: Size(MediaQuery.sizeOf(context).width/5, MediaQuery.sizeOf(context).height/27),
-                        ),
-                        onPressed: (){
-                          Navigator.pop(context);
-                        }, 
-                        child: Text("No", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary,),)
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).colorScheme.error,
-                          fixedSize: Size(MediaQuery.sizeOf(context).width/5, MediaQuery.sizeOf(context).height/27),
-                        ),
-                        onPressed: (){
-                          Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);
-                        }, 
-                        child: Text("Si", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary,),)
-                      ),
-                    ],
-                  )
+                  builder: (BuildContext context) => 
+                    MyOptionsDialog(
+                      title: 'Logout', 
+                      bodyText: 'Sei sicuro di voler uscire?', 
+                      leftButtonText: 'No', 
+                      rightButtonText: 'Si', 
+                      onPressLeftButton: (){Navigator.pop(context);}, 
+                      onPressRightButton: () async {logout(); Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);}
+                    )
                 );
             }, color: Theme.of(context).colorScheme.error),
           SizedBox(height: MediaQuery.sizeOf(context).height/29),
@@ -124,4 +120,17 @@ class _ProfiloPageState extends State<ProfiloPage> {
       ));
   }
 
+
+  Future<void> recuperaCredenzialiUtenteLoggato() async{
+    AWSServices AWSInstance = AWSServices();
+    String? nomeUtenteLoggatoTemp = await AWSInstance.recuperaNomeUtenteLoggato();
+    String? cognomeUtenteLoggatoTemp = await AWSInstance.recuperaCognomeUtenteLoggato();
+    String? mailUtenteLoggatoTemp = await AWSInstance.recuperaEmailUtenteLoggato();
+
+    setState(() {
+      nomeUtenteLoggato = nomeUtenteLoggatoTemp;
+      cognomeUtenteLoggato = cognomeUtenteLoggatoTemp;
+      mailUtenteLoggato = mailUtenteLoggatoTemp;
+    });
+  }
 }
