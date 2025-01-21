@@ -1,4 +1,5 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -172,4 +173,15 @@ class AWSServices {
     String cognome = payload['family_name'];
     return cognome;
   }
+
+  Future<void> socialSignIn() async {
+  try {
+    final result = await Amplify.Auth.signInWithWebUI(
+      provider: AuthProvider.google,
+    );
+    safePrint('Sign in result: $result');
+  } on AuthException catch (e) {
+    safePrint('Error signing in: ${e.message}');
+  }
+}
 }

@@ -17,7 +17,9 @@
           "FAMILY_NAME",
           "NAME"
         ],
-        "socialProviders": [],
+        "socialProviders": [
+          "GOOGLE"
+        ],
         "usernameAttributes": [
           "EMAIL"
         ],
