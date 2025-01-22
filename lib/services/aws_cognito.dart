@@ -1,4 +1,5 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -135,7 +136,7 @@ class AWSServices {
     return passwordConfirmed;
   }
 
-  Future<String> recuperaEmailUtenteLoggato() async {
+  Future<String?> recuperaEmailUtenteLoggato() async {
     //recupera il token dalla memoria
     final prefs = await SharedPreferences.getInstance();
     final idToken = prefs.getString('userToken');
@@ -144,24 +145,25 @@ class AWSServices {
     Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
 
     //recupera la mail
-    String email = payload['email'];
+    String? email = payload['email'];
     return email;
   }
 
-  Future<String> recuperaNomeUtenteLoggato() async {
+  Future<String?> recuperaNomeUtenteLoggato() async {
     //recupera il token dalla memoria
     final prefs = await SharedPreferences.getInstance();
     final idToken = prefs.getString('userToken');
 
     //decodifica il token
     Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
+    print("Token ID:           $idToken");
 
     //recupera la mail
-    String nome = payload['name'];
+    String? nome = payload['name'];
     return nome;
   }
 
-  Future<String> recuperaCognomeUtenteLoggato() async {
+  Future<String?> recuperaCognomeUtenteLoggato() async {
     //recupera il token dalla memoria
     final prefs = await SharedPreferences.getInstance();
     final idToken = prefs.getString('userToken');
@@ -170,18 +172,39 @@ class AWSServices {
     Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
 
     //recupera la mail
-    String cognome = payload['family_name'];
+    String? cognome = payload['family_name'];
     return cognome;
   }
 
-  Future<void> socialSignIn() async {
-  try {
-    final result = await Amplify.Auth.signInWithWebUI(
-      provider: AuthProvider.google,
-    );
-    safePrint('Sign in result: $result');
-  } on AuthException catch (e) {
-    safePrint('Error signing in: ${e.message}');
+  
+  Future<bool> signInWithGoogle() async {
+    bool isAllOk = false;
+    try {
+      final result = await Amplify.Auth.signInWithWebUI(provider: AuthProvider.google);
+      safePrint('Result: $result');
+      if (result.isSignedIn){
+        // final CognitoAuthSession? result = await Amplify.Auth.getAuthSession();
+        // final String? token = result?.userPoolTokensResult.value.accessToken.raw;
+         try {
+          final cognitoPlugin = 
+              Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
+          final result = await cognitoPlugin.fetchAuthSession();
+          final accessToken = 
+              result.userPoolTokensResult.value.accessToken.toJson();
+          safePrint("Current user's access token: $accessToken");
+
+          //salva il token in memoria
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('userToken', accessToken);
+        } on AuthException catch (e) {
+          safePrint('Error retrieving auth session: ${e.message}');
+        }
+          
+        isAllOk = true;
+      }
+    } on AuthException catch (e) {
+      safePrint('Error signing in: ${e.message}');
+    }
+    return isAllOk;
   }
-}
 }

@@ -84,7 +84,18 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(onPressed: () async { await AWSServices().socialSignIn();}, icon: SvgPicture.asset('lib/assets/google_logo.svg', width: 40, ),),
+                  IconButton(onPressed: () async {
+                      bool isAllOk = await AWSServices().signInWithGoogle();
+                      if (await isAllOk) {
+                        Navigator.pop(context); Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (r) => false);
+                      } else {
+                        showDialog(
+                          barrierDismissible: false,
+                          context: context, 
+                          builder: (BuildContext context) => MyInfoDialog(title: 'Errore', bodyText: 'Qualcosa è andato storto. Riprova :/', buttonText: 'Ok', onPressed: (){Navigator.pop(context);})
+                        );
+                      }
+                    },  icon: SvgPicture.asset('lib/assets/google_logo.svg', width: 40, ),),
                   IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/facebook_logo.svg', width: 40,)),
                   IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/apple_logo.svg', width: 40,),)
                 ],
