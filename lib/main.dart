@@ -1,5 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:domus_app/pages/agente_home_page.dart';
+import 'package:domus_app/pages/controllore_pagine_agente.dart';
 import 'package:domus_app/pages/initial_page.dart';
 import 'package:domus_app/pages/password_dimenticata_page.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -91,6 +93,7 @@ class _MyAppState extends State<MyApp> {
         '/RisultatiCercaPage' : (context) => RisultatiCercaPage(),
         '/ControllorePagine2': (context) => ControllorePagine2(),
         '/PasswordDimenticataPage' : (context) => PasswordDimenticataPage(),
+        '/ControllorePagineAgente' : (context) => ControllorePagineAgente(),
       },
     );
   }

@@ -197,7 +197,7 @@ class _OffertePageState extends State<OffertePage> {
         }).toList(),
         options: CarouselOptions(
           enableInfiniteScroll: false,
-          height: 750,
+          height: 760,
           enlargeCenterPage: true,
           scrollDirection: Axis.vertical,
           onPageChanged: (indiceCasaCorrente, reason) {
