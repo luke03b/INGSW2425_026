@@ -201,7 +201,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                     Row(
                       children: [
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
-                        Icon(FontAwesomeIcons.couch, size: scaleFactor * GRANDEZZA_ICONE_PICCOLE, color: coloreScritte,),
+                        Icon(FontAwesomeIcons.doorClosed, size: scaleFactor * GRANDEZZA_ICONE_PICCOLE, color: coloreScritte,),
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         Text(casaCorrente['numero_stanze'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
                       ],
@@ -215,7 +215,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
       }).toList(),
       options: CarouselOptions(
         enableInfiniteScroll: false,
-        viewportFraction: 0.71,
+        viewportFraction: 0.66,
         height: 709,
         enlargeCenterPage: true,
         scrollDirection: Axis.vertical,

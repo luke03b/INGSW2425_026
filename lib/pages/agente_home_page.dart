@@ -28,28 +28,39 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
         iconTheme: IconThemeData(
           color: Theme.of(context).colorScheme.surface,
         ),
-        title: Text("House Hunters", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
+        title: Text("Le mie inserzioni", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 5,
         shadowColor: Colors.black,
       ),
-      body: Column(children: [
-        SizedBox(height: 8),
-        Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: 190),
-              child: SizedBox(
-                width: 200,
-                height: 40,
-                child: MyElevatedButtonRectWidget(text: "Aggiungi annuncio", onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
-            ),
-          ],
-        ),
-        Text("Le mie inserzioni", style: TextStyle(fontSize: 30),),
-        myCarouselSlider(context)
-      ],));
+      body: Stack(
+        children: [
+          myCarouselSlider(context),
+          Positioned(
+          bottom: -5,
+          left: 0,
+          right: 0,
+          child: Stack(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    SizedBox(height: 10,),
+                    Row(children: [
+                    SizedBox(width: 5,),
+                    Expanded(child: MyElevatedButtonRectWidget(text: "Aggiungi inserzione", onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
+                    SizedBox(width: 5,),
+                    ],),
+                    SizedBox(height: 10,)
+                  ],
+                ),
+              ),
+            ],
+          )
+        )]
+      ),
+        );
   }
 
   CarouselSlider myCarouselSlider(BuildContext context) {
@@ -187,8 +198,8 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
       }).toList(),
       options: CarouselOptions(
         enableInfiniteScroll: false,
-        viewportFraction: 0.71,
-        height: 661,
+        viewportFraction: 0.62,
+        height: 753,
         enlargeCenterPage: true,
         scrollDirection: Axis.vertical,
         onPageChanged: (indiceCasaCorrente, reason) {
