@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'amplifyconfiguration.dart';
 
-import 'package:domus_app/pages/annuncio_page.dart';
+import 'package:domus_app/pages/cliente_annuncio_page.dart';
 import 'package:domus_app/pages/controllore_pagine.dart';
 import 'package:domus_app/pages/controllore_pagine2.dart';
 import 'package:domus_app/pages/registration_page.dart';

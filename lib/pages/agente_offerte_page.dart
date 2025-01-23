@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/pages/agente_annuncio_page.dart';
-import 'package:domus_app/pages/annuncio_page_generale.dart';
+import 'package:domus_app/pages/agente_annuncio_page_generale.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -129,7 +129,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
         double scaleFactor = indice == _currentSliderIndex ? 1.0 : 1.0;
         return GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => AnnuncioPageGenerale(casaSelezionata: casaCorrente, isOffertaManualeButtonVisible: false, isAccettaButtonVisible: true, isRifiutaButtonVisible: true, isContropropostaButtonVisible: true)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPageGenerale(casaSelezionata: casaCorrente, isOffertaManualeButtonVisible: false, areOpzioniOfferteVisible: true, areOpzioniClienteVisible: false,)));
           },
           child: Container(
             width: MediaQuery.of(context).size.width,

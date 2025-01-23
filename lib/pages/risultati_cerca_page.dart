@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:domus_app/pages/annuncio_page.dart';
+import 'package:domus_app/pages/cliente_annuncio_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:readmore/readmore.dart';
@@ -85,7 +85,7 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
         double scaleFactor = indice == _currentSliderIndex ? 1.0 : 1.0;
         return GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => AnnuncioPage(casaSelezionata: casaCorrente)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(casaSelezionata: casaCorrente)));
           },
           child: Container(
             width: MediaQuery.of(context).size.width,

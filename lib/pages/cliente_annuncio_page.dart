@@ -5,16 +5,16 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class AnnuncioPage extends StatefulWidget {
+class ClienteAnnuncioPage extends StatefulWidget {
   final Map<String, dynamic> casaSelezionata;
 
-  const AnnuncioPage({super.key, required this.casaSelezionata});
+  const ClienteAnnuncioPage({super.key, required this.casaSelezionata});
 
   @override
-  State<AnnuncioPage> createState() => _AnnuncioPageState();
+  State<ClienteAnnuncioPage> createState() => _ClienteAnnuncioPageState();
 }
 
-class _AnnuncioPageState extends State<AnnuncioPage> {
+class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
   int _currentIndex = 0;
 
   @override
@@ -297,20 +297,18 @@ class _AnnuncioPageState extends State<AnnuncioPage> {
               Card(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
                 color: Colors.white,
-                child: Expanded(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 10,),
-                      Row(children: [
-                      SizedBox(width: 5,),
-                      Expanded(child: MyElevatedButtonRectWidget(text: "Offerta", onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
-                      SizedBox(width: 5,),
-                      Expanded(child: MyElevatedButtonRectWidget(text: "Visita", onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
-                      SizedBox(width: 5,),
-                      ],),
-                      SizedBox(height: 10,)
-                    ],
-                  ),
+                child: Column(
+                  children: [
+                    SizedBox(height: 10,),
+                    Row(children: [
+                    SizedBox(width: 5,),
+                    Expanded(child: MyElevatedButtonRectWidget(text: "Offerta", onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
+                    SizedBox(width: 5,),
+                    Expanded(child: MyElevatedButtonRectWidget(text: "Visita", onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
+                    SizedBox(width: 5,),
+                    ],),
+                    SizedBox(height: 10,)
+                  ],
                 ),
               ),
             ],

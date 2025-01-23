@@ -6,20 +6,20 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class AnnuncioPageGenerale extends StatefulWidget {
+class AgenteAnnuncioPageGenerale extends StatefulWidget {
   final Map<String, dynamic> casaSelezionata;
   final bool isOffertaManualeButtonVisible;
-  final bool isAccettaButtonVisible;
-  final bool isRifiutaButtonVisible;
-  final bool isContropropostaButtonVisible;
+  final bool areOpzioniOfferteVisible;
+  final bool areOpzioniClienteVisible;
+  
 
-  const AnnuncioPageGenerale({super.key, required this.casaSelezionata, required this.isOffertaManualeButtonVisible, required this.isAccettaButtonVisible, required this.isRifiutaButtonVisible, required this.isContropropostaButtonVisible});
+  const AgenteAnnuncioPageGenerale({super.key, required this.casaSelezionata, required this.isOffertaManualeButtonVisible, required this.areOpzioniOfferteVisible, required this.areOpzioniClienteVisible});
 
   @override
-  State<AnnuncioPageGenerale> createState() => _AnnuncioPageGeneraleState();
+  State<AgenteAnnuncioPageGenerale> createState() => _AgenteAnnuncioPageGeneraleState();
 }
 
-class _AnnuncioPageGeneraleState extends State<AnnuncioPageGenerale> {
+class _AgenteAnnuncioPageGeneraleState extends State<AgenteAnnuncioPageGenerale> {
   int _currentIndex = 0;
 
   @override
@@ -296,6 +296,31 @@ class _AnnuncioPageGeneraleState extends State<AnnuncioPageGenerale> {
             children: [
               Stack(
                 children: [
+                  Stack(
+                    children: [
+                      Card(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                        color: Colors.white,
+                        child: Column(
+                          children: [
+                            SizedBox(height: 10,),
+                            Row(children: [
+                              SizedBox(width: 5,),
+                              Visibility(
+                                visible: widget.areOpzioniClienteVisible,
+                                child: Expanded(child: MyElevatedButtonRectWidget(text: "Offerta", onPressed: (){}, color: Theme.of(context).colorScheme.primary))),
+                              SizedBox(width: 5,),
+                              Visibility(
+                                visible: widget.areOpzioniClienteVisible,
+                                child: Expanded(child: MyElevatedButtonRectWidget(text: "Visita", onPressed: (){}, color: Theme.of(context).colorScheme.primary))),
+                              SizedBox(width: 5,),
+                            ],),
+                            SizedBox(height: 10,)
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                   Card(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
                     color: Colors.white,
@@ -318,7 +343,7 @@ class _AnnuncioPageGeneraleState extends State<AnnuncioPageGenerale> {
                     SizedBox(width: 5,),
               ],),
               Visibility(
-                visible: widget.isAccettaButtonVisible,
+                visible: widget.areOpzioniOfferteVisible,
                 child: Card(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
                   color: Colors.white,
@@ -328,11 +353,11 @@ class _AnnuncioPageGeneraleState extends State<AnnuncioPageGenerale> {
                       Row(children: [
                       SizedBox(width: 5,),
                       Visibility(
-                        visible: widget.isAccettaButtonVisible,
+                        visible: widget.areOpzioniOfferteVisible,
                         child: Expanded(child: MyElevatedButtonRectWidget(text: "Accetta", onPressed: (){}, color: Theme.of(context).colorScheme.primary))),
                         SizedBox(width: 5,),
                       Visibility(
-                        visible: widget.isRifiutaButtonVisible,
+                        visible: widget.areOpzioniOfferteVisible,
                         child: Expanded(child: MyElevatedButtonRectWidget(text: "Rifiuta", onPressed: (){}, color: Theme.of(context).colorScheme.primary))),
                         SizedBox(width: 5,),
                       ],),
@@ -340,7 +365,7 @@ class _AnnuncioPageGeneraleState extends State<AnnuncioPageGenerale> {
                       Row(children: [
                         SizedBox(width: 5,),
                         Visibility(
-                          visible: widget.isContropropostaButtonVisible,
+                          visible: widget.areOpzioniOfferteVisible,
                           child: Expanded(child: MyElevatedButtonRectWidget(text: "Contro proposta", onPressed: (){}, color: Theme.of(context).colorScheme.primary))),
                         SizedBox(width: 5,),
                       ],),

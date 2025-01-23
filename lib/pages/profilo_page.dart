@@ -68,15 +68,16 @@ class _ProfiloPageState extends State<ProfiloPage> {
                   ),
                   Row(
                     children: [
-                    Text(" Email: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.outline),),
-                    Expanded(
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(mailUtenteLoggato ?? "Non disponibile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.outline),))),
-                    ),
-                      ],
+                      SizedBox(width: MediaQuery.sizeOf(context).height/60,),
+                      Text("Email: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.outline),),
+                      Expanded(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(mailUtenteLoggato ?? "Non disponibile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.outline),))),
+                      ),
+                    ],
                     ),
                   SizedBox(
                     height: MediaQuery.sizeOf(context).height/60,
