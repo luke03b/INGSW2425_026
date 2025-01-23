@@ -8,6 +8,39 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AWSServices {
   final userPool = CognitoUserPool('eu-central-1_7QWCMoxQB', '56jim6pepm0s7g852hkn6soij2');
 
+  Future<bool> isUserLoggedIn() async{
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('userToken');
+
+    //il token esiste e non è scaduto
+    if (token != null && !JwtDecoder.isExpired(token)){
+      return true;
+    }
+
+    return false;
+  }
+
+  Future<bool> isUserAdmin() async{
+    //recupera il token dalla memoria
+    final prefs = await SharedPreferences.getInstance();
+    final idToken = prefs.getString('userToken');
+
+    //decodifica il token
+    Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
+
+    //recupera il gruppo dell'utente
+    List<dynamic>? groups = payload['cognito:groups'];
+    debugPrint('User groups: $groups');
+    debugPrint('User is: ');
+    debugPrint(groups?.first);
+
+    if(groups?.first == 'admin'){
+      return true;
+    }
+
+    return false;
+  }
+
   Future<String?> signIn(email, password) async {
     debugPrint('Authenticating User...');
     final cognitoUser = CognitoUser(email, userPool);

@@ -90,6 +90,47 @@ class _AgenteAnnuncioPageGeneraleState extends State<AgenteAnnuncioPageGenerale>
         
                     // Expanded(child: Divider(height: 50, thickness: 2, indent: 20, endIndent: 10, color: Colors.black)),
                     Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
+                    Row(
+                      children: [
+                        SizedBox(width: 10.0),
+                        Text("Offerta ricevuta in data", style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal, color: coloriPulsanti),),
+                        SizedBox(width: 10.0),
+                        Text(widget.casaSelezionata['data_offerta'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: 10.0),
+                        Icon(Icons.euro, size: 20, color: Theme.of(context).colorScheme.outline,),
+                        Text(widget.casaSelezionata['valore_offerta'], style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: 10.0),
+                        Text("Dati Offerente", style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal, color: coloriPulsanti),),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: 10.0),
+                        Icon(Icons.remove, size: 20,),
+                        SizedBox(width: 10.0),
+                        Text(widget.casaSelezionata['cognome_offerente'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal, color: coloriPulsanti),),
+                        SizedBox(width: 7.0),
+                        Text(widget.casaSelezionata['nome_offerente'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal, color: coloriPulsanti),),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: 10.0),
+                        Icon(Icons.remove, size: 20,),
+                        SizedBox(width: 10.0),
+                        Text(widget.casaSelezionata['mail_offerente'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal, color: coloriPulsanti),),
+                      ],
+                    ),
+
+                    Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
         
                     Row(
                       children: [

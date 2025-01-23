@@ -80,3 +80,25 @@ class MyElevatedButtonRectWidget extends StatelessWidget {
     );
   }
 }
+
+class MyAddButtonWidget extends StatelessWidget {
+  final VoidCallback onPressed;
+  final Color color;
+
+  const MyAddButtonWidget({super.key,
+  required this.onPressed,
+  required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        shape: CircleBorder(eccentricity: 0),
+        backgroundColor: color,
+        fixedSize: Size(MediaQuery.sizeOf(context).width/7, MediaQuery.sizeOf(context).width/7),
+      ),
+      child: Icon(Icons.add, color: Theme.of(context).colorScheme.surface, size: 40,),
+      );
+  }
+}

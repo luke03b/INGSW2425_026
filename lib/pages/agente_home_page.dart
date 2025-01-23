@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:domus_app/pages/agente_annuncio_page.dart';
+
 import 'package:domus_app/pages/cliente_annuncio_page.dart';
 import 'package:domus_app/pages/agente_annuncio_page_generale.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
@@ -38,23 +38,21 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
         children: [
           myCarouselSlider(context),
           Positioned(
-          bottom: -5,
-          left: 0,
-          right: 0,
+          bottom: 0,
+          left: 250,
+          right: -60,
           child: Stack(
             children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    SizedBox(height: 10,),
-                    Row(children: [
-                    SizedBox(width: 5,),
-                    Expanded(child: MyElevatedButtonRectWidget(text: "Aggiungi inserzione", onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
-                    SizedBox(width: 5,),
-                    ],),
-                    SizedBox(height: 10,)
-                  ],
-                ),
+              Column(
+                children: [
+                  SizedBox(height: 10,),
+                  Row(children: [
+                  SizedBox(width: 5,),
+                  Expanded(child: MyAddButtonWidget(onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
+                  SizedBox(width: 5,),
+                  ],),
+                  SizedBox(height: 10,)
+                ],
               ),
             ],
           )
@@ -77,7 +75,14 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
         'numero_stanze': '6',
         'arredato' : "si",
         'piano' : 'Terra',
-        'descrizione' : 'Nel cuore della rinomata collina di Posillipo, in una posizione dominante che regala una vista senza pari sul golfo di Napoli, Christie\'s International Real Estate propone in vendita un appartamento di 174 mq, un\'esclusiva residenza che fonde eleganza, comfort e luminosità. Questo immobile, caratterizzato da ampi spazi interni, è arricchito da una spettacolare superficie esterna di 286 mq, che include ampi balconi, un terrazzo panoramico di copertura e una veranda, tutti luoghi ideali per godere di momenti di convivialità e relax, circondati da un panorama unico. Posto all\'ultimo piano di un elegante edificio, questo appartamento si distingue per la luminosità che inonda ogni ambiente grazie all\'esposizione ideale e alle ampie vetrate che permettono di godere della vista sul mare in ogni angolo della casa. Il soggiorno doppio, spazioso e raffinato, offre un affaccio diretto sul mare, creando un ambiente perfetto per rilassarsi o intrattenere ospiti. La zona notte comprende tre camere da letto, tutte silenziose e confortevoli, mentre i due bagni e la cucina abitabile con accesso indipendente completano l\'immobile con praticità e funzionalità. Gli spazi esterni, ampi e ben progettati, offrono la possibilità di vivere all\'aperto durante tutto l\'anno, con aree ideali per cene all\'aperto, eventi sociali o semplicemente per godere di momenti di tranquillità, immersi nella bellezza naturale di Posillipo. A completare questa straordinaria proprieta\', una cantina e due posti auto coperti, per garantire il massimo della comodità e della sicurezza. Un\'opportunità imperdibile per chi cerca una residenza di lusso in uno dei quartieri più esclusivi di Napoli, dove la bellezza senza tempo del mare si fonde con il comfort moderno.'
+        'descrizione' : 'Nel cuore della rinomata collina di Posillipo, in una posizione dominante che regala una vista senza pari sul golfo di Napoli, Christie\'s International Real Estate propone in vendita un appartamento di 174 mq, un\'esclusiva residenza che fonde eleganza, comfort e luminosità. Questo immobile, caratterizzato da ampi spazi interni, è arricchito da una spettacolare superficie esterna di 286 mq, che include ampi balconi, un terrazzo panoramico di copertura e una veranda, tutti luoghi ideali per godere di momenti di convivialità e relax, circondati da un panorama unico. Posto all\'ultimo piano di un elegante edificio, questo appartamento si distingue per la luminosità che inonda ogni ambiente grazie all\'esposizione ideale e alle ampie vetrate che permettono di godere della vista sul mare in ogni angolo della casa. Il soggiorno doppio, spazioso e raffinato, offre un affaccio diretto sul mare, creando un ambiente perfetto per rilassarsi o intrattenere ospiti. La zona notte comprende tre camere da letto, tutte silenziose e confortevoli, mentre i due bagni e la cucina abitabile con accesso indipendente completano l\'immobile con praticità e funzionalità. Gli spazi esterni, ampi e ben progettati, offrono la possibilità di vivere all\'aperto durante tutto l\'anno, con aree ideali per cene all\'aperto, eventi sociali o semplicemente per godere di momenti di tranquillità, immersi nella bellezza naturale di Posillipo. A completare questa straordinaria proprieta\', una cantina e due posti auto coperti, per garantire il massimo della comodità e della sicurezza. Un\'opportunità imperdibile per chi cerca una residenza di lusso in uno dei quartieri più esclusivi di Napoli, dove la bellezza senza tempo del mare si fonde con il comfort moderno.',
+        'data_offerta': '13-01-2025',
+        'valore_offerta' : '260.000',
+        'nome_offerente' : 'Paolo',
+        'cognome_offerente' : 'Centonze',
+        'mail_offerente' : 'paolo.centonze@icloud.com',
+        'stato_offerta' : 'In Attesa',
+        'valore_contropoposta' : '',
       },
       {
         'image1': 'lib/assets/casa2_1_placeholder.png',
@@ -89,7 +94,14 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
         'numero_stanze': '7',
         'arredato' : "no",
         'piano' : 'Ultimo',
-        'descrizione' : ''
+        'descrizione' : '',
+        'data_offerta': '5-01-2025',
+        'valore_offerta' : '280.000',
+        'nome_offerente' : 'Marco',
+        'cognome_offerente' : 'Lombari',
+        'mail_offerente' : 'marcolombari65@gmail.com',
+        'stato_offerta' : 'In Attesa',
+        'valore_contropoposta' : '',
       },
       {
         'image1': 'lib/assets/casa3_1_placeholder.png',
@@ -101,7 +113,14 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
         'numero_stanze': '5',
         'arredato' : "si",
         'piano' : '3',
-        'descrizione' : ''
+        'descrizione' : '',
+        'data_offerta': '25-12-2024',
+        'valore_offerta' : '225.000',
+        'nome_offerente' : 'Massimiliano',
+        'cognome_offerente' : 'De Santis',
+        'mail_offerente' : 'madmax@gmail.com',
+        'stato_offerta' : 'In Attesa',
+        'valore_contropoposta' : '',
       },
     ];
     
