@@ -19,7 +19,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   TextEditingController nomeController = TextEditingController();
   TextEditingController cognomeController = TextEditingController();
 
-  register(String nome, String cognome, String email, String password) => AWSServices().register(nome, cognome, email, password);
+  register(String nome, String cognome, String email, String password, String userGroup) => AWSServices().register(nome, cognome, email, password, userGroup);
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   }
 
   Future<void> registraETornaAlLogin(BuildContext context) async {
-    Future<bool> isAllOk = register(nomeController.text, cognomeController.text, mailController.text, passwordController.text);
+    Future<bool> isAllOk = register(nomeController.text, cognomeController.text, mailController.text, passwordController.text, 'cliente');
     if (await isAllOk) {
       showDialog(
         barrierDismissible: false,

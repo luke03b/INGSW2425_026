@@ -60,22 +60,22 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
                       isSelected: selectedOffertePrenotazioni,
                       onPressed: (int index){
                         setState(() {
-                          for (int i = 0; i < selectedOffertePrenotazioni.length; i++){
-                            selectedOffertePrenotazioni[i] = i == index;
-                          }
+                          selectedOffertePrenotazioni[index] = !selectedOffertePrenotazioni[index];
                         });
                       },
                       children: [
                         Row(
                           children: [
-                            Icon(selectedOffertePrenotazioni[0] ? Icons.arrow_drop_down_rounded : Icons.arrow_drop_up_rounded, color: Theme.of(context).colorScheme.primary,),
+                            Icon(selectedOffertePrenotazioni[0] ? Icons.radio_button_on : Icons.radio_button_off, color: Theme.of(context).colorScheme.primary, size: 18,),
+                            SizedBox(width: 6,),
                             Text("Offerte"),
                             SizedBox(width: 10,)
                           ],
                         ),
                         Row(
                           children: [
-                            Icon(selectedOffertePrenotazioni[1] ? Icons.arrow_drop_down_rounded : Icons.arrow_drop_up_rounded, color: Theme.of(context).colorScheme.primary,),
+                            Icon(selectedOffertePrenotazioni[1] ? Icons.radio_button_on : Icons.radio_button_off, color: Theme.of(context).colorScheme.primary, size: 18,),
+                            SizedBox(width: 6,),
                             Text("Prenotazioni"),
                             SizedBox(width: 15,)
                           ],

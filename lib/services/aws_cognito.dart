@@ -7,6 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AWSServices {
   final userPool = CognitoUserPool('eu-central-1_7QWCMoxQB', '56jim6pepm0s7g852hkn6soij2');
+  final region =  'eu-central-1';
+
 
   Future<bool> isUserLoggedIn() async{
     final prefs = await SharedPreferences.getInstance();
@@ -29,12 +31,12 @@ class AWSServices {
     Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
 
     //recupera il gruppo dell'utente
-    List<dynamic>? groups = payload['cognito:groups'];
-    debugPrint('User groups: $groups');
+    String? group = payload['custom:group'];
+    debugPrint('User groups: $group');
     debugPrint('User is: ');
-    debugPrint(groups?.first);
+    debugPrint(group);
 
-    if(groups?.first == 'admin'){
+    if(group == 'admin'){
       return true;
     }
 
@@ -59,13 +61,8 @@ class AWSServices {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('userToken', idToken!);
 
-      //decodifica il token
-      Map<String, dynamic> payload = JwtDecoder.decode(idToken);
-
-      //recupera il gruppo dell'utente
-      List<dynamic>? groups = payload['cognito:groups'];
-      debugPrint('User groups: $groups');
-      return groups?.first;
+      String? group = await recuperaGruppoUtenteLoggato();
+      return group;
       
     } on CognitoUserNewPasswordRequiredException catch (e) {
       debugPrint('CognitoUserNewPasswordRequiredException $e');
@@ -100,11 +97,12 @@ class AWSServices {
     }
   }
 
-  Future<bool> register(name, surname, email, password) async{
+  Future<bool> register(name, surname, email, password, userGroup) async{
     debugPrint('Registering User...');
     final userAttributes = [
       AttributeArg(name: 'name', value: name),
       AttributeArg(name: 'family_name', value: surname),
+      AttributeArg(name: 'custom:group', value: userGroup),
     ];
 
     var data;
@@ -209,6 +207,18 @@ class AWSServices {
     return cognome;
   }
 
+  Future<String?> recuperaGruppoUtenteLoggato() async {
+    //recupera il token dalla memoria
+    final prefs = await SharedPreferences.getInstance();
+    final idToken = prefs.getString('userToken');
+
+    //decodifica il token
+    Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
+
+    //recupera la mail
+    String? gruppo = payload['custom:group'];
+    return gruppo;
+  }
   
   Future<bool> signInWithGoogle() async {
     bool isAllOk = false;
