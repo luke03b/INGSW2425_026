@@ -1,4 +1,4 @@
-import 'package:domus_app/pages/login_page.dart';
+import 'package:domus_app/pages/auth_pages/login_page.dart';
 import 'package:domus_app/services/aws_cognito.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
@@ -97,10 +97,12 @@ class _ProfiloPageState extends State<ProfiloPage> {
                   context: context,
                   builder: (BuildContext context) => 
                     MyOptionsDialog(
-                      title: 'Logout', 
+                      title: 'Disconnessione account', 
                       bodyText: 'Sei sicuro di voler uscire?', 
                       leftButtonText: 'No', 
-                      rightButtonText: 'Si', 
+                      leftButtonColor: Theme.of(context).colorScheme.secondary,
+                      rightButtonText: 'Esci', 
+                      rightButtonColor: Theme.of(context).colorScheme.error,
                       onPressLeftButton: (){Navigator.pop(context);}, 
                       onPressRightButton: () async {logout(); Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);}
                     )

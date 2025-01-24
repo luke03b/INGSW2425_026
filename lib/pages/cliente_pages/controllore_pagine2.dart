@@ -1,17 +1,18 @@
-import 'package:domus_app/pages/cliente_prenotazioni_page.dart';
+import 'package:domus_app/pages/cliente_pages/cliente_prenotazioni_page.dart';
 import 'package:domus_app/pages/profilo_page.dart';
+import 'package:domus_app/pages/cliente_pages/risultati_cerca_page.dart';
 import 'package:flutter/material.dart';
 import 'cerca_page.dart';
 import 'offerte_page.dart';
 
-class ControllorePagine extends StatefulWidget {
-  const ControllorePagine({super.key});
+class ControllorePagine2 extends StatefulWidget {
+  const ControllorePagine2({super.key});
 
   @override
-  State<ControllorePagine> createState() => _ControllorePagineState();
+  State<ControllorePagine2> createState() => _ControllorePagine2State();
 }
 
-class _ControllorePagineState extends State<ControllorePagine> {
+class _ControllorePagine2State extends State<ControllorePagine2> {
   int _selectedIndex = 0;
 
   void _navigateBottomBar(int index){
@@ -21,7 +22,7 @@ class _ControllorePagineState extends State<ControllorePagine> {
   }
 
   final List<Widget> _pages = [
-    CercaPage(),
+    RisultatiCercaPage(),
     OffertePage(),
     ClientePrenotazioniPage(),
     ProfiloPage(),

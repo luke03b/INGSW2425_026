@@ -3,7 +3,7 @@ import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../utils/my_text_widgets.dart';
+import '../../utils/my_text_widgets.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

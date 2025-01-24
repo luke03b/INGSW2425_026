@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:domus_app/pages/cliente_annuncio_page.dart';
+import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';

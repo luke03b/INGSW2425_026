@@ -38,7 +38,9 @@ class MyOptionsDialog extends StatelessWidget {
   final String title;
   final String bodyText;
   final String leftButtonText;
+  final Color leftButtonColor;
   final String rightButtonText;
+  final Color rightButtonColor;
   final VoidCallback onPressLeftButton;
   final VoidCallback onPressRightButton;
 
@@ -47,7 +49,9 @@ class MyOptionsDialog extends StatelessWidget {
     required this.title,
     required this.bodyText,
     required this.leftButtonText,
+    required this.leftButtonColor,
     required this.rightButtonText,
+    required this.rightButtonColor,
     required this.onPressLeftButton,
     required this.onPressRightButton,
   });
@@ -60,7 +64,7 @@ class MyOptionsDialog extends StatelessWidget {
             actions: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  backgroundColor: leftButtonColor,
                   fixedSize: Size(MediaQuery.sizeOf(context).width/5, MediaQuery.sizeOf(context).height/27),
                 ),
                 onPressed: (){
@@ -70,7 +74,7 @@ class MyOptionsDialog extends StatelessWidget {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.error,
+                  backgroundColor: rightButtonColor,
                   fixedSize: Size(MediaQuery.sizeOf(context).width/5, MediaQuery.sizeOf(context).height/27),
                 ),
                 onPressed: (){

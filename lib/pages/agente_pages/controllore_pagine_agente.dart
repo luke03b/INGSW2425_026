@@ -1,18 +1,20 @@
-import 'package:domus_app/pages/cliente_prenotazioni_page.dart';
+import 'package:domus_app/pages/agente_pages/agente_home_page.dart';
+import 'package:domus_app/pages/agente_pages/agente_offerte_page.dart';
+import 'package:domus_app/pages/agente_pages/agente_prenotazioni_page.dart';
+import 'package:domus_app/pages/cliente_pages/cliente_prenotazioni_page.dart';
 import 'package:domus_app/pages/profilo_page.dart';
-import 'package:domus_app/pages/risultati_cerca_page.dart';
 import 'package:flutter/material.dart';
-import 'cerca_page.dart';
-import 'offerte_page.dart';
+import '../cliente_pages/cerca_page.dart';
+import '../cliente_pages/offerte_page.dart';
 
-class ControllorePagine2 extends StatefulWidget {
-  const ControllorePagine2({super.key});
+class ControllorePagineAgente extends StatefulWidget {
+  const ControllorePagineAgente({super.key});
 
   @override
-  State<ControllorePagine2> createState() => _ControllorePagine2State();
+  State<ControllorePagineAgente> createState() => _ControllorePagineAgenteState();
 }
 
-class _ControllorePagine2State extends State<ControllorePagine2> {
+class _ControllorePagineAgenteState extends State<ControllorePagineAgente> {
   int _selectedIndex = 0;
 
   void _navigateBottomBar(int index){
@@ -22,9 +24,7 @@ class _ControllorePagine2State extends State<ControllorePagine2> {
   }
 
   final List<Widget> _pages = [
-    RisultatiCercaPage(),
-    OffertePage(),
-    ClientePrenotazioniPage(),
+    AgenteHomePage(),
     ProfiloPage(),
   ];
 
@@ -41,9 +41,7 @@ class _ControllorePagine2State extends State<ControllorePagine2> {
         selectedItemColor: Theme.of(context).colorScheme.onPrimary,
         unselectedItemColor: Colors.black87,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Cerca'),
-          BottomNavigationBarItem(icon: Icon(Icons.payments), label: 'Offerte'),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Prenotazioni'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Profilo'),
         ]
       ),

@@ -1,85 +1,109 @@
-import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:domus_app/pages/agente_annuncio_page.dart';
+import 'package:domus_app/pages/agente_pages/agente_offerte_page.dart';
+import 'package:domus_app/pages/agente_pages/agente_prenotazioni_page.dart';
+
+import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
+import 'package:domus_app/pages/agente_pages/agente_annuncio_page.dart';
+import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class AgenteOffertePage extends StatefulWidget {
-  const AgenteOffertePage({super.key});
+class AgenteHomePage extends StatefulWidget {
+  const AgenteHomePage({super.key});
 
   @override
-  State<AgenteOffertePage> createState() => _AgenteOffertePageState();
+  State<AgenteHomePage> createState() => _AgenteHomePageState();
 }
 
-class _AgenteOffertePageState extends State<AgenteOffertePage> {
-  int _currentSliderIndex = 0;
+class _AgenteHomePageState extends State<AgenteHomePage> {
   static const double GRANDEZZA_SCRITTE = 23;
   static const double GRANDEZZA_ICONE = 25;
   static const double GRANDEZZA_SCRITTE_PICCOLE = 18;
   static const double GRANDEZZA_ICONE_PICCOLE = 20;
-
-  final List<Map<String, dynamic>> listaCase = [
-    {
-      'image1': 'lib/assets/casa1_1_placeholder.png',
-      'image2' : 'lib/assets/casa1_2_placeholder.png',
-      'image3' : 'lib/assets/casa1_3_placeholder.png',
-      'prezzo': '275.000',
-      'indirizzo': 'Via Dalmazia 13,\nCavalleggeri 80124 (NA)',
-      'superficie': '100 mq',
-      'numero_stanze': '6',
-      'data_offerta': '13-01-2025',
-      'valore_offerta' : '260.000',
-      'nome_offerente' : 'Paolo',
-      'cognome_offerente' : 'Centonze',
-      'mail_offerente' : 'paolo.centonze@icloud.com',
-      'stato_offerta' : 'In Attesa',
-    },
-    {
-      'image1': 'lib/assets/casa2_1_placeholder.png',
-      'image2' : 'lib/assets/casa2_2_placeholder.png',
-      'image3' : 'lib/assets/casa2_3_placeholder.png',
-      'prezzo': '300.000',
-      'indirizzo': 'Via Dalmazia 14,\nCavalleggeri 80124 (NA)',
-      'superficie': '120 mq',
-      'numero_stanze': '7',
-      'data_offerta': '5-01-2025',
-      'valore_offerta' : '280.000',
-      'nome_offerente' : 'Marco',
-      'cognome_offerente' : 'Lombari',
-      'mail_offerente' : 'marcolombari65@gmail.com',
-      'stato_offerta' : 'In Attesa',
-    },
-    {
-      'image1': 'lib/assets/casa3_1_placeholder.png',
-      'image2' : 'lib/assets/casa3_2_placeholder.png',
-      'image3' : 'lib/assets/casa3_3_placeholder.png',
-      'prezzo': '250.000',
-      'indirizzo': 'Via Dalmazia 10,\nCavalleggeri 80124 (NA)',
-      'superficie': '80 mq',
-      'numero_stanze': '5',
-      'data_offerta': '25-12-2024',
-      'valore_offerta' : '225.000',
-      'nome_offerente' : 'Massimiliano',
-      'cognome_offerente' : 'De Santis',
-      'mail_offerente' : 'madmax@gmail.com',
-      'stato_offerta' : 'In Attesa',
-    },
-
-  ];
+  int _currentSliderIndex = 0;
+  List<bool> selectedOffertePrenotazioni = <bool>[false, false];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text("Offerte ricevute", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.surface,
+        ),
+        title: Text("Le mie inserzioni", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 5,
         shadowColor: Colors.black,
       ),
-      body: myCarouselSlider(context));
+      body: Stack(
+        children: [
+          myCarouselSlider(context),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 63),
+              child: Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(width: 10,),
+                    Icon(Icons.filter_alt_outlined, color: Theme.of(context).colorScheme.primary,),
+                    Text("Filtri", style: TextStyle(fontWeight: FontWeight.bold),),
+                    SizedBox(width: 10,),
+                    ToggleButtons(
+                      borderRadius: BorderRadius.circular(100),
+                      isSelected: selectedOffertePrenotazioni,
+                      onPressed: (int index){
+                        setState(() {
+                          selectedOffertePrenotazioni[index] = !selectedOffertePrenotazioni[index];
+                        });
+                      },
+                      children: [
+                        Row(
+                          children: [
+                            Icon(selectedOffertePrenotazioni[0] ? Icons.radio_button_on : Icons.radio_button_off, color: Theme.of(context).colorScheme.primary, size: 18,),
+                            SizedBox(width: 6,),
+                            Text("Offerte"),
+                            SizedBox(width: 10,)
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Icon(selectedOffertePrenotazioni[1] ? Icons.radio_button_on : Icons.radio_button_off, color: Theme.of(context).colorScheme.primary, size: 18,),
+                            SizedBox(width: 6,),
+                            Text("Prenotazioni"),
+                            SizedBox(width: 15,)
+                          ],
+                        ),
+                      ]),
+                  ],
+                ),
+              ),
+            )
+          ),
+          Positioned(
+          bottom: 0,
+          left: 250,
+          right: -60,
+          child: Column(
+            children: [
+              SizedBox(height: 10,),
+              Row(children: [
+              SizedBox(width: 5,),
+              Expanded(child: MyAddButtonWidget(onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
+              SizedBox(width: 5,),
+              ],),
+              SizedBox(height: 10,)
+            ],
+          )
+        )]
+      ),
+    );
   }
 
   CarouselSlider myCarouselSlider(BuildContext context) {
@@ -116,11 +140,11 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
         'arredato' : "no",
         'piano' : 'Ultimo',
         'descrizione' : '',
-        'data_offerta': '13-01-2025',
-        'valore_offerta' : '260.000',
-        'nome_offerente' : 'Paolo',
-        'cognome_offerente' : 'Centonze',
-        'mail_offerente' : 'paolo.centonze@icloud.com',
+        'data_offerta': '5-01-2025',
+        'valore_offerta' : '280.000',
+        'nome_offerente' : 'Marco',
+        'cognome_offerente' : 'Lombari',
+        'mail_offerente' : 'marcolombari65@gmail.com',
         'stato_offerta' : 'In Attesa',
         'valore_contropoposta' : '',
       },
@@ -135,11 +159,11 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
         'arredato' : "si",
         'piano' : '3',
         'descrizione' : '',
-        'data_offerta': '13-01-2025',
-        'valore_offerta' : '260.000',
-        'nome_offerente' : 'Paolo',
-        'cognome_offerente' : 'Centonze',
-        'mail_offerente' : 'paolo.centonze@icloud.com',
+        'data_offerta': '25-12-2024',
+        'valore_offerta' : '225.000',
+        'nome_offerente' : 'Massimiliano',
+        'cognome_offerente' : 'De Santis',
+        'mail_offerente' : 'madmax@gmail.com',
         'stato_offerta' : 'In Attesa',
         'valore_contropoposta' : '',
       },
@@ -238,7 +262,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
       }).toList(),
       options: CarouselOptions(
         enableInfiniteScroll: false,
-        viewportFraction: 0.71,
+        viewportFraction: 0.62,
         height: 753,
         enlargeCenterPage: true,
         scrollDirection: Axis.vertical,
@@ -249,5 +273,4 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
         }
       ));
   }
-
 }
