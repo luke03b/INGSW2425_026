@@ -14,7 +14,7 @@ class InitialPage extends StatefulWidget {
 }
 
 class _InitialPageState extends State<InitialPage> {
-  bool isAdmin = false;
+  String? userGroup;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
@@ -27,22 +27,29 @@ class _InitialPageState extends State<InitialPage> {
         } else if (snapshot.hasError || snapshot.data == false) {          
           return LoginPage(); // Mostra la pagina di login
         } else {
-          () async {await scegliPaginaDaCaricare();};
-          if (isAdmin){
-            return ControllorePagineAgente();
-          }
-          return ControllorePagine(); // Mostra la pagina successiva
+          return FutureBuilder(
+            future: scegliPaginaDaCaricare(),
+            builder: (context, adminSnapshot){
+              if (adminSnapshot.connectionState == ConnectionState.waiting) {
+                return Scaffold(
+                  body: Center(child: CircularProgressIndicator(),),
+                );
+              } else if (adminSnapshot.hasError){
+                return Scaffold(body: Center(child: Text('Errore durante il caricamento della pagina'),),);
+              } else {
+                if (userGroup == 'admin') {
+                  return ControllorePagineAgente();
+                }
+                return ControllorePagine();
+              }
+            }
+          );
         }
       },
     );
   }
 
   Future<void> scegliPaginaDaCaricare() async {
-    bool result = await AWSServices().isUserAdmin();
-    if (result){
-      setState(() {
-        isAdmin = true;
-      });
-    }
+    userGroup = await AWSServices().recuperaGruppoUtenteLoggato();
   }
 }
