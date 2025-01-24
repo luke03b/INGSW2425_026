@@ -134,15 +134,15 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   Text("Data offerta: ", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_GRANDI, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  Text(indiceOffertaCorrente['data_offerta'], style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: coloreScritte)),
+                  Text(indiceOffertaCorrente['data_offerta'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_GRANDI, fontWeight: FontWeight.bold, color: coloreScritte)),
                 ],
               ),
               Row(
                 children: [
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
-                  Text("EUR ", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
                   Text(indiceOffertaCorrente['valore_offerta'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
+                  Text(" EUR", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
                 ],
               ),
               Row(
@@ -181,9 +181,9 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                   SizedBox(width: scaleFactor * MediaQuery.of(context).size.height/50,),
                   Expanded(
                     child: MyElevatedButtonRectWidget(
-                            text: "ANALizza",
+                            text: "Analizza",
                             onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnalizzaOffertaPage()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnalizzaOffertaPage(offertaSelezionata: indiceOffertaCorrente)));
                             },
                             color: Theme.of(context).colorScheme.primary
                           )

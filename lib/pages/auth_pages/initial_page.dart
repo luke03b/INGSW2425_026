@@ -1,5 +1,5 @@
-import 'package:domus_app/pages/cliente_pages/controllore_pagine.dart';
-import 'package:domus_app/pages/agente_pages/controllore_pagine_agente.dart';
+import 'package:domus_app/pages/cliente_pages/cliente_controllore_pagine.dart';
+import 'package:domus_app/pages/agente_pages/agente_controllore_pagine.dart';
 import 'package:domus_app/pages/auth_pages/login_page.dart';
 import 'package:domus_app/services/aws_cognito.dart';
 import 'package:flutter/material.dart';

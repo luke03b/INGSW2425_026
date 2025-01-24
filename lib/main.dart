@@ -1,6 +1,6 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:domus_app/pages/agente_pages/controllore_pagine_agente.dart';
+import 'package:domus_app/pages/agente_pages/agente_controllore_pagine.dart';
 import 'package:domus_app/pages/auth_pages/initial_page.dart';
 import 'package:domus_app/pages/auth_pages/password_dimenticata_page.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -10,10 +10,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'amplifyconfiguration.dart';
 
 import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
-import 'package:domus_app/pages/cliente_pages/controllore_pagine.dart';
-import 'package:domus_app/pages/cliente_pages/controllore_pagine2.dart';
+import 'package:domus_app/pages/cliente_pages/cliente_controllore_pagine.dart';
+import 'package:domus_app/pages/cliente_pages/cliente_controllore_pagine2.dart';
 import 'package:domus_app/pages/auth_pages/registration_page.dart';
-import 'package:domus_app/pages/cliente_pages/risultati_cerca_page.dart';
+import 'package:domus_app/pages/cliente_pages/cliente_risultati_cerca_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'pages/auth_pages/login_page.dart';
