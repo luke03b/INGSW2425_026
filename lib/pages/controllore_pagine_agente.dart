@@ -1,6 +1,7 @@
 import 'package:domus_app/pages/agente_home_page.dart';
 import 'package:domus_app/pages/agente_offerte_page.dart';
-import 'package:domus_app/pages/prenotazioni_page.dart';
+import 'package:domus_app/pages/agente_prenotazioni_page.dart';
+import 'package:domus_app/pages/cliente_prenotazioni_page.dart';
 import 'package:domus_app/pages/profilo_page.dart';
 import 'package:flutter/material.dart';
 import 'cerca_page.dart';
@@ -24,8 +25,6 @@ class _ControllorePagineAgenteState extends State<ControllorePagineAgente> {
 
   final List<Widget> _pages = [
     AgenteHomePage(),
-    AgenteOffertePage(),
-    PrenotazioniPage(),
     ProfiloPage(),
   ];
 
@@ -43,8 +42,6 @@ class _ControllorePagineAgenteState extends State<ControllorePagineAgente> {
         unselectedItemColor: Colors.black87,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.payments), label: 'Offerte'),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Prenotazioni'),
           BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Profilo'),
         ]
       ),

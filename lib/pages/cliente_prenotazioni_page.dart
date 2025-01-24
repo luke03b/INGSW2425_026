@@ -2,14 +2,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class PrenotazioniPage extends StatefulWidget {
-  const PrenotazioniPage({super.key});
+class ClientePrenotazioniPage extends StatefulWidget {
+  const ClientePrenotazioniPage({super.key});
 
   @override
-  State<PrenotazioniPage> createState() => _PrenotazioniPageState();
+  State<ClientePrenotazioniPage> createState() => _ClientePrenotazioniPageState();
 }
 
-class _PrenotazioniPageState extends State<PrenotazioniPage> {
+class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
   int _currentSliderIndex = 0;
 
   final List<Map<String, dynamic>> listaCase = [

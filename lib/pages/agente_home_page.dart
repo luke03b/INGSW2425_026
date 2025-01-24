@@ -1,4 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:domus_app/pages/agente_offerte_page.dart';
+import 'package:domus_app/pages/agente_prenotazioni_page.dart';
 
 import 'package:domus_app/pages/cliente_annuncio_page.dart';
 import 'package:domus_app/pages/agente_annuncio_page_generale.dart';
@@ -19,6 +21,7 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
   static const double GRANDEZZA_SCRITTE_PICCOLE = 18;
   static const double GRANDEZZA_ICONE_PICCOLE = 20;
   int _currentSliderIndex = 0;
+  List<bool> selectedOffertePrenotazioni = <bool>[false, false];
 
   @override
   Widget build(BuildContext context) {
@@ -37,28 +40,70 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
       body: Stack(
         children: [
           myCarouselSlider(context),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 63),
+              child: Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(width: 10,),
+                    Icon(Icons.filter_alt_outlined, color: Theme.of(context).colorScheme.primary,),
+                    Text("Filtri", style: TextStyle(fontWeight: FontWeight.bold),),
+                    SizedBox(width: 10,),
+                    ToggleButtons(
+                      borderRadius: BorderRadius.circular(100),
+                      isSelected: selectedOffertePrenotazioni,
+                      onPressed: (int index){
+                        setState(() {
+                          for (int i = 0; i < selectedOffertePrenotazioni.length; i++){
+                            selectedOffertePrenotazioni[i] = i == index;
+                          }
+                        });
+                      },
+                      children: [
+                        Row(
+                          children: [
+                            Icon(selectedOffertePrenotazioni[0] ? Icons.arrow_drop_down_rounded : Icons.arrow_drop_up_rounded, color: Theme.of(context).colorScheme.primary,),
+                            Text("Offerte"),
+                            SizedBox(width: 10,)
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Icon(selectedOffertePrenotazioni[1] ? Icons.arrow_drop_down_rounded : Icons.arrow_drop_up_rounded, color: Theme.of(context).colorScheme.primary,),
+                            Text("Prenotazioni"),
+                            SizedBox(width: 15,)
+                          ],
+                        ),
+                      ]),
+                  ],
+                ),
+              ),
+            )
+          ),
           Positioned(
           bottom: 0,
           left: 250,
           right: -60,
-          child: Stack(
+          child: Column(
             children: [
-              Column(
-                children: [
-                  SizedBox(height: 10,),
-                  Row(children: [
-                  SizedBox(width: 5,),
-                  Expanded(child: MyAddButtonWidget(onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
-                  SizedBox(width: 5,),
-                  ],),
-                  SizedBox(height: 10,)
-                ],
-              ),
+              SizedBox(height: 10,),
+              Row(children: [
+              SizedBox(width: 5,),
+              Expanded(child: MyAddButtonWidget(onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
+              SizedBox(width: 5,),
+              ],),
+              SizedBox(height: 10,)
             ],
           )
         )]
       ),
-        );
+    );
   }
 
   CarouselSlider myCarouselSlider(BuildContext context) {
@@ -131,7 +176,7 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
         double scaleFactor = indice == _currentSliderIndex ? 1.0 : 1.0;
         return GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPageGenerale(casaSelezionata: casaCorrente, isOffertaManualeButtonVisible: true, areOpzioniOfferteVisible: false, areOpzioniClienteVisible: false,)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPageGenerale(casaSelezionata: casaCorrente)));
           },
           child: Container(
             width: MediaQuery.of(context).size.width,

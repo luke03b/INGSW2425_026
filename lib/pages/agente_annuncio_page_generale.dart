@@ -8,12 +8,9 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class AgenteAnnuncioPageGenerale extends StatefulWidget {
   final Map<String, dynamic> casaSelezionata;
-  final bool isOffertaManualeButtonVisible;
-  final bool areOpzioniOfferteVisible;
-  final bool areOpzioniClienteVisible;
   
 
-  const AgenteAnnuncioPageGenerale({super.key, required this.casaSelezionata, required this.isOffertaManualeButtonVisible, required this.areOpzioniOfferteVisible, required this.areOpzioniClienteVisible});
+  const AgenteAnnuncioPageGenerale({super.key, required this.casaSelezionata});
 
   @override
   State<AgenteAnnuncioPageGenerale> createState() => _AgenteAnnuncioPageGeneraleState();
@@ -317,12 +314,9 @@ class _AgenteAnnuncioPageGeneraleState extends State<AgenteAnnuncioPageGenerale>
                       ],
                     ),
                   Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
-
                   SizedBox(height: 200,),
                   Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
                   SizedBox(height: 65,)
-        
-                    
                   ],
                 ),
               ),
@@ -333,103 +327,26 @@ class _AgenteAnnuncioPageGeneraleState extends State<AgenteAnnuncioPageGenerale>
           bottom: -5,
           left: 0,
           right: 0,
-          child: Stack(
-            children: [
-              Stack(
+          child:
+            Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+              color: Colors.white,
+              child: Column(
                 children: [
-                  Stack(
-                    children: [
-                      Card(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-                        color: Colors.white,
-                        child: Column(
-                          children: [
-                            SizedBox(height: 10,),
-                            Row(children: [
-                              SizedBox(width: 5,),
-                              Visibility(
-                                visible: widget.areOpzioniClienteVisible,
-                                child: Expanded(child: MyElevatedButtonRectWidget(text: "Offerta", onPressed: (){}, color: Theme.of(context).colorScheme.primary))),
-                              SizedBox(width: 5,),
-                              Visibility(
-                                visible: widget.areOpzioniClienteVisible,
-                                child: Expanded(child: MyElevatedButtonRectWidget(text: "Visita", onPressed: (){}, color: Theme.of(context).colorScheme.primary))),
-                              SizedBox(width: 5,),
-                            ],),
-                            SizedBox(height: 10,)
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Card(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-                    color: Colors.white,
-                    child: Column(
-                      children: [
-                        SizedBox(height: 10,),
-                        Row(
-                          children: [
-                            SizedBox(width: 5,),
-                            Visibility(
-                            visible: widget.isOffertaManualeButtonVisible,
-                            child: Expanded(child: MyElevatedButtonRectWidget(text: "Aggiungi Offerta Manuale", onPressed: (){}, color: Theme.of(context).colorScheme.primary))),
-                            SizedBox(width: 5,),
-                          ],
-                        ),
-                        SizedBox(height: 10,),
-                      ],
-                    ),
-                  ),
+                  SizedBox(height: 10,),
+                  Row(children: [
+                  SizedBox(width: 5,),
+                  Expanded(child: MyElevatedButtonRectWidget(text: "Gestisci offerte", onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
                     SizedBox(width: 5,),
-              ],),
-              Visibility(
-                visible: widget.areOpzioniOfferteVisible,
-                child: Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 10,),
-                      Row(children: [
-                      SizedBox(width: 5,),
-                      Visibility(
-                        visible: widget.areOpzioniOfferteVisible,
-                        child: Expanded(child: MyElevatedButtonRectWidget(text: "Accetta", onPressed: (){}, color: Theme.of(context).colorScheme.primary))),
-                        SizedBox(width: 5,),
-                      Visibility(
-                        visible: widget.areOpzioniOfferteVisible,
-                        child: Expanded(child: MyElevatedButtonRectWidget(text: "Rifiuta", onPressed: (){}, color: Theme.of(context).colorScheme.primary))),
-                        SizedBox(width: 5,),
-                      ],),
-                      SizedBox(height: 10,),
-                      Row(children: [
-                        SizedBox(width: 5,),
-                        Visibility(
-                          visible: widget.areOpzioniOfferteVisible,
-                          child: Expanded(child: MyElevatedButtonRectWidget(text: "Contro proposta", onPressed: (){}, color: Theme.of(context).colorScheme.primary))),
-                        SizedBox(width: 5,),
-                      ],),
-                      SizedBox(height: 10,)
-                    ],
-                  ),
-                ),
+                  Expanded(child: MyElevatedButtonRectWidget(text: "Gestisci prenotazioni", onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
+                    SizedBox(width: 5,),
+                  ],),
+                  SizedBox(height: 10,),
+                ],
               ),
-            ],
-          )
-        )]
-        // Positioned(
-        //   bottom: 16,
-        //   left: 16,
-        //   right: MediaQuery.sizeOf(context).width/1.95,
-        //   child: MyElevatedButtonRectWidget(text: "Offerta", onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
-        // Positioned(
-        //   bottom: 16,
-        //   left: MediaQuery.sizeOf(context).width/1.95,
-        //   right: 16,
-        //   child: MyElevatedButtonWidget(text: "Visita", onPressed: (){}, color: Theme.of(context).colorScheme.primary))
-        // ],
-      )
+            ),
+        )
+      ])
     );
   }
 
