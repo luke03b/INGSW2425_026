@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:domus_app/pages/agente_annuncio_page_generale.dart';
+import 'package:domus_app/pages/agente_annuncio_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -14,54 +14,33 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
 
   int _currentSliderIndex = 0;
 
-  final List<Map<String, dynamic>> listaCase = [
+  final List<Map<String, dynamic>> listaPrenotazioni = [
     {
-      'image1': 'lib/assets/casa1_1_placeholder.png',
-      'image2' : 'lib/assets/casa1_2_placeholder.png',
-      'image3' : 'lib/assets/casa1_3_placeholder.png',
-      'prezzo': '275.000',
-      'indirizzo': 'Via Dalmazia 13,\nCavalleggeri 80124 (NA)',
-      'superficie': '100 mq',
-      'numero_stanze': '6',
-      'data_offerta': '13-01-2025',
-      'offerta': '270.000',
-      'stato_offerta': 'Accettata',
-      'valore_controproposta' : '',
+      'fascia_oraria': '8:30',
       'data_prenotazione' : '13-01-2025',
       'data_richiesta_prenotazione' : '31-01-2025',
       'stato_prenotazione' : 'Accettata',
+      'nome_prenotante' : 'Giuseppe',
+      'cognome_prenotante' : 'De Santis',
+      'email_prenotante' : 'giuseppe.desantis@icloud.com',
     },
     {
-      'image1': 'lib/assets/casa2_1_placeholder.png',
-      'image2' : 'lib/assets/casa2_2_placeholder.png',
-      'image3' : 'lib/assets/casa2_3_placeholder.png',
-      'prezzo': '300.000',
-      'indirizzo': 'Via Dalmazia 14,\nCavalleggeri 80124 (NA)',
-      'superficie': '120 mq',
-      'numero_stanze': '7',
-      'data_offerta': '5-01-2025',
-      'offerta': '250.000',
-      'stato_offerta': 'Rifiutata',
-      'valore_controproposta' : '',
+      'fascia_oraria': '8:30',
       'data_prenotazione' : '5-01-2025',
       'data_richiesta_prenotazione' : '7-02-2025',
       'stato_prenotazione' : 'Rifiutata',
+      'nome_prenotante' : 'Massimiliano',
+      'cognome_prenotante' : 'Centonze',
+      'email_prenotante' : 'massimiliano.centonze@icloud.com',
     },
     {
-      'image1': 'lib/assets/casa3_1_placeholder.png',
-      'image2' : 'lib/assets/casa3_2_placeholder.png',
-      'image3' : 'lib/assets/casa3_3_placeholder.png',
-      'prezzo': '250.000',
-      'indirizzo': 'Via Dalmazia 10,\nCavalleggeri 80124 (NA)',
-      'superficie': '80 mq',
-      'numero_stanze': '5',
-      'data_offerta': '25-12-2024',
-      'offerta': '245.000',
-      'stato_offerta': 'Controproposta',
-      'valore_controproposta' : '247.000',
+      'fascia_oraria': '8:30',
       'data_prenotazione' : '5-12-2024',
       'data_richiesta_prenotazione' : '1-04-2025',
       'stato_prenotazione' : 'In Attesa',
+      'nome_prenotante' : 'Paolo',
+      'cognome_prenotante' : 'Buonomo',
+      'email_prenotante' : 'paolo.buonomo@icloud.com',
     },
 
   ];
@@ -99,13 +78,13 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
     }
 
     return CarouselSlider(
-      items: listaCase.asMap().entries.map((entry) {
+      items: listaPrenotazioni.asMap().entries.map((entry) {
         int indice = entry.key;
         Map<String, dynamic> indiceCasaCorrente = entry.value;
-        double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.7;
+        double scaleFactor = indice == _currentSliderIndex ? 1.0 : 1.0;
         return GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPageGenerale(casaSelezionata: indiceCasaCorrente)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPage(casaSelezionata: indiceCasaCorrente)));
           },
           child: Container(
             width: MediaQuery.of(context).size.width,
@@ -121,19 +100,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
             ),
             child: Column(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
-                  child: SizedBox(
-                    child: Image.asset(indiceCasaCorrente['image1']))),
-                Row(
-                  children: [
-                    Expanded(child: Image.asset(indiceCasaCorrente['image2'])),
-                    Expanded(child: Image.asset(indiceCasaCorrente['image3'])),
-                  ],
-                ),
-                SizedBox(
-                  height: scaleFactor * MediaQuery.of(context).size.height/50,
-                ),
+                SizedBox(height: scaleFactor * MediaQuery.of(context).size.height/50,),
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
@@ -150,41 +117,37 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                     Text(indiceCasaCorrente['data_prenotazione'], style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.bold, color: coloreScritte)),
                   ],
                 ),
-                SizedBox(
-                  height: scaleFactor * MediaQuery.of(context).size.height/75,
-                ),
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.euro, size: scaleFactor * 22, color: coloreScritte,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text("Nome: ", style: TextStyle(fontSize: scaleFactor * 18, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text(indiceCasaCorrente['nome_prenotante'], style: TextStyle(fontSize: scaleFactor * 18, fontWeight: FontWeight.normal, color: coloreScritte)),
                   ],
                 ),
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.location_on, size: scaleFactor * 22, color: coloreScritte,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text("Cognome: ", style: TextStyle(fontSize: scaleFactor * 18, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text(indiceCasaCorrente['cognome_prenotante'], style: TextStyle(fontSize: scaleFactor * 18, fontWeight: FontWeight.normal, color: coloreScritte)),
                   ],
                 ),
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(FontAwesomeIcons.arrowsUpDownLeftRight, size: scaleFactor * 22, color: coloreScritte,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['superficie'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text("Email: ", style: TextStyle(fontSize: scaleFactor * 18, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Expanded(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(indiceCasaCorrente['email_prenotante'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal, color: Theme.of(context).colorScheme.outline),))),
+                      ),
                   ],
                 ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(FontAwesomeIcons.doorClosed, size: scaleFactor * 22, color: coloreScritte,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['numero_stanze'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  ],
-                ),
+                SizedBox(height: scaleFactor * MediaQuery.of(context).size.height/75,),
               ],
             ),
           ),
@@ -192,9 +155,9 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
       }).toList(),
       options: CarouselOptions(
         enableInfiniteScroll: false,
-        viewportFraction: 0.72,
+        viewportFraction: 0.25,
         height: 755,
-        enlargeCenterPage: true,
+        enlargeCenterPage: false,
         scrollDirection: Axis.vertical,
         onPageChanged: (indiceCasaCorrente, reason) {
           setState(() {

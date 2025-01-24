@@ -3,7 +3,7 @@ import 'package:domus_app/pages/agente_offerte_page.dart';
 import 'package:domus_app/pages/agente_prenotazioni_page.dart';
 
 import 'package:domus_app/pages/cliente_annuncio_page.dart';
-import 'package:domus_app/pages/agente_annuncio_page_generale.dart';
+import 'package:domus_app/pages/agente_annuncio_page.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -176,7 +176,7 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
         double scaleFactor = indice == _currentSliderIndex ? 1.0 : 1.0;
         return GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPageGenerale(casaSelezionata: casaCorrente)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPage(casaSelezionata: casaCorrente)));
           },
           child: Container(
             width: MediaQuery.of(context).size.width,

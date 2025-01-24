@@ -1,3 +1,5 @@
+import 'package:domus_app/pages/agente_offerte_page.dart';
+import 'package:domus_app/pages/agente_prenotazioni_page.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
@@ -6,17 +8,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class AgenteAnnuncioPageGenerale extends StatefulWidget {
+class AgenteAnnuncioPage extends StatefulWidget {
   final Map<String, dynamic> casaSelezionata;
   
 
-  const AgenteAnnuncioPageGenerale({super.key, required this.casaSelezionata});
+  const AgenteAnnuncioPage({super.key, required this.casaSelezionata});
 
   @override
-  State<AgenteAnnuncioPageGenerale> createState() => _AgenteAnnuncioPageGeneraleState();
+  State<AgenteAnnuncioPage> createState() => _AgenteAnnuncioPageState();
 }
 
-class _AgenteAnnuncioPageGeneraleState extends State<AgenteAnnuncioPageGenerale> {
+class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
   int _currentIndex = 0;
 
   @override
@@ -296,10 +298,22 @@ class _AgenteAnnuncioPageGeneraleState extends State<AgenteAnnuncioPageGenerale>
                   SizedBox(height: 10,),
                   Row(children: [
                   SizedBox(width: 5,),
-                  Expanded(child: MyElevatedButtonRectWidget(text: "Offerte", onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
-                    SizedBox(width: 5,),
-                  Expanded(child: MyElevatedButtonRectWidget(text: "Prenotazioni", onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
-                    SizedBox(width: 5,),
+                  Expanded(
+                    child: MyElevatedButtonRectWidget(
+                      text: "Offerte",
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteOffertePage()));
+                      },
+                  color: Theme.of(context).colorScheme.primary)),
+                  SizedBox(width: 5,),
+                  Expanded(
+                    child: MyElevatedButtonRectWidget(
+                      text: "Prenotazioni",
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => AgentePrenotazioniPage()));
+                      }, 
+                  color: Theme.of(context).colorScheme.primary)),
+                  SizedBox(width: 5,),
                   ],),
                   SizedBox(height: 10,),
                 ],
