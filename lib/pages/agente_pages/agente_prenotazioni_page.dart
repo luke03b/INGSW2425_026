@@ -17,7 +17,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
   final double GRANDEZZA_SCRITTE_PICCOLE = 18;
   int _currentSliderIndex = 0;
 
-  final List<Map<String, dynamic>> listaPrenotazioni = [
+  final List<Map<String, String>> listaPrenotazioni = [
     {
       'fascia_oraria': '8:30',
       'data_prenotazione' : '13-01-2025',
@@ -198,16 +198,17 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                             text: "Accetta",
                             onPressed: (){
                               showDialog(
+                                barrierDismissible: false,
                                 context: context,
                                 builder: (BuildContext context) => MyOptionsDialog(
                                                                     title: "Conferma prenotazione",
-                                                                    bodyText: "Sei sicuro di voler accettare la prenotazione di ${indicePrenotazioneCorrente['nome_prenotante']}?",
+                                                                    bodyText: "Sei sicuro di voler accettare la prenotazione?",
                                                                     leftButtonText: "Si",
                                                                     leftButtonColor: Theme.of(context).colorScheme.tertiary,
                                                                     rightButtonText: "No",
                                                                     rightButtonColor: Theme.of(context).colorScheme.secondary,
                                                                     onPressLeftButton: (){debugPrint("Prenotazione accettata");},
-                                                                    onPressRightButton: (){debugPrint("Prenotazione rifiutata");}
+                                                                    onPressRightButton: (){Navigator.pop(context);}
                                                                   )
                                 );
                             },
@@ -220,16 +221,17 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                             text: "Rifiuta",
                             onPressed: (){
                               showDialog(
+                                barrierDismissible: false,
                                 context: context,
                                 builder: (BuildContext context) => MyOptionsDialog(
                                                                     title: "Rifiuta prenotazione",
-                                                                    bodyText: "Sei sicuro di voler rifiutare la prenotazione ${indicePrenotazioneCorrente['nome_prenotante']}?",
+                                                                    bodyText: "Sei sicuro di voler rifiutare la prenotazione?",
                                                                     leftButtonText: "Si",
                                                                     leftButtonColor: Theme.of(context).colorScheme.tertiary,
                                                                     rightButtonText: "No",
                                                                     rightButtonColor: Theme.of(context).colorScheme.secondary,
                                                                     onPressLeftButton: (){debugPrint("Prenotazione accettata");},
-                                                                    onPressRightButton: (){debugPrint("Prenotazione rifiutata");}
+                                                                    onPressRightButton: (){Navigator.pop(context);}
                                                                   )
                                 );
                             },

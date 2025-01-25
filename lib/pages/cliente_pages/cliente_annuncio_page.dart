@@ -66,19 +66,26 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                 color: Colors.white,
                 child: Column(
                   children: [
+                    SizedBox(height: 10.0),
                     Row(
                       children: [
                         SizedBox(width: 10.0),
-                        Icon(Icons.euro, size: 30, color: Theme.of(context).colorScheme.outline,),
+                        Text("In affitto", style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: coloriPulsanti),),
+                      ],
+                    ),
+
+                    Row(
+                      children: [
+                        SizedBox(width: 10.0),
                         Text(widget.casaSelezionata['prezzo'], style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                        Text(" EUR", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: coloriPulsanti),),
                       ],
                     ),
         
-        
                     Row(
                       children: [
                         SizedBox(width: 10.0),
-                        Text(widget.casaSelezionata['indirizzo'], style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                        Text(widget.casaSelezionata['indirizzo'], style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: coloriPulsanti),),
                       ],
                     ),
         
@@ -92,18 +99,15 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                         Text("Descrizione", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: coloriPulsanti),),
                       ],
                     ),
-                    Card(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                      // color: const Color.fromARGB(255, 228, 246, 255),
-                      color: Colors.white,
-                      child: 
-                        ReadMoreText(
-                          widget.casaSelezionata['descrizione'],
-                          textAlign: TextAlign.justify,
-                          trimCollapsedText: "mostra altro",
-                          trimExpandedText: "mostra meno",
-                          style: TextStyle(color: coloriPulsanti),
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: ReadMoreText(
+                        widget.casaSelezionata['descrizione'],
+                        textAlign: TextAlign.justify,
+                        trimCollapsedText: "    mostra altro",
+                        trimExpandedText: "    mostra meno",
+                        style: TextStyle(color: coloriPulsanti),
+                      ),
                     ),
         
                     Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
@@ -119,23 +123,10 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                     //colonna di sinistra
                     Row(
                       children: [
+                        SizedBox(width: 10,),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                          SizedBox(width: 10.0),
-                          Row(
-                            children: [
-                            Icon(FontAwesomeIcons.fileContract, size: 22, color: coloriPulsanti,),
-                            SizedBox(width: 10.0),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Contratto", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
-                              ],
-                            ),
-                            ],
-                          ),
                           SizedBox(width: 10.0),
                           Row(
                             children: [
@@ -153,7 +144,21 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(FontAwesomeIcons.couch, size: 22, color: coloriPulsanti,),
+                            Icon(Icons.park, size: 22, color: coloriPulsanti,),
+                            SizedBox(width: 10.0),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Giardino", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
+                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                              ],
+                            ),
+                            ],
+                          ),
+                          SizedBox(width: 10.0),
+                          Row(
+                            children: [
+                            Icon(FontAwesomeIcons.doorClosed, size: 22, color: coloriPulsanti,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -204,7 +209,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                             SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(FontAwesomeIcons.arrowsUpDownLeftRight, size: 22, color: coloriPulsanti,),
+                            Icon(Icons.zoom_out_map, size: 22, color: coloriPulsanti,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,7 +237,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(Icons.checkroom, size: 22, color: coloriPulsanti,),
+                            Icon(FontAwesomeIcons.chair, size: 22, color: coloriPulsanti,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -276,7 +281,6 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                       ],
                     ),
                   Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
-
                   SizedBox(height: 200,),
                   Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
                   SizedBox(height: 65,)
@@ -314,17 +318,6 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
             ],
           )
         )]
-        // Positioned(
-        //   bottom: 16,
-        //   left: 16,
-        //   right: MediaQuery.sizeOf(context).width/1.95,
-        //   child: MyElevatedButtonRectWidget(text: "Offerta", onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
-        // Positioned(
-        //   bottom: 16,
-        //   left: MediaQuery.sizeOf(context).width/1.95,
-        //   right: 16,
-        //   child: MyElevatedButtonWidget(text: "Visita", onPressed: (){}, color: Theme.of(context).colorScheme.primary))
-        // ],
       )
     );
   }

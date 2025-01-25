@@ -70,15 +70,22 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                 color: Colors.white,
                 child: Column(
                   children: [
+                    SizedBox(height: 10.0),
                     Row(
                       children: [
                         SizedBox(width: 10.0),
-                        Icon(Icons.euro, size: 30, color: Theme.of(context).colorScheme.outline,),
-                        Text(widget.casaSelezionata['prezzo'], style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                        Text("In affitto", style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: coloriPulsanti),),
                       ],
                     ),
-        
-        
+
+                    Row(
+                      children: [
+                        SizedBox(width: 10.0),
+                        Text(widget.casaSelezionata['prezzo'], style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                        Text(" EUR", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                      ],
+                    ),
+                    
                     Row(
                       children: [
                         SizedBox(width: 10.0),
@@ -125,12 +132,12 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(FontAwesomeIcons.fileContract, size: 22, color: coloriPulsanti,),
+                            Icon(FontAwesomeIcons.stairs, size: 22, color: coloriPulsanti,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Contratto", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
+                                Text("Piano", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
                                 Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
                               ],
                             ),
@@ -139,12 +146,12 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(FontAwesomeIcons.stairs, size: 22, color: coloriPulsanti,),
+                            Icon(Icons.park, size: 22, color: coloriPulsanti,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Piano", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
+                                Text("Giardino", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
                                 Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
                               ],
                             ),
@@ -340,5 +347,4 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
       ),
     );
   }
-
 }

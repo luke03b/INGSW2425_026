@@ -19,8 +19,9 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
   final double GRANDEZZA_SCRITTE_PICCOLE = 18;
   int _currentSliderIndex = 0;
 
-  final List<Map<String, dynamic>> listaOfferte = [
+  final List<Map<String, String>> listaOfferte = [
     {
+      'prezzo': '275.000',
       'data_offerta': '13-01-2025',
       'valore_offerta' : '260.000',
       'nome_offerente' : 'Paolo',
@@ -29,6 +30,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
       'stato_offerta' : 'In Attesa',
     },
     {
+      'prezzo': '275.000',
       'data_offerta': '5-01-2025',
       'valore_offerta' : '280.000',
       'nome_offerente' : 'Marco',
@@ -37,6 +39,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
       'stato_offerta' : 'In Attesa',
     },
     {
+      'prezzo': '275.000',
       'data_offerta': '25-12-2024',
       'valore_offerta' : '225.000',
       'nome_offerente' : 'Massimiliano',
@@ -45,6 +48,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
       'stato_offerta' : 'In Attesa',
     },
     {
+      'prezzo': '275.000',
       'data_offerta': '13-01-2025',
       'valore_offerta' : '260.000',
       'nome_offerente' : 'Paolo',
@@ -53,6 +57,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
       'stato_offerta' : 'In Attesa',
     },
     {
+      'prezzo': '275.000',
       'data_offerta': '13-01-2025',
       'valore_offerta' : '260.000',
       'nome_offerente' : 'Paolo',
@@ -61,6 +66,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
       'stato_offerta' : 'In Attesa',
     },
     {
+      'prezzo': '275.000',
       'data_offerta': '13-01-2025',
       'valore_offerta' : '260.000',
       'nome_offerente' : 'Paolo',
@@ -69,6 +75,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
       'stato_offerta' : 'In Attesa',
     },
     {
+      'prezzo': '275.000',
       'data_offerta': '13-01-2025',
       'valore_offerta' : '260.000',
       'nome_offerente' : 'Paolo',
@@ -77,6 +84,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
       'stato_offerta' : 'In Attesa',
     },
     {
+      'prezzo': '275.000',
       'data_offerta': '13-01-2025',
       'valore_offerta' : '260.000',
       'nome_offerente' : 'Paolo',
@@ -102,7 +110,37 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
         elevation: 5,
         shadowColor: Colors.black,
       ),
-      body: myCarouselSlider(context));
+      body: Stack(
+        children:[ 
+          myCarouselSlider(context),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 63),
+              child: Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(width: 10,height: 40,),
+                    Text("Prezzo iniziale: ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: GRANDEZZA_SCRITTE_PICCOLE, color: Theme.of(context).colorScheme.outline),),
+                    Expanded(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(listaOfferte[0]['prezzo']!, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: Theme.of(context).colorScheme.outline),))),
+                    ),
+                    Text("EUR", style: TextStyle(fontWeight: FontWeight.normal, fontSize: GRANDEZZA_SCRITTE_PICCOLE, color: Theme.of(context).colorScheme.outline),),
+                    SizedBox(width: 10,),
+                  ],
+                ),
+              ),
+            )
+          ),
+          ]));
   }
 
  CarouselSlider myCarouselSlider(BuildContext context) {
@@ -168,6 +206,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                   Text("Email: ", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
                   Expanded(
                       child: FittedBox(
+                        alignment: Alignment.centerLeft,
                         fit: BoxFit.scaleDown,
                         child: Align(
                           alignment: Alignment.centerLeft,
@@ -194,16 +233,17 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                             text: "Rifiuta",
                             onPressed: (){
                               showDialog(
+                                barrierDismissible: false,
                                 context: context,
                                 builder: (BuildContext context) => MyOptionsDialog(
                                                                     title: "Rifiuta offerta",
-                                                                    bodyText: "Sei sicuro di voler rifiutare la prenotazione ${indiceOffertaCorrente['nome_offerente']}?",
+                                                                    bodyText: "Sei sicuro di voler rifiutare la prenotazione?",
                                                                     leftButtonText: "Si",
                                                                     leftButtonColor: Theme.of(context).colorScheme.tertiary,
                                                                     rightButtonText: "No",
                                                                     rightButtonColor: Theme.of(context).colorScheme.secondary,
                                                                     onPressLeftButton: (){debugPrint("Prenotazione accettata");},
-                                                                    onPressRightButton: (){debugPrint("Prenotazione rifiutata");}
+                                                                    onPressRightButton: (){Navigator.pop(context);}
                                                                   )
                                 );
                             },
@@ -220,7 +260,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
       options: CarouselOptions(
         initialPage: 1,
         enableInfiniteScroll: false,
-        viewportFraction: 0.28,
+        viewportFraction: 0.29,
         height: 850,
         enlargeCenterPage: false,
         scrollDirection: Axis.vertical,

@@ -126,23 +126,23 @@ class _OffertePageState extends State<OffertePage> {
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text("La tua offerta: ", style: TextStyle(fontSize: scaleFactor * 25, fontWeight: FontWeight.bold, color: coloreScritte)),
-                    Icon(Icons.euro, size: scaleFactor * 27, color: coloreScritte,),
-                    Text(indiceCasaCorrente['offerta'], style: TextStyle(fontSize: scaleFactor * 25, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text("La tua offerta: ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text(indiceCasaCorrente['offerta'], style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: coloreScritte)),
+                    Text(" EUR", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: coloreScritte)),
                   ],
                 ),
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['stato_offerta'], style: TextStyle(fontSize: scaleFactor * 25, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
+                    Text(indiceCasaCorrente['stato_offerta'], style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
                     Visibility(
                       visible: indiceCasaCorrente['stato_offerta'] == "Controproposta",
                       child: Row(
                         children: [
-                          Text(": ", style: TextStyle(fontSize: scaleFactor * 25, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
-                          Icon(Icons.euro, size: scaleFactor * 27, color: Theme.of(context).colorScheme.tertiary,),
-                          Text(indiceCasaCorrente['valore_controproposta'], style: TextStyle(fontSize: scaleFactor * 25, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
+                          Text(": ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
+                          Text(indiceCasaCorrente['valore_controproposta'], style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
+                          Text(" EUR", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
                         ],
                       ),
                     ),
@@ -152,8 +152,8 @@ class _OffertePageState extends State<OffertePage> {
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text("Data offerta: ", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
-                    Text(indiceCasaCorrente['data_offerta'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text("Data offerta: ", style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text(indiceCasaCorrente['data_offerta'], style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.normal, color: coloreScritte)),
                   ],
                 ),
                 SizedBox(
@@ -162,9 +162,9 @@ class _OffertePageState extends State<OffertePage> {
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.euro, size: scaleFactor * 22, color: coloreScritte,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
                   ],
                 ),
                 Row(
@@ -172,23 +172,7 @@ class _OffertePageState extends State<OffertePage> {
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     Icon(Icons.location_on, size: scaleFactor * 22, color: coloreScritte,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(FontAwesomeIcons.arrowsUpDownLeftRight, size: scaleFactor * 22, color: coloreScritte,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['superficie'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.weekend, size: scaleFactor * 22, color: coloreScritte,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['numero_stanze'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.normal, color: coloreScritte)),
                   ],
                 ),
               ],
@@ -197,7 +181,8 @@ class _OffertePageState extends State<OffertePage> {
         }).toList(),
         options: CarouselOptions(
           enableInfiniteScroll: false,
-          height: 760,
+          viewportFraction: 0.68,
+          height: 753,
           enlargeCenterPage: true,
           scrollDirection: Axis.vertical,
           onPageChanged: (indiceCasaCorrente, reason) {

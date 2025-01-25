@@ -117,9 +117,9 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.euro, size: scaleFactor * GRANDEZZA_ICONE, color: coloreScritte,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     Text(casaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text(" EUR", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
                   ],
                 ),
                 Row(
@@ -127,41 +127,7 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     Icon(Icons.location_on, size: scaleFactor * GRANDEZZA_ICONE, color: coloreScritte,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(casaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  ],
-                ),
-
-                Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
-
-                Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        SizedBox(width: MediaQuery.of(context).size.width/45,),
-                        Icon(FontAwesomeIcons.arrowsUpDownLeftRight, size: scaleFactor * GRANDEZZA_ICONE_PICCOLE, color: coloreScritte,),
-                        SizedBox(width: MediaQuery.of(context).size.width/45,),
-                        Text(casaCorrente['superficie'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                      ],
-                    ),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Row(
-                      children: [
-                        SizedBox(width: MediaQuery.of(context).size.width/45,),
-                        Icon(FontAwesomeIcons.stairs, size: scaleFactor * GRANDEZZA_ICONE_PICCOLE, color: coloreScritte,),
-                        SizedBox(width: MediaQuery.of(context).size.width/45,),
-                        Text(casaCorrente['piano'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)), 
-                      ],
-                    ),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Row(
-                      children: [
-                        SizedBox(width: MediaQuery.of(context).size.width/45,),
-                        Icon(FontAwesomeIcons.couch, size: scaleFactor * GRANDEZZA_ICONE_PICCOLE, color: coloreScritte,),
-                        SizedBox(width: MediaQuery.of(context).size.width/45,),
-                        Text(casaCorrente['numero_stanze'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                      ],
-                    ),
+                    Text(casaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
                   ],
                 ),
               ],
@@ -171,8 +137,8 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
       }).toList(),
       options: CarouselOptions(
         enableInfiniteScroll: false,
-        viewportFraction: 0.65,
-        height: 750,
+        viewportFraction: 0.56,
+        height: 753,
         enlargeCenterPage: true,
         scrollDirection: Axis.vertical,
         onPageChanged: (indiceCasaCorrente, reason) {

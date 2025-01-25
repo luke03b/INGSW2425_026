@@ -60,7 +60,7 @@ class _MyPasswordFieldWidgetState extends State<MyPasswordFieldWidget> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
-      style: TextStyle(fontSize: 18.0),
+      style: TextStyle(fontSize: 18.0, color: widget.color),
       obscureText: _isPasswordObscured,
       decoration: InputDecoration(
         hintStyle: TextStyle(color: widget.color),
@@ -142,6 +142,7 @@ class _MyTextFieldOnlyPositiveNumbersState extends State<MyTextFieldOnlyPositive
       style: TextStyle(
         fontSize: 18.0,
         color: widget.colore, 
+        fontWeight: FontWeight.normal
       ),
       decoration: InputDecoration(
         hintText: widget.text,

@@ -32,8 +32,9 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
     super.dispose();
   }
 
-  final List<Map<String, dynamic>> listaOfferte = [
+  final List<Map<String, String>> listaOfferte = [
     {
+      'prezzo': '275.000',
       'data_offerta': '13-01-2025',
       'valore_offerta' : '260.000',
       'nome_offerente' : 'Paolo',
@@ -42,6 +43,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
       'stato_offerta' : 'In Attesa',
     },
     {
+      'prezzo': '275.000',
       'data_offerta': '5-01-2025',
       'valore_offerta' : '280.000',
       'nome_offerente' : 'Marco',
@@ -50,6 +52,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
       'stato_offerta' : 'In Attesa',
     },
     {
+      'prezzo': '275.000',
       'data_offerta': '25-12-2024',
       'valore_offerta' : '225.000',
       'nome_offerente' : 'Massimiliano',
@@ -58,6 +61,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
       'stato_offerta' : 'In Attesa',
     },
     {
+      'prezzo': '275.000',
       'data_offerta': '13-01-2025',
       'valore_offerta' : '260.000',
       'nome_offerente' : 'Paolo',
@@ -66,6 +70,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
       'stato_offerta' : 'In Attesa',
     },
     {
+      'prezzo': '275.000',
       'data_offerta': '13-01-2025',
       'valore_offerta' : '260.000',
       'nome_offerente' : 'Paolo',
@@ -74,6 +79,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
       'stato_offerta' : 'In Attesa',
     },
     {
+      'prezzo': '275.000',
       'data_offerta': '13-01-2025',
       'valore_offerta' : '260.000',
       'nome_offerente' : 'Paolo',
@@ -82,6 +88,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
       'stato_offerta' : 'In Attesa',
     },
     {
+      'prezzo': '275.000',
       'data_offerta': '13-01-2025',
       'valore_offerta' : '260.000',
       'nome_offerente' : 'Paolo',
@@ -90,6 +97,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
       'stato_offerta' : 'In Attesa',
     },
     {
+      'prezzo': '275.000',
       'data_offerta': '13-01-2025',
       'valore_offerta' : '260.000',
       'nome_offerente' : 'Paolo',
@@ -122,6 +130,16 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                       children: [
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Text("Prezzo iniziale: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
+                        Text(widget.offertaSelezionata['prezzo'], style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
+                        Text(" EUR", style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Text("Offerta cliente: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
                         Text(widget.offertaSelezionata['valore_offerta'], style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
                         Text(" EUR", style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
                       ],
@@ -157,6 +175,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                         Text("Email: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
                         Expanded(
                             child: FittedBox(
+                              alignment: Alignment.centerLeft,
                               fit: BoxFit.scaleDown,
                               child: Align(
                                 alignment: Alignment.centerLeft,
@@ -173,16 +192,17 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                     text: "Accetta",
                                     onPressed: (){
                                       showDialog(
+                                        barrierDismissible: false,
                                         context: context,
                                         builder: (BuildContext context) => MyOptionsDialog(
-                                                                            title: "Accetta",
-                                                                            bodyText: "Sei sicuro di voler accettare l'offerta di ${widget.offertaSelezionata['nome_offerente']}?",
+                                                                            title: "Accetta offerta",
+                                                                            bodyText: "Sei sicuro di voler accettare l'offerta?",
                                                                             leftButtonText: "Si",
                                                                             leftButtonColor: Theme.of(context).colorScheme.tertiary,
                                                                             rightButtonText: "No",
                                                                             rightButtonColor: Theme.of(context).colorScheme.secondary,
                                                                             onPressLeftButton: (){debugPrint("offerta accettata");},
-                                                                            onPressRightButton: (){debugPrint("offerta non accettata");}
+                                                                            onPressRightButton: (){Navigator.pop(context);}
                                                                           )
                                         );
                                     },
@@ -195,16 +215,17 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                   text: "Rifiuta",
                                   onPressed: (){
                                     showDialog(
+                                      barrierDismissible: false,
                                       context: context,
                                       builder: (BuildContext context) => MyOptionsDialog(
                                                                           title: "Rifiuta offerta",
-                                                                          bodyText: "Sei sicuro di voler rifiutare l'offerta di ${widget.offertaSelezionata['nome_offerente']}?",
+                                                                          bodyText: "Sei sicuro di voler rifiutare l'offerta?",
                                                                           leftButtonText: "Si",
                                                                           leftButtonColor: Theme.of(context).colorScheme.tertiary,
                                                                           rightButtonText: "No",
                                                                           rightButtonColor: Theme.of(context).colorScheme.secondary,
                                                                           onPressLeftButton: (){debugPrint("Prenotazione rifiutata");},
-                                                                          onPressRightButton: (){debugPrint("Prenotazione non rifiutata");}
+                                                                          onPressRightButton: (){Navigator.pop(context);}
                                                                         )
                                       );
                                   },
@@ -215,6 +236,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                       ],
                     ),
                     SizedBox(height: 10,),
+                    
                     Row(
                     children: [
                       Expanded(child: Divider(height: 50, thickness: 2, indent: 20, endIndent: 10, color: coloreScritte,)),
@@ -227,13 +249,26 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                         SizedBox(width: MediaQuery.of(context).size.height/50,),
                         Column(
                           children: [
-                            Text("Inserisci Controproposta: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte),),
-                            //MyTextFieldOnlyPositiveNumbers(controller: contropropostaController, text: "Controproposta", colore: coloreScritte)
+                            Row(
+                              children: [
+                                Text("Inserisci Controproposta: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte),),
+                                SizedBox(
+                                  width: MediaQuery.sizeOf(context).width * 0.40,
+                                  child: MyTextFieldOnlyPositiveNumbers(controller: contropropostaController, text: "EUR", colore: coloreScritte,)
+                                ),
+                              ],
+                            ),
                           ],
                         )
                       ],
                     ),
-                    MyElevatedButtonRectWidget(text: "Invia", onPressed: (){}, color: coloreScritte),
+                    // MyTextFieldOnlyPositiveNumbers(controller: contropropostaController, text: "Controproposta", colore: coloreScritte),
+                    SizedBox(height: MediaQuery.of(context).size.height/50,),
+                    MyElevatedButtonRectWidget(text: "Invia", onPressed: (){
+                                      inviaControproposta(context);
+                                      }, color: Theme.of(context).colorScheme.primary),
+                    SizedBox(height: MediaQuery.of(context).size.height/50,),
+
                     Card(
                       color: Colors.white,
                       elevation: 4,
@@ -285,9 +320,63 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 10,)
+                    SizedBox(width: 10,),
+
+                    
                 ],),
         ),
       );
+  }
+
+  void inviaControproposta(BuildContext context) {
+    if(contropropostaController.text.isEmpty){
+      showDialog(
+        barrierDismissible: false,
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(title: "Attenzione", bodyText: "Inserire una controproposta", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
+      );
+    }
+
+    try {
+      //conversione delle stringhe in numeri
+      String offertaAttualeStringa = widget.offertaSelezionata['valore_offerta'];
+      int offertaAttuale = int.parse(offertaAttualeStringa.replaceAll('.', ''));
+
+      int nuovaControproposta = int.parse(contropropostaController.text);
+
+      String prezzoInizialeStringa = widget.offertaSelezionata['prezzo'];
+      int prezzoIniziale = int.parse(prezzoInizialeStringa.replaceAll('.', ''));
+
+      if(offertaAttuale >= nuovaControproposta){
+        showDialog(
+        barrierDismissible: false,
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(title: "Attenzione", bodyText: "La controproposta deve essere maggiore dell'offerta", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
+        );
+      }else if(nuovaControproposta > prezzoIniziale){
+        showDialog(
+        barrierDismissible: false,
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(title: "Attenzione", bodyText: "La controproposta deve essere minore del prezzo iniziale", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
+        );
+      } else {
+        showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) => MyOptionsDialog(
+                                            title: "Conferma",
+                                            bodyText: "Sei sicuro di voler inviare una controproposta di ${contropropostaController.text} EUR?",
+                                            leftButtonText: "Si",
+                                            leftButtonColor: Theme.of(context).colorScheme.tertiary,
+                                            rightButtonText: "No",
+                                            rightButtonColor: Theme.of(context).colorScheme.secondary,
+                                            onPressLeftButton: (){debugPrint("Controproposta inviata");},
+                                            onPressRightButton: (){Navigator.pop(context);}
+                                          )
+        );
+      }
+    } catch (e) {
+       print("Errore durante la conversione: $e");
+    }
   }
 }

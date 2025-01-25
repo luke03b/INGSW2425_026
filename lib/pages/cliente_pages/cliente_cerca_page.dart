@@ -138,7 +138,7 @@ class _CercaPageState extends State<CercaPage> {
             Align(
               alignment: Alignment.centerRight,
               child: MyTextButtonWidget(
-                text: "Ricerca Avanzata", 
+                text: _ricercaAvanzataVisibile ? "Chiudi Ricerca Avanzata" : "Apri Ricerca Avanzata", 
                 onPressed: _toggleRicercaAvanzata,
                 colore: coloriPulsanti
               )
@@ -157,10 +157,6 @@ class _CercaPageState extends State<CercaPage> {
               color: Theme.of(context).colorScheme.tertiary
             ),
 
-            SizedBox(
-              height: MediaQuery.of(context).size.height/13,
-            ),
-
             myCronologia(context, coloriPulsanti)
 
           ],
@@ -174,6 +170,9 @@ class _CercaPageState extends State<CercaPage> {
       visible: !_ricercaAvanzataVisibile, 
       child: Column(
         children: [
+          SizedBox(
+              height: MediaQuery.of(context).size.height/8,
+            ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -229,9 +228,9 @@ class _CercaPageState extends State<CercaPage> {
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.euro, size: scaleFactor * 22, color: coloreScritte,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte),),
+                    Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte),),
                   ],
                 ),
                 Row(
@@ -239,15 +238,7 @@ class _CercaPageState extends State<CercaPage> {
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     Icon(Icons.location_on, size: scaleFactor * 22, color: coloreScritte,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(FontAwesomeIcons.arrowsUpDownLeftRight, size: scaleFactor * 22, color: coloreScritte,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['superficie'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.normal, color: coloreScritte)),
                   ],
                 ),
               ],
@@ -256,7 +247,8 @@ class _CercaPageState extends State<CercaPage> {
         );
       }).toList(),
       options: CarouselOptions(
-        height: 400,
+        viewportFraction: 0.8,
+        height: 360,
         enlargeCenterPage: true,
         onPageChanged: (indiceCasaCorrente, reason) {
           setState(() {
@@ -276,10 +268,10 @@ class _CercaPageState extends State<CercaPage> {
                 myFiltroRicerca(coloriPulsanti, context, Icons.euro, _prezzoMinController, _prezzoMaxController, "Prezzo Min", "Prezzo Max"),
 
                 //superficie
-                myFiltroRicerca(coloriPulsanti, context, FontAwesomeIcons.arrowsUpDownLeftRight, _superficieMinController, _superficieMaxController, "Superficie Min", "Superficie Max"),
+                myFiltroRicerca(coloriPulsanti, context, Icons.zoom_out_map, _superficieMinController, _superficieMaxController, "Superficie Min", "Superficie Max"),
 
                 //Stanze
-                myFiltroRicerca(coloriPulsanti, context, FontAwesomeIcons.couch, _numeroStanzeMinController, _numeroStanzeMaxController, "N. Stanze Min", "N. Stanze Max"),
+                myFiltroRicerca(coloriPulsanti, context, FontAwesomeIcons.doorClosed, _numeroStanzeMinController, _numeroStanzeMaxController, "N. Stanze Min", "N. Stanze Max"),
                 
                 Divider(height: 50, thickness: 2, indent: 10, endIndent: 10, color: Theme.of(context).colorScheme.primary,),
 
@@ -303,7 +295,7 @@ class _CercaPageState extends State<CercaPage> {
                                 SizedBox(height: 22,),
                                 Icon(FontAwesomeIcons.elevator, size: 22, color: coloriPulsanti,),
                                 SizedBox(height: 22,),
-                                Icon(Icons.checkroom, size: 22, color: coloriPulsanti,),
+                                Icon(FontAwesomeIcons.chair, size: 22, color: coloriPulsanti,),
                               ],
                             ),
 
@@ -312,7 +304,7 @@ class _CercaPageState extends State<CercaPage> {
                             //Colonna contenente nomi
                             Column(
                               children: [
-                                Text("Garage", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
+                                Text("Garage", style: TextStyle(fontSize: 18.0, color: coloriPulsanti, ),),
                                 SizedBox(height: 22,),
                                 Text("Ascensore", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
                                 SizedBox(height: 22,),
@@ -431,11 +423,15 @@ class _CercaPageState extends State<CercaPage> {
                 //Selettore Piano
                 SizedBox(
                   height: 50,
+                  width: MediaQuery.sizeOf(context).width/1,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text("           Piano           ", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
+                      SizedBox(width: 30.0),
+                      Text("Piano", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
+                      SizedBox(width: 150.0),
                       DropdownMenu(
+                        width: 175,
                         textStyle: TextStyle(color: coloriPulsanti),
                         inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: coloriPulsanti), suffixIconColor: coloriPulsanti),
                         initialSelection: listaPiani.first,
@@ -452,15 +448,20 @@ class _CercaPageState extends State<CercaPage> {
                   ),
                 ),
 
+                SizedBox(height: 10.0),
 
                 //Selettore Classe Energetica
                 SizedBox(
                   height: 50,
+                  width: MediaQuery.sizeOf(context).width/1,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
+                      SizedBox(width: 30.0),
                       Text("Classe Energetica", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
+                      SizedBox(width: 50.0),
                       DropdownMenu(
+                        width: 175,
                         textStyle: TextStyle(color: coloriPulsanti),
                         inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: coloriPulsanti), suffixIconColor: coloriPulsanti),
                         initialSelection: listaClassiEnergetiche.first,
