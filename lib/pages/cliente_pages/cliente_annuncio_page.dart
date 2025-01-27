@@ -1,4 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:domus_app/pages/cliente_pages/cliente_crea_offerta_page.dart';
+import 'package:domus_app/pages/cliente_pages/cliente_crea_prenotazione.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -306,9 +308,13 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                     SizedBox(height: 10,),
                     Row(children: [
                     SizedBox(width: 5,),
-                    Expanded(child: MyElevatedButtonRectWidget(text: "Offerta", onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
+                    Expanded(child: MyElevatedButtonRectWidget(text: "Offerta", onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteCreaOffertaPage(casaSelezionata: widget.casaSelezionata)));
+                    }, color: Theme.of(context).colorScheme.primary)),
                     SizedBox(width: 5,),
-                    Expanded(child: MyElevatedButtonRectWidget(text: "Visita", onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
+                    Expanded(child: MyElevatedButtonRectWidget(text: "Visita", onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteCreaPrenotazionePage(casaSelezionata: widget.casaSelezionata)));
+                    }, color: Theme.of(context).colorScheme.primary)),
                     SizedBox(width: 5,),
                     ],),
                     SizedBox(height: 10,)

@@ -95,7 +95,10 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
               SizedBox(height: 10,),
               Row(children: [
               SizedBox(width: 5,),
-              Expanded(child: MyAddButtonWidget(onPressed: (){}, color: Theme.of(context).colorScheme.primary)),
+              Expanded(child: MyAddButtonWidget(onPressed: (){
+
+              },
+              color: Theme.of(context).colorScheme.primary)),
               SizedBox(width: 5,),
               ],),
               SizedBox(height: 10,)

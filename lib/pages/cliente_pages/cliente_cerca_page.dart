@@ -178,7 +178,7 @@ class _CercaPageState extends State<CercaPage> {
             children: [
               SizedBox(width: MediaQuery.of(context).size.width/9,),
               Icon(Icons.history, color: coloriPulsanti,),
-              Text('Ultime Visite', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+              Text('Ultime visite', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: coloriPulsanti),),
             ],
           ),
           myCarouselSlider(context),
