@@ -51,6 +51,7 @@ dependencies:
   amplify_authenticator: ^2.3.2
   amplify_api: ^2.6.0
   amplify_core: ^2.6.0
+  google_maps_flutter: ^2.10.0
 
 dev_dependencies:
   flutter_test:
