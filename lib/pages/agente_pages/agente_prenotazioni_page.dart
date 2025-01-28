@@ -203,12 +203,12 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                                 builder: (BuildContext context) => MyOptionsDialog(
                                                                     title: "Conferma prenotazione",
                                                                     bodyText: "Sei sicuro di voler accettare la prenotazione?",
-                                                                    leftButtonText: "Si",
-                                                                    leftButtonColor: Theme.of(context).colorScheme.tertiary,
-                                                                    rightButtonText: "No",
-                                                                    rightButtonColor: Theme.of(context).colorScheme.secondary,
-                                                                    onPressLeftButton: (){debugPrint("Prenotazione accettata");},
-                                                                    onPressRightButton: (){Navigator.pop(context);}
+                                                                    leftButtonText: "No",
+                                                                    leftButtonColor: Theme.of(context).colorScheme.secondary,
+                                                                    rightButtonText: "Si",
+                                                                    rightButtonColor: Theme.of(context).colorScheme.tertiary,
+                                                                    onPressLeftButton: (){Navigator.pop(context);},
+                                                                    onPressRightButton: (){debugPrint("Prenotazione accettata");},
                                                                   )
                                 );
                             },
@@ -226,12 +226,12 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                                 builder: (BuildContext context) => MyOptionsDialog(
                                                                     title: "Rifiuta prenotazione",
                                                                     bodyText: "Sei sicuro di voler rifiutare la prenotazione?",
-                                                                    leftButtonText: "Si",
-                                                                    leftButtonColor: Theme.of(context).colorScheme.tertiary,
-                                                                    rightButtonText: "No",
-                                                                    rightButtonColor: Theme.of(context).colorScheme.secondary,
-                                                                    onPressLeftButton: (){debugPrint("Prenotazione accettata");},
-                                                                    onPressRightButton: (){Navigator.pop(context);}
+                                                                    leftButtonText: "No",
+                                                                    leftButtonColor: Theme.of(context).colorScheme.secondary,
+                                                                    rightButtonText: "Si",
+                                                                    rightButtonColor: Theme.of(context).colorScheme.tertiary,
+                                                                    onPressLeftButton: (){Navigator.pop(context);},
+                                                                    onPressRightButton: (){debugPrint("Prenotazione accettata");},
                                                                   )
                                 );
                             },

@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:domus_app/pages/agente_pages/agente_offerte_page.dart';
 import 'package:domus_app/pages/agente_pages/agente_prenotazioni_page.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
@@ -7,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class AgenteAnnuncioPage extends StatefulWidget {
   final Map<String, dynamic> casaSelezionata;
@@ -19,6 +24,11 @@ class AgenteAnnuncioPage extends StatefulWidget {
 }
 
 class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
+  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(40.8189507, 14.1896127),
+    zoom: 14.4746,
+  );
   int _currentIndex = 0;
 
   @override
@@ -283,7 +293,23 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                       ],
                     ),
                   Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
-                  SizedBox(height: 200,),
+                   Row(
+                      children: [
+                        SizedBox(width: 10.0),
+                        Text("Posizione", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                      ],
+                    ),
+                  SizedBox(height: 10,),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width/1.1,
+                    height: 300,
+                    child: GoogleMap(
+                      gestureRecognizers: Set()..add(Factory<PanGestureRecognizer>(() => PanGestureRecognizer())),
+                      mapType: MapType.normal,
+                      initialCameraPosition: _kGooglePlex,
+                      onMapCreated: (GoogleMapController controller) {_controller.complete(controller);},
+                      markers: {const Marker(markerId: MarkerId('Posizione'), position:  LatLng(40.8189507, 14.1896127),)},),
+                  ),
                   Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
                   SizedBox(height: 65,)
                   ],

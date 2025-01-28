@@ -238,12 +238,12 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                                 builder: (BuildContext context) => MyOptionsDialog(
                                                                     title: "Rifiuta offerta",
                                                                     bodyText: "Sei sicuro di voler rifiutare la prenotazione?",
-                                                                    leftButtonText: "Si",
-                                                                    leftButtonColor: Theme.of(context).colorScheme.tertiary,
-                                                                    rightButtonText: "No",
-                                                                    rightButtonColor: Theme.of(context).colorScheme.secondary,
-                                                                    onPressLeftButton: (){debugPrint("Prenotazione accettata");},
-                                                                    onPressRightButton: (){Navigator.pop(context);}
+                                                                    leftButtonText: "No",
+                                                                    leftButtonColor: Theme.of(context).colorScheme.secondary,
+                                                                    rightButtonText: "Si",
+                                                                    rightButtonColor: Theme.of(context).colorScheme.tertiary,
+                                                                    onPressLeftButton: (){Navigator.pop(context);},
+                                                                    onPressRightButton: (){debugPrint("Prenotazione accettata");},
                                                                   )
                                 );
                             },

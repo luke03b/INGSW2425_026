@@ -24,6 +24,8 @@ class ClienteAnnuncioPage extends StatefulWidget {
 class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
   final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
   int _currentIndex = 0;
+  final latitude = 40.8189507;
+  final longitude = 14.1896127;
 
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(40.8189507, 14.1896127),
@@ -340,7 +342,8 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                     }, color: Theme.of(context).colorScheme.primary)),
                     SizedBox(width: 5,),
                     Expanded(child: MyElevatedButtonRectWidget(text: "Visita", onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteCreaPrenotazionePage(casaSelezionata: widget.casaSelezionata)));
+                      // Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteCreaPrenotazionePage(casaSelezionata: widget.casaSelezionata)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => WeatherScreen(latitude: latitude, longitude: longitude,)));
                     }, color: Theme.of(context).colorScheme.primary)),
                     SizedBox(width: 5,),
                     ],),

@@ -197,12 +197,12 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                         builder: (BuildContext context) => MyOptionsDialog(
                                                                             title: "Accetta offerta",
                                                                             bodyText: "Sei sicuro di voler accettare l'offerta?",
-                                                                            leftButtonText: "Si",
-                                                                            leftButtonColor: Theme.of(context).colorScheme.tertiary,
-                                                                            rightButtonText: "No",
-                                                                            rightButtonColor: Theme.of(context).colorScheme.secondary,
-                                                                            onPressLeftButton: (){debugPrint("offerta accettata");},
-                                                                            onPressRightButton: (){Navigator.pop(context);}
+                                                                            rightButtonText: "Si",
+                                                                            leftButtonText: "No",
+                                                                            leftButtonColor: Theme.of(context).colorScheme.secondary,
+                                                                            rightButtonColor: Theme.of(context).colorScheme.tertiary,
+                                                                            onPressLeftButton: (){Navigator.pop(context);},
+                                                                            onPressRightButton: (){debugPrint("offerta accettata");},
                                                                           )
                                         );
                                     },
@@ -220,12 +220,12 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                       builder: (BuildContext context) => MyOptionsDialog(
                                                                           title: "Rifiuta offerta",
                                                                           bodyText: "Sei sicuro di voler rifiutare l'offerta?",
-                                                                          leftButtonText: "Si",
-                                                                          leftButtonColor: Theme.of(context).colorScheme.tertiary,
-                                                                          rightButtonText: "No",
-                                                                          rightButtonColor: Theme.of(context).colorScheme.secondary,
-                                                                          onPressLeftButton: (){debugPrint("Prenotazione rifiutata");},
-                                                                          onPressRightButton: (){Navigator.pop(context);}
+                                                                          leftButtonText: "No",
+                                                                          leftButtonColor: Theme.of(context).colorScheme.secondary,
+                                                                          rightButtonText: "Si",
+                                                                          rightButtonColor: Theme.of(context).colorScheme.tertiary,
+                                                                          onPressLeftButton: (){Navigator.pop(context);},
+                                                                          onPressRightButton: (){debugPrint("Prenotazione rifiutata");},
                                                                         )
                                       );
                                   },
@@ -366,12 +366,12 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
         builder: (BuildContext context) => MyOptionsDialog(
                                             title: "Conferma",
                                             bodyText: "Sei sicuro di voler inviare una controproposta di ${contropropostaController.text} EUR?",
-                                            leftButtonText: "Si",
-                                            leftButtonColor: Theme.of(context).colorScheme.tertiary,
-                                            rightButtonText: "No",
-                                            rightButtonColor: Theme.of(context).colorScheme.secondary,
-                                            onPressLeftButton: (){debugPrint("Controproposta inviata");},
-                                            onPressRightButton: (){Navigator.pop(context);}
+                                            leftButtonText: "No",
+                                            leftButtonColor: Theme.of(context).colorScheme.secondary,
+                                            rightButtonText: "Si",
+                                            rightButtonColor: Theme.of(context).colorScheme.tertiary,
+                                            onPressLeftButton: (){Navigator.pop(context);},
+                                            onPressRightButton: (){debugPrint("Controproposta inviata");},
                                           )
         );
       }

@@ -3,8 +3,10 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:domus_app/pages/agente_pages/agente_controllore_pagine.dart';
 import 'package:domus_app/pages/auth_pages/initial_page.dart';
 import 'package:domus_app/pages/auth_pages/password_dimenticata_page.dart';
+import 'package:intl/intl.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl_standalone.dart';
 
 
 import 'amplifyconfiguration.dart';
