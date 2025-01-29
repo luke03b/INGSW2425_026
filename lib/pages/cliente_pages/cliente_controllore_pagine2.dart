@@ -2,7 +2,6 @@ import 'package:domus_app/pages/cliente_pages/cliente_prenotazioni_page.dart';
 import 'package:domus_app/pages/profilo_page.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_risultati_cerca_page.dart';
 import 'package:flutter/material.dart';
-import 'cliente_cerca_page.dart';
 import 'cliente_offerte_page.dart';
 
 class ControllorePagine2 extends StatefulWidget {

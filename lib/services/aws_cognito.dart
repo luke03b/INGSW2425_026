@@ -105,12 +105,11 @@ class AWSServices {
       AttributeArg(name: 'custom:group', value: userGroup),
     ];
 
-    var data;
     try {
-      data = await userPool.signUp(email, password, userAttributes: userAttributes);
+      var data = await userPool.signUp(email, password, userAttributes: userAttributes);
       return true;
     } catch (e) {
-      print(e);
+      safePrint(e);
       return false;
     }
   }
@@ -142,11 +141,11 @@ class AWSServices {
     bool isAllOk = false;
     try {
       data = await cognitoUser.forgotPassword();
-      print('Code sent to $data');
+      safePrint('Code sent to $data');
       isAllOk = true;
       // return true;
     } catch (e) {
-      print(e);
+      safePrint(e);
       // return false;
     }
     return isAllOk;
@@ -159,9 +158,9 @@ class AWSServices {
     bool passwordConfirmed = false;
     try {
       passwordConfirmed = await cognitoUser.confirmPassword(codice, newPassword);
-      print(passwordConfirmed);
+      safePrint(passwordConfirmed);
     } catch (e) {
-      print(e);
+      safePrint(e);
     }
     
     return passwordConfirmed;
