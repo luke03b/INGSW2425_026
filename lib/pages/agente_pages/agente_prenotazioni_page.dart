@@ -178,8 +178,9 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   Text("Email: ", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  Expanded(
+                 Expanded(
                       child: FittedBox(
+                        alignment: Alignment.centerLeft,
                         fit: BoxFit.scaleDown,
                         child: Align(
                           alignment: Alignment.centerLeft,

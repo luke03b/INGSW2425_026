@@ -35,7 +35,7 @@ class _InitialPageState extends State<InitialPage> {
               } else if (adminSnapshot.hasError){
                 return Scaffold(body: Center(child: Text('Errore durante il caricamento della pagina'),),);
               } else {
-                if (userGroup == 'admin') {
+                if (userGroup == 'admin' || userGroup == "agente") {
                   return ControllorePagineAgente();
                 }
                 return ControllorePagine();

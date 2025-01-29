@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/date_symbol_data_file.dart';
 import 'package:intl/intl.dart';
 
 IconData _getWeatherIcon(int weatherCode) {

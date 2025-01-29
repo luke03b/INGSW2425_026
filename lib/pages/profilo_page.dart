@@ -2,6 +2,7 @@ import 'package:domus_app/services/aws_cognito.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProfiloPage extends StatefulWidget {
   const ProfiloPage({super.key});
@@ -15,6 +16,7 @@ class _ProfiloPageState extends State<ProfiloPage> {
   String? nomeUtenteLoggato;
   String? cognomeUtenteLoggato;
   String? mailUtenteLoggato;
+  String? gruppoUtenteLoggato;
 
    @override
   void initState() {
@@ -85,9 +87,107 @@ class _ProfiloPageState extends State<ProfiloPage> {
               ),
             ),
           ),
-    
 
-          SizedBox(height: MediaQuery.sizeOf(context).height/2),
+          Visibility(
+            visible: gruppoUtenteLoggato == "admin",
+            child: GestureDetector(
+              onTap: (){debugPrint("admin creato!!");},
+              child: Card(
+              color: Colors.white,
+              child: ListTile(
+                title: Text("Aggiungi admin", style: TextStyle(color: Colors.black),),
+                leading: Icon(Icons.person_add, color: Colors.black,),
+                trailing: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 12,
+                  children: <Widget>[
+                    Icon(Icons.arrow_circle_right_outlined, color: Colors.black,),
+                  ],
+                ),
+              ),
+            ),
+            ),
+          ),
+
+          Visibility(
+            visible: gruppoUtenteLoggato == "agente" || gruppoUtenteLoggato == "admin",
+            child: GestureDetector(
+              onTap: (){debugPrint("agente creato!!");},
+              child: Card(
+              color: Colors.white,
+              child: ListTile(
+                title: Text("Aggiungi agente immobiliare", style: TextStyle(color: Colors.black),),
+                leading: Icon(Icons.person_add, color: Colors.black,),
+                trailing: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 12,
+                  children: <Widget>[
+                    Icon(Icons.arrow_circle_right_outlined, color: Colors.black,),
+                  ],
+                ),
+              ),
+            ),
+            ),
+          ),
+
+          GestureDetector(
+              onTap: (){debugPrint("password cambiata!!");},
+              child: Card(
+              color: Colors.white,
+              child: ListTile(
+                title: Text("Modifica password", style: TextStyle(color: Colors.black),),
+                leading: Icon(Icons.password, color: Colors.black,),
+                trailing: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 12,
+                  children: <Widget>[
+                    Icon(Icons.arrow_circle_right_outlined, color: Colors.black,),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          GestureDetector(
+              onTap: (){debugPrint("assistenza!!");},
+              child: Card(
+              color: Colors.white,
+              child: ListTile(
+                title: Text("Assistenza", style: TextStyle(color: Colors.black),),
+                leading: Icon(Icons.help, color: Colors.black,),
+                trailing: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 12,
+                  children: <Widget>[
+                    Icon(Icons.arrow_circle_right_outlined, color: Colors.black,),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          Visibility(
+            visible: gruppoUtenteLoggato == "cliente",
+            child: GestureDetector(
+              onTap: (){debugPrint("account eliminato!!");},
+              child: Card(
+              color: Colors.white,
+              child: ListTile(
+                title: Text("Elimina account", style: TextStyle(color: Colors.black),),
+                leading: Icon(Icons.delete, color: Colors.black,),
+                trailing: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 12,
+                  children: <Widget>[
+                    Icon(Icons.arrow_circle_right_outlined, color: Colors.black,),
+                  ],
+                ),
+              ),
+            ),
+            ),
+          ),
+
+          SizedBox(height: MediaQuery.sizeOf(context).height/5),
           MyElevatedButtonWidget(
             text: "Logout", 
             onPressed: (){
@@ -128,11 +228,13 @@ class _ProfiloPageState extends State<ProfiloPage> {
     String? nomeUtenteLoggatoTemp = await AWSInstance.recuperaNomeUtenteLoggato();
     String? cognomeUtenteLoggatoTemp = await AWSInstance.recuperaCognomeUtenteLoggato();
     String? mailUtenteLoggatoTemp = await AWSInstance.recuperaEmailUtenteLoggato();
+    String? gruppoUtenteLoggatoTemp = await AWSInstance.recuperaGruppoUtenteLoggato();
 
     setState(() {
       nomeUtenteLoggato = nomeUtenteLoggatoTemp;
       cognomeUtenteLoggato = cognomeUtenteLoggatoTemp;
       mailUtenteLoggato = mailUtenteLoggatoTemp;
+      gruppoUtenteLoggato = gruppoUtenteLoggatoTemp;
     });
   }
 }

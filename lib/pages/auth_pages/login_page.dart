@@ -124,8 +124,8 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
     
-    if (userGroup == 'admin'){
-      debugPrint('Admin action');
+    if (userGroup == 'admin' || userGroup == 'agente'){
+      debugPrint('Admin action or Agente action');
       Navigator.pushNamedAndRemoveUntil(context, '/ControllorePagineAgente', (r) => false);
     } else if (userGroup == 'cliente') {
       debugPrint('Cliente action');
