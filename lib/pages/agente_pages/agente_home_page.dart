@@ -1,12 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:domus_app/pages/agente_pages/agente_offerte_page.dart';
-import 'package:domus_app/pages/agente_pages/agente_prenotazioni_page.dart';
-
-import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
 import 'package:domus_app/pages/agente_pages/agente_annuncio_page.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AgenteHomePage extends StatefulWidget {
   const AgenteHomePage({super.key});

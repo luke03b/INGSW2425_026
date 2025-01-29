@@ -1,9 +1,7 @@
-import 'package:domus_app/pages/auth_pages/login_page.dart';
 import 'package:domus_app/services/aws_cognito.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProfiloPage extends StatefulWidget {
   const ProfiloPage({super.key});

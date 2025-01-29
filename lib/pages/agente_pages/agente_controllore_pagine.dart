@@ -1,10 +1,6 @@
 import 'package:domus_app/pages/agente_pages/agente_home_page.dart';
-import 'package:domus_app/pages/agente_pages/agente_offerte_page.dart';
-import 'package:domus_app/pages/agente_pages/agente_prenotazioni_page.dart';
-import 'package:domus_app/pages/cliente_pages/cliente_prenotazioni_page.dart';
 import 'package:domus_app/pages/profilo_page.dart';
 import 'package:flutter/material.dart';
-import '../cliente_pages/cliente_offerte_page.dart';
 
 class ControllorePagineAgente extends StatefulWidget {
   const ControllorePagineAgente({super.key});

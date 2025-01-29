@@ -11,7 +11,7 @@ class MyTextFieldPrefixIcon extends StatefulWidget {
   required this.controller,
   required this.text,
   required this.icon,
-  required this.color
+  required this.color,
   });
 
   @override

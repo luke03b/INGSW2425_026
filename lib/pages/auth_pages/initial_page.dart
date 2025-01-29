@@ -3,8 +3,6 @@ import 'package:domus_app/pages/agente_pages/agente_controllore_pagine.dart';
 import 'package:domus_app/pages/auth_pages/login_page.dart';
 import 'package:domus_app/services/aws_cognito.dart';
 import 'package:flutter/material.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class InitialPage extends StatefulWidget {
   const InitialPage({super.key});

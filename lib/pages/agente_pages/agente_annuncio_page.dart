@@ -7,7 +7,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
-import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';

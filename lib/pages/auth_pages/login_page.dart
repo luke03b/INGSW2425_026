@@ -56,7 +56,14 @@ class _LoginPageState extends State<LoginPage> {
                     colore: coloriScritte,),
                   MyTextButtonWidget(
                     text: "Password dimenticata?", 
-                    onPressed: (){Navigator.pushNamed(context, '/PasswordDimenticataPage');}, 
+                    onPressed: (){
+                      if(mailController.text != ""){
+                        Navigator.pushNamed(context, '/PasswordDimenticataPage', arguments: mailController.text);
+                      } 
+                      else {
+                        Navigator.pushNamed(context, '/PasswordDimenticataPage',);
+                      }
+                      }, 
                     colore: coloriScritte)
                 ],
               ),
