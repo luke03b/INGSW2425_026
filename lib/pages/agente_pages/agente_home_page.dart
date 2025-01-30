@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/pages/agente_pages/agente_annuncio_page.dart';
+import 'package:domus_app/pages/agente_pages/agente_crea_annuncio_page.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -91,7 +92,7 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
               Row(children: [
               SizedBox(width: 5,),
               Expanded(child: MyAddButtonWidget(onPressed: (){
-
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteCreaAnnuncioPage()));
               },
               color: Theme.of(context).colorScheme.primary)),
               SizedBox(width: 5,),
