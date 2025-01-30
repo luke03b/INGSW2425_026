@@ -1,4 +1,4 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:domus_app/pages/admin_pages/admin_crea_nuovo_admin_o_agente_page.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_eliminazione_account_page.dart';
 import 'package:domus_app/pages/shared_pages/cambia_password_page.dart';
 import 'package:domus_app/services/aws_cognito.dart';
@@ -93,7 +93,7 @@ class _ProfiloPageState extends State<ProfiloPage> {
           Visibility(
             visible: gruppoUtenteLoggato == "admin",
             child: GestureDetector(
-              onTap: (){debugPrint("admin creato!!");},
+              onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => AdminCreaNuovoAdminPage(isNewUserAdmin: true,)));},
               child: Card(
               color: Colors.white,
               child: ListTile(
@@ -114,7 +114,7 @@ class _ProfiloPageState extends State<ProfiloPage> {
           Visibility(
             visible: gruppoUtenteLoggato == "agente" || gruppoUtenteLoggato == "admin",
             child: GestureDetector(
-              onTap: (){debugPrint("agente creato!!");},
+              onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => AdminCreaNuovoAdminPage(isNewUserAdmin: false,)));},
               child: Card(
               color: Colors.white,
               child: ListTile(
