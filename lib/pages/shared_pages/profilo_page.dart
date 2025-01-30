@@ -1,3 +1,5 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:domus_app/pages/cliente_pages/cliente_eliminazione_account_page.dart';
 import 'package:domus_app/services/aws_cognito.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
@@ -148,7 +150,12 @@ class _ProfiloPageState extends State<ProfiloPage> {
           ),
 
           GestureDetector(
-              onTap: (){debugPrint("assistenza!!");},
+              onTap: (){
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => MyInfoDialog(title: "Assistenza", bodyText: "Se ha bisogno di assistenza ci contatti tramite la seguente email: househunters004@gmail.com", buttonText: "Ok", onPressed:(){Navigator.pop(context);})
+                );
+              },
               child: Card(
               color: Colors.white,
               child: ListTile(
@@ -168,7 +175,30 @@ class _ProfiloPageState extends State<ProfiloPage> {
           Visibility(
             visible: gruppoUtenteLoggato == "cliente",
             child: GestureDetector(
-              onTap: (){debugPrint("account eliminato!!");},
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteEliminazioneAccountPage(emailUtente: mailUtenteLoggato,)));
+                // showDialog(context: context, builder: (BuildContext context) => MyOptionsDialog(
+                //                                                                   title: "Eliminazione account", 
+                //                                                                   bodyText: "Sei sicuro di voler eliminare l'account di $nomeUtenteLoggato $cognomeUtenteLoggato?\nSe desideri procedere tutti i dati collegati a questo account saranno eliminati e verrai reindirizzato al login.", 
+                //                                                                   leftButtonText: "No", leftButtonColor: Colors.grey, 
+                //                                                                   rightButtonText: "Si", 
+                //                                                                   rightButtonColor: Theme.of(context).colorScheme.error, 
+                //                                                                   onPressLeftButton: (){Navigator.pop(context);}, 
+                //                                                                   onPressRightButton: () async {
+                //                                                                     bool isUserDeleted = await deleteUser();
+                //                                                                     safePrint("\n\n\n\n\n\n");
+                //                                                                     safePrint(isUserDeleted);
+                //                                                                     safePrint("\n\n\n\n\n\n");
+                //                                                                     if(isUserDeleted){
+                //                                                                       Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);
+                //                                                                     } else {
+                //                                                                       showDialog(context: context, builder: (BuildContext content) => MyInfoDialog(title: "Errore", bodyText: "Qualcosa è andato storto con l'eliminazione dell'account di $nomeUtenteLoggato $cognomeUtenteLoggato.", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
+                //                                                                       );
+                //                                                                     }
+                //                                                                   }
+                //                                                                 )
+                // );
+              },
               child: Card(
               color: Colors.white,
               child: ListTile(

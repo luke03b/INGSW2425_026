@@ -1,6 +1,6 @@
 import 'package:domus_app/pages/agente_pages/agente_calendario_prenotazioni_page.dart';
 import 'package:domus_app/pages/agente_pages/agente_home_page.dart';
-import 'package:domus_app/pages/profilo_page.dart';
+import 'package:domus_app/pages/shared_pages/profilo_page.dart';
 import 'package:flutter/material.dart';
 
 class ControllorePagineAgente extends StatefulWidget {

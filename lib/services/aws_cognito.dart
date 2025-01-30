@@ -218,6 +218,22 @@ class AWSServices {
     String? gruppo = payload['custom:group'];
     return gruppo;
   }
+
+  Future<bool> eliminaUtenteLoggato(email, password) async {
+    final authDetails = AuthenticationDetails(username: email, password: password);
+
+    try {
+      final cognitoUser = CognitoUser(email, userPool);
+      await cognitoUser.authenticateUser(authDetails);
+        await cognitoUser.deleteUser();
+        safePrint("Utente eliminato con successo.");
+        return true;
+    } catch (e) {
+      safePrint("Errore durante l'eliminazione dell'utente: $e");
+    }
+    return false;
+}
+
   
   Future<bool> signInWithGoogle() async {
     bool isAllOk = false;

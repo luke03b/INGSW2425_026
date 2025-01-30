@@ -140,7 +140,6 @@ class _PasswordDimenticataPageState extends State<PasswordDimenticataPage> {
 
               const Spacer(flex: 8),
 
-              //LoginButton
               Row(
                 children: [
                   SizedBox(width: 10,),
