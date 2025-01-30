@@ -219,15 +219,31 @@ class AWSServices {
     return gruppo;
   }
 
+  Future<bool> cambiaPasswordUtenteLoggato(email, oldPassword, newPassword) async {
+    final authDetails = AuthenticationDetails(username: email, password: oldPassword);
+    bool passwordChanged = false;
+    try {
+      final cognitoUser = CognitoUser(email, userPool);
+      await cognitoUser.authenticateUser(authDetails);
+      passwordChanged = await cognitoUser.changePassword(
+        oldPassword,
+        newPassword,
+      );
+    } catch (e) {
+      safePrint(e);
+    }
+    return passwordChanged;
+  }
+
   Future<bool> eliminaUtenteLoggato(email, password) async {
     final authDetails = AuthenticationDetails(username: email, password: password);
 
     try {
       final cognitoUser = CognitoUser(email, userPool);
       await cognitoUser.authenticateUser(authDetails);
-        await cognitoUser.deleteUser();
-        safePrint("Utente eliminato con successo.");
-        return true;
+      await cognitoUser.deleteUser();
+      safePrint("Utente eliminato con successo.");
+      return true;
     } catch (e) {
       safePrint("Errore durante l'eliminazione dell'utente: $e");
     }

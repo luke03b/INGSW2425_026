@@ -1,11 +1,9 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:domus_app/services/aws_cognito.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:domus_app/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ClienteEliminazioneAccountPage extends StatefulWidget {
   final String? emailUtente;
@@ -21,8 +19,7 @@ class ClienteEliminazioneAccountPage extends StatefulWidget {
 class _ClienteEliminazioneAccountPageState extends State<ClienteEliminazioneAccountPage> {
   TextEditingController mailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
-  login(String email, String password) => AWSServices().signIn(email, password);
+  
   deleteUser(String email, String password) => AWSServices().eliminaUtenteLoggato(email, password);
 
   @override
@@ -132,9 +129,6 @@ class _ClienteEliminazioneAccountPageState extends State<ClienteEliminazioneAcco
                                           onPressLeftButton: (){Navigator.pop(context);}, 
                                           onPressRightButton: () async {
                                             bool isUserDeleted = await deleteUser(widget.emailUtente ?? mailController.text, passwordController.text);
-                                            safePrint("\n\n\n\n\n\n");
-                                            safePrint(isUserDeleted);
-                                            safePrint("\n\n\n\n\n\n");
                                             if(isUserDeleted){
                                               Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);
                                             } else {
