@@ -34,7 +34,7 @@ class _AdminCreaNuovoAdminPageState extends State<AdminCreaNuovoAdminPage> {
         iconTheme: IconThemeData(
           color: Theme.of(context).colorScheme.surface,
         ),
-        title: Text("Crea nuovo admin", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
+        title: Text( widget.isNewUserAdmin ? "Crea nuovo admin" : "Crea nuovo agente", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 5,

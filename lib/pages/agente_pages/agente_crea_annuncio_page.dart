@@ -288,7 +288,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                     SizedBox(width: 7),
                     SizedBox(
                       width: MediaQuery.sizeOf(context).width * 0.40,
-                      child: TextField(controller: viaController, decoration: InputDecoration(hintText: "città", hintStyle: TextStyle(color: coloreScritte)), style: TextStyle(color: coloreScritte),)
+                      child: TextField(controller: viaController, decoration: InputDecoration(hintText: "via", hintStyle: TextStyle(color: coloreScritte)), style: TextStyle(color: coloreScritte),)
                     ),
                 ],),
                 SizedBox(height: 25,),
