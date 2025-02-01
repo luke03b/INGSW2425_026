@@ -437,7 +437,7 @@ class _CercaPageState extends State<CercaPage> {
                         initialSelection: listaPiani.first,
                         onSelected: (String? value) {
                           setState(() {
-                            sceltaClasseEnergetica = value!;
+                            sceltaPiano = value!;
                           });
                         },
                         dropdownMenuEntries: 

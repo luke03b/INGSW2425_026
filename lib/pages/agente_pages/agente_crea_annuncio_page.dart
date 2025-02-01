@@ -41,6 +41,8 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
   String sceltaClasseEnergetica = listaClassiEnergetiche.first;
   String sceltaPiano = listaPiani.first;
 
+  bool isSceltaNumeroPianoVisible = false;
+
   final imagePicker = ImagePicker();
   List<XFile>? imageList = [];
 
@@ -473,8 +475,8 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                 Row(
                   children: [
                     SizedBox(width: 30.0),
-                    Text("Superficie:", style: TextStyle(color: coloreScritte, fontWeight: FontWeight.normal, fontSize: GRANDEZZA_SCRITTE_PICCOLE),),
-                    SizedBox(width: 110),
+                    Text("Superficie", style: TextStyle(color: coloreScritte, fontWeight: FontWeight.normal, fontSize: GRANDEZZA_SCRITTE_PICCOLE),),
+                    SizedBox(width: 115),
                     SizedBox(
                       width: MediaQuery.sizeOf(context).width * 0.37,
                       child: MyTextFieldOnlyPositiveNumbers(controller: superficieController, text: "superficie", colore: coloreScritte,)
@@ -498,18 +500,38 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                         initialSelection: listaPiani.first,
                         onSelected: (String? value) {
                           setState(() {
-                            sceltaClasseEnergetica = value!;
+                            sceltaPiano = value!;
+                            if(sceltaPiano == "Intermedio"){
+                              isSceltaNumeroPianoVisible = true;
+                            } else {
+                              isSceltaNumeroPianoVisible = false;
+                            }
                           });
                         },
                         dropdownMenuEntries: 
                           listaPiani.map<DropdownMenuEntry<String>>((String value) {
-                          return DropdownMenuEntry<String>(value: value, label: value,);}).toList(),
+                            return DropdownMenuEntry<String>(value: value, label: value,);}).toList(),
                           ),
                     ],
                   ),
                 ),
 
                 SizedBox(height: 10.0),
+
+                Visibility(
+                  visible: isSceltaNumeroPianoVisible,
+                  child: Row(
+                    children: [
+                      SizedBox(width: 30.0),
+                      Text("N. piano", style: TextStyle(color: coloreScritte, fontWeight: FontWeight.normal, fontSize: GRANDEZZA_SCRITTE_PICCOLE),),
+                      SizedBox(width: 130.0),
+                      SizedBox(
+                        width: MediaQuery.sizeOf(context).width * 0.42,
+                        child: MyTextFieldOnlyPositiveNumbers(controller: capController, text: "n. piano", colore: coloreScritte,)
+                      ),
+                      SizedBox(height: 10.0),
+                  ],),
+                ),
 
                 //Selettore Classe Energetica
                 SizedBox(
