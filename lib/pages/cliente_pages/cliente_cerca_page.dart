@@ -17,6 +17,7 @@ class CercaPage extends StatefulWidget {
 
 class _CercaPageState extends State<CercaPage> {
 
+  bool primaAperturaRicercaAvanzata = true;
 
   final TextEditingController _affittaController = TextEditingController();
 
@@ -34,6 +35,8 @@ class _CercaPageState extends State<CercaPage> {
 
   final TextEditingController _numeroStanzeMaxController = TextEditingController();
 
+  final ScrollController _ricercaAvanzataScrollableController = ScrollController();
+
 
   bool _ricercaAvanzataVisibile = false;
 
@@ -48,6 +51,14 @@ class _CercaPageState extends State<CercaPage> {
   bool _isArredatoSelected = false;
 
   bool _isBalconeSelected = false;
+
+
+  bool _isVicinoScuoleSelected = false;
+
+  bool _isVicinoParchiSelected = false;
+
+  bool _isVicinoMezziPubbliciSelected = false;
+  
 
   final List<Widget> _widgetCompraAffitta = <Widget>[Text('Compra'), Text('Affitta')];
   final List<bool> selectedCompraAffitta = <bool>[true, false];
@@ -68,7 +79,10 @@ class _CercaPageState extends State<CercaPage> {
       'numero_stanze': '6',
       'arredato' : "si",
       'piano' : 'Terra',
-      'descrizione' : 'Nel cuore della rinomata collina di Posillipo, in una posizione dominante che regala una vista senza pari sul golfo di Napoli, Christie\'s International Real Estate propone in vendita un appartamento di 174 mq, un\'esclusiva residenza che fonde eleganza, comfort e luminosità. Questo immobile, caratterizzato da ampi spazi interni, è arricchito da una spettacolare superficie esterna di 286 mq, che include ampi balconi, un terrazzo panoramico di copertura e una veranda, tutti luoghi ideali per godere di momenti di convivialità e relax, circondati da un panorama unico. Posto all\'ultimo piano di un elegante edificio, questo appartamento si distingue per la luminosità che inonda ogni ambiente grazie all\'esposizione ideale e alle ampie vetrate che permettono di godere della vista sul mare in ogni angolo della casa. Il soggiorno doppio, spazioso e raffinato, offre un affaccio diretto sul mare, creando un ambiente perfetto per rilassarsi o intrattenere ospiti. La zona notte comprende tre camere da letto, tutte silenziose e confortevoli, mentre i due bagni e la cucina abitabile con accesso indipendente completano l\'immobile con praticità e funzionalità. Gli spazi esterni, ampi e ben progettati, offrono la possibilità di vivere all\'aperto durante tutto l\'anno, con aree ideali per cene all\'aperto, eventi sociali o semplicemente per godere di momenti di tranquillità, immersi nella bellezza naturale di Posillipo. A completare questa straordinaria proprieta\', una cantina e due posti auto coperti, per garantire il massimo della comodità e della sicurezza. Un\'opportunità imperdibile per chi cerca una residenza di lusso in uno dei quartieri più esclusivi di Napoli, dove la bellezza senza tempo del mare si fonde con il comfort moderno.'
+      'descrizione' : 'Nel cuore della rinomata collina di Posillipo, in una posizione dominante che regala una vista senza pari sul golfo di Napoli, Christie\'s International Real Estate propone in vendita un appartamento di 174 mq, un\'esclusiva residenza che fonde eleganza, comfort e luminosità. Questo immobile, caratterizzato da ampi spazi interni, è arricchito da una spettacolare superficie esterna di 286 mq, che include ampi balconi, un terrazzo panoramico di copertura e una veranda, tutti luoghi ideali per godere di momenti di convivialità e relax, circondati da un panorama unico. Posto all\'ultimo piano di un elegante edificio, questo appartamento si distingue per la luminosità che inonda ogni ambiente grazie all\'esposizione ideale e alle ampie vetrate che permettono di godere della vista sul mare in ogni angolo della casa. Il soggiorno doppio, spazioso e raffinato, offre un affaccio diretto sul mare, creando un ambiente perfetto per rilassarsi o intrattenere ospiti. La zona notte comprende tre camere da letto, tutte silenziose e confortevoli, mentre i due bagni e la cucina abitabile con accesso indipendente completano l\'immobile con praticità e funzionalità. Gli spazi esterni, ampi e ben progettati, offrono la possibilità di vivere all\'aperto durante tutto l\'anno, con aree ideali per cene all\'aperto, eventi sociali o semplicemente per godere di momenti di tranquillità, immersi nella bellezza naturale di Posillipo. A completare questa straordinaria proprieta\', una cantina e due posti auto coperti, per garantire il massimo della comodità e della sicurezza. Un\'opportunità imperdibile per chi cerca una residenza di lusso in uno dei quartieri più esclusivi di Napoli, dove la bellezza senza tempo del mare si fonde con il comfort moderno.',
+      'vicino_scuole' : 'si',
+      'vicino_parchi' : 'no',
+      'vicino_mezzi' : 'si',
     },
     {
       'image1': 'lib/assets/casa2_1_placeholder.png',
@@ -80,7 +94,10 @@ class _CercaPageState extends State<CercaPage> {
       'numero_stanze': '7',
       'arredato' : "no",
       'piano' : 'Ultimo',
-      'descrizione' : ''
+      'descrizione' : '',
+      'vicino_scuole' : 'si',
+      'vicino_parchi' : 'no',
+      'vicino_mezzi' : 'si',
     },
     {
       'image1': 'lib/assets/casa3_1_placeholder.png',
@@ -92,7 +109,10 @@ class _CercaPageState extends State<CercaPage> {
       'numero_stanze': '5',
       'arredato' : "si",
       'piano' : '3',
-      'descrizione' : ''
+      'descrizione' : '',
+      'vicino_scuole' : 'si',
+      'vicino_parchi' : 'no',
+      'vicino_mezzi' : 'si',
     },
 
   ];
@@ -100,6 +120,7 @@ class _CercaPageState extends State<CercaPage> {
   void _toggleRicercaAvanzata(){
     setState(() {
       _ricercaAvanzataVisibile = !_ricercaAvanzataVisibile;
+      
     });
   }
   
@@ -150,6 +171,25 @@ class _CercaPageState extends State<CercaPage> {
             SizedBox(
               height: MediaQuery.of(context).size.height/35,
             ),
+
+            Visibility(
+              visible: _ricercaAvanzataVisibile,
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: (){
+                      _ricercaAvanzataScrollableController.animateTo(_ricercaAvanzataScrollableController.position.maxScrollExtent, duration: Duration(milliseconds: 500), curve: Curves.easeOut);
+                    },
+                    child: Card(
+                      color: Colors.white,
+                      child: 
+                        Icon(Icons.arrow_downward, color: Theme.of(context).colorScheme.primary,),
+                    ),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height/200,),
+                ],
+              )),
+
             //tasto cerca
             MyElevatedButtonWidget(
               text: "Cerca",
@@ -261,224 +301,316 @@ class _CercaPageState extends State<CercaPage> {
   Visibility myParametriRicercaAvanzata(Color coloriPulsanti, BuildContext context) {
     return Visibility(
             visible: _ricercaAvanzataVisibile,
-            child: Column(
-              children: [
-
-                //prezzo
-                myFiltroRicerca(coloriPulsanti, context, Icons.euro, _prezzoMinController, _prezzoMaxController, "Prezzo Min", "Prezzo Max"),
-
-                //superficie
-                myFiltroRicerca(coloriPulsanti, context, Icons.zoom_out_map, _superficieMinController, _superficieMaxController, "Superficie Min", "Superficie Max"),
-
-                //Stanze
-                myFiltroRicerca(coloriPulsanti, context, FontAwesomeIcons.doorClosed, _numeroStanzeMinController, _numeroStanzeMaxController, "N. Stanze Min", "N. Stanze Max"),
-                
-                Divider(height: 50, thickness: 2, indent: 10, endIndent: 10, color: Theme.of(context).colorScheme.primary,),
-
-                Row(
-                  children: [
-
-                    SizedBox(width: 10.0),
-
-                    //Colonna comunista
-                    Column(
-                      children: [
-
-                        //Riga contenente tre colonne
-                        Row(
-                          children: [
-
-                            //Colonna contenente icone
-                            Column(
-                              children: [
-                                Icon(FontAwesomeIcons.car, size: 22, color: coloriPulsanti,),
-                                SizedBox(height: 22,),
-                                Icon(FontAwesomeIcons.elevator, size: 22, color: coloriPulsanti,),
-                                SizedBox(height: 22,),
-                                Icon(FontAwesomeIcons.chair, size: 22, color: coloriPulsanti,),
-                              ],
-                            ),
-
-                            SizedBox(width: 10,),
-                            
-                            //Colonna contenente nomi
-                            Column(
-                              children: [
-                                Text("Garage", style: TextStyle(fontSize: 18.0, color: coloriPulsanti, ),),
-                                SizedBox(height: 22,),
-                                Text("Ascensore", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
-                                SizedBox(height: 22,),
-                                Text("Arredato", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
-                              ],
-                            ),
-                            
-                            SizedBox(width: 10,),
-
-                            //colonna contenente switch
-                            Column(
-                              children: [
-                                Switch(
-                                  value: _isGarageSelected, 
-                                  onChanged: (value){
-                                    setState(() {
-                                      _isGarageSelected = value;
-                                    });
-                                  }
-                                ),
-                                Switch(
-                                  value: _isAscensoreSelected, 
-                                  onChanged: (value){
-                                    setState(() {
-                                      _isAscensoreSelected = value;
-                                    });
-                                  }
-                                ),
-                                Switch(
-                                  value: _isArredatoSelected, 
-                                  onChanged: (value){
-                                    setState(() {
-                                      _isArredatoSelected = value;
-                                    });
-                                  }
-                                ),
-                              ],
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-
-                    SizedBox(width: 30.0),
-
-                    //Colonna fascista
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-
-                       Row(
-                          children: [
-
-                            //Colonna contenente icone
-                            Column(
-                              children: [
-                                Icon(Icons.park, size: 22, color: coloriPulsanti,),
-                                SizedBox(height: 22,),
-                                Icon(Icons.pool, size: 22, color: coloriPulsanti,),
-                                SizedBox(height: 22,),
-                                Icon(Icons.balcony, size: 22, color: coloriPulsanti,),
-                              ],
-                            ),
-
-                            SizedBox(width: 10,),
-                            
-                            //Colonna contenente nomi
-                            Column(
-                              children: [
-                                Text("Giardino", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
-                                SizedBox(height: 22,),
-                                Text("Piscina", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
-                                SizedBox(height: 22,),
-                                Text("Balcone", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
-                              ],
-                            ),
-                            
-                            SizedBox(width: 10,),
-
-                            //colonna contenente switch
-                            Column(
-                              children: [
-                                Switch(
-                                  value: _isGiardinoSelected, 
-                                  onChanged: (value){
-                                    setState(() {
-                                      _isGiardinoSelected = value;
-                                    });
-                                  }
-                                ),
-                                Switch(
-                                  value: _isPiscinaSelected, 
-                                  onChanged: (value){
-                                    setState(() {
-                                      _isPiscinaSelected = value;
-                                    });
-                                  }
-                                ),
-                                Switch(
-                                  value: _isBalconeSelected, 
-                                  onChanged: (value){
-                                    setState(() {
-                                      _isBalconeSelected = value;
-                                    });
-                                  }
-                                ),
-                              ],
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-
-                //Selettore Piano
-                SizedBox(
-                  height: 50,
-                  width: MediaQuery.sizeOf(context).width/1,
-                  child: Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.5,
+              child: Scrollbar(
+                controller: _ricercaAvanzataScrollableController,
+                thickness: 5,
+                thumbVisibility: true,
+                radius: Radius.circular(10),
+                child: SingleChildScrollView(
+                  controller: _ricercaAvanzataScrollableController,
+                  child: Column(
                     children: [
-                      SizedBox(width: 30.0),
-                      Text("Piano", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
-                      SizedBox(width: 150.0),
-                      DropdownMenu(
-                        width: 175,
-                        textStyle: TextStyle(color: coloriPulsanti),
-                        inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: coloriPulsanti), suffixIconColor: coloriPulsanti),
-                        initialSelection: listaPiani.first,
-                        onSelected: (String? value) {
-                          setState(() {
-                            sceltaPiano = value!;
-                          });
-                        },
-                        dropdownMenuEntries: 
-                          listaPiani.map<DropdownMenuEntry<String>>((String value) {
-                          return DropdownMenuEntry<String>(value: value, label: value,);}).toList(),
+                  
+                      //prezzo
+                      myFiltroRicerca(coloriPulsanti, context, Icons.euro, _prezzoMinController, _prezzoMaxController, "Prezzo Min", "Prezzo Max"),
+                  
+                      //superficie
+                      myFiltroRicerca(coloriPulsanti, context, Icons.zoom_out_map, _superficieMinController, _superficieMaxController, "Superficie Min", "Superficie Max"),
+                  
+                      //Stanze
+                      myFiltroRicerca(coloriPulsanti, context, FontAwesomeIcons.doorClosed, _numeroStanzeMinController, _numeroStanzeMaxController, "N. Stanze Min", "N. Stanze Max"),
+                      
+                      Divider(height: 50, thickness: 2, indent: 10, endIndent: 10, color: Theme.of(context).colorScheme.primary,),
+                  
+                      Row(
+                        children: [
+                  
+                          SizedBox(width: 10.0),
+                  
+                          //Colonna comunista
+                          Column(
+                            children: [
+                  
+                              //Riga contenente tre colonne
+                              Row(
+                                children: [
+                  
+                                  //Colonna contenente icone
+                                  Column(
+                                    children: [
+                                      Icon(FontAwesomeIcons.car, size: 22, color: coloriPulsanti,),
+                                      SizedBox(height: 22,),
+                                      Icon(FontAwesomeIcons.elevator, size: 22, color: coloriPulsanti,),
+                                      SizedBox(height: 22,),
+                                      Icon(FontAwesomeIcons.chair, size: 22, color: coloriPulsanti,),
+                                    ],
+                                  ),
+                  
+                                  SizedBox(width: 10,),
+                                  
+                                  //Colonna contenente nomi
+                                  Column(
+                                    children: [
+                                      Text("Garage", style: TextStyle(fontSize: 18.0, color: coloriPulsanti, ),),
+                                      SizedBox(height: 22,),
+                                      Text("Ascensore", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
+                                      SizedBox(height: 22,),
+                                      Text("Arredato", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
+                                    ],
+                                  ),
+                                  
+                                  SizedBox(width: 10,),
+                  
+                                  //colonna contenente switch
+                                  Column(
+                                    children: [
+                                      Switch(
+                                        value: _isGarageSelected, 
+                                        onChanged: (value){
+                                          setState(() {
+                                            _isGarageSelected = value;
+                                          });
+                                        }
+                                      ),
+                                      Switch(
+                                        value: _isAscensoreSelected, 
+                                        onChanged: (value){
+                                          setState(() {
+                                            _isAscensoreSelected = value;
+                                          });
+                                        }
+                                      ),
+                                      Switch(
+                                        value: _isArredatoSelected, 
+                                        onChanged: (value){
+                                          setState(() {
+                                            _isArredatoSelected = value;
+                                          });
+                                        }
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )
+                            ],
                           ),
+                  
+                          SizedBox(width: 30.0),
+                  
+                          //Colonna fascista
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                  
+                             Row(
+                                children: [
+                  
+                                  //Colonna contenente icone
+                                  Column(
+                                    children: [
+                                      Icon(Icons.park, size: 22, color: coloriPulsanti,),
+                                      SizedBox(height: 22,),
+                                      Icon(Icons.pool, size: 22, color: coloriPulsanti,),
+                                      SizedBox(height: 22,),
+                                      Icon(Icons.balcony, size: 22, color: coloriPulsanti,),
+                                    ],
+                                  ),
+                  
+                                  SizedBox(width: 10,),
+                                  
+                                  //Colonna contenente nomi
+                                  Column(
+                                    children: [
+                                      Text("Giardino", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
+                                      SizedBox(height: 22,),
+                                      Text("Piscina", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
+                                      SizedBox(height: 22,),
+                                      Text("Balcone", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
+                                    ],
+                                  ),
+                                  
+                                  SizedBox(width: 10,),
+                  
+                                  //colonna contenente switch
+                                  Column(
+                                    children: [
+                                      Switch(
+                                        value: _isGiardinoSelected, 
+                                        onChanged: (value){
+                                          setState(() {
+                                            _isGiardinoSelected = value;
+                                          });
+                                        }
+                                      ),
+                                      Switch(
+                                        value: _isPiscinaSelected, 
+                                        onChanged: (value){
+                                          setState(() {
+                                            _isPiscinaSelected = value;
+                                          });
+                                        }
+                                      ),
+                                      Switch(
+                                        value: _isBalconeSelected, 
+                                        onChanged: (value){
+                                          setState(() {
+                                            _isBalconeSelected = value;
+                                          });
+                                        }
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                  
+                      Divider(height: 50, thickness: 2, indent: 10, endIndent: 10, color: Theme.of(context).colorScheme.primary,),
+                  
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                  
+                          SizedBox(width: 10.0),
+                  
+                          //Colonna comunista
+                          Column(
+                            children: [
+                  
+                              //Riga contenente tre colonne
+                              Row(
+                                children: [
+                  
+                                  //Colonna contenente icone
+                                  Column(
+                                    children: [
+                                      Icon(FontAwesomeIcons.school, size: 22, color: coloriPulsanti,),
+                                      SizedBox(height: 22,),
+                                      Icon(FontAwesomeIcons.sunPlantWilt, size: 22, color: coloriPulsanti,),
+                                      SizedBox(height: 22,),
+                                      Icon(FontAwesomeIcons.bus, size: 22, color: coloriPulsanti,),
+                                    ],
+                                  ),
+                  
+                                  SizedBox(width: 10,),
+                                  
+                                  //Colonna contenente nomi
+                                  Column(
+                                    children: [
+                                      Text("Vicino scuole", style: TextStyle(fontSize: 18.0, color: coloriPulsanti, ),),
+                                      SizedBox(height: 22,),
+                                      Text("Vicino parchi pubblici", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
+                                      SizedBox(height: 22,),
+                                      Text("Vicino fermate mezzi pubblici", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
+                                    ],
+                                  ),
+                                  
+                                  SizedBox(width: 10,),
+                  
+                                  //colonna contenente switch
+                                  Column(
+                                    children: [
+                                      Switch(
+                                        value: _isVicinoScuoleSelected, 
+                                        onChanged: (value){
+                                          setState(() {
+                                            _isVicinoScuoleSelected = value;
+                                          });
+                                        }
+                                      ),
+                                      Switch(
+                                        value: _isVicinoParchiSelected, 
+                                        onChanged: (value){
+                                          setState(() {
+                                            _isVicinoParchiSelected = value;
+                                          });
+                                        }
+                                      ),
+                                      Switch(
+                                        value: _isVicinoMezziPubbliciSelected, 
+                                        onChanged: (value){
+                                          setState(() {
+                                            _isVicinoMezziPubbliciSelected = value;
+                                          });
+                                        }
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                    ]),
+                      
+                      Divider(height: 50, thickness: 2, indent: 10, endIndent: 10, color: Theme.of(context).colorScheme.primary,),
+                  
+                      //Selettore Piano
+                      SizedBox(
+                        height: 50,
+                        width: MediaQuery.sizeOf(context).width/1,
+                        child: Row(
+                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            SizedBox(width: 30.0),
+                            Text("Piano", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
+                            SizedBox(width: 150.0),
+                            DropdownMenu(
+                              width: 175,
+                              textStyle: TextStyle(color: coloriPulsanti),
+                              inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: coloriPulsanti), suffixIconColor: coloriPulsanti),
+                              initialSelection: listaPiani.first,
+                              onSelected: (String? value) {
+                                setState(() {
+                                  sceltaPiano = value!;
+                                });
+                              },
+                              dropdownMenuEntries: 
+                                listaPiani.map<DropdownMenuEntry<String>>((String value) {
+                                return DropdownMenuEntry<String>(value: value, label: value,);}).toList(),
+                                ),
+                          ],
+                        ),
+                      ),
+                  
+                      SizedBox(height: 10.0),
+                  
+                      //Selettore Classe Energetica
+                      SizedBox(
+                        height: 50,
+                        width: MediaQuery.sizeOf(context).width/1,
+                        child: Row(
+                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            SizedBox(width: 30.0),
+                            Text("Classe Energetica", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
+                            SizedBox(width: 50.0),
+                            DropdownMenu(
+                              width: 175,
+                              textStyle: TextStyle(color: coloriPulsanti),
+                              inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: coloriPulsanti), suffixIconColor: coloriPulsanti),
+                              initialSelection: listaClassiEnergetiche.first,
+                              onSelected: (String? value) {
+                                setState(() {
+                                  sceltaClasseEnergetica = value!;
+                                });
+                              },
+                              dropdownMenuEntries: 
+                                listaClassiEnergetiche.map<DropdownMenuEntry<String>>((String value) {
+                                return DropdownMenuEntry<String>(value: value, label: value,);}).toList(),
+                                ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 10,),
+                  
                     ],
                   ),
                 ),
-
-                SizedBox(height: 10.0),
-
-                //Selettore Classe Energetica
-                SizedBox(
-                  height: 50,
-                  width: MediaQuery.sizeOf(context).width/1,
-                  child: Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(width: 30.0),
-                      Text("Classe Energetica", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
-                      SizedBox(width: 50.0),
-                      DropdownMenu(
-                        width: 175,
-                        textStyle: TextStyle(color: coloriPulsanti),
-                        inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: coloriPulsanti), suffixIconColor: coloriPulsanti),
-                        initialSelection: listaClassiEnergetiche.first,
-                        onSelected: (String? value) {
-                          setState(() {
-                            sceltaClasseEnergetica = value!;
-                          });
-                        },
-                        dropdownMenuEntries: 
-                          listaClassiEnergetiche.map<DropdownMenuEntry<String>>((String value) {
-                          return DropdownMenuEntry<String>(value: value, label: value,);}).toList(),
-                          ),
-                    ],
-                  ),
-                ),
-
-              ],
+              ),
             ),
           );
   }

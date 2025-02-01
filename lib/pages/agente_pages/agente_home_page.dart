@@ -127,6 +127,9 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
         'mail_offerente' : 'paolo.centonze@icloud.com',
         'stato_offerta' : 'In Attesa',
         'valore_contropoposta' : '',
+        'vicino_scuole' : 'si',
+        'vicino_parchi' : 'no',
+        'vicino_mezzi' : 'si',
       },
       {
         'image1': 'lib/assets/casa2_1_placeholder.png',
@@ -146,6 +149,9 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
         'mail_offerente' : 'marcolombari65@gmail.com',
         'stato_offerta' : 'In Attesa',
         'valore_contropoposta' : '',
+        'vicino_scuole' : 'si',
+        'vicino_parchi' : 'si',
+        'vicino_mezzi' : 'si',
       },
       {
         'image1': 'lib/assets/casa3_1_placeholder.png',
@@ -165,6 +171,9 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
         'mail_offerente' : 'madmax@gmail.com',
         'stato_offerta' : 'In Attesa',
         'valore_contropoposta' : '',
+        'vicino_scuole' : 'si',
+        'vicino_parchi' : 'no',
+        'vicino_mezzi' : 'si',
       },
     ];
     

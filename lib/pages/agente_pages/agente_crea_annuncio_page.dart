@@ -23,6 +23,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
   final TextEditingController capController = TextEditingController();
   final TextEditingController viaController = TextEditingController();
   final TextEditingController superficieController = TextEditingController();
+  final TextEditingController numeroPianoController = TextEditingController();
 
   bool _isGarageSelected = false;
 
@@ -527,7 +528,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                       SizedBox(width: 130.0),
                       SizedBox(
                         width: MediaQuery.sizeOf(context).width * 0.42,
-                        child: MyTextFieldOnlyPositiveNumbers(controller: capController, text: "n. piano", colore: coloreScritte,)
+                        child: MyTextFieldOnlyPositiveNumbers(controller: numeroPianoController, text: "n. piano", colore: coloreScritte,)
                       ),
                       SizedBox(height: 10.0),
                   ],),

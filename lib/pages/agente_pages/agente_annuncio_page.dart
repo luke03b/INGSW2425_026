@@ -292,12 +292,12 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                       ],
                     ),
                   Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
-                   Row(
-                      children: [
-                        SizedBox(width: 10.0),
-                        Text("Posizione", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: coloriPulsanti),),
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      SizedBox(width: 10.0),
+                      Text("Posizione", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                    ],
+                  ),
                   SizedBox(height: 10,),
                   SizedBox(
                     width: MediaQuery.of(context).size.width/1.1,
@@ -309,6 +309,74 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                       onMapCreated: (GoogleMapController controller) {_controller.complete(controller);},
                       markers: {const Marker(markerId: MarkerId('Posizione'), position:  LatLng(40.8189507, 14.1896127),)},),
                   ),
+                  Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
+
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(width: 10.0),
+                          Text("Vicino A", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                  
+                          SizedBox(width: 10.0),
+                  
+                          //Colonna comunista
+                          Column(
+                            children: [
+                  
+                              //Riga contenente tre colonne
+                              Row(
+                                children: [
+                  
+                                  //Colonna contenente icone
+                                  Column(
+                                    children: [
+                                      Icon(FontAwesomeIcons.school, size: 22, color: coloriPulsanti,),
+                                      SizedBox(height: 22,),
+                                      Icon(FontAwesomeIcons.sunPlantWilt, size: 22, color: coloriPulsanti,),
+                                      SizedBox(height: 22,),
+                                      Icon(FontAwesomeIcons.bus, size: 22, color: coloriPulsanti,),
+                                    ],
+                                  ),
+                  
+                                  SizedBox(width: 10,),
+                                  
+                                  //Colonna contenente nomi
+                                  Column(
+                                    children: [
+                                      Text("Scuole", style: TextStyle(fontSize: 18.0, color: coloriPulsanti, ),),
+                                      SizedBox(height: 22,),
+                                      Text("Parchi pubblici", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
+                                      SizedBox(height: 22,),
+                                      Text("Fermate mezzi pubblici", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
+                                    ],
+                                  ),
+                                  
+                                  SizedBox(width: 10,),
+                  
+                                  //colonna contenente valori
+                                  Column(
+                                    children: [
+                                      Icon(widget.casaSelezionata['vicino_scuole'] == 'si' ? Icons.check :  Icons.close, size: 30,),
+                                      SizedBox(height: 22,),
+                                      Icon(widget.casaSelezionata['vicino_parchi'] == 'si' ? Icons.check :  Icons.close, size: 30,),
+                                      SizedBox(height: 22,),
+                                      Icon(widget.casaSelezionata['vicino_mezzi'] == 'si' ? Icons.check :  Icons.close, size: 30,),                       
+                                    ],
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                    ]),
+                    ],
+                  ),
+
                   Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
                   SizedBox(height: 65,)
                   ],
