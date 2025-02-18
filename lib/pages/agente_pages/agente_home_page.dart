@@ -130,6 +130,8 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
         'vicino_scuole' : 'si',
         'vicino_parchi' : 'no',
         'vicino_mezzi' : 'si',
+        'agenzia' : 'ideaCasa',
+        'agente' : 'Carlo Conti'
       },
       {
         'image1': 'lib/assets/casa2_1_placeholder.png',
@@ -152,6 +154,8 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
         'vicino_scuole' : 'si',
         'vicino_parchi' : 'si',
         'vicino_mezzi' : 'si',
+        'agenzia' : 'casaBella',
+        'agente' : 'Lucio Corsi'
       },
       {
         'image1': 'lib/assets/casa3_1_placeholder.png',
@@ -174,6 +178,8 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
         'vicino_scuole' : 'si',
         'vicino_parchi' : 'no',
         'vicino_mezzi' : 'si',
+        'agenzia' : 'trovaCasa',
+        'agente' : 'Marcella Bella'
       },
     ];
     

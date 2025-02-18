@@ -313,6 +313,112 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                       onMapCreated: (GoogleMapController controller) {_controller.complete(controller);},
                       markers: {const Marker(markerId: MarkerId('Posizione'), position:  LatLng(40.8189507, 14.1896127),)},),
                   ),
+
+                  Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
+
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(width: 10.0),
+                          Text("Vicino A", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                  
+                          SizedBox(width: 10.0),
+                  
+                          //Colonna comunista
+                          Column(
+                            children: [
+                  
+                              //Riga contenente tre colonne
+                              Row(
+                                children: [
+                  
+                                  //Colonna contenente icone
+                                  Column(
+                                    children: [
+                                      Icon(FontAwesomeIcons.school, size: 22, color: coloriPulsanti,),
+                                      SizedBox(height: 22,),
+                                      Icon(FontAwesomeIcons.sunPlantWilt, size: 22, color: coloriPulsanti,),
+                                      SizedBox(height: 22,),
+                                      Icon(FontAwesomeIcons.bus, size: 22, color: coloriPulsanti,),
+                                    ],
+                                  ),
+                  
+                                  SizedBox(width: 30,),
+                                  
+                                  //Colonna contenente nomi
+                                  Column(
+                                    children: [
+                                      Container(
+                                        width: 270,
+                                        child: Text("Scuole", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),)
+                                      ),
+                                      SizedBox(height: 18,),
+                                      Container(
+                                        width: 270,
+                                        child: Text("Parchi pubblici", style: TextStyle(fontSize: 18.0, color: coloriPulsanti))
+                                      ),
+                                      SizedBox(height: 18,),
+                                      Container(
+                                        width: 270,
+                                        child: Text("Fermate mezzi pubblici", style: TextStyle(fontSize: 18.0, color: coloriPulsanti))
+                                      ),
+                                    ],
+                                  ),
+                                  
+                                  SizedBox(width: 10,),
+                  
+                                  //colonna contenente valori
+                                  Column(
+                                    children: [
+                                      Icon(widget.casaSelezionata['vicino_scuole'] == 'si' ? Icons.check :  Icons.close, size: 30,),
+                                      SizedBox(height: 16,),
+                                      Icon(widget.casaSelezionata['vicino_parchi'] == 'si' ? Icons.check :  Icons.close, size: 30,),
+                                      SizedBox(height: 16,),
+                                      Icon(widget.casaSelezionata['vicino_mezzi'] == 'si' ? Icons.check :  Icons.close, size: 30,),                       
+                                    ],
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                    ]),
+                    ],
+                  ),
+
+                  Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
+
+                  Row(
+                      children: [
+                        SizedBox(width: 10.0),
+                        Text("Inserzionista", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                      ],
+                    ),
+
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(width: 10.0),
+                          Text("Agenzia immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
+                          Text(widget.casaSelezionata['agenzia'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti))
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(width: 10.0),
+                          Text("Agente immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
+                          Text(widget.casaSelezionata['agente'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti))
+                        ],
+                      ),
+                    ],
+                  ),
+
                   Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
                   SizedBox(height: 65,)
         

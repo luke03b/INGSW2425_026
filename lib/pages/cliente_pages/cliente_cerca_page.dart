@@ -83,6 +83,8 @@ class _CercaPageState extends State<CercaPage> {
       'vicino_scuole' : 'si',
       'vicino_parchi' : 'no',
       'vicino_mezzi' : 'si',
+      'agenzia' : 'ideaCasa',
+      'agente' : 'Carlo Conti'
     },
     {
       'image1': 'lib/assets/casa2_1_placeholder.png',
@@ -95,9 +97,11 @@ class _CercaPageState extends State<CercaPage> {
       'arredato' : "no",
       'piano' : 'Ultimo',
       'descrizione' : '',
-      'vicino_scuole' : 'si',
+      'vicino_scuole' : 'no',
       'vicino_parchi' : 'no',
       'vicino_mezzi' : 'si',
+      'agenzia' : 'casaBella',
+      'agente' : 'Lucio Corsi'
     },
     {
       'image1': 'lib/assets/casa3_1_placeholder.png',
@@ -111,8 +115,10 @@ class _CercaPageState extends State<CercaPage> {
       'piano' : '3',
       'descrizione' : '',
       'vicino_scuole' : 'si',
-      'vicino_parchi' : 'no',
+      'vicino_parchi' : 'si',
       'vicino_mezzi' : 'si',
+      'agenzia' : 'trovaCasa',
+      'agente' : 'Marcella Bella',
     },
 
   ];

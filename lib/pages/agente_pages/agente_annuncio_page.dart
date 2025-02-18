@@ -344,16 +344,25 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                                     ],
                                   ),
                   
-                                  SizedBox(width: 10,),
+                                  SizedBox(width: 30,),
                                   
                                   //Colonna contenente nomi
                                   Column(
                                     children: [
-                                      Text("Scuole", style: TextStyle(fontSize: 18.0, color: coloriPulsanti, ),),
-                                      SizedBox(height: 22,),
-                                      Text("Parchi pubblici", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
-                                      SizedBox(height: 22,),
-                                      Text("Fermate mezzi pubblici", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
+                                      Container(
+                                        width: 270,
+                                        child: Text("Scuole", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),)
+                                      ),
+                                      SizedBox(height: 18,),
+                                      Container(
+                                        width: 270,
+                                        child: Text("Parchi pubblici", style: TextStyle(fontSize: 18.0, color: coloriPulsanti))
+                                      ),
+                                      SizedBox(height: 18,),
+                                      Container(
+                                        width: 270,
+                                        child: Text("Fermate mezzi pubblici", style: TextStyle(fontSize: 18.0, color: coloriPulsanti))
+                                      ),
                                     ],
                                   ),
                                   
@@ -374,6 +383,34 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                             ],
                           ),
                     ]),
+                    ],
+                  ),
+
+                  Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
+
+                  Row(
+                      children: [
+                        SizedBox(width: 10.0),
+                        Text("Inserzionista", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                      ],
+                    ),
+
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(width: 10.0),
+                          Text("Agenzia immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
+                          Text(widget.casaSelezionata['agenzia'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti))
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(width: 10.0),
+                          Text("Agente immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
+                          Text(widget.casaSelezionata['agente'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti))
+                        ],
+                      ),
                     ],
                   ),
 
