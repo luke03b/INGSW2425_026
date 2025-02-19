@@ -1,8 +1,11 @@
 import 'dart:io'; 
 import 'package:domus_app/utils/my_buttons_widgets.dart';
+import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:domus_app/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
 import 'package:image_picker/image_picker.dart';
 
 const List<String> listaClassiEnergetiche = <String>['Tutte', 'A4', 'A3', 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G'];
@@ -25,6 +28,13 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
   final TextEditingController superficieController = TextEditingController();
   final TextEditingController numeroPianoController = TextEditingController();
 
+  final TextEditingController mappeController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
+
+  double? latitude = null;
+  double? longitude = null;
+
   bool _isGarageSelected = false;
 
   bool _isGiardinoSelected = false;
@@ -43,6 +53,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
   String sceltaPiano = listaPiani.first;
 
   bool isSceltaNumeroPianoVisible = false;
+  bool isIndirizzoValidato = false;
 
   final imagePicker = ImagePicker();
   List<XFile>? imageList = [];
@@ -264,36 +275,111 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                       child: MyTextFieldOnlyPositiveNumbers(controller: prezzoController, text: "EUR", colore: coloreScritte,)
                     ),
                 ],),
-                Row(
-                  children: [
-                    SizedBox(width: 7),
-                    Text("Città:", style: TextStyle(color: coloreScritte, fontWeight: FontWeight.bold, fontSize: GRANDEZZA_SCRITTE_PICCOLE),),
-                    SizedBox(width: 7),
-                    SizedBox(
-                      width: MediaQuery.sizeOf(context).width * 0.40,
-                      child: TextField(controller: cittaController, decoration: InputDecoration(hintText: "città", hintStyle: TextStyle(color: coloreScritte)), style: TextStyle(color: coloreScritte),)
+                Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Row(
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Form(
+                              key: _formKey,
+                              autovalidateMode: _autovalidateMode,
+                              child: SizedBox(
+                                width: 309,
+                                child: GooglePlacesAutoCompleteTextFormField(
+                                  onChanged: (value){setState(() {
+                                    latitude = null;
+                                    longitude = null;
+                                    isIndirizzoValidato = false;
+                                  });},
+                                  textEditingController: mappeController,
+                                  googleAPIKey: "AIzaSyBUkzr-VCtKVyTTfssndaWR5Iy5TyfM0as",
+                                  decoration: const InputDecoration(
+                                    hintText: 'Inserire un indirizzo',
+                                    labelText: 'Indirizzo',
+                                    labelStyle: TextStyle(color: Colors.black),
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter some text';
+                                    }
+                                    return null;
+                                  },
+                                  // proxyURL: _yourProxyURL,
+                                  maxLines: 1,
+                                  overlayContainerBuilder: (child) => Material(
+                                    elevation: 1.0,
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: child,
+                                  ),
+                                  fetchCoordinates: true,
+                                  onPlaceDetailsWithCoordinatesReceived: (prediction) {
+                                    print('placeDetails ${prediction.lat} , ${prediction.lng}');
+                                    latitude = double.tryParse(prediction.lat ?? '');
+                                    longitude = double.tryParse(prediction.lng ?? '');
+                                    print('new coordinates $latitude , $longitude');
+                                  },
+                                  onSuggestionClicked: (Prediction prediction) =>
+                                      mappeController.text = prediction.description!,
+                                  minInputLength: 3,
+                                ),
+                              ),
+                            ),
+                            // const SizedBox(height: 24),
+                            // TextButton(
+                            //   onPressed: _onSubmit,
+                            //   child: const Text('Submit'),
+                            // ),
+                          ],
+                        ),
+                        SizedBox(width: 10,),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: isIndirizzoValidato ? Colors.green : Colors.transparent,
+                            borderRadius: BorderRadius.circular(4),
+                            // border: Border.all(color: Colors.black, width: 1),
+                            border: Border.all(width: 1),
+                          ),
+                          child: IconButton(onPressed: (){
+                            FocusScope.of(context).unfocus();
+                            if(latitude == null || longitude == null){
+                              showDialog(context: context, builder: (BuildContext context) => MyInfoDialog(
+                                title: "Attenzione", 
+                                bodyText: "L'indirizzo inserito non è valido. Riprovare con un indirizzo valido", 
+                                buttonText: "Ok", 
+                                onPressed: (){Navigator.pop(context);}
+                                )
+                              );
+                            } else {
+                            showDialog(context: context, builder: (BuildContext context) => MyMapDialog(
+                              title: "Attenzione", 
+                              bodyText: "Controllare che l'indirizzo sia corretto", 
+                              leftButtonText: "No", 
+                              leftButtonColor: Colors.grey, 
+                              rightButtonText: "Si", 
+                              rightButtonColor: Theme.of(context).colorScheme.tertiary, 
+                              onPressLeftButton: (){
+                                setState(() {
+                                  isIndirizzoValidato = false;
+                                });
+                                Navigator.pop(context);}, 
+                              onPressRightButton: (){setState(() {
+                                isIndirizzoValidato = true;
+                              });
+                              Navigator.pop(context);}, 
+                              latitude: latitude, 
+                              longitude: longitude),);
+                            }
+                            // FocusScope.of(context).unfocus();
+                          }, icon: Icon(FontAwesomeIcons.check, color: Colors.black,),))
+                      ],
                     ),
-                ],),
-                Row(
-                  children: [
-                    SizedBox(width: 7),
-                    Text("CAP:", style: TextStyle(color: coloreScritte, fontWeight: FontWeight.bold, fontSize: GRANDEZZA_SCRITTE_PICCOLE),),
-                    SizedBox(width: 7),
-                    SizedBox(
-                      width: MediaQuery.sizeOf(context).width * 0.40,
-                      child: MyTextFieldOnlyPositiveNumbers(controller: capController, text: "cap", colore: coloreScritte,)
-                    ),
-                ],),
-                Row(
-                  children: [
-                    SizedBox(width: 7),
-                    Text("Via:", style: TextStyle(color: coloreScritte, fontWeight: FontWeight.bold, fontSize: GRANDEZZA_SCRITTE_PICCOLE),),
-                    SizedBox(width: 7),
-                    SizedBox(
-                      width: MediaQuery.sizeOf(context).width * 0.40,
-                      child: TextField(controller: viaController, decoration: InputDecoration(hintText: "via", hintStyle: TextStyle(color: coloreScritte)), style: TextStyle(color: coloreScritte),)
-                    ),
-                ],),
+                  ),
+                // Divider(),
+                // MyLocationsPredictions(location: "Via Dalmazia 13, Napoli (NA), 80124", press: (){}),
                 SizedBox(height: 25,),
                 Row(
                   children: [
@@ -569,5 +655,11 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
         ),
       ),
     );
+  }
+  Future<void> _onSubmit() async {
+    if (!_formKey.currentState!.validate()) {
+      setState(() => _autovalidateMode = AutovalidateMode.always);
+      return;
+    }
   }
 }
