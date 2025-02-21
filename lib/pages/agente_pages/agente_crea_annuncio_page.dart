@@ -1,4 +1,5 @@
 import 'dart:io'; 
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:domus_app/utils/my_text_widgets.dart';
@@ -82,18 +83,16 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
 
   @override
   Widget build(BuildContext context) {
-    Color coloreScritte = Theme.of(context).colorScheme.outline;
+    Color coloreScritte = context.outline;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.surface,
+          color: context.onSecondary,
         ),
-        title: Text("Crea annuncio",
-            style:
-                TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
+        title: Text("Crea annuncio", style: TextStyle(color: context.onSecondary)),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: context.primary,
         elevation: 5,
         shadowColor: Colors.black,
       ),
@@ -140,16 +139,16 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                             child: Container(
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: Theme.of(context).colorScheme.primary,
+                                  color: context.onSecondary,
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(5),
-                                color: Theme.of(context).colorScheme.onPrimary,
+                                color: context.primary,
                               ),
                               child: Icon(
                                 Icons.add,
                                 size: 50,
-                                color: Theme.of(context).colorScheme.primary,
+                                color: context.onSecondary,
                               ),
                             ),
                           );
@@ -175,12 +174,12 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: Theme.of(context).colorScheme.error.withOpacity(1),
+                                      color: context.error.withOpacity(1),
                                       shape: BoxShape.circle,
                                     ),
                                     child: Padding(
                                       padding: EdgeInsets.all(4),
-                                      child: Icon(Icons.close, size: 18, color: Theme.of(context).colorScheme.surface),
+                                      child: Icon(Icons.close, size: 18, color: context.surface),
                                     ),
                                   ),
                                 ),
@@ -202,16 +201,16 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                       selectImages();
                     },
                     child: Card(
-                      color: Theme.of(context).colorScheme.onSurface,
+                      color: context.primaryContainer,
                       child: Column(
                         children: [
                           const SizedBox(height: 75),
                           Center(
                               child: Card(
                                   color:
-                                      Theme.of(context).colorScheme.primary,
+                                      context.onSecondary,
                                   child:
-                                      const Icon(Icons.add, color: Colors.white))),
+                                      Icon(Icons.add, color: context.primary))),
                           const SizedBox(height: 75),
                         ],
                       ),
@@ -241,11 +240,11 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                         children: [
                           Icon(
                             selectedVendiAffitta[0] ? Icons.radio_button_on : Icons.radio_button_off,
-                            color: Theme.of(context).colorScheme.primary,
+                            color: context.onSecondary,
                             size: 18,
                           ),
                           SizedBox(width: 6),
-                          Text("Vendi"),
+                          Text("Vendi", style: TextStyle(color: context.onSecondary),),
                           SizedBox(width: 10)
                         ],
                       ),
@@ -253,11 +252,11 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                         children: [
                           Icon(
                             selectedVendiAffitta[1] ? Icons.radio_button_on : Icons.radio_button_off,
-                            color: Theme.of(context).colorScheme.primary,
+                            color: context.onSecondary,
                             size: 18,
                           ),
                           SizedBox(width: 6),
-                          Text("Affitta"),
+                          Text("Affitta", style: TextStyle(color: context.onSecondary)),
                           SizedBox(width: 15)
                         ],
                       ),
@@ -297,9 +296,11 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                                   googleAPIKey: "AIzaSyBUkzr-VCtKVyTTfssndaWR5Iy5TyfM0as",
                                   decoration: InputDecoration(
                                     hintText: 'Inserire un indirizzo',
+                                    hintStyle: TextStyle(color: context.onSecondary),
                                     labelText: 'Indirizzo',
-                                    labelStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-                                    border: OutlineInputBorder(),
+                                    labelStyle: TextStyle(color: context.onSecondary),
+                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.outline),),
+                                    border: OutlineInputBorder()
                                   ),
                                   validator: (value) {
                                     if (value!.isEmpty) {
@@ -341,7 +342,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                             color: isIndirizzoValidato ? Colors.green : Colors.transparent,
                             borderRadius: BorderRadius.circular(4),
                             // border: Border.all(color: Colors.black, width: 1),
-                            border: Border.all(color: Theme.of(context).colorScheme.onSurface, width: 1),
+                            border: Border.all(color: context.onSecondary, width: 1),
                           ),
                           child: IconButton(onPressed: (){
                             FocusScope.of(context).unfocus();
@@ -358,9 +359,9 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                               title: "Attenzione", 
                               bodyText: "Controllare che l'indirizzo sia corretto", 
                               leftButtonText: "No", 
-                              leftButtonColor: Colors.grey, 
+                              leftButtonColor: context.secondary, 
                               rightButtonText: "Si", 
-                              rightButtonColor: Theme.of(context).colorScheme.tertiary, 
+                              rightButtonColor: context.tertiary, 
                               onPressLeftButton: (){
                                 setState(() {
                                   isIndirizzoValidato = false;
@@ -374,7 +375,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                               longitude: longitude),);
                             }
                             // FocusScope.of(context).unfocus();
-                          }, icon: Icon(FontAwesomeIcons.check, color: Theme.of(context).colorScheme.onSurface,),))
+                          }, icon: Icon(FontAwesomeIcons.check, color: context.onSecondary,),))
                       ],
                     ),
                   ),
@@ -388,13 +389,15 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                       width: MediaQuery.sizeOf(context).width/1.04,
                       child: TextField(
                         decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.outline),),
                           labelText: 'Descrizione',  // Testo del label
                           labelStyle: TextStyle(
-                            fontSize: 24,  // Aumenta la dimensione del font
-                            fontWeight: FontWeight.bold,  // Rende il font più bold, opzionale
-                            color: coloreScritte,  // Colore opzionale
+                            fontSize: 20,  // Aumenta la dimensione del font
+                            fontWeight: FontWeight.normal,  // Rende il font più bold, opzionale
+                            color: context.onSecondary,  // Colore opzionale
                           ),
                           hintText: 'Inserisci una descrizione dell\'immobile',  // Testo di suggerimento
+                          hintStyle: TextStyle(color: context.onSecondary),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           )),
@@ -457,6 +460,8 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                             Column(
                               children: [
                                 Switch(
+                                  activeTrackColor: context.onSecondary,
+                                  activeColor: context.primary,
                                   value: _isGarageSelected, 
                                   onChanged: (value){
                                     setState(() {
@@ -465,6 +470,8 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                                   }
                                 ),
                                 Switch(
+                                  activeTrackColor: context.onSecondary,
+                                  activeColor: context.primary,
                                   value: _isAscensoreSelected, 
                                   onChanged: (value){
                                     setState(() {
@@ -473,6 +480,8 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                                   }
                                 ),
                                 Switch(
+                                  activeTrackColor: context.onSecondary,
+                                  activeColor: context.primary,
                                   value: _isArredatoSelected, 
                                   onChanged: (value){
                                     setState(() {
@@ -527,6 +536,8 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                             Column(
                               children: [
                                 Switch(
+                                  activeTrackColor: context.onSecondary,
+                                  activeColor: context.primary,
                                   value: _isGiardinoSelected, 
                                   onChanged: (value){
                                     setState(() {
@@ -535,6 +546,8 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                                   }
                                 ),
                                 Switch(
+                                  activeTrackColor: context.onSecondary,
+                                  activeColor: context.primary,
                                   value: _isPiscinaSelected, 
                                   onChanged: (value){
                                     setState(() {
@@ -543,6 +556,8 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                                   }
                                 ),
                                 Switch(
+                                  activeTrackColor: context.onSecondary,
+                                  activeColor: context.primary,
                                   value: _isBalconeSelected, 
                                   onChanged: (value){
                                     setState(() {
@@ -649,7 +664,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
               ],
             ),
             SizedBox(height: 20,),
-            MyElevatedButtonWidget(text: "Aggiungi annuncio", onPressed: (){debugPrint("annuncio creato!!!");}, color: Theme.of(context).colorScheme.tertiary),
+            MyElevatedButtonWidget(text: "Aggiungi annuncio", onPressed: (){debugPrint("annuncio creato!!!");}, color: context.tertiary),
             SizedBox(height: 30,),
           ],
         ),

@@ -98,12 +98,12 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.onSecondary,
+          color: context.onSecondary,
         ),
         automaticallyImplyLeading: true,
-        title: Text("Prenotazioni ricevute", style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),),
+        title: Text("Prenotazioni ricevute", style: TextStyle(color: context.onSecondary),),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: context.primary,
         elevation: 5,
         shadowColor: context.shadow,
       ),
@@ -112,7 +112,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
 
   CarouselSlider myCarouselSlider(BuildContext context) {
 
-    Color coloreScritte = Theme.of(context).colorScheme.outline;
+    Color coloreScritte = context.outline;
 
     return CarouselSlider(
       items: listaPrenotazioni.asMap().entries.map((entry) {
@@ -123,7 +123,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
           width: MediaQuery.of(context).size.width,
           margin: EdgeInsets.all(5),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryContainer,
+            color: context.primaryContainer,
             borderRadius: BorderRadius.circular(10),
             shape: BoxShape.rectangle,
             boxShadow: [BoxShadow(color: context.shadow.withOpacity(0.2),
@@ -185,7 +185,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                         fit: BoxFit.scaleDown,
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text(indicePrenotazioneCorrente['email_prenotante'], style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: Theme.of(context).colorScheme.outline),))),
+                          child: Text(indicePrenotazioneCorrente['email_prenotante'], style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline),))),
                     ),
                 ],
               ),
@@ -204,15 +204,15 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                                                                     title: "Conferma prenotazione",
                                                                     bodyText: "Sei sicuro di voler accettare la prenotazione?",
                                                                     leftButtonText: "No",
-                                                                    leftButtonColor: Theme.of(context).colorScheme.secondary,
+                                                                    leftButtonColor: context.secondary,
                                                                     rightButtonText: "Si",
-                                                                    rightButtonColor: Theme.of(context).colorScheme.tertiary,
+                                                                    rightButtonColor: context.tertiary,
                                                                     onPressLeftButton: (){Navigator.pop(context);},
                                                                     onPressRightButton: (){debugPrint("Prenotazione accettata");},
                                                                   )
                                 );
                             },
-                            color: Theme.of(context).colorScheme.onSecondary
+                            color: context.onSecondary
                           )
                   ),
                   SizedBox(width: scaleFactor * MediaQuery.of(context).size.height/50,),
@@ -227,15 +227,15 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                                                                     title: "Rifiuta prenotazione",
                                                                     bodyText: "Sei sicuro di voler rifiutare la prenotazione?",
                                                                     leftButtonText: "No",
-                                                                    leftButtonColor: Theme.of(context).colorScheme.secondary,
+                                                                    leftButtonColor: context.secondary,
                                                                     rightButtonText: "Si",
-                                                                    rightButtonColor: Theme.of(context).colorScheme.tertiary,
+                                                                    rightButtonColor: context.tertiary,
                                                                     onPressLeftButton: (){Navigator.pop(context);},
                                                                     onPressRightButton: (){debugPrint("Prenotazione accettata");},
                                                                   )
                                 );
                             },
-                            color: Theme.of(context).colorScheme.secondary)),
+                            color: context.secondary)),
                   SizedBox(width: scaleFactor * MediaQuery.of(context).size.height/50,),
               ],),
               SizedBox(height: scaleFactor * MediaQuery.of(context).size.height/75,),

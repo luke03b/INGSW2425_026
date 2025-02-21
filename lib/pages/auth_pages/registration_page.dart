@@ -1,8 +1,11 @@
 import 'package:domus_app/services/aws_cognito.dart';
+import 'package:domus_app/theme/theme_provider.dart';
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import '../../utils/my_text_widgets.dart';
 import '../../utils/my_buttons_widgets.dart';
 
@@ -23,16 +26,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    Color coloriScritte = Theme.of(context).colorScheme.outline;
+    Color coloriScritte = context.outline;
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: context.surface,
       body: SafeArea(
         child: Center(
           child: Column(
             children: [
               const Spacer(flex: 5),
               //Logo
-              Image.asset('lib/assets/HouseHunter.png', height: 140,),
+              themeProvider.themeMode == ThemeMode.light ? Image.asset('lib/assets/HouseHunter.png', height: 140) : Image.asset('lib/assets/HouseHunterChiaro.png', height: 140,),
               const Spacer(flex: 5),
 
               //nomeTextField
@@ -68,7 +72,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               //RegistratiButton
               MyElevatedButtonWidget(text: "Registrati", onPressed: () async{
                 await registraETornaAlLogin(context);
-              }, color: Theme.of(context).colorScheme.tertiary,),
+              }, color: context.tertiary,),
               const Spacer(flex: 3),
 
               Row(

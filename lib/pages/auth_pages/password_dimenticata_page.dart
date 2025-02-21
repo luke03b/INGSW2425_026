@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:domus_app/services/aws_cognito.dart';
+import 'package:domus_app/theme/theme_provider.dart';
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_countdown_timer_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../utils/my_text_widgets.dart';
 
 class PasswordDimenticataPage extends StatefulWidget {
@@ -45,16 +47,17 @@ class _PasswordDimenticataPageState extends State<PasswordDimenticataPage> {
   @override
   Widget build(BuildContext context) {
     final String? emailFromLogin = ModalRoute.of(context)?.settings.arguments as String?;
-    Color coloriScritte = Theme.of(context).colorScheme.outline;
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    Color coloriScritte = context.outline;
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: context.surface,
       body: SafeArea(
         child: Center(
           child: Column(
             children: [
               const Spacer(flex: 5),
               //Logo
-              SafeArea(child: Image.asset('lib/assets/HouseHunter.png', height: 140)),
+              SafeArea(child: themeProvider.themeMode == ThemeMode.light ? Image.asset('lib/assets/HouseHunter.png', height: 140) : Image.asset('lib/assets/HouseHunterChiaro.png', height: 140)),
               const Spacer(flex: 5),
         
               //mailTextField
@@ -153,7 +156,7 @@ class _PasswordDimenticataPageState extends State<PasswordDimenticataPage> {
                   Expanded(
                     child: MyElevatedButtonWidget(text: "Indietro",
                     onPressed: (){Navigator.pop(context);},
-                      color: Theme.of(context).colorScheme.onSecondary),
+                      color: context.secondary),
                   ),
                   
                   SizedBox(width: 10,),
@@ -177,7 +180,7 @@ class _PasswordDimenticataPageState extends State<PasswordDimenticataPage> {
                               builder: (BuildContext context) => MyInfoDialog(title: 'Errore', bodyText: 'Controlla i campi e riprova', buttonText: 'Ok', onPressed: (){Navigator.pop(context);}));
                           }
                          },
-                        color: Theme.of(context).colorScheme.tertiary),
+                        color: context.tertiary),
                     ),
                   ),
                   SizedBox(width: 10,),

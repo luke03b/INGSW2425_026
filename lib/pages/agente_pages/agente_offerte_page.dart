@@ -104,7 +104,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
         automaticallyImplyLeading: true,
         title: Text("Offerte ricevute", style: TextStyle(color: context.onSecondary),),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: context.primary,
         elevation: 5,
         shadowColor: context.shadow,
       ),
@@ -123,15 +123,15 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(width: 10,height: 40,),
-                    Text("Prezzo iniziale: ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: GRANDEZZA_SCRITTE_PICCOLE, color: Theme.of(context).colorScheme.outline),),
+                    Text("Prezzo iniziale: ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: GRANDEZZA_SCRITTE_PICCOLE, color: context.outline),),
                     Expanded(
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text(listaOfferte[0]['prezzo']!, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: Theme.of(context).colorScheme.outline),))),
+                          child: Text(listaOfferte[0]['prezzo']!, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline),))),
                     ),
-                    Text("EUR", style: TextStyle(fontWeight: FontWeight.normal, fontSize: GRANDEZZA_SCRITTE_PICCOLE, color: Theme.of(context).colorScheme.outline),),
+                    Text("EUR", style: TextStyle(fontWeight: FontWeight.normal, fontSize: GRANDEZZA_SCRITTE_PICCOLE, color: context.outline),),
                     SizedBox(width: 10,),
                   ],
                 ),
@@ -143,7 +143,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
 
  CarouselSlider myCarouselSlider(BuildContext context) {
 
-    Color coloreScritte = Theme.of(context).colorScheme.outline;
+    Color coloreScritte = context.outline;
 
     return CarouselSlider(
       items: listaOfferte.asMap().entries.map((entry) {
@@ -208,7 +208,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                         fit: BoxFit.scaleDown,
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text(indiceOffertaCorrente['email_offerente'], style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: Theme.of(context).colorScheme.outline),))),
+                          child: Text(indiceOffertaCorrente['email_offerente'], style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline),))),
                     ),
                 ],
               ),
@@ -237,9 +237,9 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                                                                     title: "Rifiuta offerta",
                                                                     bodyText: "Sei sicuro di voler rifiutare la prenotazione?",
                                                                     leftButtonText: "No",
-                                                                    leftButtonColor: Theme.of(context).colorScheme.secondary,
+                                                                    leftButtonColor: context.secondary,
                                                                     rightButtonText: "Si",
-                                                                    rightButtonColor: Theme.of(context).colorScheme.tertiary,
+                                                                    rightButtonColor: context.tertiary,
                                                                     onPressLeftButton: (){Navigator.pop(context);},
                                                                     onPressRightButton: (){debugPrint("Prenotazione accettata");},
                                                                   )

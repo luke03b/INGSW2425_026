@@ -110,16 +110,16 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
 
   @override
   Widget build(BuildContext context) {
-    Color coloreScritte = Theme.of(context).colorScheme.outline;
+    Color coloreScritte = context.outline;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.onSecondary,
+          color: context.onSecondary,
         ),
-        title: Text("Analisi offerte immobile", style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),),
+        title: Text("Analisi offerte immobile", style: TextStyle(color: context.onSecondary),),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: context.primary,
         elevation: 5,
         shadowColor: context.shadow,
       ),
@@ -180,7 +180,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                               fit: BoxFit.scaleDown,
                               child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text(widget.offertaSelezionata['email_offerente'], style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: Theme.of(context).colorScheme.outline),))),
+                                child: Text(widget.offertaSelezionata['email_offerente'], style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline),))),
                           ),
                       ],
                     ),
@@ -200,14 +200,14 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                                                             bodyText: "Sei sicuro di voler accettare l'offerta?",
                                                                             rightButtonText: "Si",
                                                                             leftButtonText: "No",
-                                                                            leftButtonColor: Theme.of(context).colorScheme.secondary,
-                                                                            rightButtonColor: Theme.of(context).colorScheme.tertiary,
+                                                                            leftButtonColor: context.secondary,
+                                                                            rightButtonColor: context.tertiary,
                                                                             onPressLeftButton: (){Navigator.pop(context);},
                                                                             onPressRightButton: (){debugPrint("offerta accettata");},
                                                                           )
                                         );
                                     },
-                                    color: Theme.of(context).colorScheme.onSecondary
+                                    color: context.onSecondary
                                   )
                           ),
                         SizedBox(width: MediaQuery.of(context).size.height/50,),
@@ -222,15 +222,15 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                                                           title: "Rifiuta offerta",
                                                                           bodyText: "Sei sicuro di voler rifiutare l'offerta?",
                                                                           leftButtonText: "No",
-                                                                          leftButtonColor: Theme.of(context).colorScheme.secondary,
+                                                                          leftButtonColor: context.secondary,
                                                                           rightButtonText: "Si",
-                                                                          rightButtonColor: Theme.of(context).colorScheme.tertiary,
+                                                                          rightButtonColor: context.tertiary,
                                                                           onPressLeftButton: (){Navigator.pop(context);},
                                                                           onPressRightButton: (){debugPrint("Prenotazione rifiutata");},
                                                                         )
                                       );
                                   },
-                                  color: Theme.of(context).colorScheme.secondary
+                                  color: context.secondary
                                 )
                         ),
                         SizedBox(width: MediaQuery.of(context).size.height/50,),
@@ -267,11 +267,11 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                     SizedBox(height: MediaQuery.of(context).size.height/50,),
                     MyElevatedButtonRectWidget(text: "Invia", onPressed: (){
                                       inviaControproposta(context);
-                                      }, color: Theme.of(context).colorScheme.onSecondary),
+                                      }, color: context.onSecondary),
                     SizedBox(height: MediaQuery.of(context).size.height/50,),
 
                     Card(
-                      color: Theme.of(context).colorScheme.primaryContainer,
+                      color: context.primaryContainer,
                       elevation: 4,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
@@ -368,9 +368,9 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                             title: "Conferma",
                                             bodyText: "Sei sicuro di voler inviare una controproposta di ${contropropostaController.text} EUR?",
                                             leftButtonText: "No",
-                                            leftButtonColor: Theme.of(context).colorScheme.secondary,
+                                            leftButtonColor: context.secondary,
                                             rightButtonText: "Si",
-                                            rightButtonColor: Theme.of(context).colorScheme.tertiary,
+                                            rightButtonColor: context.tertiary,
                                             onPressLeftButton: (){Navigator.pop(context);},
                                             onPressRightButton: (){debugPrint("Controproposta inviata");},
                                           )

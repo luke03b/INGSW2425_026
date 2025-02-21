@@ -1,4 +1,5 @@
 import 'package:domus_app/services/aws_cognito.dart';
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:domus_app/utils/my_text_widgets.dart';
@@ -27,16 +28,16 @@ class _AdminCreaNuovoAdminPageState extends State<AdminCreaNuovoAdminPage> {
 
   @override
   Widget build(BuildContext context) {
-    Color coloriScritte = Theme.of(context).colorScheme.outline;
+    Color coloriScritte = context.outline;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.onSecondary,
+          color: context.onSecondary,
         ),
-        title: Text( widget.isNewUserAdmin ? "Crea nuovo admin" : "Crea nuovo agente", style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),),
+        title: Text( widget.isNewUserAdmin ? "Crea nuovo admin" : "Crea nuovo agente", style: TextStyle(color: context.onSecondary),),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: context.primary,
         elevation: 5,
         shadowColor: Colors.black,
       ),
@@ -76,16 +77,16 @@ class _AdminCreaNuovoAdminPageState extends State<AdminCreaNuovoAdminPage> {
                   showDialog(
                     barrierDismissible: false,
                     context: context, 
-                    builder: (BuildContext context) => MyOptionsDialog(title: "Attenzione", bodyText: "Sei sicuro di voler creare un nuovo admin?", rightButtonText: "Si", rightButtonColor: Theme.of(context).colorScheme.tertiary, onPressRightButton: () async {await aggiungiAdmin(context);}, leftButtonText: "No", leftButtonColor: Colors.grey, onPressLeftButton: (){Navigator.pop(context);})
+                    builder: (BuildContext context) => MyOptionsDialog(title: "Attenzione", bodyText: "Sei sicuro di voler creare un nuovo admin?", rightButtonText: "Si", rightButtonColor: context.tertiary, onPressRightButton: () async {await aggiungiAdmin(context);}, leftButtonText: "No", leftButtonColor: Colors.grey, onPressLeftButton: (){Navigator.pop(context);})
                   );
                 } else {
                   showDialog(
                     barrierDismissible: false,
                     context: context, 
-                    builder: (BuildContext context) => MyOptionsDialog(title: "Attenzione", bodyText: "Sei sicuro di voler creare un nuovo agente?", rightButtonText: "Si", rightButtonColor: Theme.of(context).colorScheme.tertiary, onPressRightButton: () async {await aggiungiAgente(context);}, leftButtonText: "No", leftButtonColor: Colors.grey, onPressLeftButton: (){Navigator.pop(context);})
+                    builder: (BuildContext context) => MyOptionsDialog(title: "Attenzione", bodyText: "Sei sicuro di voler creare un nuovo agente?", rightButtonText: "Si", rightButtonColor: context.tertiary, onPressRightButton: () async {await aggiungiAgente(context);}, leftButtonText: "No", leftButtonColor: Colors.grey, onPressLeftButton: (){Navigator.pop(context);})
                   );
                 }
-              }, color: Theme.of(context).colorScheme.tertiary,),
+              }, color: context.tertiary,),
               const Spacer(flex: 3),
             ],
           ),

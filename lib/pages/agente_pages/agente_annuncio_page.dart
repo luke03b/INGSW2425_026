@@ -32,7 +32,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
 
   @override
   Widget build(BuildContext context) {
-    Color coloriPulsanti = Theme.of(context).colorScheme.outline;
+    Color coloriPulsanti = context.outline;
 
     final List<Widget> listaImmagini = [
       Image.asset(widget.casaSelezionata['image1']),
@@ -44,11 +44,11 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.onSecondary,
+          color: context.onSecondary,
         ),
-        title: Text("House Hunters", style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),),
+        title: Text("House Hunters", style: TextStyle(color: context.onSecondary),),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: context.primary,
         elevation: 5,
         shadowColor: context.shadow,
       ),
@@ -57,7 +57,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
           child: Column(
             children: [
               Card(
-                color: Theme.of(context).colorScheme.primaryContainer,
+                color: context.primaryContainer,
                 // color: const Color.fromARGB(255, 228, 246, 255),
                 child: Column(
                   children: [
@@ -68,7 +68,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                       effect: ScrollingDotsEffect(
                         dotHeight: 8.0,
                         dotWidth: 8.0,
-                        activeDotColor: Theme.of(context).colorScheme.onSecondary
+                        activeDotColor: context.onSecondary
                       )
                     ),
                     SizedBox(height: 10,)
@@ -76,7 +76,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                 ),
               ),
               Card(
-                color: Theme.of(context).colorScheme.primaryContainer,
+                color: context.primaryContainer,
                 child: Column(
                   children: [
                     SizedBox(height: 10.0),

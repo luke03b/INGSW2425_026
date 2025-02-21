@@ -94,25 +94,30 @@ class _ProfiloPageState extends State<ProfiloPage> {
             ),
           ),
 
-          GestureDetector(
-              onTap:() {
-                themeProvider.toggleTheme();
-                },
-              child: Card(
-              color: context.primaryContainer,
-              child: ListTile(
-                title: Text("Alterna tema", style: TextStyle(color: context.outline),),
-                leading: Icon(Icons.palette, color: context.outline,),
-                trailing: Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  spacing: 12,
-                  children: <Widget>[
-                    Icon(Icons.arrow_circle_right_outlined, color: context.outline,),
-                  ],
+          Card(
+          color: context.primaryContainer,
+          child: ListTile(
+            title: Text("Tema scuro", style: TextStyle(color: context.outline),),
+            leading: Icon(Icons.dark_mode, color: context.outline,),
+            trailing: Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 12,
+              children: <Widget>[
+                Switch(
+                  activeTrackColor: context.onSecondary,
+                  activeColor: context.primary,
+                  value: themeProvider.themeMode == ThemeMode.dark, 
+                  onChanged: (value){
+                    setState(() {
+                      value = !value;
+                      themeProvider.toggleTheme();
+                    });
+                  }
                 ),
-              ),
+              ],
             ),
           ),
+                      ),
 
           Visibility(
             visible: gruppoUtenteLoggato == "admin",

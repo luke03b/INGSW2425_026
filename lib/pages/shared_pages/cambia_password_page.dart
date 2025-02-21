@@ -26,16 +26,16 @@ class _CambiaPasswordPageState extends State<CambiaPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    Color coloriScritte = Theme.of(context).colorScheme.outline;
+    Color coloriScritte = context.outline;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.onSecondary,
+          color: context.onSecondary,
         ),
-        title: Text("Cambia password", style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),),
+        title: Text("Cambia password", style: TextStyle(color: context.onSecondary),),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: context.primary,
         elevation: 5,
         shadowColor: context.shadow,
       ),
@@ -87,7 +87,7 @@ class _CambiaPasswordPageState extends State<CambiaPasswordPage> {
               MyElevatedButtonWidget(text: "Cambia password",
               onPressed: ()
                 async {await cambiaPassword(context);},
-                color: Theme.of(context).colorScheme.tertiary),
+                color: context.tertiary),
 
               const Spacer(flex: 8),
             ],
@@ -106,7 +106,7 @@ class _CambiaPasswordPageState extends State<CambiaPasswordPage> {
                                           leftButtonText: "No", 
                                           leftButtonColor: Colors.grey, 
                                           rightButtonText: "Si", 
-                                          rightButtonColor: Theme.of(context).colorScheme.tertiary, 
+                                          rightButtonColor: context.tertiary, 
                                           onPressLeftButton: (){Navigator.pop(context);}, 
                                           onPressRightButton: () async {
                                             bool isPasswordChanged = await changePassword(widget.emailUtente ?? mailController.text, oldPasswordController.text, newPasswordController.text);

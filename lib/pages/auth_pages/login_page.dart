@@ -1,5 +1,6 @@
 import 'package:domus_app/services/aws_cognito.dart';
 import 'package:domus_app/theme/theme_provider.dart';
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
@@ -24,10 +25,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    Color coloriScritte = Theme.of(context).colorScheme.outline;
+    Color coloriScritte = context.outline;
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: context.surface,
       body: SafeArea(
         child: Center(
           child: Column(
@@ -77,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
               MyElevatedButtonWidget(text: "Login",
               onPressed: ()
                 async { await loginECambioPagina(context);},
-                color: Theme.of(context).colorScheme.tertiary),
+                color: context.tertiary),
 
               const Spacer(flex: 8),
 
@@ -89,25 +90,55 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
 
-              const Spacer(flex: 3),
+              const Spacer(flex: 1),
         
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(onPressed: () async {
-                      bool isAllOk = await AWSServices().signInWithGoogle();
-                      if (await isAllOk) {
-                        Navigator.pop(context); Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (r) => false);
-                      } else {
-                        showDialog(
-                          barrierDismissible: false,
-                          context: context, 
-                          builder: (BuildContext context) => MyInfoDialog(title: 'Errore', bodyText: 'Qualcosa è andato storto. Riprova :/', buttonText: 'Ok', onPressed: (){Navigator.pop(context);})
-                        );
-                      }
-                    },  icon: SvgPicture.asset('lib/assets/google_logo.svg', width: 40, ),),
-                  IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/facebook_logo.svg', width: 40,)),
-                  IconButton(onPressed: (){}, icon: SvgPicture.asset('lib/assets/apple_logo.svg', width: 40,),)
+                  Container(
+                    width: 375,
+                    child: IconButton(onPressed: () async {
+                        bool isAllOk = await AWSServices().signInWithGoogle();
+                        if (await isAllOk) {
+                          Navigator.pop(context); Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (r) => false);
+                        } else {
+                          showDialog(
+                            barrierDismissible: false,
+                            context: context, 
+                            builder: (BuildContext context) => MyInfoDialog(title: 'Errore', bodyText: 'Qualcosa è andato storto. Riprova :/', buttonText: 'Ok', onPressed: (){Navigator.pop(context);})
+                          );
+                        }
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all(context.surface),
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            side: BorderSide(color: context.onSecondary),
+                          ),
+                        ),
+                      ),
+                      icon: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "Login con Google",
+                            style: TextStyle(
+                              color: context.onSecondary,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          SvgPicture.asset(
+                            'lib/assets/google_logo.svg',
+                            width: 25,
+                            colorFilter: ColorFilter.mode(context.onSecondary, BlendMode.srcIn),
+                          ),
+                        ]
+                      )
+                    ),
+                  ),
                 ],
               ),
 

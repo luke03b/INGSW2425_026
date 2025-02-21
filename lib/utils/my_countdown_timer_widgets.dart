@@ -87,16 +87,6 @@ class _CountdownTimerState extends State<CountdownTimer> {
         Stack(
           alignment: Alignment.center,
           children: [
-            SizedBox(
-              width: 30,
-              height: 30,
-              child: CircularProgressIndicator(
-                value: progress,
-                strokeWidth: 3,
-                backgroundColor: context.onPrimary,
-                valueColor: AlwaysStoppedAnimation<Color>(context.outline),
-              ),
-            ),
             // Testo al centro
             Text(
               "$remainingTime s",
