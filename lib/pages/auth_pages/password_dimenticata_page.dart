@@ -1,6 +1,6 @@
 import 'dart:async';
-
 import 'package:domus_app/services/aws_cognito.dart';
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_countdown_timer_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
@@ -61,6 +61,7 @@ class _PasswordDimenticataPageState extends State<PasswordDimenticataPage> {
               SizedBox(
                 width: MediaQuery.sizeOf(context).width * 0.92,
                 child: TextFormField(
+                        cursorColor: context.onSecondary,
                         readOnly: _isEmailTextFieldOnlyReadable,
                         controller: mailController,
                         style: TextStyle(
@@ -68,6 +69,12 @@ class _PasswordDimenticataPageState extends State<PasswordDimenticataPage> {
                           color: coloriScritte,
                         ),
                         decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: context.outline), // Colore della linea quando non è in focus
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: context.onSecondary, width: 2.0), // Colore della linea quando scrivi
+                          ),
                           hintStyle: TextStyle(color: coloriScritte),
                           hintText: emailFromLogin ?? "email",
                           iconColor: coloriScritte,
@@ -146,7 +153,7 @@ class _PasswordDimenticataPageState extends State<PasswordDimenticataPage> {
                   Expanded(
                     child: MyElevatedButtonWidget(text: "Indietro",
                     onPressed: (){Navigator.pop(context);},
-                      color: Theme.of(context).colorScheme.primary),
+                      color: Theme.of(context).colorScheme.onSecondary),
                   ),
                   
                   SizedBox(width: 10,),

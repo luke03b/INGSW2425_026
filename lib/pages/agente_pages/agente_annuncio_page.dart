@@ -1,7 +1,7 @@
 import 'dart:async';
-
 import 'package:domus_app/pages/agente_pages/agente_offerte_page.dart';
 import 'package:domus_app/pages/agente_pages/agente_prenotazioni_page.dart';
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -44,20 +44,20 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.surface,
+          color: Theme.of(context).colorScheme.onSecondary,
         ),
-        title: Text("House Hunters", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
+        title: Text("House Hunters", style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 5,
-        shadowColor: Colors.black,
+        shadowColor: context.shadow,
       ),
       body: Stack(
         children:[ SingleChildScrollView(
           child: Column(
             children: [
               Card(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.primaryContainer,
                 // color: const Color.fromARGB(255, 228, 246, 255),
                 child: Column(
                   children: [
@@ -68,7 +68,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                       effect: ScrollingDotsEffect(
                         dotHeight: 8.0,
                         dotWidth: 8.0,
-                        activeDotColor: Theme.of(context).colorScheme.primary
+                        activeDotColor: Theme.of(context).colorScheme.onSecondary
                       )
                     ),
                     SizedBox(height: 10,)
@@ -76,7 +76,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                 ),
               ),
               Card(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.primaryContainer,
                 child: Column(
                   children: [
                     SizedBox(height: 10.0),
@@ -113,6 +113,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: ReadMoreText(
+                        colorClickableText: context.onSecondary,
                         widget.casaSelezionata['descrizione'],
                         textAlign: TextAlign.justify,
                         trimCollapsedText: "    mostra altro",
@@ -141,7 +142,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(FontAwesomeIcons.stairs, size: 22, color: coloriPulsanti,),
+                            Icon(FontAwesomeIcons.stairs, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,7 +156,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(Icons.park, size: 22, color: coloriPulsanti,),
+                            Icon(Icons.park, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -169,7 +170,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(FontAwesomeIcons.doorClosed, size: 22, color: coloriPulsanti,),
+                            Icon(FontAwesomeIcons.doorClosed, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,7 +184,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(FontAwesomeIcons.car, size: 22, color: coloriPulsanti,),
+                            Icon(FontAwesomeIcons.car, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,7 +198,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(Icons.pool, size: 22, color: coloriPulsanti,),
+                            Icon(Icons.pool, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -220,7 +221,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                             SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(Icons.zoom_out_map, size: 22, color: coloriPulsanti,),
+                            Icon(Icons.zoom_out_map, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,7 +235,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(FontAwesomeIcons.elevator, size: 22, color: coloriPulsanti,),
+                            Icon(FontAwesomeIcons.elevator, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,7 +249,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(FontAwesomeIcons.chair, size: 22, color: coloriPulsanti,),
+                            Icon(FontAwesomeIcons.chair, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -262,7 +263,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(Icons.balcony, size: 22, color: coloriPulsanti,),
+                            Icon(Icons.balcony, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -276,7 +277,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(FontAwesomeIcons.leaf, size: 22, color: coloriPulsanti,),
+                            Icon(FontAwesomeIcons.leaf, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -336,11 +337,11 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                                   //Colonna contenente icone
                                   Column(
                                     children: [
-                                      Icon(FontAwesomeIcons.school, size: 22, color: coloriPulsanti,),
+                                      Icon(FontAwesomeIcons.school, size: 22, color: context.onSecondary,),
                                       SizedBox(height: 22,),
-                                      Icon(FontAwesomeIcons.sunPlantWilt, size: 22, color: coloriPulsanti,),
+                                      Icon(FontAwesomeIcons.sunPlantWilt, size: 22, color: context.onSecondary,),
                                       SizedBox(height: 22,),
-                                      Icon(FontAwesomeIcons.bus, size: 22, color: coloriPulsanti,),
+                                      Icon(FontAwesomeIcons.bus, size: 22, color: context.onSecondary,),
                                     ],
                                   ),
                   
@@ -371,11 +372,11 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                                   //colonna contenente valori
                                   Column(
                                     children: [
-                                      Icon(widget.casaSelezionata['vicino_scuole'] == 'si' ? Icons.check :  Icons.close, size: 30,),
+                                      Icon(widget.casaSelezionata['vicino_scuole'] == 'si' ? Icons.check :  Icons.close, size: 30, color: coloriPulsanti,),
                                       SizedBox(height: 22,),
-                                      Icon(widget.casaSelezionata['vicino_parchi'] == 'si' ? Icons.check :  Icons.close, size: 30,),
+                                      Icon(widget.casaSelezionata['vicino_parchi'] == 'si' ? Icons.check :  Icons.close, size: 30, color: coloriPulsanti),
                                       SizedBox(height: 22,),
-                                      Icon(widget.casaSelezionata['vicino_mezzi'] == 'si' ? Icons.check :  Icons.close, size: 30,),                       
+                                      Icon(widget.casaSelezionata['vicino_mezzi'] == 'si' ? Icons.check :  Icons.close, size: 30, color: coloriPulsanti),                       
                                     ],
                                   ),
                                 ],
@@ -429,7 +430,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
           child:
             Card(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-              color: Colors.white,
+              color: context.primaryContainer,
               child: Column(
                 children: [
                   SizedBox(height: 10,),
@@ -441,7 +442,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                       onPressed: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteOffertePage()));
                       },
-                  color: Theme.of(context).colorScheme.primary)),
+                  color: context.onSecondary)),
                   SizedBox(width: 5,),
                   Expanded(
                     child: MyElevatedButtonRectWidget(
@@ -449,7 +450,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                       onPressed: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context) => AgentePrenotazioniPage()));
                       }, 
-                  color: Theme.of(context).colorScheme.primary)),
+                  color: context.onSecondary)),
                   SizedBox(width: 5,),
                   ],),
                   SizedBox(height: 10,),

@@ -1,3 +1,4 @@
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:domus_app/utils/my_text_widgets.dart';
@@ -16,7 +17,6 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
   static const double GRANDEZZA_ICONE = 25;
   static const double GRANDEZZA_SCRITTE_PICCOLE = 18;
   static const double GRANDEZZA_ICONE_PICCOLE = 20;
-  Color coloreScritte = Colors.black;
   TextEditingController contropropostaController = TextEditingController();
   late ScrollController scrollController;
 
@@ -110,17 +110,18 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
 
   @override
   Widget build(BuildContext context) {
+    Color coloreScritte = Theme.of(context).colorScheme.outline;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.surface,
+          color: Theme.of(context).colorScheme.onSecondary,
         ),
-        title: Text("Analisi offerte immobile", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
+        title: Text("Analisi offerte immobile", style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 5,
-        shadowColor: Colors.black,
+        shadowColor: context.shadow,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -206,7 +207,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                                                           )
                                         );
                                     },
-                                    color: Theme.of(context).colorScheme.primary
+                                    color: Theme.of(context).colorScheme.onSecondary
                                   )
                           ),
                         SizedBox(width: MediaQuery.of(context).size.height/50,),
@@ -229,7 +230,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                                                         )
                                       );
                                   },
-                                  color: Theme.of(context).colorScheme.primary
+                                  color: Theme.of(context).colorScheme.secondary
                                 )
                         ),
                         SizedBox(width: MediaQuery.of(context).size.height/50,),
@@ -266,11 +267,11 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                     SizedBox(height: MediaQuery.of(context).size.height/50,),
                     MyElevatedButtonRectWidget(text: "Invia", onPressed: (){
                                       inviaControproposta(context);
-                                      }, color: Theme.of(context).colorScheme.primary),
+                                      }, color: Theme.of(context).colorScheme.onSecondary),
                     SizedBox(height: MediaQuery.of(context).size.height/50,),
 
                     Card(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.primaryContainer,
                       elevation: 4,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),

@@ -1,8 +1,8 @@
 import 'dart:async';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_crea_offerta_page.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_crea_prenotazione.dart';
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -34,7 +34,6 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
 
   @override
   Widget build(BuildContext context) {
-    Color coloriPulsanti = Theme.of(context).colorScheme.outline;
 
     final List<Widget> listaImmagini = [
       Image.asset(widget.casaSelezionata['image1']),
@@ -46,20 +45,20 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.surface,
+          color: context.onSecondary,
         ),
-        title: Text("House Hunters", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
+        title: Text("House Hunters", style: TextStyle(color: context.onSecondary),),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: context.primary,
         elevation: 5,
-        shadowColor: Colors.black,
+        shadowColor: context.shadow,
       ),
       body: Stack(
         children:[ SingleChildScrollView(
           child: Column(
             children: [
               Card(
-                color: Colors.white,
+                color: context.primaryContainer,
                 // color: const Color.fromARGB(255, 228, 246, 255),
                 child: Column(
                   children: [
@@ -70,7 +69,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                       effect: ScrollingDotsEffect(
                         dotHeight: 8.0,
                         dotWidth: 8.0,
-                        activeDotColor: Theme.of(context).colorScheme.primary
+                        activeDotColor: context.onSecondary
                       )
                     ),
                     SizedBox(height: 10,)
@@ -78,29 +77,29 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                 ),
               ),
               Card(
-                color: Colors.white,
+                color: context.primaryContainer,
                 child: Column(
                   children: [
                     SizedBox(height: 10.0),
                     Row(
                       children: [
                         SizedBox(width: 10.0),
-                        Text("In affitto", style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: coloriPulsanti),),
+                        Text("In affitto", style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: context.outline),),
                       ],
                     ),
 
                     Row(
                       children: [
                         SizedBox(width: 10.0),
-                        Text(widget.casaSelezionata['prezzo'], style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: coloriPulsanti),),
-                        Text(" EUR", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                        Text(widget.casaSelezionata['prezzo'], style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: context.outline),),
+                        Text(" EUR", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: context.outline),),
                       ],
                     ),
         
                     Row(
                       children: [
                         SizedBox(width: 10.0),
-                        Text(widget.casaSelezionata['indirizzo'], style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: coloriPulsanti),),
+                        Text(widget.casaSelezionata['indirizzo'], style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: context.outline),),
                       ],
                     ),
         
@@ -111,7 +110,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                     Row(
                       children: [
                         SizedBox(width: 10.0),
-                        Text("Descrizione", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                        Text("Descrizione", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: context.outline),),
                       ],
                     ),
                     Padding(
@@ -121,7 +120,8 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                         textAlign: TextAlign.justify,
                         trimCollapsedText: "    mostra altro",
                         trimExpandedText: "    mostra meno",
-                        style: TextStyle(color: coloriPulsanti),
+                        colorClickableText: context.onSecondary,
+                        style: TextStyle(color: context.outline),
                       ),
                     ),
         
@@ -130,7 +130,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                     Row(
                       children: [
                         SizedBox(width: 10.0),
-                        Text("Caratteristiche", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                        Text("Caratteristiche", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: context.outline),),
                       ],
                     ),
         
@@ -145,13 +145,13 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(FontAwesomeIcons.stairs, size: 22, color: coloriPulsanti,),
+                            Icon(FontAwesomeIcons.stairs, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Piano", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                                Text("Piano", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
+                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -159,13 +159,13 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(Icons.park, size: 22, color: coloriPulsanti,),
+                            Icon(Icons.park, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Giardino", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                                Text("Giardino", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
+                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -173,13 +173,13 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(FontAwesomeIcons.doorClosed, size: 22, color: coloriPulsanti,),
+                            Icon(FontAwesomeIcons.doorClosed, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("N. Stanze", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                                Text("N. Stanze", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
+                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -187,13 +187,13 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(FontAwesomeIcons.car, size: 22, color: coloriPulsanti,),
+                            Icon(FontAwesomeIcons.car, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Garage", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                                Text("Garage", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
+                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -201,13 +201,13 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(Icons.pool, size: 22, color: coloriPulsanti,),
+                            Icon(Icons.pool, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Piscina", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                                Text("Piscina", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
+                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -224,13 +224,13 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                             SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(Icons.zoom_out_map, size: 22, color: coloriPulsanti,),
+                            Icon(Icons.zoom_out_map, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Superficie", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                                Text("Superficie", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
+                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -238,13 +238,13 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(FontAwesomeIcons.elevator, size: 22, color: coloriPulsanti,),
+                            Icon(FontAwesomeIcons.elevator, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Ascensore", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                                Text("Ascensore", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
+                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -252,13 +252,13 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(FontAwesomeIcons.chair, size: 22, color: coloriPulsanti,),
+                            Icon(FontAwesomeIcons.chair, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Arredato", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                                Text("Arredato", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
+                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -266,13 +266,13 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(Icons.balcony, size: 22, color: coloriPulsanti,),
+                            Icon(Icons.balcony, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Balcone", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                                Text("Balcone", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
+                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -280,13 +280,13 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                           SizedBox(width: 10.0),
                           Row(
                             children: [
-                            Icon(FontAwesomeIcons.leaf, size: 22, color: coloriPulsanti,),
+                            Icon(FontAwesomeIcons.leaf, size: 22, color: context.onSecondary,),
                             SizedBox(width: 10.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("C. Energetica", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                                Text("C. Energetica", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
+                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -299,7 +299,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                   Row(
                       children: [
                         SizedBox(width: 10.0),
-                        Text("Posizione", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                        Text("Posizione", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: context.outline),),
                       ],
                     ),
                   SizedBox(height: 10,),
@@ -321,7 +321,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                       Row(
                         children: [
                           SizedBox(width: 10.0),
-                          Text("Vicino A", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                          Text("Vicino A", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: context.outline),),
                         ],
                       ),
                       Row(
@@ -341,11 +341,11 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                                   //Colonna contenente icone
                                   Column(
                                     children: [
-                                      Icon(FontAwesomeIcons.school, size: 22, color: coloriPulsanti,),
+                                      Icon(FontAwesomeIcons.school, size: 22, color: context.onSecondary,),
                                       SizedBox(height: 22,),
-                                      Icon(FontAwesomeIcons.sunPlantWilt, size: 22, color: coloriPulsanti,),
+                                      Icon(FontAwesomeIcons.sunPlantWilt, size: 22, color: context.onSecondary,),
                                       SizedBox(height: 22,),
-                                      Icon(FontAwesomeIcons.bus, size: 22, color: coloriPulsanti,),
+                                      Icon(FontAwesomeIcons.bus, size: 22, color: context.onSecondary,),
                                     ],
                                   ),
                   
@@ -356,17 +356,17 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                                     children: [
                                       Container(
                                         width: 270,
-                                        child: Text("Scuole", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),)
+                                        child: Text("Scuole", style: TextStyle(fontSize: 18.0, color: context.outline),)
                                       ),
                                       SizedBox(height: 18,),
                                       Container(
                                         width: 270,
-                                        child: Text("Parchi pubblici", style: TextStyle(fontSize: 18.0, color: coloriPulsanti))
+                                        child: Text("Parchi pubblici", style: TextStyle(fontSize: 18.0, color: context.outline))
                                       ),
                                       SizedBox(height: 18,),
                                       Container(
                                         width: 270,
-                                        child: Text("Fermate mezzi pubblici", style: TextStyle(fontSize: 18.0, color: coloriPulsanti))
+                                        child: Text("Fermate mezzi pubblici", style: TextStyle(fontSize: 18.0, color: context.outline))
                                       ),
                                     ],
                                   ),
@@ -376,11 +376,11 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                                   //colonna contenente valori
                                   Column(
                                     children: [
-                                      Icon(widget.casaSelezionata['vicino_scuole'] == 'si' ? Icons.check :  Icons.close, size: 30,),
+                                      Icon(widget.casaSelezionata['vicino_scuole'] == 'si' ? Icons.check :  Icons.close, size: 30, color: context.outline),
                                       SizedBox(height: 16,),
-                                      Icon(widget.casaSelezionata['vicino_parchi'] == 'si' ? Icons.check :  Icons.close, size: 30,),
+                                      Icon(widget.casaSelezionata['vicino_parchi'] == 'si' ? Icons.check :  Icons.close, size: 30, color: context.outline),
                                       SizedBox(height: 16,),
-                                      Icon(widget.casaSelezionata['vicino_mezzi'] == 'si' ? Icons.check :  Icons.close, size: 30,),                       
+                                      Icon(widget.casaSelezionata['vicino_mezzi'] == 'si' ? Icons.check :  Icons.close, size: 30, color: context.outline),                    
                                     ],
                                   ),
                                 ],
@@ -396,7 +396,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                   Row(
                       children: [
                         SizedBox(width: 10.0),
-                        Text("Inserzionista", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                        Text("Inserzionista", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: context.outline),),
                       ],
                     ),
 
@@ -405,15 +405,15 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                       Row(
                         children: [
                           SizedBox(width: 10.0),
-                          Text("Agenzia immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                          Text(widget.casaSelezionata['agenzia'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti))
+                          Text("Agenzia immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
+                          Text(widget.casaSelezionata['agenzia'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline))
                         ],
                       ),
                       Row(
                         children: [
                           SizedBox(width: 10.0),
-                          Text("Agente immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                          Text(widget.casaSelezionata['agente'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti))
+                          Text("Agente immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
+                          Text(widget.casaSelezionata['agente'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline))
                         ],
                       ),
                     ],
@@ -437,7 +437,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
             children: [
               Card(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-                color: Colors.white,
+                color: context.primaryContainer,
                 child: Column(
                   children: [
                     SizedBox(height: 10,),
@@ -445,12 +445,12 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                     SizedBox(width: 5,),
                     Expanded(child: MyElevatedButtonRectWidget(text: "Offerta", onPressed: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteCreaOffertaPage(casaSelezionata: widget.casaSelezionata)));
-                    }, color: Theme.of(context).colorScheme.primary)),
+                    }, color: context.onSecondary)),
                     SizedBox(width: 5,),
                     Expanded(child: MyElevatedButtonRectWidget(text: "Visita", onPressed: (){
                       // Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteCreaPrenotazionePage(casaSelezionata: widget.casaSelezionata)));
                       Navigator.push(context, MaterialPageRoute(builder: (context) => WeatherScreen(latitude: latitude, longitude: longitude,)));
-                    }, color: Theme.of(context).colorScheme.primary)),
+                    }, color: context.onSecondary)),
                     SizedBox(width: 5,),
                     ],),
                     SizedBox(height: 10,)

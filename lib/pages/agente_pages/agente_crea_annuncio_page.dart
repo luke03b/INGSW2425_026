@@ -175,12 +175,12 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: Colors.red.withOpacity(1),
+                                      color: Theme.of(context).colorScheme.error.withOpacity(1),
                                       shape: BoxShape.circle,
                                     ),
-                                    child: const Padding(
+                                    child: Padding(
                                       padding: EdgeInsets.all(4),
-                                      child: Icon(Icons.close, size: 18, color: Colors.white),
+                                      child: Icon(Icons.close, size: 18, color: Theme.of(context).colorScheme.surface),
                                     ),
                                   ),
                                 ),
@@ -202,7 +202,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                       selectImages();
                     },
                     child: Card(
-                      color: Colors.grey[400],
+                      color: Theme.of(context).colorScheme.onSurface,
                       child: Column(
                         children: [
                           const SizedBox(height: 75),
@@ -295,10 +295,10 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                                   });},
                                   textEditingController: mappeController,
                                   googleAPIKey: "AIzaSyBUkzr-VCtKVyTTfssndaWR5Iy5TyfM0as",
-                                  decoration: const InputDecoration(
+                                  decoration: InputDecoration(
                                     hintText: 'Inserire un indirizzo',
                                     labelText: 'Indirizzo',
-                                    labelStyle: TextStyle(color: Colors.black),
+                                    labelStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                                     border: OutlineInputBorder(),
                                   ),
                                   validator: (value) {
@@ -341,7 +341,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                             color: isIndirizzoValidato ? Colors.green : Colors.transparent,
                             borderRadius: BorderRadius.circular(4),
                             // border: Border.all(color: Colors.black, width: 1),
-                            border: Border.all(width: 1),
+                            border: Border.all(color: Theme.of(context).colorScheme.onSurface, width: 1),
                           ),
                           child: IconButton(onPressed: (){
                             FocusScope.of(context).unfocus();
@@ -374,7 +374,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                               longitude: longitude),);
                             }
                             // FocusScope.of(context).unfocus();
-                          }, icon: Icon(FontAwesomeIcons.check, color: Colors.black,),))
+                          }, icon: Icon(FontAwesomeIcons.check, color: Theme.of(context).colorScheme.onSurface,),))
                       ],
                     ),
                   ),

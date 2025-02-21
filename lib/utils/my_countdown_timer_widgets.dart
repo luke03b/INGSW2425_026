@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:flutter/material.dart';
 
 class CountdownTimer extends StatefulWidget {
@@ -8,7 +9,7 @@ class CountdownTimer extends StatefulWidget {
     super.key,
     required this.totalTime,
     required this.onPressed
-    });
+  });
 
   @override
   _CountdownTimerState createState() => _CountdownTimerState();
@@ -71,7 +72,7 @@ class _CountdownTimerState extends State<CountdownTimer> {
               children: [
                 Icon(Icons.refresh_rounded),
                 SizedBox(width: MediaQuery.sizeOf(context).width * 0.01,),
-                Text("Reinvia codice", style: TextStyle(color: Colors.black, decoration: TextDecoration.underline,),),
+                Text("Reinvia codice", style: TextStyle(color: context.outline, decoration: TextDecoration.underline, decorationColor: context.outline),),
             ],),
           )
         ),
@@ -79,7 +80,7 @@ class _CountdownTimerState extends State<CountdownTimer> {
           visible: isRunning,
           child: Row(
             children: [
-              Text("Richiedi nuovamente codice tra: ", style: TextStyle(color: Colors.black,))
+              Text("Richiedi nuovamente codice tra: ", style: TextStyle(color: context.outline,))
           ])
         ),
         SizedBox(width: MediaQuery.sizeOf(context).width * 0.02,),
@@ -92,14 +93,14 @@ class _CountdownTimerState extends State<CountdownTimer> {
               child: CircularProgressIndicator(
                 value: progress,
                 strokeWidth: 3,
-                backgroundColor: Colors.grey[300],
-                valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.outline),
+                backgroundColor: context.onPrimary,
+                valueColor: AlwaysStoppedAnimation<Color>(context.outline),
               ),
             ),
             // Testo al centro
             Text(
               "$remainingTime s",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: context.outline),
             ),
           ],
         ),

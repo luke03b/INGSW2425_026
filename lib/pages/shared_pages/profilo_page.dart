@@ -2,9 +2,12 @@ import 'package:domus_app/pages/admin_pages/admin_crea_nuovo_admin_o_agente_page
 import 'package:domus_app/pages/cliente_pages/cliente_eliminazione_account_page.dart';
 import 'package:domus_app/pages/shared_pages/cambia_password_page.dart';
 import 'package:domus_app/services/aws_cognito.dart';
+import 'package:domus_app/theme/theme_provider.dart';
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfiloPage extends StatefulWidget {
   const ProfiloPage({super.key});
@@ -28,39 +31,40 @@ class _ProfiloPageState extends State<ProfiloPage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("House Hunters", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
+        title: Text("House Hunters", style: TextStyle(color: context.onSecondary),),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: context.primary,
         elevation: 5,
-        shadowColor: Colors.black,
+        shadowColor: context.shadow,
       ),
       body: Column(
         children: [
           Center(
             child: Card(
-              color: Colors.white,
+              color: context.primaryContainer,
               child: Column(
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.person, size: 125, color: Theme.of(context).colorScheme.outline,),
+                      Icon(Icons.person, size: 125, color: context.outline,),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
-                              Text("Nome: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.outline),),
-                              Text(nomeUtenteLoggato ?? "Non disponibile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: Theme.of(context).colorScheme.outline),),
+                              Text("Nome: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: context.outline),),
+                              Text(nomeUtenteLoggato ?? "Non disponibile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: context.outline),),
                             ],
                           ),
                           Row(
                             children: [
-                              Text("Cognome: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.outline),),
-                              Text(cognomeUtenteLoggato ?? "Non disponibile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: Theme.of(context).colorScheme.outline),),
+                              Text("Cognome: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: context.outline),),
+                              Text(cognomeUtenteLoggato ?? "Non disponibile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: context.outline),),
                             ],
                           ),
                           
@@ -71,14 +75,14 @@ class _ProfiloPageState extends State<ProfiloPage> {
                   Row(
                     children: [
                       SizedBox(width: MediaQuery.sizeOf(context).height/60,),
-                      Text("Email: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.outline),),
+                      Text("Email: ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: context.outline),),
                       Expanded(
                         child: FittedBox(
                           alignment: Alignment.centerLeft,
                           fit: BoxFit.scaleDown,
                           child: Align(
                             alignment: Alignment.centerLeft,
-                            child: Text(mailUtenteLoggato ?? "Non disponibile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: Theme.of(context).colorScheme.outline),))),
+                            child: Text(mailUtenteLoggato ?? "Non disponibile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: context.outline),))),
                       ),
                     ],
                     ),
@@ -90,20 +94,40 @@ class _ProfiloPageState extends State<ProfiloPage> {
             ),
           ),
 
+          GestureDetector(
+              onTap:() {
+                themeProvider.toggleTheme();
+                },
+              child: Card(
+              color: context.primaryContainer,
+              child: ListTile(
+                title: Text("Alterna tema", style: TextStyle(color: context.outline),),
+                leading: Icon(Icons.palette, color: context.outline,),
+                trailing: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 12,
+                  children: <Widget>[
+                    Icon(Icons.arrow_circle_right_outlined, color: context.outline,),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
           Visibility(
             visible: gruppoUtenteLoggato == "admin",
             child: GestureDetector(
               onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => AdminCreaNuovoAdminPage(isNewUserAdmin: true,)));},
               child: Card(
-              color: Colors.white,
+              color: context.primaryContainer,
               child: ListTile(
-                title: Text("Aggiungi admin", style: TextStyle(color: Colors.black),),
-                leading: Icon(Icons.person_add, color: Colors.black,),
+                title: Text("Aggiungi admin", style: TextStyle(color: context.outline),),
+                leading: Icon(Icons.person_add, color: context.outline,),
                 trailing: Wrap(
                   crossAxisAlignment: WrapCrossAlignment.center,
                   spacing: 12,
                   children: <Widget>[
-                    Icon(Icons.arrow_circle_right_outlined, color: Colors.black,),
+                    Icon(Icons.arrow_circle_right_outlined, color: context.outline,),
                   ],
                 ),
               ),
@@ -116,15 +140,15 @@ class _ProfiloPageState extends State<ProfiloPage> {
             child: GestureDetector(
               onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => AdminCreaNuovoAdminPage(isNewUserAdmin: false,)));},
               child: Card(
-              color: Colors.white,
+              color: context.primaryContainer,
               child: ListTile(
-                title: Text("Aggiungi agente immobiliare", style: TextStyle(color: Colors.black),),
-                leading: Icon(Icons.person_add, color: Colors.black,),
+                title: Text("Aggiungi agente immobiliare", style: TextStyle(color: context.outline),),
+                leading: Icon(Icons.person_add, color: context.outline,),
                 trailing: Wrap(
                   crossAxisAlignment: WrapCrossAlignment.center,
                   spacing: 12,
                   children: <Widget>[
-                    Icon(Icons.arrow_circle_right_outlined, color: Colors.black,),
+                    Icon(Icons.arrow_circle_right_outlined, color: context.outline,),
                   ],
                 ),
               ),
@@ -135,15 +159,15 @@ class _ProfiloPageState extends State<ProfiloPage> {
           GestureDetector(
               onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => CambiaPasswordPage(emailUtente: mailUtenteLoggato,)));},
               child: Card(
-              color: Colors.white,
+              color: context.primaryContainer,
               child: ListTile(
-                title: Text("Modifica password", style: TextStyle(color: Colors.black),),
-                leading: Icon(Icons.password, color: Colors.black,),
+                title: Text("Modifica password", style: TextStyle(color: context.outline),),
+                leading: Icon(Icons.password, color: context.outline,),
                 trailing: Wrap(
                   crossAxisAlignment: WrapCrossAlignment.center,
                   spacing: 12,
                   children: <Widget>[
-                    Icon(Icons.arrow_circle_right_outlined, color: Colors.black,),
+                    Icon(Icons.arrow_circle_right_outlined, color: context.outline,),
                   ],
                 ),
               ),
@@ -158,15 +182,15 @@ class _ProfiloPageState extends State<ProfiloPage> {
                 );
               },
               child: Card(
-              color: Colors.white,
+              color: context.primaryContainer,
               child: ListTile(
-                title: Text("Assistenza", style: TextStyle(color: Colors.black),),
-                leading: Icon(Icons.help, color: Colors.black,),
+                title: Text("Assistenza", style: TextStyle(color: context.outline),),
+                leading: Icon(Icons.help, color: context.outline,),
                 trailing: Wrap(
                   crossAxisAlignment: WrapCrossAlignment.center,
                   spacing: 12,
                   children: <Widget>[
-                    Icon(Icons.arrow_circle_right_outlined, color: Colors.black,),
+                    Icon(Icons.arrow_circle_right_outlined, color: context.outline,),
                   ],
                 ),
               ),
@@ -180,15 +204,15 @@ class _ProfiloPageState extends State<ProfiloPage> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteEliminazioneAccountPage(emailUtente: mailUtenteLoggato,)));
               },
               child: Card(
-              color: Colors.white,
+              color: context.primaryContainer,
               child: ListTile(
-                title: Text("Elimina account", style: TextStyle(color: Colors.black),),
-                leading: Icon(Icons.delete, color: Colors.black,),
+                title: Text("Elimina account", style: TextStyle(color: context.outline),),
+                leading: Icon(Icons.delete, color: context.outline,),
                 trailing: Wrap(
                   crossAxisAlignment: WrapCrossAlignment.center,
                   spacing: 12,
                   children: <Widget>[
-                    Icon(Icons.arrow_circle_right_outlined, color: Colors.black,),
+                    Icon(Icons.arrow_circle_right_outlined, color: context.outline,),
                   ],
                 ),
               ),
@@ -196,7 +220,7 @@ class _ProfiloPageState extends State<ProfiloPage> {
             ),
           ),
 
-          SizedBox(height: MediaQuery.sizeOf(context).height/5),
+          SizedBox(height: MediaQuery.sizeOf(context).height/7),
           MyElevatedButtonWidget(
             text: "Logout", 
             onPressed: (){
@@ -208,14 +232,14 @@ class _ProfiloPageState extends State<ProfiloPage> {
                       title: 'Disconnessione account', 
                       bodyText: 'Sei sicuro di voler uscire?', 
                       leftButtonText: 'No', 
-                      leftButtonColor: Theme.of(context).colorScheme.secondary,
+                      leftButtonColor: context.secondary,
                       rightButtonText: 'Esci', 
-                      rightButtonColor: Theme.of(context).colorScheme.error,
+                      rightButtonColor: context.error,
                       onPressLeftButton: (){Navigator.pop(context);}, 
                       onPressRightButton: () async {logout(); Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);}
                     )
                 );
-            }, color: Theme.of(context).colorScheme.error),
+            }, color: context.error),
           SizedBox(height: MediaQuery.sizeOf(context).height/29),
           Align(
             alignment: Alignment.bottomCenter,
@@ -223,7 +247,7 @@ class _ProfiloPageState extends State<ProfiloPage> {
               '© 2025 HouseHunters. Tutti i diritti riservati.',
               style: TextStyle(
                 fontSize: 12,
-                color: Colors.grey,
+                color: context.outline,
               ),
             ),
           ),

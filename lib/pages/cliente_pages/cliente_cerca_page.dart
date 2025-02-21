@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +17,6 @@ class CercaPage extends StatefulWidget {
 }
 
 class _CercaPageState extends State<CercaPage> {
-
-  bool primaAperturaRicercaAvanzata = true;
 
   final TextEditingController _affittaController = TextEditingController();
 
@@ -126,24 +125,22 @@ class _CercaPageState extends State<CercaPage> {
   void _toggleRicercaAvanzata(){
     setState(() {
       _ricercaAvanzataVisibile = !_ricercaAvanzataVisibile;
-      
     });
   }
   
   @override
   Widget build(BuildContext context) {
-    Color coloriPulsanti = Theme.of(context).colorScheme.outline;
     return DefaultTabController(
       initialIndex: 0,
       length: 2,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text("House Hunters", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
+          title: Text("House Hunters", style: TextStyle(color: context.onSecondary),),
           centerTitle: true,
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: context.primary,
           elevation: 5,
-          shadowColor: Colors.black,
+          shadowColor: context.shadow,
           ),
         body: Column(
           children: [
@@ -157,7 +154,7 @@ class _CercaPageState extends State<CercaPage> {
                 controller: _affittaController, 
                 text: "Inserisci una zona di ricerca", 
                 icon: Icon(Icons.search),
-                colore: coloriPulsanti,
+                colore: context.outline,
               )
             ),
 
@@ -167,16 +164,14 @@ class _CercaPageState extends State<CercaPage> {
               child: MyTextButtonWidget(
                 text: _ricercaAvanzataVisibile ? "Chiudi Ricerca Avanzata" : "Apri Ricerca Avanzata", 
                 onPressed: _toggleRicercaAvanzata,
-                colore: coloriPulsanti
+                colore: context.outline
               )
             ),
 
             //parametri ricerca avanzata
-            myParametriRicercaAvanzata(coloriPulsanti, context),
+            myParametriRicercaAvanzata(context.outline, context),
 
-            SizedBox(
-              height: MediaQuery.of(context).size.height/35,
-            ),
+            SizedBox(height: MediaQuery.of(context).size.height/35,),
 
             Visibility(
               visible: _ricercaAvanzataVisibile,
@@ -187,9 +182,9 @@ class _CercaPageState extends State<CercaPage> {
                       _ricercaAvanzataScrollableController.animateTo(_ricercaAvanzataScrollableController.position.maxScrollExtent, duration: Duration(milliseconds: 500), curve: Curves.easeOut);
                     },
                     child: Card(
-                      color: Colors.white,
+                      color: context.primary,
                       child: 
-                        Icon(Icons.arrow_downward, color: Theme.of(context).colorScheme.primary,),
+                        Icon(Icons.arrow_downward, color: context.onSecondary,),
                     ),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height/200,),
@@ -200,10 +195,10 @@ class _CercaPageState extends State<CercaPage> {
             MyElevatedButtonWidget(
               text: "Cerca",
               onPressed: (){Navigator.pushNamed(context, '/ControllorePagine2');},
-              color: Theme.of(context).colorScheme.tertiary
+              color: context.tertiary
             ),
 
-            myCronologia(context, coloriPulsanti)
+            myCronologia(context, context.outline)
 
           ],
         )
@@ -211,20 +206,20 @@ class _CercaPageState extends State<CercaPage> {
     );
   }
 
-  Visibility myCronologia(BuildContext context, Color coloriPulsanti) {
+  Visibility myCronologia(BuildContext context, Color colorePulsanti) {
     return Visibility(
       visible: !_ricercaAvanzataVisibile, 
       child: Column(
         children: [
           SizedBox(
-              height: MediaQuery.of(context).size.height/8,
+              height: MediaQuery.of(context).size.height/15,
             ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(width: MediaQuery.of(context).size.width/9,),
-              Icon(Icons.history, color: coloriPulsanti,),
-              Text('Ultime visite', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+              Icon(Icons.history, color: colorePulsanti,),
+              Text('Ultime visite', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: colorePulsanti),),
             ],
           ),
           myCarouselSlider(context),
@@ -234,7 +229,6 @@ class _CercaPageState extends State<CercaPage> {
   }
 
   CarouselSlider myCarouselSlider(BuildContext context) {
-    Color coloreScritte = Theme.of(context).colorScheme.outline;
     return CarouselSlider(
       items: listaCase.asMap().entries.map((entry) {
         int indice = entry.key;
@@ -248,13 +242,9 @@ class _CercaPageState extends State<CercaPage> {
             width: MediaQuery.of(context).size.width,
             margin: EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
-              color: Colors.white, 
+              color: context.primaryContainer, 
               borderRadius: BorderRadius.circular(10),
               shape: BoxShape.rectangle,
-              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2),
-                spreadRadius: 5,
-                blurRadius: 15,
-                offset: Offset(0, 10),)],
             ),
             child: Column(
               children: [
@@ -275,16 +265,16 @@ class _CercaPageState extends State<CercaPage> {
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte),),
-                    Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte),),
+                    Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline),),
+                    Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline),),
                   ],
                 ),
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.location_on, size: scaleFactor * 22, color: coloreScritte,),
+                    Icon(Icons.location_on, size: scaleFactor * 22, color: context.outline,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.normal, color: coloreScritte)),
+                    Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.normal, color: context.outline)),
                   ],
                 ),
               ],
@@ -304,7 +294,7 @@ class _CercaPageState extends State<CercaPage> {
       ));
   }
 
-  Visibility myParametriRicercaAvanzata(Color coloriPulsanti, BuildContext context) {
+  Visibility myParametriRicercaAvanzata(Color colorePulsanti, BuildContext context) {
     return Visibility(
             visible: _ricercaAvanzataVisibile,
             child: Container(
@@ -320,15 +310,15 @@ class _CercaPageState extends State<CercaPage> {
                     children: [
                   
                       //prezzo
-                      myFiltroRicerca(coloriPulsanti, context, Icons.euro, _prezzoMinController, _prezzoMaxController, "Prezzo Min", "Prezzo Max"),
+                      myFiltroRicerca(colorePulsanti, context, Icons.euro, _prezzoMinController, _prezzoMaxController, "Prezzo Min", "Prezzo Max"),
                   
                       //superficie
-                      myFiltroRicerca(coloriPulsanti, context, Icons.zoom_out_map, _superficieMinController, _superficieMaxController, "Superficie Min", "Superficie Max"),
+                      myFiltroRicerca(colorePulsanti, context, Icons.zoom_out_map, _superficieMinController, _superficieMaxController, "Superficie Min", "Superficie Max"),
                   
                       //Stanze
-                      myFiltroRicerca(coloriPulsanti, context, FontAwesomeIcons.doorClosed, _numeroStanzeMinController, _numeroStanzeMaxController, "N. Stanze Min", "N. Stanze Max"),
+                      myFiltroRicerca(colorePulsanti, context, FontAwesomeIcons.doorClosed, _numeroStanzeMinController, _numeroStanzeMaxController, "N. Stanze Min", "N. Stanze Max"),
                       
-                      Divider(height: 50, thickness: 2, indent: 10, endIndent: 10, color: Theme.of(context).colorScheme.primary,),
+                      Divider(height: 50, thickness: 2, indent: 10, endIndent: 10, color: context.onSecondary,),
                   
                       Row(
                         children: [
@@ -346,11 +336,11 @@ class _CercaPageState extends State<CercaPage> {
                                   //Colonna contenente icone
                                   Column(
                                     children: [
-                                      Icon(FontAwesomeIcons.car, size: 22, color: coloriPulsanti,),
+                                      Icon(FontAwesomeIcons.car, size: 22, color: colorePulsanti,),
                                       SizedBox(height: 22,),
-                                      Icon(FontAwesomeIcons.elevator, size: 22, color: coloriPulsanti,),
+                                      Icon(FontAwesomeIcons.elevator, size: 22, color: colorePulsanti,),
                                       SizedBox(height: 22,),
-                                      Icon(FontAwesomeIcons.chair, size: 22, color: coloriPulsanti,),
+                                      Icon(FontAwesomeIcons.chair, size: 22, color: colorePulsanti,),
                                     ],
                                   ),
                   
@@ -359,11 +349,11 @@ class _CercaPageState extends State<CercaPage> {
                                   //Colonna contenente nomi
                                   Column(
                                     children: [
-                                      Text("Garage", style: TextStyle(fontSize: 18.0, color: coloriPulsanti, ),),
+                                      Text("Garage", style: TextStyle(fontSize: 18.0, color: colorePulsanti),),
                                       SizedBox(height: 22,),
-                                      Text("Ascensore", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
+                                      Text("Ascensore", style: TextStyle(fontSize: 18.0, color: colorePulsanti)),
                                       SizedBox(height: 22,),
-                                      Text("Arredato", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
+                                      Text("Arredato", style: TextStyle(fontSize: 18.0, color: colorePulsanti)),
                                     ],
                                   ),
                                   
@@ -373,6 +363,8 @@ class _CercaPageState extends State<CercaPage> {
                                   Column(
                                     children: [
                                       Switch(
+                                        activeTrackColor: context.onSecondary,
+                                        activeColor: context.primary,
                                         value: _isGarageSelected, 
                                         onChanged: (value){
                                           setState(() {
@@ -381,6 +373,8 @@ class _CercaPageState extends State<CercaPage> {
                                         }
                                       ),
                                       Switch(
+                                        activeTrackColor: context.onSecondary,
+                                        activeColor: context.primary,
                                         value: _isAscensoreSelected, 
                                         onChanged: (value){
                                           setState(() {
@@ -389,6 +383,8 @@ class _CercaPageState extends State<CercaPage> {
                                         }
                                       ),
                                       Switch(
+                                        activeTrackColor: context.onSecondary,
+                                        activeColor: context.primary,
                                         value: _isArredatoSelected, 
                                         onChanged: (value){
                                           setState(() {
@@ -416,11 +412,11 @@ class _CercaPageState extends State<CercaPage> {
                                   //Colonna contenente icone
                                   Column(
                                     children: [
-                                      Icon(Icons.park, size: 22, color: coloriPulsanti,),
+                                      Icon(Icons.park, size: 22, color: colorePulsanti,),
                                       SizedBox(height: 22,),
-                                      Icon(Icons.pool, size: 22, color: coloriPulsanti,),
+                                      Icon(Icons.pool, size: 22, color: colorePulsanti,),
                                       SizedBox(height: 22,),
-                                      Icon(Icons.balcony, size: 22, color: coloriPulsanti,),
+                                      Icon(Icons.balcony, size: 22, color: colorePulsanti,),
                                     ],
                                   ),
                   
@@ -429,11 +425,11 @@ class _CercaPageState extends State<CercaPage> {
                                   //Colonna contenente nomi
                                   Column(
                                     children: [
-                                      Text("Giardino", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
+                                      Text("Giardino", style: TextStyle(fontSize: 18.0, color: colorePulsanti),),
                                       SizedBox(height: 22,),
-                                      Text("Piscina", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
+                                      Text("Piscina", style: TextStyle(fontSize: 18.0, color: colorePulsanti)),
                                       SizedBox(height: 22,),
-                                      Text("Balcone", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
+                                      Text("Balcone", style: TextStyle(fontSize: 18.0, color: colorePulsanti)),
                                     ],
                                   ),
                                   
@@ -443,6 +439,8 @@ class _CercaPageState extends State<CercaPage> {
                                   Column(
                                     children: [
                                       Switch(
+                                        activeTrackColor: context.onSecondary,
+                                        activeColor: context.primary,
                                         value: _isGiardinoSelected, 
                                         onChanged: (value){
                                           setState(() {
@@ -451,6 +449,8 @@ class _CercaPageState extends State<CercaPage> {
                                         }
                                       ),
                                       Switch(
+                                        activeTrackColor: context.onSecondary,
+                                        activeColor: context.primary,
                                         value: _isPiscinaSelected, 
                                         onChanged: (value){
                                           setState(() {
@@ -459,6 +459,8 @@ class _CercaPageState extends State<CercaPage> {
                                         }
                                       ),
                                       Switch(
+                                        activeTrackColor: context.onSecondary,
+                                        activeColor: context.primary,
                                         value: _isBalconeSelected, 
                                         onChanged: (value){
                                           setState(() {
@@ -475,7 +477,7 @@ class _CercaPageState extends State<CercaPage> {
                         ],
                       ),
                   
-                      Divider(height: 50, thickness: 2, indent: 10, endIndent: 10, color: Theme.of(context).colorScheme.primary,),
+                      Divider(height: 50, thickness: 2, indent: 10, endIndent: 10, color: context.onSecondary,),
                   
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -494,11 +496,11 @@ class _CercaPageState extends State<CercaPage> {
                                   //Colonna contenente icone
                                   Column(
                                     children: [
-                                      Icon(FontAwesomeIcons.school, size: 22, color: coloriPulsanti,),
+                                      Icon(FontAwesomeIcons.school, size: 22, color: colorePulsanti,),
                                       SizedBox(height: 22,),
-                                      Icon(FontAwesomeIcons.sunPlantWilt, size: 22, color: coloriPulsanti,),
+                                      Icon(FontAwesomeIcons.sunPlantWilt, size: 22, color: colorePulsanti,),
                                       SizedBox(height: 22,),
-                                      Icon(FontAwesomeIcons.bus, size: 22, color: coloriPulsanti,),
+                                      Icon(FontAwesomeIcons.bus, size: 22, color: colorePulsanti,),
                                     ],
                                   ),
                   
@@ -507,11 +509,11 @@ class _CercaPageState extends State<CercaPage> {
                                   //Colonna contenente nomi
                                   Column(
                                     children: [
-                                      Text("Vicino scuole", style: TextStyle(fontSize: 18.0, color: coloriPulsanti, ),),
+                                      Text("Vicino scuole", style: TextStyle(fontSize: 18.0, color: colorePulsanti, ),),
                                       SizedBox(height: 22,),
-                                      Text("Vicino parchi pubblici", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
+                                      Text("Vicino parchi pubblici", style: TextStyle(fontSize: 18.0, color: colorePulsanti)),
                                       SizedBox(height: 22,),
-                                      Text("Vicino fermate mezzi pubblici", style: TextStyle(fontSize: 18.0, color: coloriPulsanti)),
+                                      Text("Vicino fermate mezzi pubblici", style: TextStyle(fontSize: 18.0, color: colorePulsanti)),
                                     ],
                                   ),
                                   
@@ -521,6 +523,8 @@ class _CercaPageState extends State<CercaPage> {
                                   Column(
                                     children: [
                                       Switch(
+                                        activeTrackColor: context.onSecondary,
+                                        activeColor: context.primary,
                                         value: _isVicinoScuoleSelected, 
                                         onChanged: (value){
                                           setState(() {
@@ -529,6 +533,8 @@ class _CercaPageState extends State<CercaPage> {
                                         }
                                       ),
                                       Switch(
+                                        activeTrackColor: context.onSecondary,
+                                        activeColor: context.primary,
                                         value: _isVicinoParchiSelected, 
                                         onChanged: (value){
                                           setState(() {
@@ -537,6 +543,8 @@ class _CercaPageState extends State<CercaPage> {
                                         }
                                       ),
                                       Switch(
+                                        activeTrackColor: context.onSecondary,
+                                        activeColor: context.primary,
                                         value: _isVicinoMezziPubbliciSelected, 
                                         onChanged: (value){
                                           setState(() {
@@ -552,7 +560,7 @@ class _CercaPageState extends State<CercaPage> {
                           ),
                     ]),
                       
-                      Divider(height: 50, thickness: 2, indent: 10, endIndent: 10, color: Theme.of(context).colorScheme.primary,),
+                      Divider(height: 50, thickness: 2, indent: 10, endIndent: 10, color: context.onSecondary,),
                   
                       //Selettore Piano
                       SizedBox(
@@ -562,12 +570,12 @@ class _CercaPageState extends State<CercaPage> {
                           // mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             SizedBox(width: 30.0),
-                            Text("Piano", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
+                            Text("Piano", style: TextStyle(fontSize: 18.0, color: colorePulsanti),),
                             SizedBox(width: 150.0),
                             DropdownMenu(
                               width: 175,
-                              textStyle: TextStyle(color: coloriPulsanti),
-                              inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: coloriPulsanti), suffixIconColor: coloriPulsanti),
+                              textStyle: TextStyle(color: colorePulsanti),
+                              inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: context.onSecondary), suffixIconColor: colorePulsanti),
                               initialSelection: listaPiani.first,
                               onSelected: (String? value) {
                                 setState(() {
@@ -576,8 +584,13 @@ class _CercaPageState extends State<CercaPage> {
                               },
                               dropdownMenuEntries: 
                                 listaPiani.map<DropdownMenuEntry<String>>((String value) {
-                                return DropdownMenuEntry<String>(value: value, label: value,);}).toList(),
-                                ),
+                                return DropdownMenuEntry<String>(
+                                  value: value, 
+                                  label: value, 
+                                  style: ButtonStyle(
+                                          foregroundColor: WidgetStateProperty.all(colorePulsanti),
+                                          backgroundColor: WidgetStateProperty.all(Colors.transparent)));}).toList(),
+                            ),
                           ],
                         ),
                       ),
@@ -592,12 +605,12 @@ class _CercaPageState extends State<CercaPage> {
                           // mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             SizedBox(width: 30.0),
-                            Text("Classe Energetica", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),),
+                            Text("Classe Energetica", style: TextStyle(fontSize: 18.0, color: colorePulsanti),),
                             SizedBox(width: 50.0),
                             DropdownMenu(
                               width: 175,
-                              textStyle: TextStyle(color: coloriPulsanti),
-                              inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: coloriPulsanti), suffixIconColor: coloriPulsanti),
+                              textStyle: TextStyle(color: colorePulsanti),
+                              inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: colorePulsanti), suffixIconColor: colorePulsanti),
                               initialSelection: listaClassiEnergetiche.first,
                               onSelected: (String? value) {
                                 setState(() {
@@ -606,13 +619,17 @@ class _CercaPageState extends State<CercaPage> {
                               },
                               dropdownMenuEntries: 
                                 listaClassiEnergetiche.map<DropdownMenuEntry<String>>((String value) {
-                                return DropdownMenuEntry<String>(value: value, label: value,);}).toList(),
+                                return DropdownMenuEntry<String>(
+                                  value: value, 
+                                  label: value,
+                                  style: ButtonStyle(
+                                          foregroundColor: WidgetStateProperty.all(colorePulsanti),
+                                          backgroundColor: WidgetStateProperty.all(Colors.transparent)));}).toList(),
                                 ),
                           ],
                         ),
                       ),
                       SizedBox(height: 10,),
-                  
                     ],
                   ),
                 ),
@@ -621,18 +638,18 @@ class _CercaPageState extends State<CercaPage> {
           );
   }
 
-  Row myFiltroRicerca(Color coloriPulsanti, BuildContext context, IconData icona, TextEditingController controllerMin, TextEditingController controllerMax, String nomeMin, String nomeMax) {
+  Row myFiltroRicerca(Color colorePulsanti, BuildContext context, IconData icona, TextEditingController controllerMin, TextEditingController controllerMax, String nomeMin, String nomeMax) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Icon(icona, size: 22, color: coloriPulsanti,),
+        Icon(icona, size: 22, color: colorePulsanti,),
         SizedBox(
           width: MediaQuery.sizeOf(context).width * 0.40,
-          child: MyTextFieldOnlyPositiveNumbers(controller: controllerMin, text: nomeMin, colore: coloriPulsanti,)
+          child: MyTextFieldOnlyPositiveNumbers(controller: controllerMin, text: nomeMin, colore: colorePulsanti,)
         ),
         SizedBox(
           width: MediaQuery.sizeOf(context).width * 0.40, 
-          child: MyTextFieldOnlyPositiveNumbers(controller: controllerMax, text: nomeMax, colore: coloriPulsanti,)
+          child: MyTextFieldOnlyPositiveNumbers(controller: controllerMax, text: nomeMax, colore: colorePulsanti,)
         ),
       ],
     );
@@ -652,10 +669,11 @@ class _CercaPageState extends State<CercaPage> {
                 });
               },
               borderRadius: const BorderRadius.all(Radius.circular(8)),
-              selectedBorderColor: Colors.transparent,
-              selectedColor: Theme.of(context).colorScheme.surface,
-              fillColor: Theme.of(context).colorScheme.primary,
-              color: Theme.of(context).colorScheme.outline,
+              borderColor: context.outline,
+              selectedBorderColor: context.onSecondary,
+              selectedColor: context.onError,
+              fillColor: context.onSecondary,
+              color: context.outline,
               constraints: const BoxConstraints(
                 minHeight: 40.0,
                 minWidth: 80.0,

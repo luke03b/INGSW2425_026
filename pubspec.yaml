@@ -60,6 +60,7 @@ dependencies:
   google_places_flutter: ^2.0.9
   flutter_google_maps_webservices: ^1.1.1
   google_places_autocomplete_text_field: ^1.1.0
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:

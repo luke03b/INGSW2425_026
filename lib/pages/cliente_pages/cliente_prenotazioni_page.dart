@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:flutter/material.dart';
 
 class ClientePrenotazioniPage extends StatefulWidget {
@@ -73,30 +74,28 @@ class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("House Hunters", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
+        title: Text("House Hunters", style: TextStyle(color: context.onSecondary),),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: context.primary,
         elevation: 5,
-        shadowColor: Colors.black,
+        shadowColor: context.shadow,
       ),
       body: myCarouselSlider(context));
   }
 
   CarouselSlider myCarouselSlider(BuildContext context) {
 
-    Color coloreScritte = Theme.of(context).colorScheme.outline;
-
     Color selettoreColoreStatoPrenotazione(String statoPrenotazione) {
       if(statoPrenotazione == "Accettata") {
         return Colors.green;
       } else if(statoPrenotazione == "Rifiutata") {
-        return Theme.of(context).colorScheme.error;
+        return context.error;
       } else if(statoPrenotazione == "In Attesa") {
         return Colors.grey;
       } else if(statoPrenotazione == "Controproposta") {
-        return Theme.of(context).colorScheme.tertiary;
+        return context.tertiary;
       }
-      return Theme.of(context).colorScheme.outline;
+      return context.outline;
     }
 
     return CarouselSlider(
@@ -112,10 +111,10 @@ class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
             width: MediaQuery.of(context).size.width,
             margin: EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
-              color: Colors.white, 
+              color: context.primaryContainer,
               borderRadius: BorderRadius.circular(10),
               shape: BoxShape.rectangle,
-              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2),
+              boxShadow: [BoxShadow(color: context.shadow.withOpacity(0.2),
                 spreadRadius: 5,
                 blurRadius: 15,
                 offset: Offset(0, 10),)],
@@ -139,8 +138,8 @@ class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text("Data prenotazione: ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: coloreScritte)),
-                    Text(indiceCasaCorrente['data_richiesta_prenotazione'], style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: coloreScritte)),
+                    Text("Data prenotazione: ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: context.outline)),
+                    Text(indiceCasaCorrente['data_richiesta_prenotazione'], style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: context.outline)),
                   ],
                 ),
                 Row(
@@ -154,8 +153,8 @@ class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text("Richiesta effettuata in data: ", style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.bold, color: coloreScritte)),
-                    Text(indiceCasaCorrente['data_prenotazione'], style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.normal, color: coloreScritte)),
+                    Text("Richiesta effettuata in data: ", style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.bold, color: context.outline)),
+                    Text(indiceCasaCorrente['data_prenotazione'], style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.normal, color: context.outline)),
                   ],
                 ),
                 SizedBox(
@@ -165,16 +164,16 @@ class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
-                    Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
+                    Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
                   ],
                 ),
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.location_on, size: scaleFactor * 22, color: coloreScritte,),
+                    Icon(Icons.location_on, size: scaleFactor * 22, color: context.outline,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.normal, color: coloreScritte)),
+                    Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.normal, color: context.outline)),
                   ],
                 ),
               ],

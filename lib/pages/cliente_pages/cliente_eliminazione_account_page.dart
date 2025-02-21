@@ -1,4 +1,5 @@
 import 'package:domus_app/services/aws_cognito.dart';
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:domus_app/utils/my_text_widgets.dart';
@@ -24,18 +25,18 @@ class _ClienteEliminazioneAccountPageState extends State<ClienteEliminazioneAcco
 
   @override
   Widget build(BuildContext context) {
-    Color coloriScritte = Theme.of(context).colorScheme.outline;
+    Color coloriScritte = context.outline;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.surface,
+          color: context.onSecondary,
         ),
-        title: Text("Elimina account", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
+        title: Text("Elimina account", style: TextStyle(color: context.onSecondary),),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: context.primary,
         elevation: 5,
-        shadowColor: Colors.black,
+        shadowColor: context.shadow,
       ),
       body: SafeArea(
         child: Center(
@@ -54,6 +55,12 @@ class _ClienteEliminazioneAccountPageState extends State<ClienteEliminazioneAcco
                           color: coloriScritte,
                         ),
                         decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: context.outline), // Colore della linea quando non è in focus
+                          ),
+                            focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: context.onSecondary, width: 2.0), // Colore della linea quando scrivi
+                          ),
                           hintStyle: TextStyle(color: coloriScritte),
                           hintText: widget.emailUtente ?? "email",
                           iconColor: coloriScritte,
@@ -73,7 +80,7 @@ class _ClienteEliminazioneAccountPageState extends State<ClienteEliminazioneAcco
               MyElevatedButtonWidget(text: "Elimina account",
               onPressed: ()
                 async { await eliminaAccount(context);},
-                color: Theme.of(context).colorScheme.error),
+                color: context.error),
 
               const Spacer(flex: 8),
 
@@ -123,9 +130,9 @@ class _ClienteEliminazioneAccountPageState extends State<ClienteEliminazioneAcco
                                           title: "Elimina account", 
                                           bodyText: "Sei sicuro di voler procedere? l'account con email ${widget.emailUtente} verrà eliminato e sarai reindirizzato al login.", 
                                           leftButtonText: "No", 
-                                          leftButtonColor: Colors.grey, 
+                                          leftButtonColor: context.secondary, 
                                           rightButtonText: "Si", 
-                                          rightButtonColor: Theme.of(context).colorScheme.error, 
+                                          rightButtonColor: context.error, 
                                           onPressLeftButton: (){Navigator.pop(context);}, 
                                           onPressRightButton: () async {
                                             bool isUserDeleted = await deleteUser(widget.emailUtente ?? mailController.text, passwordController.text);

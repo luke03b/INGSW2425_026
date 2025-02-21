@@ -1,3 +1,4 @@
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:flutter/material.dart';
 
 class MyElevatedButtonWidget extends StatelessWidget {
@@ -20,7 +21,7 @@ class MyElevatedButtonWidget extends StatelessWidget {
       ),
       child: Text(text,
         style: TextStyle(
-          color: Theme.of(context).colorScheme.onPrimary,
+          color: context.onError,
           fontSize: 18.0),
       ),
     );
@@ -74,7 +75,7 @@ class MyElevatedButtonRectWidget extends StatelessWidget {
       ),
       child: Text(text,
         style: TextStyle(
-          color: Theme.of(context).colorScheme.onPrimary,
+          color: context.onError,
           fontSize: 18.0),
       ),
     );
@@ -98,7 +99,7 @@ class MyAddButtonWidget extends StatelessWidget {
         backgroundColor: color,
         fixedSize: Size(MediaQuery.sizeOf(context).width/7, MediaQuery.sizeOf(context).width/7),
       ),
-      child: Icon(Icons.add, color: Theme.of(context).colorScheme.surface, size: 40,),
+      child: Icon(Icons.add, color: context.tertiaryFixed, size: 40,),
       );
   }
 }

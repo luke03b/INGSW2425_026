@@ -1,3 +1,4 @@
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:domus_app/utils/my_text_widgets.dart';
@@ -19,8 +20,7 @@ class _ClienteCreaOffertaPageState extends State<ClienteCreaOffertaPage> {
   static const double GRANDEZZA_ICONE = 25;
   static const double GRANDEZZA_SCRITTE_PICCOLE = 18;
   static const double GRANDEZZA_ICONE_PICCOLE = 20;
-  Color coloreScritte = Colors.black;
-  TextEditingController contropropostaController = TextEditingController();
+  TextEditingController offertaController = TextEditingController();
   late ScrollController scrollController;
     @override
   void initState(){
@@ -112,17 +112,18 @@ class _ClienteCreaOffertaPageState extends State<ClienteCreaOffertaPage> {
 
   @override
   Widget build(BuildContext context) {
+    Color coloreScritte = context.outline;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.surface,
+          color: context.onSecondary,
         ),
-        title: Text("Crea offerta", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
+        title: Text("Crea offerta", style: TextStyle(color: context.onSecondary),),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: context.primary,
         elevation: 5,
-        shadowColor: Colors.black,
+        shadowColor: context.shadow,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -148,7 +149,7 @@ class _ClienteCreaOffertaPageState extends State<ClienteCreaOffertaPage> {
                                 Text("Inserisci offerta: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte),),
                                 SizedBox(
                                   width: MediaQuery.sizeOf(context).width * 0.40,
-                                  child: MyTextFieldOnlyPositiveNumbers(controller: contropropostaController, text: "EUR", colore: coloreScritte,)
+                                  child: MyTextFieldOnlyPositiveNumbers(controller: offertaController, text: "EUR", colore: coloreScritte,)
                                 ),
                               ],
                             ),
@@ -157,12 +158,16 @@ class _ClienteCreaOffertaPageState extends State<ClienteCreaOffertaPage> {
                       ],
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height/50,),
-                    MyElevatedButtonRectWidget(text: "Invia", onPressed: (){
-                                      inviaControproposta(context);
-                                      }, color: Theme.of(context).colorScheme.primary),
+                    MyElevatedButtonRectWidget(
+                      text: "Invia", 
+                      onPressed: (){
+                        inviaOfferta(context);
+                      },
+                      color: context.tertiary
+                    ),
                     SizedBox(height: MediaQuery.of(context).size.height/50,),
                     Card(
-                      color: Colors.white,
+                      color: context.primaryContainer,
                       elevation: 4,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
@@ -220,49 +225,39 @@ class _ClienteCreaOffertaPageState extends State<ClienteCreaOffertaPage> {
       );
   }
 
-  void inviaControproposta(BuildContext context) {
-    if(contropropostaController.text.isEmpty){
+  void inviaOfferta(BuildContext context) {
+    if(offertaController.text.isEmpty){
       showDialog(
         barrierDismissible: false,
         context: context, 
-        builder: (BuildContext context) => MyInfoDialog(title: "Attenzione", bodyText: "Inserire una controproposta", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
+        builder: (BuildContext context) => MyInfoDialog(title: "Attenzione", bodyText: "Inserire un'offerta", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
       );
     }
 
     try {
       //conversione delle stringhe in numeri
-      String offertaAttualeStringa = widget.casaSelezionata['valore_offerta'];
-      int offertaAttuale = int.parse(offertaAttualeStringa.replaceAll('.', ''));
+      String prezzoAnnuncioStringa = widget.casaSelezionata['prezzo'];
+      int prezzoAnnuncio = int.parse(prezzoAnnuncioStringa.replaceAll('.', ''));
+      int nuovaOfferta = int.parse(offertaController.text);
 
-      int nuovaControproposta = int.parse(contropropostaController.text);
-
-      String prezzoInizialeStringa = widget.casaSelezionata['prezzo'];
-      int prezzoIniziale = int.parse(prezzoInizialeStringa.replaceAll('.', ''));
-
-      if(offertaAttuale >= nuovaControproposta){
+      if(nuovaOfferta <= prezzoAnnuncio){
         showDialog(
         barrierDismissible: false,
         context: context, 
-        builder: (BuildContext context) => MyInfoDialog(title: "Attenzione", bodyText: "La controproposta deve essere maggiore dell'offerta", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
+        builder: (BuildContext context) => MyInfoDialog(title: "Attenzione", bodyText: "L'offerta deve essere maggiore del prezzo iniziale", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
         );
-      }else if(nuovaControproposta > prezzoIniziale){
-        showDialog(
-        barrierDismissible: false,
-        context: context, 
-        builder: (BuildContext context) => MyInfoDialog(title: "Attenzione", bodyText: "La controproposta deve essere minore del prezzo iniziale", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
-        );
-      } else {
+      }else{
         showDialog(
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) => MyOptionsDialog(
                                             title: "Conferma",
-                                            bodyText: "Sei sicuro di voler inviare una controproposta di ${contropropostaController.text} EUR?",
+                                            bodyText: "Sei sicuro di voler inviare un'offerta di ${offertaController.text} EUR?",
                                             leftButtonText: "Si",
-                                            leftButtonColor: Theme.of(context).colorScheme.tertiary,
+                                            leftButtonColor: context.tertiary,
                                             rightButtonText: "No",
-                                            rightButtonColor: Theme.of(context).colorScheme.secondary,
-                                            onPressLeftButton: (){debugPrint("Controproposta inviata");},
+                                            rightButtonColor: context.secondary,
+                                            onPressLeftButton: (){debugPrint("offerta inviata");},
                                             onPressRightButton: (){Navigator.pop(context);}
                                           )
         );

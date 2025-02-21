@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/pages/agente_pages/agente_annuncio_page.dart';
 import 'package:domus_app/pages/agente_pages/agente_crea_annuncio_page.dart';
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -25,13 +26,13 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.surface,
+          color: context.onSecondary,
         ),
-        title: Text("Le mie inserzioni", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
+        title: Text("Le mie inserzioni", style: TextStyle(color: context.onSecondary),),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: context.primary,
         elevation: 5,
-        shadowColor: Colors.black,
+        shadowColor: context.shadow,
       ),
       body: Stack(
         children: [
@@ -43,13 +44,13 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
               child: Card(
                 elevation: 3,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
-                color: Colors.white,
+                color: context.primaryContainer,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(width: 10,),
-                    Icon(Icons.filter_alt_outlined, color: Theme.of(context).colorScheme.primary,),
-                    Text("Filtri", style: TextStyle(fontWeight: FontWeight.bold),),
+                    Icon(Icons.filter_alt_outlined, color: context.onPrimary,),
+                    Text("Filtri", style: TextStyle(color: context.onPrimary, fontWeight: FontWeight.bold),),
                     SizedBox(width: 10,),
                     ToggleButtons(
                       borderRadius: BorderRadius.circular(100),
@@ -62,17 +63,17 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
                       children: [
                         Row(
                           children: [
-                            Icon(selectedOffertePrenotazioni[0] ? Icons.radio_button_on : Icons.radio_button_off, color: Theme.of(context).colorScheme.primary, size: 18,),
+                            Icon(selectedOffertePrenotazioni[0] ? Icons.radio_button_on : Icons.radio_button_off, color: context.onPrimary, size: 18,),
                             SizedBox(width: 6,),
-                            Text("Offerte"),
+                            Text("Offerte", style: TextStyle(color: context.onPrimary),),
                             SizedBox(width: 10,)
                           ],
                         ),
                         Row(
                           children: [
-                            Icon(selectedOffertePrenotazioni[1] ? Icons.radio_button_on : Icons.radio_button_off, color: Theme.of(context).colorScheme.primary, size: 18,),
+                            Icon(selectedOffertePrenotazioni[1] ? Icons.radio_button_on : Icons.radio_button_off, color: context.onPrimary, size: 18,),
                             SizedBox(width: 6,),
-                            Text("Prenotazioni"),
+                            Text("Prenotazioni", style: TextStyle(color: context.onPrimary),),
                             SizedBox(width: 15,)
                           ],
                         ),
@@ -94,7 +95,7 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
               Expanded(child: MyAddButtonWidget(onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteCreaAnnuncioPage()));
               },
-              color: Theme.of(context).colorScheme.primary)),
+              color: context.onSecondary)),
               SizedBox(width: 5,),
               ],),
               SizedBox(height: 10,)
@@ -106,8 +107,6 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
   }
 
   CarouselSlider myCarouselSlider(BuildContext context) {
-    Color coloreScritte = Theme.of(context).colorScheme.outline;
-
     final List<Map<String, dynamic>> listaCase = [
       {
         'image1': 'lib/assets/casa1_1_placeholder.png',
@@ -196,10 +195,10 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
             width: MediaQuery.of(context).size.width,
             margin: EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
-              color: Colors.white, 
+              color: context.primaryContainer,
               borderRadius: BorderRadius.circular(10),
               shape: BoxShape.rectangle,
-              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2),
+              boxShadow: [BoxShadow(color: context.shadow.withOpacity(0.2),
                 spreadRadius: 5,
                 blurRadius: 15,
                 offset: Offset(0, 10),)],
@@ -223,16 +222,16 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(casaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                    Text(" EUR", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
+                    Text(casaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: context.outline)),
+                    Text(" EUR", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: context.outline)),
                   ],
                 ),
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.location_on, size: scaleFactor * GRANDEZZA_ICONE, color: coloreScritte,),
+                    Icon(Icons.location_on, size: scaleFactor * GRANDEZZA_ICONE, color: context.outline,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(casaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
+                    Text(casaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline)),
                   ],
                 ),
               ],

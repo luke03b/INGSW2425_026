@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/pages/agente_pages/agente_analisi_offerta_page.dart';
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
@@ -98,14 +99,14 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.surface,
+          color: context.onSecondary,
         ),
         automaticallyImplyLeading: true,
-        title: Text("Offerte ricevute", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
+        title: Text("Offerte ricevute", style: TextStyle(color: context.onSecondary),),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 5,
-        shadowColor: Colors.black,
+        shadowColor: context.shadow,
       ),
       body: Stack(
         children:[ 
@@ -117,7 +118,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
               child: Card(
                 elevation: 3,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
-                color: Colors.white,
+                color: context.primaryContainer,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -153,10 +154,10 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
           width: MediaQuery.of(context).size.width,
           margin: EdgeInsets.all(5),
           decoration: BoxDecoration(
-            color: Colors.white, 
+            color: context.primaryContainer,
             borderRadius: BorderRadius.circular(10),
             shape: BoxShape.rectangle,
-            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2),
+            boxShadow: [BoxShadow(color: context.shadow.withOpacity(0.2),
               spreadRadius: 5,
               blurRadius: 15,
               offset: Offset(0, 10),)],
@@ -221,7 +222,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                             onPressed: (){
                               Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnalizzaOffertaPage(offertaSelezionata: indiceOffertaCorrente)));
                             },
-                            color: Theme.of(context).colorScheme.primary
+                            color: context.onSecondary,
                           )
                   ),
                   SizedBox(width: scaleFactor * MediaQuery.of(context).size.height/50,),
@@ -244,7 +245,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                                                                   )
                                 );
                             },
-                            color: Theme.of(context).colorScheme.primary
+                            color: context.secondary
                           )
                     ),
                   SizedBox(width: scaleFactor * MediaQuery.of(context).size.height/50,),

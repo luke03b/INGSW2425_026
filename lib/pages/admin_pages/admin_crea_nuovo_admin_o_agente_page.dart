@@ -32,9 +32,9 @@ class _AdminCreaNuovoAdminPageState extends State<AdminCreaNuovoAdminPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.surface,
+          color: Theme.of(context).colorScheme.onSecondary,
         ),
-        title: Text( widget.isNewUserAdmin ? "Crea nuovo admin" : "Crea nuovo agente", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
+        title: Text( widget.isNewUserAdmin ? "Crea nuovo admin" : "Crea nuovo agente", style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 5,

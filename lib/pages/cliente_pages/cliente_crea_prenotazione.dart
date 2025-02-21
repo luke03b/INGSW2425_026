@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -132,13 +133,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.surface,
+          color: context.onSecondary,
         ),
-        title: Text("Previsioni Meteo", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
+        title: Text("Previsioni Meteo", style: TextStyle(color: context.onSecondary),),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: context.primary,
         elevation: 5,
-        shadowColor: Colors.black,
+        shadowColor: context.shadow,
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
@@ -238,13 +239,13 @@ class HourlyWeatherScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.surface,
+          color: context.onSecondary,
         ),
-        title: Text("Fasce orarie", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
+        title: Text("Fasce orarie", style: TextStyle(color: context.onSecondary),),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: context.primary,
         elevation: 5,
-        shadowColor: Colors.black,
+        shadowColor: context.shadow,
       ),
       body: ListView.builder(
         itemCount: filteredData.length,
@@ -264,9 +265,9 @@ class HourlyWeatherScreen extends StatelessWidget {
                     title: "Conferma", 
                     bodyText: "Vuoi prenotare una visita per il giorno $selectedDate alle ore $time?", 
                     leftButtonText: "No", 
-                    leftButtonColor: Colors.grey, 
+                    leftButtonColor: context.scrim, 
                     rightButtonText: "Si", 
-                    rightButtonColor: Theme.of(context).colorScheme.tertiary, 
+                    rightButtonColor: context.tertiary, 
                     onPressLeftButton: (){Navigator.pop(context);}, 
                     onPressRightButton: (){}
                   )

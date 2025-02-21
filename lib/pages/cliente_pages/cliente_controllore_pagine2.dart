@@ -1,6 +1,7 @@
 import 'package:domus_app/pages/cliente_pages/cliente_prenotazioni_page.dart';
 import 'package:domus_app/pages/shared_pages/profilo_page.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_risultati_cerca_page.dart';
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:flutter/material.dart';
 import 'cliente_offerte_page.dart';
 
@@ -32,20 +33,30 @@ class _ControllorePagine2State extends State<ControllorePagine2> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _navigateBottomBar,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        selectedItemColor: Theme.of(context).colorScheme.onPrimary,
-        unselectedItemColor: Colors.black87,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Cerca'),
-          BottomNavigationBarItem(icon: Icon(Icons.payments), label: 'Offerte'),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Prenotazioni'),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Profilo'),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Aggiungi qui la linea separatrice
+          Container(
+            height: 0.3,
+            color: context.outline, // Colore della linea separatrice
+          ),
+          BottomNavigationBar(
+            currentIndex: _selectedIndex,
+            onTap: _navigateBottomBar,
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: context.primary,
+            selectedItemColor: context.onPrimary,
+            unselectedItemColor: context.outline,
+            items: [
+              BottomNavigationBarItem(icon: Icon(Icons.search), activeIcon: Icon(Icons.search, color: context.onSecondary,), label: 'Cerca'),
+              BottomNavigationBarItem(icon: Icon(Icons.payments), activeIcon: Icon(Icons.payments, color: context.onSecondary,), label: 'Offerte'),
+              BottomNavigationBarItem(icon: Icon(Icons.calendar_month), activeIcon: Icon(Icons.calendar_month, color: context.onSecondary,), label: 'Prenotazioni'),
+              BottomNavigationBarItem(icon: Icon(Icons.account_circle), activeIcon: Icon(Icons.account_circle, color: context.onSecondary,), label: 'Profilo'),
+            ],
+          ),
         ]
-      ),
+      )
     );
   }
 }

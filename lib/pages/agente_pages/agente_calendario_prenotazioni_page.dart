@@ -1,3 +1,4 @@
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -112,20 +113,30 @@ class _AgenteCalendarioPrenotazioniPageState
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.surface,
+          color: context.surface,
         ),
         title: Text(
           "Calendario prenotazioni",
-          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          style: TextStyle(color: context.onSecondary),
         ),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: context.primary,
         elevation: 5,
-        shadowColor: Colors.black,
+        shadowColor: context.shadow,
       ),
       body: Column(
         children: [
           TableCalendar<Map<String, dynamic>>(
+            weekendDays: [DateTime.sunday],
+            enabledDayPredicate: (day) {
+            // Rende la domenica non cliccabile
+              return day.weekday != DateTime.sunday;
+            },
+            headerStyle: HeaderStyle(
+              formatButtonVisible: false,
+              titleCentered: true,
+              titleTextStyle: TextStyle(fontSize: 17.0, color: context.onSecondary),
+            ),
             firstDay: DateTime.now(),
             lastDay: DateTime.now().add(Duration(days: 14)),
             focusedDay: _focusedDay,
@@ -137,18 +148,23 @@ class _AgenteCalendarioPrenotazioniPageState
             eventLoader: _getEventsForDay,
             startingDayOfWeek: StartingDayOfWeek.monday,
             calendarStyle: CalendarStyle(
+              todayTextStyle: TextStyle(color: context.onPrimary),
+              defaultTextStyle: TextStyle(color: context.onPrimary),
+              defaultDecoration: BoxDecoration(
+                  color: context.onPrimaryContainer,
+                  shape: BoxShape.circle),
               rangeStartDecoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.tertiary,
+                  color: context.tertiary,
                   shape: BoxShape.circle),
               rangeEndDecoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.tertiary,
+                  color: context.tertiary,
                   shape: BoxShape.circle),
-              rangeHighlightColor: Theme.of(context).colorScheme.tertiary,
+              rangeHighlightColor: context.tertiary,
               selectedDecoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: context.onSecondary,
                   shape: BoxShape.circle),
               todayDecoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: context.primary,
                   shape: BoxShape.circle),
               outsideDaysVisible: false,
             ),

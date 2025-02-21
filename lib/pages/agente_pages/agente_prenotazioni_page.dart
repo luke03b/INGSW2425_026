@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
@@ -97,14 +98,14 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.surface,
+          color: Theme.of(context).colorScheme.onSecondary,
         ),
         automaticallyImplyLeading: true,
-        title: Text("Prenotazioni ricevute", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
+        title: Text("Prenotazioni ricevute", style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 5,
-        shadowColor: Colors.black,
+        shadowColor: context.shadow,
       ),
       body: myCarouselSlider(context));
   }
@@ -122,10 +123,10 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
           width: MediaQuery.of(context).size.width,
           margin: EdgeInsets.all(5),
           decoration: BoxDecoration(
-            color: Colors.white, 
+            color: Theme.of(context).colorScheme.primaryContainer,
             borderRadius: BorderRadius.circular(10),
             shape: BoxShape.rectangle,
-            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2),
+            boxShadow: [BoxShadow(color: context.shadow.withOpacity(0.2),
               spreadRadius: 5,
               blurRadius: 15,
               offset: Offset(0, 10),)],
@@ -211,7 +212,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                                                                   )
                                 );
                             },
-                            color: Theme.of(context).colorScheme.primary
+                            color: Theme.of(context).colorScheme.onSecondary
                           )
                   ),
                   SizedBox(width: scaleFactor * MediaQuery.of(context).size.height/50,),
@@ -234,7 +235,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                                                                   )
                                 );
                             },
-                            color: Theme.of(context).colorScheme.primary)),
+                            color: Theme.of(context).colorScheme.secondary)),
                   SizedBox(width: scaleFactor * MediaQuery.of(context).size.height/50,),
               ],),
               SizedBox(height: scaleFactor * MediaQuery.of(context).size.height/75,),

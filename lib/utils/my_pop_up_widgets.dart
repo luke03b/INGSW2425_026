@@ -1,7 +1,5 @@
-// import 'dart:ffi';
-
 import 'dart:async';
-
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -24,17 +22,17 @@ class MyInfoDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-            title: Text(title, style: TextStyle(fontSize: 25, color: Theme.of(context).colorScheme.outline),),
-            content: Text(bodyText, style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.outline)),
+            title: Text(title, style: TextStyle(fontSize: 25, color: context.outline),),
+            content: Text(bodyText, style: TextStyle(fontSize: 15, color: context.outline)),
             actions: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary
+                  backgroundColor: context.onSecondary
                 ),
                 onPressed: (){
                   onPressed();
                 }, 
-                child: Text(buttonText, style: TextStyle(color: Theme.of(context).colorScheme.onPrimary,),)
+                child: Text(buttonText, style: TextStyle(color: context.onError,),)
               ),
             ],
           );
@@ -66,8 +64,8 @@ class MyOptionsDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-            title: Text(title, style: TextStyle(fontSize: 25, color: Theme.of(context).colorScheme.outline),),
-            content: Text(bodyText, style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.outline)),
+            title: Text(title, style: TextStyle(fontSize: 25, color: context.outline),),
+            content: Text(bodyText, style: TextStyle(fontSize: 15, color: context.outline)),
             actions: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -77,7 +75,7 @@ class MyOptionsDialog extends StatelessWidget {
                 onPressed: (){
                   onPressLeftButton();
                 }, 
-                child: Text(leftButtonText, style: TextStyle(color: Theme.of(context).colorScheme.onPrimary,),)
+                child: Text(leftButtonText, style: TextStyle(color: context.onError,),)
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -87,7 +85,7 @@ class MyOptionsDialog extends StatelessWidget {
                 onPressed: (){
                   onPressRightButton();
                 }, 
-                child: Text(rightButtonText, style: TextStyle(color: Theme.of(context).colorScheme.onPrimary,),)
+                child: Text(rightButtonText, style: TextStyle(color: context.onError,),)
               ),
             ],
           );
@@ -127,12 +125,12 @@ class MyMapDialog extends StatelessWidget {
       zoom: 14.4746,
     );
     return AlertDialog(
-            title: Text(title, style: TextStyle(fontSize: 25, color: Theme.of(context).colorScheme.outline),),
+            title: Text(title, style: TextStyle(fontSize: 25, color: context.outline),),
             content: SizedBox(
               height: 326,
               child: Column(
                 children: [
-                  Text(bodyText, style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.outline)),
+                  Text(bodyText, style: TextStyle(fontSize: 15, color: context.outline)),
                   SizedBox(height: 5,),
                   SizedBox(
                       width: MediaQuery.of(context).size.width/1.1,
@@ -156,7 +154,7 @@ class MyMapDialog extends StatelessWidget {
                 onPressed: (){
                   onPressLeftButton();
                 }, 
-                child: Text(leftButtonText, style: TextStyle(color: Theme.of(context).colorScheme.onPrimary,),)
+                child: Text(leftButtonText, style: TextStyle(color: context.onPrimary,),)
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -166,10 +164,9 @@ class MyMapDialog extends StatelessWidget {
                 onPressed: (){
                   onPressRightButton();
                 }, 
-                child: Text(rightButtonText, style: TextStyle(color: Theme.of(context).colorScheme.onPrimary,),)
+                child: Text(rightButtonText, style: TextStyle(color: context.onPrimary,),)
               ),
             ],
           );
   }
 }
-

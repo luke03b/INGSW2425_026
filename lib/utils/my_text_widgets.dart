@@ -1,3 +1,4 @@
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -22,12 +23,19 @@ class _MyTextFieldPrefixIconState extends State<MyTextFieldPrefixIcon> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      cursorColor: context.onSecondary,
       controller: widget.controller,
       style: TextStyle(
         fontSize: 18.0, 
         color: widget.color,
       ),
       decoration: InputDecoration(
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: context.outline), // Colore della linea quando non è in focus
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: context.onSecondary, width: 2.0), // Colore della linea quando scrivi
+        ),
         hintStyle: TextStyle(color: widget.color),
         hintText: widget.text,
         iconColor: widget.color,
@@ -59,10 +67,17 @@ class _MyPasswordFieldWidgetState extends State<MyPasswordFieldWidget> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      cursorColor: context.onSecondary,
       controller: widget.controller,
       style: TextStyle(fontSize: 18.0, color: widget.color),
       obscureText: _isPasswordObscured,
       decoration: InputDecoration(
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: context.outline), // Colore della linea quando non è in focus
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: context.onSecondary, width: 2.0), // Colore della linea quando scrivi
+        ),
         hintStyle: TextStyle(color: widget.color),
         hintText: widget.text,
         icon: widget.icon,
@@ -101,12 +116,19 @@ class _MyTextFieldSuffixIconState extends State<MyTextFieldSuffixIcon> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      cursorColor: context.onSecondary,
       controller: widget.controller,
       style: TextStyle(
         fontSize: 18.0, 
         color: widget.colore,
       ),
       decoration: InputDecoration(
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: context.outline), // Colore della linea quando non è in focus
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: context.onSecondary, width: 2.0), // Colore della linea quando scrivi
+        ),
         hintStyle: TextStyle(color: widget.colore),
         hintText: widget.text,
         suffixIcon: widget.icon,
@@ -135,6 +157,7 @@ class _MyTextFieldOnlyPositiveNumbersState extends State<MyTextFieldOnlyPositive
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      cursorColor: context.onSecondary,
       // keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
       keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
       inputFormatters: [FilteringTextInputFormatter.allow(RegExp("^(0|[1-9][0-9]*)"))],
@@ -145,6 +168,12 @@ class _MyTextFieldOnlyPositiveNumbersState extends State<MyTextFieldOnlyPositive
         fontWeight: FontWeight.normal
       ),
       decoration: InputDecoration(
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: context.outline), // Colore della linea quando non è in focus
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: context.onSecondary, width: 2.0), // Colore della linea quando scrivi
+        ),
         hintText: widget.text,
         hintStyle: TextStyle(color: widget.colore)
       ),

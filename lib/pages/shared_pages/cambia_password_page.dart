@@ -1,5 +1,5 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:domus_app/services/aws_cognito.dart';
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:domus_app/utils/my_text_widgets.dart';
@@ -31,13 +31,13 @@ class _CambiaPasswordPageState extends State<CambiaPasswordPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.surface,
+          color: Theme.of(context).colorScheme.onSecondary,
         ),
-        title: Text("Cambia password", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),),
+        title: Text("Cambia password", style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 5,
-        shadowColor: Colors.black,
+        shadowColor: context.shadow,
       ),
       body: SafeArea(
         child: Center(
@@ -56,6 +56,12 @@ class _CambiaPasswordPageState extends State<CambiaPasswordPage> {
                           color: coloriScritte,
                         ),
                         decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: context.outline), // Colore della linea quando non è in focus
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: context.onSecondary, width: 2.0), // Colore della linea quando scrivi
+                          ),
                           hintStyle: TextStyle(color: coloriScritte),
                           hintText: widget.emailUtente ?? "email",
                           iconColor: coloriScritte,
