@@ -1,4 +1,5 @@
 import 'dart:io'; 
+import 'package:domus_app/dto/annuncio_dto.dart';
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
@@ -8,6 +9,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 const List<String> listaClassiEnergetiche = <String>['Tutte', 'A4', 'A3', 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G'];
 const List<String> listaPiani = <String>['Tutti', 'Terra', 'Intermedio', 'Ultimo'];
@@ -28,6 +31,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
   final TextEditingController viaController = TextEditingController();
   final TextEditingController superficieController = TextEditingController();
   final TextEditingController numeroPianoController = TextEditingController();
+  final TextEditingController stanzeController = TextEditingController();
 
   final TextEditingController mappeController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -586,6 +590,17 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                     Text("m²", style: TextStyle(color: coloreScritte, fontWeight: FontWeight.normal, fontSize: GRANDEZZA_SCRITTE_PICCOLE),)
                 ],),
 
+                Row(
+                  children: [
+                    SizedBox(width: 30.0),
+                    Text("N. Stanze", style: TextStyle(color: coloreScritte, fontWeight: FontWeight.normal, fontSize: GRANDEZZA_SCRITTE_PICCOLE),),
+                    SizedBox(width: 115),
+                    SizedBox(
+                      width: MediaQuery.sizeOf(context).width * 0.37,
+                      child: MyTextFieldOnlyPositiveNumbers(controller: stanzeController, text: "n. stanze", colore: coloreScritte,)
+                    ),
+                ],),
+
                 //Selettore Piano
                 SizedBox(
                   height: 50,
@@ -664,17 +679,60 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
               ],
             ),
             SizedBox(height: 20,),
-            MyElevatedButtonWidget(text: "Aggiungi annuncio", onPressed: (){debugPrint("annuncio creato!!!");}, color: context.tertiary),
+            MyElevatedButtonWidget(
+              text: "Aggiungi annuncio", 
+              onPressed: () async {
+                 AnnuncioDto nuovoAnnuncio = creaAnnuncio();
+                 inviaAnnuncio(nuovoAnnuncio);
+              },
+              color: context.tertiary
+            ),
             SizedBox(height: 30,),
           ],
         ),
       ),
     );
   }
+
   Future<void> _onSubmit() async {
     if (!_formKey.currentState!.validate()) {
       setState(() => _autovalidateMode = AutovalidateMode.always);
       return;
     }
   }
+
+  AnnuncioDto creaAnnuncio(){
+    String prezzoStringa = prezzoController.text;
+    double prezzoDouble = double.parse(prezzoStringa);
+
+    String superficieStringa = superficieController.text;
+    int superficieDouble = int.parse(superficieStringa);
+
+    return AnnuncioDto(prezzo: prezzoDouble, superficie: superficieDouble);
+  }
+
+  Future<void> inviaAnnuncio(AnnuncioDto nuovoAnnuncioDto) async {
+  final url = Uri.parse('http://localhost:8080/api/annunci');
+  
+  try {
+    // Invia la richiesta POST con il corpo in formato JSON
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json', // Indica che invii dati in formato JSON
+      },
+      body: json.encode(nuovoAnnuncioDto), // Codifica i dati in formato JSON
+    );
+
+    // Controlla la risposta del server
+    if (response.statusCode == 201) {
+      print('Annuncio creato con successo!');
+      // Puoi gestire la risposta del server qui, se necessario
+    } else {
+      print('Errore nella creazione dell\'annuncio: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Errore nella richiesta: $e');
+  }
+}
 }
