@@ -1,4 +1,4 @@
-
+//manca il tipo dell'annuncio (in vendita o in affitto) 
 class AnnuncioDto {
   double prezzo = 0;
   int superficie = 0;
@@ -12,8 +12,8 @@ class AnnuncioDto {
   bool vicino_scuole = false;
   bool vicino_parchi = false;
   bool vicino_trasporti = false;
-  bool classe_energetica = false;
-  String piano = "";
+  String classe_energetica = "Tutte";
+  String piano = "Tutti";
   int numeropiano = 0;
   String data_creazione = "";
   String agente = "";
@@ -35,8 +35,8 @@ class AnnuncioDto {
     this.vicino_scuole = false,
     this.vicino_parchi = false,
     this.vicino_trasporti = false,
-    this.classe_energetica = false,
-    this.piano = "",
+    this.classe_energetica = "Tutte",
+    this.piano = "Tutti",
     this.numeropiano = 0,
     this.data_creazione = "",
     this.agente = "",

@@ -12,6 +12,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 const List<String> listaClassiEnergetiche = <String>['Tutte', 'A4', 'A3', 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G'];
 const List<String> listaPiani = <String>['Tutti', 'Terra', 'Intermedio', 'Ultimo'];
 
@@ -706,13 +708,50 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
     double prezzoDouble = double.parse(prezzoStringa);
 
     String superficieStringa = superficieController.text;
-    int superficieDouble = int.parse(superficieStringa);
+    int superficieInt = int.parse(superficieStringa);
 
-    return AnnuncioDto(prezzo: prezzoDouble, superficie: superficieDouble);
+    String nStanzeStringa = stanzeController.text;
+    int nStanzeInt = int.parse(nStanzeStringa);
+
+    int nPianoInt = 0;
+
+    if(sceltaPiano == "Intermedio") {
+      String nPianoStringa = numeroPianoController.text;
+      int nPianoInt = int.parse(nPianoStringa);
+    }
+    DateTime now = DateTime.now(); // Ottieni la data e ora correnti
+    String formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(now);
+
+    print(mappeController.text);
+
+    //manca il tipo dell'annuncio (n vendita o in affitto)
+    return AnnuncioDto(
+      prezzo: prezzoDouble, 
+      superficie: superficieInt, 
+      numStanze: nStanzeInt, 
+      garage: _isGarageSelected, 
+      ascensore: _isAscensoreSelected, 
+      piscina: _isPiscinaSelected, 
+      arredo: _isArredatoSelected,
+      balcone: _isBalconeSelected,
+      giardino: _isGiardinoSelected,
+      // vicino_scuole: ,
+      // vicino_parchi: ,
+      // vicino_trasporti: ,
+      classe_energetica: sceltaClasseEnergetica.toUpperCase(),
+      piano: sceltaPiano.toUpperCase(),
+      numeropiano: nPianoInt,
+      data_creazione: formattedDate,
+      agente: "Carlo",
+      indirizzo: mappeController.text,
+      coordinatex: latitude ?? 0.0,
+      coordinatey: longitude ?? 0.0,
+      descrizione: descController.text,
+    );
   }
 
   Future<void> inviaAnnuncio(AnnuncioDto nuovoAnnuncioDto) async {
-  final url = Uri.parse('http://localhost:8080/api/annunci');
+  final url = Uri.parse('http://10.0.2.2:8080/api/annunci');
   
   try {
     // Invia la richiesta POST con il corpo in formato JSON
@@ -726,10 +765,17 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
 
     // Controlla la risposta del server
     if (response.statusCode == 201) {
-      print('Annuncio creato con successo!');
-      // Puoi gestire la risposta del server qui, se necessario
+      showDialog(
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(
+          title: "Conferma", 
+          bodyText: "Annuncio creato", 
+          buttonText: "Ok", 
+          onPressed: () {Navigator.pop(context);}
+        )
+      );
     } else {
-      print('Errore nella creazione dell\'annuncio: ${response.statusCode}');
+      print('Errore nella creazione dell\'annuncio: ${response.statusCode}, ${response.body}');
     }
   } catch (e) {
     print('Errore nella richiesta: $e');
