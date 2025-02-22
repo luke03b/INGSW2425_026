@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
+import 'package:domus_app/utils/my_slider_widgets.dart';
 import 'package:domus_app/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -57,6 +58,8 @@ class _CercaPageState extends State<CercaPage> {
   bool _isVicinoParchiSelected = false;
 
   bool _isVicinoMezziPubbliciSelected = false;
+
+  double raggioRicerca = 2;
   
 
   final List<Widget> _widgetCompraAffitta = <Widget>[Text('Compra'), Text('Affitta')];
@@ -308,6 +311,14 @@ class _CercaPageState extends State<CercaPage> {
                   controller: _ricercaAvanzataScrollableController,
                   child: Column(
                     children: [
+                      
+                      RadiusSlider(
+                        onChanged: (value) {
+                          setState(() {
+                            raggioRicerca = value; // Aggiorna lo stato con il nuovo valore
+                          });
+                        }
+                      ),
                   
                       //prezzo
                       myFiltroRicerca(colorePulsanti, context, Icons.euro, _prezzoMinController, _prezzoMaxController, "Prezzo Min", "Prezzo Max"),
