@@ -28,13 +28,22 @@ class AgenteCreaAnnuncioPage extends StatefulWidget {
 class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
   static const double GRANDEZZA_SCRITTE_PICCOLE = 18;
   final TextEditingController prezzoController = TextEditingController();
-  final TextEditingController descController = TextEditingController();
+  final TextEditingController descrizioneController = TextEditingController();
   final TextEditingController cittaController = TextEditingController();
   final TextEditingController capController = TextEditingController();
   final TextEditingController viaController = TextEditingController();
   final TextEditingController superficieController = TextEditingController();
   final TextEditingController numeroPianoController = TextEditingController();
   final TextEditingController stanzeController = TextEditingController();
+
+  final GlobalKey<MyTextFieldOnlyPositiveNumbersWithValidationState> _prezzoKey = GlobalKey<MyTextFieldOnlyPositiveNumbersWithValidationState>();
+  final GlobalKey<MyTextFieldWithValidationState> _descrizioneKey = GlobalKey<MyTextFieldWithValidationState>();
+  final GlobalKey<MyTextFieldOnlyPositiveNumbersWithValidationState> _indirizzoKey = GlobalKey<MyTextFieldOnlyPositiveNumbersWithValidationState>();
+  final GlobalKey<MyTextFieldOnlyPositiveNumbersWithValidationState> _superficieKey = GlobalKey<MyTextFieldOnlyPositiveNumbersWithValidationState>();
+  final GlobalKey<MyTextFieldOnlyPositiveNumbersWithValidationState> _nStanzeKey = GlobalKey<MyTextFieldOnlyPositiveNumbersWithValidationState>();
+  final GlobalKey<MyTextFieldOnlyPositiveNumbersWithValidationState> _pianoKey = GlobalKey<MyTextFieldOnlyPositiveNumbersWithValidationState>();
+  final GlobalKey<MyTextFieldOnlyPositiveNumbersWithValidationState> _nPianoKey = GlobalKey<MyTextFieldOnlyPositiveNumbersWithValidationState>();
+  final GlobalKey<MyTextFieldOnlyPositiveNumbersWithValidationState> _classeEnergeticaKey = GlobalKey<MyTextFieldOnlyPositiveNumbersWithValidationState>();
 
   final TextEditingController mappeController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -289,8 +298,8 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                     SizedBox(width: 7),
                     SizedBox(
                       width: MediaQuery.sizeOf(context).width * 0.40,
-                      child: MyTextFieldOnlyPositiveNumbers(controller: prezzoController, text: "EUR", 
-                        colore: coloreScritte)
+                      child: MyTextFieldOnlyPositiveNumbersWithValidation(controller: prezzoController, text: "EUR", 
+                        colore: coloreScritte, key: _prezzoKey, onChanged: (value) {},)
                     ),
                 ],),
                 Padding(
@@ -310,6 +319,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                                     latitude = null;
                                     longitude = null;
                                     isIndirizzoValidato = false;
+                                    isIndirizzoOk = true;
                                   });},
                                   textEditingController: mappeController,
                                   googleAPIKey: "AIzaSyBUkzr-VCtKVyTTfssndaWR5Iy5TyfM0as",
@@ -385,10 +395,12 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                               onPressLeftButton: (){
                                 setState(() {
                                   isIndirizzoValidato = false;
+                                  isIndirizzoOk = true;
                                 });
                                 Navigator.pop(context);}, 
                               onPressRightButton: (){setState(() {
                                 isIndirizzoValidato = true;
+                                isIndirizzoOk = true;
                               });
                               Navigator.pop(context);}, 
                               latitude: latitude, 
@@ -406,21 +418,13 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                   children: [
                     SizedBox(
                       width: 370,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.outline),),
-                          labelText: 'Descrizione',  // Testo del label
-                          labelStyle: TextStyle(color: isDescrizioneOk ? context.onSecondary : coloreErrore,),
-                          hintText: 'Inserire una descrizione dell\'immobile',  // Testo di suggerimento
-                          hintStyle: TextStyle(color: coloreScritte),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4.5),
-                          )
-                        ),
-                        style: TextStyle(color: coloreScritte,),
-                        maxLines: null,
-                        controller: descController,
-                      )
+                      child: MyTextFieldWithValidation(
+                        controller: descrizioneController, 
+                        text: 'Descrizione', 
+                        hintText: 'Inserire una descrizione dell\'immobile',
+                        colore: coloreScritte, 
+                        onChanged: (value){},
+                        key: _descrizioneKey,),
                     ),
                   ],
                 ),
@@ -594,7 +598,12 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                     SizedBox(width: 115),
                     SizedBox(
                       width: MediaQuery.sizeOf(context).width * 0.37,
-                      child: MyTextFieldOnlyPositiveNumbers(controller: superficieController, text: "superficie", colore: isSuperficieOk ? coloreScritte : coloreErrore,)
+                      child: MyTextFieldOnlyPositiveNumbersWithValidation(
+                        controller: superficieController,
+                        text: "superficie", 
+                        colore: isSuperficieOk ? coloreScritte : coloreErrore,
+                        key: _superficieKey,
+                        onChanged: (value){},)
                     ),
                     Text("m²", style: TextStyle(color: coloreScritte, fontWeight: FontWeight.normal, fontSize: GRANDEZZA_SCRITTE_PICCOLE),)
                 ],),
@@ -606,7 +615,12 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                     SizedBox(width: 115),
                     SizedBox(
                       width: MediaQuery.sizeOf(context).width * 0.37,
-                      child: MyTextFieldOnlyPositiveNumbers(controller: stanzeController, text: "n. stanze", colore: isSuperficieOk ? coloreScritte : coloreErrore,)
+                      child: MyTextFieldOnlyPositiveNumbersWithValidation(
+                        controller: stanzeController, 
+                        text: "n. stanze", 
+                        colore: isSuperficieOk ? coloreScritte : coloreErrore,
+                        key: _nStanzeKey,
+                        onChanged: (value){},)
                     ),
                 ],),
 
@@ -621,11 +635,21 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                       SizedBox(width: 150.0),
                       DropdownMenu(
                         width: 175,
-                        textStyle: TextStyle(color: isPianoOk ? coloreScritte : coloreErrore),
-                        inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: coloreScritte), suffixIconColor: coloreScritte),
+                        textStyle: TextStyle(color: coloreScritte),
+                        inputDecorationTheme: InputDecorationTheme(
+                          labelStyle: TextStyle(color: coloreScritte), 
+                          suffixIconColor: coloreScritte,
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: isPianoOk ? context.outline : context.error), // Colore della linea quando non è in focus
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: isPianoOk ? context.onSecondary : context.error, width: 2.0), // Colore della linea quando scrivi
+                          ),
+                        ),
                         initialSelection: listaPiani.first,
                         onSelected: (String? value) {
                           setState(() {
+                            isPianoOk = true;
                             sceltaPiano = value!;
                             if(sceltaPiano == "Intermedio"){
                               isSceltaNumeroPianoVisible = true;
@@ -654,7 +678,12 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                       SizedBox(width: 130.0),
                       SizedBox(
                         width: MediaQuery.sizeOf(context).width * 0.42,
-                        child: MyTextFieldOnlyPositiveNumbers(controller: numeroPianoController, text: "n. piano", colore: isNPianoOk ? coloreScritte : coloreErrore,)
+                        child: MyTextFieldOnlyPositiveNumbersWithValidation(
+                          controller: numeroPianoController, 
+                          text: "n. piano", 
+                          colore: isNPianoOk ? coloreScritte : coloreErrore,
+                          key: _nPianoKey,
+                          onChanged: (value){},)
                       ),
                       SizedBox(height: 10.0),
                   ],),
@@ -671,11 +700,21 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                       SizedBox(width: 50.0),
                       DropdownMenu(
                         width: 175,
-                        textStyle: TextStyle(color: isClasseEnergeticaOk ? coloreScritte : coloreErrore),
-                        inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: coloreScritte), suffixIconColor: coloreScritte),
+                        textStyle: TextStyle(color: coloreScritte),
+                        inputDecorationTheme: InputDecorationTheme(
+                          labelStyle: TextStyle(color: coloreScritte), 
+                          suffixIconColor: coloreScritte,
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: isClasseEnergeticaOk ? context.outline : context.error), // Colore della linea quando non è in focus
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: isClasseEnergeticaOk ? context.onSecondary : context.error, width: 2.0), // Colore della linea quando scrivi
+                          ),
+                        ),
                         initialSelection: listaClassiEnergetiche.first,
                         onSelected: (String? value) {
                           setState(() {
+                            isClasseEnergeticaOk = true;
                             sceltaClasseEnergetica = value!;
                           });
                         },
@@ -693,7 +732,8 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
               text: "Aggiungi annuncio", 
               onPressed: () async {
                 FocusScope.of(context).requestFocus(FocusNode());
-                if (checkCampiValidi()){
+                if(_validateFields()){
+                // if (checkCampiValidi()){
                   AnnuncioDto nuovoAnnuncio = creaAnnuncio();
                   inviaAnnuncio(nuovoAnnuncio, context.onPrimary);
                 } else {
@@ -715,6 +755,52 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
     );
   }
 
+  bool _validateFields(){
+    bool allValid = true;
+    if (prezzoController.text.trim().isEmpty) {
+      _prezzoKey.currentState?.setError(true);
+      allValid = false;
+    }
+
+    if (descrizioneController.text.trim().isEmpty) {
+      _descrizioneKey.currentState?.setError(true);
+      allValid = false;
+    }
+
+    if (!isIndirizzoValidato) {
+      isIndirizzoOk = false;
+      allValid = false;
+    }
+
+    if (superficieController.text.trim().isEmpty) {
+      _superficieKey.currentState?.setError(true);
+      allValid = false;
+    }
+
+    if (stanzeController.text.trim().isEmpty) {
+      _nStanzeKey.currentState?.setError(true);
+      allValid = false;
+    }
+
+    if(sceltaPiano == "―"){
+      isPianoOk = false;
+      allValid = false;
+    }
+
+    if (sceltaPiano == "Intermedio" && numeroPianoController.text.trim().isEmpty) {
+      _nPianoKey.currentState?.setError(true);
+      allValid = false;
+    }
+
+    if (sceltaClasseEnergetica == "―") {
+      isClasseEnergeticaOk = false;
+      allValid = false;
+    }
+
+
+    return allValid;
+  }
+
   bool checkCampiValidi() {
     bool isAllOk = true;
     if (prezzoController.text.isEmpty) {
@@ -725,7 +811,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
       isIndirizzoOk = false;
       isAllOk = false;
     }
-    if(descController.text.isEmpty) {
+    if(descrizioneController.text.isEmpty) {
       isDescrizioneOk = false;
       isAllOk = false;
     }
@@ -803,7 +889,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
       indirizzo: mappeController.text,
       latitudine: latitude ?? 0.0,
       longitudine: longitude ?? 0.0,
-      descrizione: descController.text,
+      descrizione: descrizioneController.text,
     );
   }
 

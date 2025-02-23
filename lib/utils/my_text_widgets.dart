@@ -181,3 +181,120 @@ class _MyTextFieldOnlyPositiveNumbersState extends State<MyTextFieldOnlyPositive
     );
   }
 }
+
+class MyTextFieldOnlyPositiveNumbersWithValidation extends StatefulWidget {
+  final TextEditingController controller;
+  final String text;
+  final Color colore;
+  final Function(String) onChanged;
+
+  const MyTextFieldOnlyPositiveNumbersWithValidation({super.key,
+  required this.controller,
+  required this.text,
+  required this.colore,
+  required this.onChanged
+  });
+
+  @override
+  State<MyTextFieldOnlyPositiveNumbersWithValidation> createState() => MyTextFieldOnlyPositiveNumbersWithValidationState();
+}
+
+class MyTextFieldOnlyPositiveNumbersWithValidationState extends State<MyTextFieldOnlyPositiveNumbersWithValidation> {
+
+  bool _hasError = false;
+
+  void setError(bool value) {
+    setState(() {
+      _hasError = value;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      onChanged: (value) {
+        if (_hasError) {
+          setState(() {
+            _hasError = false;
+          });
+        }
+        widget.onChanged(value);
+      },
+      cursorColor: context.onSecondary,
+      keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
+      inputFormatters: [FilteringTextInputFormatter.allow(RegExp("^(0|[1-9][0-9]*)"))],
+      controller: widget.controller,
+      style: TextStyle(
+        fontSize: 18.0,
+        color: widget.colore, 
+        fontWeight: FontWeight.normal
+      ),
+      decoration: InputDecoration(
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: _hasError ? context.error : context.outline), // Colore della linea quando non è in focus
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: _hasError ? context.error : context.onSecondary, width: 2.0), // Colore della linea quando scrivi
+        ),
+        hintText: widget.text,
+        hintStyle: TextStyle(color: widget.colore)
+      ),
+    );
+  }
+}
+
+class MyTextFieldWithValidation extends StatefulWidget {
+  final TextEditingController controller;
+  final String text;
+  final String hintText;
+  final Color colore;
+  final Function(String) onChanged;
+
+
+  const MyTextFieldWithValidation({super.key,
+  required this.controller,
+  required this.text,
+  required this.hintText,
+  required this.colore,
+  required this.onChanged
+  });
+
+  @override
+  State<MyTextFieldWithValidation> createState() => MyTextFieldWithValidationState();
+}
+
+class MyTextFieldWithValidationState extends State<MyTextFieldWithValidation> {
+  bool _hasError = false;
+
+  void setError(bool value) {
+    setState(() {
+      _hasError = value;
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      onChanged:  (value) {
+        if (_hasError) {
+          setState(() {
+            _hasError = false;
+          });
+        }
+        widget.onChanged(value);
+      },
+      decoration: InputDecoration(
+        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.outline),),
+        labelText: widget.text,  // Testo del label
+        labelStyle: TextStyle(color: _hasError ? context.error : context.onSecondary),
+        hintText: widget.hintText,  // Testo di suggerimento
+        hintStyle: TextStyle(color: widget.colore),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4.5),
+        )
+      ),
+      style: TextStyle(color: widget.colore,),
+      maxLines: null,
+      controller: widget.controller
+    );
+  }
+}
