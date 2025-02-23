@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:domus_app/dto/annuncio_dto.dart';
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
+import 'package:domus_app/utils/my_loading.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:domus_app/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +15,8 @@ import 'dart:convert';
 
 import 'package:intl/intl.dart';
 
-const List<String> listaClassiEnergetiche = <String>['Tutte', 'A4', 'A3', 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G'];
-const List<String> listaPiani = <String>['Tutti', 'Terra', 'Intermedio', 'Ultimo'];
+const List<String> listaClassiEnergetiche = <String>['―', 'A4', 'A3', 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G'];
+const List<String> listaPiani = <String>['―', 'Terra', 'Intermedio', 'Ultimo'];
 
 class AgenteCreaAnnuncioPage extends StatefulWidget {
   const AgenteCreaAnnuncioPage({super.key});
@@ -54,13 +55,22 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
 
   bool _isBalconeSelected = false;
 
-  List<bool> selectedVendiAffitta = <bool>[false, false];
+  List<bool> selectedVendiAffitta = <bool>[true, false];
 
   String sceltaClasseEnergetica = listaClassiEnergetiche.first;
   String sceltaPiano = listaPiani.first;
 
   bool isSceltaNumeroPianoVisible = false;
   bool isIndirizzoValidato = false;
+
+  bool isPrezzoOk = true;
+  bool isIndirizzoOk = true;
+  bool isDescrizioneOk = true;
+  bool isSuperficieOk = true;
+  bool isStanzeOk = true;
+  bool isPianoOk = true;
+  bool isNPianoOk = true;
+  bool isClasseEnergeticaOk = true;
 
   final imagePicker = ImagePicker();
   List<XFile>? imageList = [];
@@ -89,6 +99,8 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
 
   @override
   Widget build(BuildContext context) {
+    Color coloreErrore = context.error;
+    Color coloreSfondo = context.primary;
     Color coloreScritte = context.outline;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -277,7 +289,8 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                     SizedBox(width: 7),
                     SizedBox(
                       width: MediaQuery.sizeOf(context).width * 0.40,
-                      child: MyTextFieldOnlyPositiveNumbers(controller: prezzoController, text: "EUR", colore: coloreScritte,)
+                      child: MyTextFieldOnlyPositiveNumbers(controller: prezzoController, text: "EUR", 
+                        colore: coloreScritte)
                     ),
                 ],),
                 Padding(
@@ -302,12 +315,13 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                                   googleAPIKey: "AIzaSyBUkzr-VCtKVyTTfssndaWR5Iy5TyfM0as",
                                   decoration: InputDecoration(
                                     hintText: 'Inserire un indirizzo',
-                                    hintStyle: TextStyle(color: context.onSecondary),
+                                    hintStyle: TextStyle(color: coloreScritte),
                                     labelText: 'Indirizzo',
-                                    labelStyle: TextStyle(color: context.onSecondary),
+                                    labelStyle: TextStyle(color: isIndirizzoOk ? context.onSecondary : coloreErrore),
                                     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.outline),),
-                                    border: OutlineInputBorder()
+                                    border: OutlineInputBorder(),
                                   ),
+                                  style: TextStyle(color: context.onPrimary),
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return 'Please enter some text';
@@ -318,9 +332,9 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                                   maxLines: 1,
                                   overlayContainerBuilder: (child) => Material(
                                     elevation: 1.0,
-                                    color: Colors.white,
+                                    color: coloreSfondo,
                                     borderRadius: BorderRadius.circular(12),
-                                    child: child,
+                                    child: child
                                   ),
                                   fetchCoordinates: true,
                                   onPlaceDetailsWithCoordinatesReceived: (prediction) {
@@ -345,7 +359,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                         SizedBox(width: 10,),
                         Container(
                           decoration: BoxDecoration(
-                            color: isIndirizzoValidato ? Colors.green : Colors.transparent,
+                            color: isIndirizzoValidato ? Colors.green : isIndirizzoOk ? Colors.transparent : coloreErrore,
                             borderRadius: BorderRadius.circular(4),
                             // border: Border.all(color: Colors.black, width: 1),
                             border: Border.all(color: context.onSecondary, width: 1),
@@ -387,30 +401,23 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                   ),
                 // Divider(),
                 // MyLocationsPredictions(location: "Via Dalmazia 13, Napoli (NA), 80124", press: (){}),
-                SizedBox(height: 25,),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(width: 7,),
                     SizedBox(
-                      width: MediaQuery.sizeOf(context).width/1.04,
+                      width: 370,
                       child: TextField(
                         decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.outline),),
                           labelText: 'Descrizione',  // Testo del label
-                          labelStyle: TextStyle(
-                            fontSize: 20,  // Aumenta la dimensione del font
-                            fontWeight: FontWeight.normal,  // Rende il font più bold, opzionale
-                            color: context.onSecondary,  // Colore opzionale
-                          ),
-                          hintText: 'Inserisci una descrizione dell\'immobile',  // Testo di suggerimento
-                          hintStyle: TextStyle(color: context.onSecondary),
+                          labelStyle: TextStyle(color: isDescrizioneOk ? context.onSecondary : coloreErrore,),
+                          hintText: 'Inserire una descrizione dell\'immobile',  // Testo di suggerimento
+                          hintStyle: TextStyle(color: coloreScritte),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          )),
-                          style: TextStyle(
-                            fontSize: 18,  // Aumenta la dimensione del font del testo inserito
-                            color: coloreScritte,  // Colore del testo inserito
-                          ),
+                            borderRadius: BorderRadius.circular(4.5),
+                          )
+                        ),
+                        style: TextStyle(color: coloreScritte,),
                         maxLines: null,
                         controller: descController,
                       )
@@ -587,7 +594,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                     SizedBox(width: 115),
                     SizedBox(
                       width: MediaQuery.sizeOf(context).width * 0.37,
-                      child: MyTextFieldOnlyPositiveNumbers(controller: superficieController, text: "superficie", colore: coloreScritte,)
+                      child: MyTextFieldOnlyPositiveNumbers(controller: superficieController, text: "superficie", colore: isSuperficieOk ? coloreScritte : coloreErrore,)
                     ),
                     Text("m²", style: TextStyle(color: coloreScritte, fontWeight: FontWeight.normal, fontSize: GRANDEZZA_SCRITTE_PICCOLE),)
                 ],),
@@ -599,7 +606,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                     SizedBox(width: 115),
                     SizedBox(
                       width: MediaQuery.sizeOf(context).width * 0.37,
-                      child: MyTextFieldOnlyPositiveNumbers(controller: stanzeController, text: "n. stanze", colore: coloreScritte,)
+                      child: MyTextFieldOnlyPositiveNumbers(controller: stanzeController, text: "n. stanze", colore: isSuperficieOk ? coloreScritte : coloreErrore,)
                     ),
                 ],),
 
@@ -614,7 +621,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                       SizedBox(width: 150.0),
                       DropdownMenu(
                         width: 175,
-                        textStyle: TextStyle(color: coloreScritte),
+                        textStyle: TextStyle(color: isPianoOk ? coloreScritte : coloreErrore),
                         inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: coloreScritte), suffixIconColor: coloreScritte),
                         initialSelection: listaPiani.first,
                         onSelected: (String? value) {
@@ -629,8 +636,9 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                         },
                         dropdownMenuEntries: 
                           listaPiani.map<DropdownMenuEntry<String>>((String value) {
-                            return DropdownMenuEntry<String>(value: value, label: value,);}).toList(),
-                          ),
+                            return DropdownMenuEntry<String>(value: value, label: value, style: MenuItemButton.styleFrom(foregroundColor: coloreScritte));}).toList(),
+                        
+                      ),
                     ],
                   ),
                 ),
@@ -646,7 +654,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                       SizedBox(width: 130.0),
                       SizedBox(
                         width: MediaQuery.sizeOf(context).width * 0.42,
-                        child: MyTextFieldOnlyPositiveNumbers(controller: numeroPianoController, text: "n. piano", colore: coloreScritte,)
+                        child: MyTextFieldOnlyPositiveNumbers(controller: numeroPianoController, text: "n. piano", colore: isNPianoOk ? coloreScritte : coloreErrore,)
                       ),
                       SizedBox(height: 10.0),
                   ],),
@@ -663,7 +671,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                       SizedBox(width: 50.0),
                       DropdownMenu(
                         width: 175,
-                        textStyle: TextStyle(color: coloreScritte),
+                        textStyle: TextStyle(color: isClasseEnergeticaOk ? coloreScritte : coloreErrore),
                         inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: coloreScritte), suffixIconColor: coloreScritte),
                         initialSelection: listaClassiEnergetiche.first,
                         onSelected: (String? value) {
@@ -673,7 +681,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                         },
                         dropdownMenuEntries: 
                           listaClassiEnergetiche.map<DropdownMenuEntry<String>>((String value) {
-                          return DropdownMenuEntry<String>(value: value, label: value,);}).toList(),
+                          return DropdownMenuEntry<String>(value: value, label: value, style: MenuItemButton.styleFrom(foregroundColor: coloreScritte));}).toList(),
                           ),
                     ],
                   ),
@@ -684,8 +692,19 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
             MyElevatedButtonWidget(
               text: "Aggiungi annuncio", 
               onPressed: () async {
-                 AnnuncioDto nuovoAnnuncio = creaAnnuncio();
-                 inviaAnnuncio(nuovoAnnuncio);
+                FocusScope.of(context).requestFocus(FocusNode());
+                if (checkCampiValidi()){
+                  AnnuncioDto nuovoAnnuncio = creaAnnuncio();
+                  inviaAnnuncio(nuovoAnnuncio, context.onPrimary);
+                } else {
+                  showDialog(context: context, builder: (BuildContext context) => MyInfoDialog(
+                                title: "Attenzione", 
+                                bodyText: "Inserire tutti i campi", 
+                                buttonText: "Ok", 
+                                onPressed: (){Navigator.pop(context);}
+                                )
+                              );
+                }
               },
               color: context.tertiary
             ),
@@ -694,6 +713,43 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
         ),
       ),
     );
+  }
+
+  bool checkCampiValidi() {
+    bool isAllOk = true;
+    if (prezzoController.text.isEmpty) {
+      isPrezzoOk = false;
+      isAllOk = false;
+    }
+    if (isIndirizzoValidato == false) {
+      isIndirizzoOk = false;
+      isAllOk = false;
+    }
+    if(descController.text.isEmpty) {
+      isDescrizioneOk = false;
+      isAllOk = false;
+    }
+    if(superficieController.text.isEmpty) {
+      isSuperficieOk = false;
+      isAllOk = false;
+    }
+    if(stanzeController.text.isEmpty){
+      isStanzeOk = false;
+      isAllOk = false;
+    }
+    if(sceltaPiano == "―"){
+      isPianoOk = false;
+      isAllOk = false;
+    }
+    if(sceltaPiano == "Intermedio" && numeroPianoController.text.isEmpty){
+      isNPianoOk = false;
+      isAllOk = false;
+    }
+    if(sceltaClasseEnergetica == "―"){
+      isClasseEnergeticaOk = false;
+      isAllOk = false;
+    }
+    return isAllOk;
   }
 
   Future<void> _onSubmit() async {
@@ -713,19 +769,20 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
     String nStanzeStringa = stanzeController.text;
     int nStanzeInt = int.parse(nStanzeStringa);
 
-    int nPianoInt = 0;
+    int? nPianoInt;
 
     if(sceltaPiano == "Intermedio") {
       String nPianoStringa = numeroPianoController.text;
-      int nPianoInt = int.parse(nPianoStringa);
+      nPianoInt = int.parse(nPianoStringa);
     }
-    DateTime now = DateTime.now(); // Ottieni la data e ora correnti
-    String formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(now);
+    // DateTime now = DateTime.now(); // Ottieni la data e ora correnti
+    // String formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(now);
 
     print(mappeController.text);
 
     //manca il tipo dell'annuncio (n vendita o in affitto)
     return AnnuncioDto(
+      tipo_annuncio: selectedVendiAffitta[0] ? "VENDITA" : "AFFITTO",
       prezzo: prezzoDouble, 
       superficie: superficieInt, 
       numStanze: nStanzeInt, 
@@ -740,45 +797,50 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
       // vicino_trasporti: ,
       classe_energetica: sceltaClasseEnergetica.toUpperCase(),
       piano: sceltaPiano.toUpperCase(),
-      numeropiano: nPianoInt,
-      data_creazione: formattedDate,
-      agente: "Carlo",
+      numero_piano: nPianoInt,
+      // data_creazione: formattedDate,
+      agente: "159cb08f-351f-4d63-8330-822bd55f8721",
       indirizzo: mappeController.text,
-      coordinatex: latitude ?? 0.0,
-      coordinatey: longitude ?? 0.0,
+      latitudine: latitude ?? 0.0,
+      longitudine: longitude ?? 0.0,
       descrizione: descController.text,
     );
   }
 
-  Future<void> inviaAnnuncio(AnnuncioDto nuovoAnnuncioDto) async {
-  final url = Uri.parse('http://10.0.2.2:8080/api/annunci');
+  Future<void> inviaAnnuncio(AnnuncioDto nuovoAnnuncioDto, Color coloreCaricamento) async {
+    
+    LoadingHelper.showLoadingDialog(context, color: coloreCaricamento);
   
-  try {
-    // Invia la richiesta POST con il corpo in formato JSON
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json', // Indica che invii dati in formato JSON
-      },
-      body: json.encode(nuovoAnnuncioDto), // Codifica i dati in formato JSON
-    );
-
-    // Controlla la risposta del server
-    if (response.statusCode == 201) {
-      showDialog(
-        context: context, 
-        builder: (BuildContext context) => MyInfoDialog(
-          title: "Conferma", 
-          bodyText: "Annuncio creato", 
-          buttonText: "Ok", 
-          onPressed: () {Navigator.pop(context);}
-        )
+    try {
+      final url = Uri.parse('http://10.0.2.2:8080/api/annunci');
+      // Invia la richiesta POST con il corpo in formato JSON
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json', // Indica che invii dati in formato JSON
+        },
+        body: json.encode(nuovoAnnuncioDto), // Codifica i dati in formato JSON
       );
-    } else {
-      print('Errore nella creazione dell\'annuncio: ${response.statusCode}, ${response.body}');
+
+      Navigator.pop(context);
+
+      // Controlla la risposta del server
+      if (response.statusCode == 201) {
+        showDialog(
+          context: context, 
+          builder: (BuildContext context) => MyInfoDialog(
+            title: "Conferma", 
+            bodyText: "Annuncio creato", 
+            buttonText: "Ok", 
+            onPressed: () {Navigator.pop(context); Navigator.pushNamedAndRemoveUntil(context, '/ControllorePagineAgente', (r) => false);}
+          )
+        );
+      } else {
+        Navigator.pop(context);
+        print('Errore nella creazione dell\'annuncio: ${response.statusCode}, ${response.body}');
+      }
+    } catch (e) {
+      print('Errore nella richiesta: $e');
     }
-  } catch (e) {
-    print('Errore nella richiesta: $e');
   }
-}
 }

@@ -1,74 +1,71 @@
 //manca il tipo dell'annuncio (in vendita o in affitto) 
 class AnnuncioDto {
-  double prezzo = 0;
-  int superficie = 0;
-  int numStanze = 0;
-  bool garage = false;
-  bool ascensore = false;
-  bool piscina = false;
-  bool arredo = false;
-  bool balcone = false;
-  bool giardino = false;
-  bool vicino_scuole = false;
-  bool vicino_parchi = false;
-  bool vicino_trasporti = false;
-  String classe_energetica = "Tutte";
-  String piano = "Tutti";
-  int numeropiano = 0;
-  String data_creazione = "";
-  String agente = "";
-  String indirizzo = "";
-  double coordinatex = 0;
-  double coordinatey = 0;
-  String descrizione = "";
+  String tipo_annuncio;
+  double prezzo;
+  int superficie;
+  int numStanze;
+  bool garage;
+  bool ascensore;
+  bool piscina;
+  bool arredo;
+  bool balcone;
+  bool giardino;
+  // bool vicino_scuole = false;
+  // bool vicino_parchi = false;
+  // bool vicino_trasporti = false;
+  String classe_energetica;
+  String piano;
+  int? numero_piano;
+  // String data_creazione = "";
+  String agente;
+  String indirizzo;
+  double latitudine;
+  double longitudine;
+  String descrizione;
 
    AnnuncioDto({
-    this.prezzo = 0,
-    this.superficie = 0,
-    this.numStanze = 0,
-    this.garage = false,
-    this.ascensore = false,
-    this.piscina = false,
-    this.arredo = false,
-    this.balcone = false,
-    this.giardino = false,
-    this.vicino_scuole = false,
-    this.vicino_parchi = false,
-    this.vicino_trasporti = false,
-    this.classe_energetica = "Tutte",
-    this.piano = "Tutti",
-    this.numeropiano = 0,
-    this.data_creazione = "",
-    this.agente = "",
-    this.indirizzo = "",
-    this.coordinatex = 0.0,
-    this.coordinatey = 0.0,
-    this.descrizione = "",
+    required this.tipo_annuncio,
+    required this.prezzo,
+    required this.superficie,
+    required this.numStanze,
+    required this.garage,
+    required this.ascensore,
+    required this.piscina,
+    required this.arredo,
+    required this.balcone,
+    required this.giardino,
+    required this.classe_energetica,
+    required this.piano,
+    required this.numero_piano,
+    required this.agente,
+    required this.indirizzo,
+    required this.latitudine,
+    required this.longitudine,
+    required this.descrizione,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'prezzo': prezzo,
-      'superficie': superficie,
-      'numStanze': numStanze,
-      'garage': garage,
-      'ascensore': ascensore,
-      'piscina': piscina,
-      'arredo': arredo,
-      'balcone': balcone,
-      'giardino': giardino,
-      'vicino_scuole': vicino_scuole,
-      'vicino_parchi': vicino_parchi,
-      'vicino_trasporti': vicino_trasporti,
-      'classe_energetica': classe_energetica,
-      'piano': piano,
-      'numeropiano': numeropiano,
-      'data_creazione': data_creazione,
-      'agente': agente,
-      'indirizzo': indirizzo,
-      'coordinatex': coordinatex,
-      'coordinatey': coordinatey,
-      'descrizione': descrizione,
+      "tipo_annuncio": tipo_annuncio,
+      "prezzo": prezzo,
+      "superficie": superficie,
+      "numStanze": numStanze,
+      "garage": garage,
+      "ascensore": ascensore,
+      "piscina": piscina,
+      "arredo": arredo,
+      "balcone": balcone,
+      "giardino": giardino,
+      "classe_energetica": classe_energetica,
+      "piano": piano,
+      "numero_piano": numero_piano,
+      "agente": {
+        "id": agente
+      },
+      "indirizzo": indirizzo,
+      "latitudine": latitudine,
+      "longitudine": longitudine,
+      "descrizione": descrizione
     };
   }
 }

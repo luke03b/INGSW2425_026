@@ -142,11 +142,13 @@ class MyTextFieldOnlyPositiveNumbers extends StatefulWidget {
   final TextEditingController controller;
   final String text;
   final Color colore;
+  final Color? coloreLinea;
 
   const MyTextFieldOnlyPositiveNumbers({super.key,
   required this.controller,
   required this.text,
   required this.colore,
+  this.coloreLinea
   });
 
   @override
@@ -158,7 +160,6 @@ class _MyTextFieldOnlyPositiveNumbersState extends State<MyTextFieldOnlyPositive
   Widget build(BuildContext context) {
     return TextFormField(
       cursorColor: context.onSecondary,
-      // keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
       keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
       inputFormatters: [FilteringTextInputFormatter.allow(RegExp("^(0|[1-9][0-9]*)"))],
       controller: widget.controller,
@@ -169,7 +170,7 @@ class _MyTextFieldOnlyPositiveNumbersState extends State<MyTextFieldOnlyPositive
       ),
       decoration: InputDecoration(
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: context.outline), // Colore della linea quando non è in focus
+          borderSide: BorderSide(color: widget.coloreLinea ?? context.outline), // Colore della linea quando non è in focus
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: context.onSecondary, width: 2.0), // Colore della linea quando scrivi
