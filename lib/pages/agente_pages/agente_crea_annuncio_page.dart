@@ -1,22 +1,23 @@
+import 'dart:async';
 import 'dart:io'; 
+import 'package:domus_app/class_services/annuncio_service.dart';
+import 'package:domus_app/communication_utils/url_builder.dart';
 import 'package:domus_app/dto/annuncio_dto.dart';
+import 'package:domus_app/enum/enumerations.dart';
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_loading.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:domus_app/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:intl/intl.dart';
-
-const List<String> listaClassiEnergetiche = <String>['―', 'A4', 'A3', 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G'];
-const List<String> listaPiani = <String>['―', 'Terra', 'Intermedio', 'Ultimo'];
+List<String> listaClassiEnergetiche = Enumerations.listaClassiEnergetiche;
+List<String> listaPiani = Enumerations.listaPiani;
 
 class AgenteCreaAnnuncioPage extends StatefulWidget {
   const AgenteCreaAnnuncioPage({super.key});
@@ -45,7 +46,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
   final GlobalKey<MyTextFieldOnlyPositiveNumbersWithValidationState> _nPianoKey = GlobalKey<MyTextFieldOnlyPositiveNumbersWithValidationState>();
   final GlobalKey<MyTextFieldOnlyPositiveNumbersWithValidationState> _classeEnergeticaKey = GlobalKey<MyTextFieldOnlyPositiveNumbersWithValidationState>();
 
-  final TextEditingController mappeController = TextEditingController();
+  final TextEditingController indirizzoController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
 
@@ -321,7 +322,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                                     isIndirizzoValidato = false;
                                     isIndirizzoOk = true;
                                   });},
-                                  textEditingController: mappeController,
+                                  textEditingController: indirizzoController,
                                   googleAPIKey: "AIzaSyBUkzr-VCtKVyTTfssndaWR5Iy5TyfM0as",
                                   decoration: InputDecoration(
                                     hintText: 'Inserire un indirizzo',
@@ -354,7 +355,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                                     print('new coordinates $latitude , $longitude');
                                   },
                                   onSuggestionClicked: (Prediction prediction) =>
-                                      mappeController.text = prediction.description!,
+                                      indirizzoController.text = prediction.description!,
                                   minInputLength: 3,
                                 ),
                               ),
@@ -729,13 +730,40 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
             ),
             SizedBox(height: 20,),
             MyElevatedButtonWidget(
+              color: context.tertiary,
               text: "Aggiungi annuncio", 
               onPressed: () async {
                 FocusScope.of(context).requestFocus(FocusNode());
                 if(_validateFields()){
-                // if (checkCampiValidi()){
-                  AnnuncioDto nuovoAnnuncio = creaAnnuncio();
-                  inviaAnnuncio(nuovoAnnuncio, context.onPrimary);
+                  LoadingHelper.showLoadingDialog(context, color: context.secondary);
+                  try{ 
+                    int statusCode = await AnnuncioService.creaAnnuncio(selectedVendiAffitta[0] ? "VENDITA" : "AFFITTO", prezzoController.text, superficieController.text, indirizzoController.text,
+                      descrizioneController.text, _isGarageSelected, _isAscensoreSelected, _isPiscinaSelected, _isArredatoSelected, _isBalconeSelected, _isGiardinoSelected, stanzeController.text,
+                      numeroPianoController.text, sceltaClasseEnergetica, sceltaPiano, latitude ?? 0.0, longitude ?? 0.0);
+                    Navigator.pop(context);
+                    controllaStatusCode(statusCode, context);
+                  } on TimeoutException {
+                    Navigator.pop(context);
+                    showDialog(
+                      context: context, 
+                      builder: (BuildContext context) => MyInfoDialog(
+                        title: "Connessione non riuscita", 
+                        bodyText: "Annuncio non creato, la connessione con i nostri server non è stata stabilita correttamente.", 
+                        buttonText: "Ok", 
+                        onPressed: () {Navigator.pop(context);}
+                      )
+                    );
+                  } catch (e) {
+                    showDialog(
+                      context: context, 
+                      builder: (BuildContext context) => MyInfoDialog(
+                        title: "Errore",
+                        bodyText: "Annuncio non creato. Errore che non riguarda la connessione con i nostri server e l'inserimento errato dei campi.", 
+                        buttonText: "Ok", 
+                        onPressed: () {Navigator.pop(context);}
+                      )
+                    );
+                  }
                 } else {
                   showDialog(context: context, builder: (BuildContext context) => MyInfoDialog(
                                 title: "Attenzione", 
@@ -745,14 +773,37 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                                 )
                               );
                 }
-              },
-              color: context.tertiary
-            ),
+                }
+              ),
             SizedBox(height: 30,),
           ],
         ),
       ),
     );
+  }
+
+  void controllaStatusCode(int statusCode, BuildContext context) {
+    if (statusCode == 201) {
+      showDialog(
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(
+          title: "Conferma", 
+          bodyText: "Annuncio creato", 
+          buttonText: "Ok", 
+          onPressed: () {Navigator.pop(context); Navigator.pushNamedAndRemoveUntil(context, '/ControllorePagineAgente', (r) => false);}
+        )
+      );
+    } else {
+      showDialog(
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(
+          title: "Errore", 
+          bodyText: "Annuncio non creato, controllare i campi e riprovare.", 
+          buttonText: "Ok", 
+          onPressed: () {Navigator.pop(context);}
+        )
+      );
+    }
   }
 
   bool _validateFields(){
@@ -842,91 +893,6 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
     if (!_formKey.currentState!.validate()) {
       setState(() => _autovalidateMode = AutovalidateMode.always);
       return;
-    }
-  }
-
-  AnnuncioDto creaAnnuncio(){
-    String prezzoStringa = prezzoController.text;
-    double prezzoDouble = double.parse(prezzoStringa);
-
-    String superficieStringa = superficieController.text;
-    int superficieInt = int.parse(superficieStringa);
-
-    String nStanzeStringa = stanzeController.text;
-    int nStanzeInt = int.parse(nStanzeStringa);
-
-    int? nPianoInt;
-
-    if(sceltaPiano == "Intermedio") {
-      String nPianoStringa = numeroPianoController.text;
-      nPianoInt = int.parse(nPianoStringa);
-    }
-    // DateTime now = DateTime.now(); // Ottieni la data e ora correnti
-    // String formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(now);
-
-    print(mappeController.text);
-
-    //manca il tipo dell'annuncio (n vendita o in affitto)
-    return AnnuncioDto(
-      tipo_annuncio: selectedVendiAffitta[0] ? "VENDITA" : "AFFITTO",
-      prezzo: prezzoDouble, 
-      superficie: superficieInt, 
-      numStanze: nStanzeInt, 
-      garage: _isGarageSelected, 
-      ascensore: _isAscensoreSelected, 
-      piscina: _isPiscinaSelected, 
-      arredo: _isArredatoSelected,
-      balcone: _isBalconeSelected,
-      giardino: _isGiardinoSelected,
-      // vicino_scuole: ,
-      // vicino_parchi: ,
-      // vicino_trasporti: ,
-      classe_energetica: sceltaClasseEnergetica.toUpperCase(),
-      piano: sceltaPiano.toUpperCase(),
-      numero_piano: nPianoInt,
-      // data_creazione: formattedDate,
-      agente: "159cb08f-351f-4d63-8330-822bd55f8721",
-      indirizzo: mappeController.text,
-      latitudine: latitude ?? 0.0,
-      longitudine: longitude ?? 0.0,
-      descrizione: descrizioneController.text,
-    );
-  }
-
-  Future<void> inviaAnnuncio(AnnuncioDto nuovoAnnuncioDto, Color coloreCaricamento) async {
-    
-    LoadingHelper.showLoadingDialog(context, color: coloreCaricamento);
-  
-    try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/annunci');
-      // Invia la richiesta POST con il corpo in formato JSON
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json', // Indica che invii dati in formato JSON
-        },
-        body: json.encode(nuovoAnnuncioDto), // Codifica i dati in formato JSON
-      );
-
-      Navigator.pop(context);
-
-      // Controlla la risposta del server
-      if (response.statusCode == 201) {
-        showDialog(
-          context: context, 
-          builder: (BuildContext context) => MyInfoDialog(
-            title: "Conferma", 
-            bodyText: "Annuncio creato", 
-            buttonText: "Ok", 
-            onPressed: () {Navigator.pop(context); Navigator.pushNamedAndRemoveUntil(context, '/ControllorePagineAgente', (r) => false);}
-          )
-        );
-      } else {
-        Navigator.pop(context);
-        print('Errore nella creazione dell\'annuncio: ${response.statusCode}, ${response.body}');
-      }
-    } catch (e) {
-      print('Errore nella richiesta: $e');
     }
   }
 }

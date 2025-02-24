@@ -1,6 +1,7 @@
-//manca il tipo dell'annuncio (in vendita o in affitto) 
-class AnnuncioDto {
-  String tipo_annuncio;
+import 'package:domus_app/dto/dto.dart';
+
+class AnnuncioDto implements DTO{
+  String tipoAnnuncio;
   double prezzo;
   int superficie;
   int numStanze;
@@ -10,13 +11,9 @@ class AnnuncioDto {
   bool arredo;
   bool balcone;
   bool giardino;
-  // bool vicino_scuole = false;
-  // bool vicino_parchi = false;
-  // bool vicino_trasporti = false;
-  String classe_energetica;
+  String classeEnergetica;
   String piano;
-  int? numero_piano;
-  // String data_creazione = "";
+  int? numeroPiano;
   String agente;
   String indirizzo;
   double latitudine;
@@ -24,7 +21,7 @@ class AnnuncioDto {
   String descrizione;
 
    AnnuncioDto({
-    required this.tipo_annuncio,
+    required this.tipoAnnuncio,
     required this.prezzo,
     required this.superficie,
     required this.numStanze,
@@ -34,9 +31,9 @@ class AnnuncioDto {
     required this.arredo,
     required this.balcone,
     required this.giardino,
-    required this.classe_energetica,
+    required this.classeEnergetica,
     required this.piano,
-    required this.numero_piano,
+    required this.numeroPiano,
     required this.agente,
     required this.indirizzo,
     required this.latitudine,
@@ -44,9 +41,10 @@ class AnnuncioDto {
     required this.descrizione,
   });
 
+  @override
   Map<String, dynamic> toJson() {
     return {
-      "tipo_annuncio": tipo_annuncio,
+      "tipo_annuncio": tipoAnnuncio,
       "prezzo": prezzo,
       "superficie": superficie,
       "numStanze": numStanze,
@@ -56,9 +54,9 @@ class AnnuncioDto {
       "arredo": arredo,
       "balcone": balcone,
       "giardino": giardino,
-      "classe_energetica": classe_energetica,
+      "classe_energetica": classeEnergetica,
       "piano": piano,
-      "numero_piano": numero_piano,
+      "numero_piano": numeroPiano,
       "agente": {
         "id": agente
       },
@@ -67,5 +65,29 @@ class AnnuncioDto {
       "longitudine": longitudine,
       "descrizione": descrizione
     };
+  }
+
+  @override
+  AnnuncioDto fromJson(Map<String, dynamic> json) {
+    return AnnuncioDto(
+      tipoAnnuncio: json['tipo_annuncio'],
+      prezzo: json['prezzo'],
+      superficie: json['superficie'],
+      numStanze: json['numStanze'],
+      garage: json['garage'],
+      ascensore: json['ascensore'],
+      piscina: json['piscina'],
+      arredo: json['arredo'],
+      balcone: json['balcone'],
+      giardino: json['giardino'],
+      classeEnergetica: json['classe_energetica'],
+      piano: json['piano'],
+      numeroPiano: json['numero_piano'],
+      agente: json['agente']['id'],
+      indirizzo: json['indirizzo'],
+      latitudine: json['latitudine'],
+      longitudine: json['longitudine'],
+      descrizione: json['descrizione'],
+    );
   }
 }

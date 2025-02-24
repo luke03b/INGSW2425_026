@@ -63,7 +63,6 @@ class _MyAppState extends State<MyApp> {
       themeMode: themeProvider.themeMode,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      // home: LoginPage(),
       home: InitialPage(),
       routes: {
         '/LoginPage': (context) => LoginPage(),
