@@ -1,6 +1,8 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:domus_app/class_services/utente_service.dart';
+import 'package:domus_app/costants/costants.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,7 +38,7 @@ class AWSServices {
     debugPrint('User is: ');
     debugPrint(group);
 
-    if(group == 'admin'){
+    if(group == TipoRuolo.ADMIN){
       return true;
     }
 
@@ -97,7 +99,7 @@ class AWSServices {
     }
   }
 
-  Future<bool> register(name, surname, email, password, userGroup) async{
+  Future<bool> register(name, surname, email, password, userGroup, String? agenziaImmobiliare) async{
     debugPrint('Registering User...');
     final userAttributes = [
       AttributeArg(name: 'name', value: name),
@@ -107,6 +109,7 @@ class AWSServices {
 
     try {
       var data = await userPool.signUp(email, password, userAttributes: userAttributes);
+      int statuscode = await UtenteService.creaUtente(data.userSub!, userGroup, agenziaImmobiliare);
       return true;
     } catch (e) {
       safePrint(e);
@@ -217,6 +220,19 @@ class AWSServices {
     //recupera la mail
     String? gruppo = payload['custom:group'];
     return gruppo;
+  }
+
+  Future<String?> recuperaSubUtenteLoggato() async {
+    //recupera il token dalla memoria
+    final prefs = await SharedPreferences.getInstance();
+    final idToken = prefs.getString('userToken');
+
+    //decodifica il token
+    Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
+
+    //recupera la mail
+    String? sub = payload['sub'];
+    return sub;
   }
 
   Future<bool> cambiaPasswordUtenteLoggato(email, oldPassword, newPassword) async {

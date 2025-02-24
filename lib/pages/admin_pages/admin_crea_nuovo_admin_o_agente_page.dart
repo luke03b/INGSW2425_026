@@ -1,3 +1,6 @@
+import 'package:domus_app/class_services/utente_service.dart';
+import 'package:domus_app/costants/costants.dart';
+import 'package:domus_app/dto/utente_dto.dart';
 import 'package:domus_app/services/aws_cognito.dart';
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
@@ -24,7 +27,7 @@ class _AdminCreaNuovoAdminPageState extends State<AdminCreaNuovoAdminPage> {
   TextEditingController newAdminNomeController = TextEditingController();
   TextEditingController newAdminCognomeController = TextEditingController();
 
-  register(String nome, String cognome, String email, String password, String userGroup) => AWSServices().register(nome, cognome, email, password, userGroup);
+  register(String nome, String cognome, String email, String password, String userGroup, String? agenziaImmobiliare) => AWSServices().register(nome, cognome, email, password, userGroup, agenziaImmobiliare);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +42,7 @@ class _AdminCreaNuovoAdminPageState extends State<AdminCreaNuovoAdminPage> {
         centerTitle: true,
         backgroundColor: context.primary,
         elevation: 5,
-        shadowColor: Colors.black,
+        shadowColor: context.shadow,
       ),
       body: SafeArea(
         child: Center(
@@ -77,13 +80,13 @@ class _AdminCreaNuovoAdminPageState extends State<AdminCreaNuovoAdminPage> {
                   showDialog(
                     barrierDismissible: false,
                     context: context, 
-                    builder: (BuildContext context) => MyOptionsDialog(title: "Attenzione", bodyText: "Sei sicuro di voler creare un nuovo admin?", rightButtonText: "Si", rightButtonColor: context.tertiary, onPressRightButton: () async {await aggiungiAdmin(context);}, leftButtonText: "No", leftButtonColor: Colors.grey, onPressLeftButton: (){Navigator.pop(context);})
+                    builder: (BuildContext context) => MyOptionsDialog(title: "Attenzione", bodyText: "Sei sicuro di voler creare un nuovo admin?", rightButtonText: "Si", rightButtonColor: context.tertiary, onPressRightButton: () async {await aggiungiAdmin(context);}, leftButtonText: "No", leftButtonColor: context.secondary, onPressLeftButton: (){Navigator.pop(context);})
                   );
                 } else {
                   showDialog(
                     barrierDismissible: false,
                     context: context, 
-                    builder: (BuildContext context) => MyOptionsDialog(title: "Attenzione", bodyText: "Sei sicuro di voler creare un nuovo agente?", rightButtonText: "Si", rightButtonColor: context.tertiary, onPressRightButton: () async {await aggiungiAgente(context);}, leftButtonText: "No", leftButtonColor: Colors.grey, onPressLeftButton: (){Navigator.pop(context);})
+                    builder: (BuildContext context) => MyOptionsDialog(title: "Attenzione", bodyText: "Sei sicuro di voler creare un nuovo agente?", rightButtonText: "Si", rightButtonColor: context.tertiary, onPressRightButton: () async {await aggiungiAgente(context);}, leftButtonText: "No", leftButtonColor: context.secondary, onPressLeftButton: (){Navigator.pop(context);})
                   );
                 }
               }, color: context.tertiary,),
@@ -96,7 +99,9 @@ class _AdminCreaNuovoAdminPageState extends State<AdminCreaNuovoAdminPage> {
   }
 
   Future<void> aggiungiAdmin(BuildContext context) async {
-    Future<bool> isAllOk = register(newAdminNomeController.text, newAdminCognomeController.text, newAdminMailController.text, newAdminPasswordController.text, 'admin');
+    String? idAgenziaUtenteLoggato = await recuperaAgenzia();
+
+    Future<bool> isAllOk = register(newAdminNomeController.text, newAdminCognomeController.text, newAdminMailController.text, newAdminPasswordController.text, TipoRuolo.ADMIN, idAgenziaUtenteLoggato);
     if (await isAllOk) {
       showDialog(
         barrierDismissible: false,
@@ -112,8 +117,19 @@ class _AdminCreaNuovoAdminPageState extends State<AdminCreaNuovoAdminPage> {
     }
   }
 
+  Future<String?> recuperaAgenzia() async {
+    String? subUtenteLoggato = await AWSServices().recuperaSubUtenteLoggato();
+    String? idAgenziaUtenteLoggato;
+    if (subUtenteLoggato != null){
+      idAgenziaUtenteLoggato = await UtenteService.recuperaAgenziaDaUtenteSub(subUtenteLoggato);
+    }
+    return idAgenziaUtenteLoggato;
+  }
+
   Future<void> aggiungiAgente(BuildContext context) async {
-    Future<bool> isAllOk = register(newAdminNomeController.text, newAdminCognomeController.text, newAdminMailController.text, newAdminPasswordController.text, 'agente');
+    String? idAgenziaUtenteLoggato = await recuperaAgenzia();
+    
+    Future<bool> isAllOk = register(newAdminNomeController.text, newAdminCognomeController.text, newAdminMailController.text, newAdminPasswordController.text, TipoRuolo.AGENTE, idAgenziaUtenteLoggato);
     if (await isAllOk) {
       showDialog(
         barrierDismissible: false,

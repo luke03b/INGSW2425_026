@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:io'; 
 import 'package:domus_app/class_services/annuncio_service.dart';
-import 'package:domus_app/enum/enumerations.dart';
+import 'package:domus_app/class_services/utente_service.dart';
+import 'package:domus_app/costants/enumerations.dart';
+import 'package:domus_app/dto/utente_dto.dart';
+import 'package:domus_app/services/aws_cognito.dart';
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_loading.dart';
@@ -732,10 +735,12 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                 FocusScope.of(context).requestFocus(FocusNode());
                 if(_validateFields()){
                   LoadingHelper.showLoadingDialog(context, color: context.secondary);
-                  try{ 
+                  try{
+                    String? idUtenteLoggato = await recuperaIdUtenteLoggato();
+                    print(idUtenteLoggato);
                     int statusCode = await AnnuncioService.creaAnnuncio(selectedVendiAffitta[0] ? "VENDITA" : "AFFITTO", prezzoController.text, superficieController.text, indirizzoController.text,
                       descrizioneController.text, _isGarageSelected, _isAscensoreSelected, _isPiscinaSelected, _isArredatoSelected, _isBalconeSelected, _isGiardinoSelected, stanzeController.text,
-                      numeroPianoController.text, sceltaClasseEnergetica, sceltaPiano, latitude ?? 0.0, longitude ?? 0.0);
+                      numeroPianoController.text, sceltaClasseEnergetica, sceltaPiano, latitude ?? 0.0, longitude ?? 0.0, idUtenteLoggato!);
                     Navigator.pop(context);
                     controllaStatusCode(statusCode, context);
                   } on TimeoutException {
@@ -750,6 +755,8 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                       )
                     );
                   } catch (e) {
+                    print(e);
+                    Navigator.pop(context);
                     showDialog(
                       context: context, 
                       builder: (BuildContext context) => MyInfoDialog(
@@ -776,6 +783,14 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
         ),
       ),
     );
+  }
+
+  Future<String?> recuperaIdUtenteLoggato() async {
+    String? sub = await AWSServices().recuperaSubUtenteLoggato();
+    print(sub!);
+    UtenteDto utenteLoggato = await UtenteService.recuperaUtenteBySub(sub);
+    print(utenteLoggato.id);
+    return utenteLoggato.id;
   }
 
   void controllaStatusCode(int statusCode, BuildContext context) {
@@ -845,49 +860,5 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
     }
 
     return allValid;
-  }
-
-  bool checkCampiValidi() {
-    bool isAllOk = true;
-    if (prezzoController.text.isEmpty) {
-      isPrezzoOk = false;
-      isAllOk = false;
-    }
-    if (isIndirizzoValidato == false) {
-      isIndirizzoOk = false;
-      isAllOk = false;
-    }
-    if(descrizioneController.text.isEmpty) {
-      isDescrizioneOk = false;
-      isAllOk = false;
-    }
-    if(superficieController.text.isEmpty) {
-      isSuperficieOk = false;
-      isAllOk = false;
-    }
-    if(stanzeController.text.isEmpty){
-      isStanzeOk = false;
-      isAllOk = false;
-    }
-    if(sceltaPiano == "―"){
-      isPianoOk = false;
-      isAllOk = false;
-    }
-    if(sceltaPiano == "Intermedio" && numeroPianoController.text.isEmpty){
-      isNPianoOk = false;
-      isAllOk = false;
-    }
-    if(sceltaClasseEnergetica == "―"){
-      isClasseEnergeticaOk = false;
-      isAllOk = false;
-    }
-    return isAllOk;
-  }
-
-  Future<void> _onSubmit() async {
-    if (!_formKey.currentState!.validate()) {
-      setState(() => _autovalidateMode = AutovalidateMode.always);
-      return;
-    }
   }
 }

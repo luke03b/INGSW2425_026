@@ -1,18 +1,21 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:domus_app/class_services/utente_service.dart';
 import 'package:domus_app/communication_utils/url_builder.dart';
 import 'package:domus_app/dto/annuncio_dto.dart';
+import 'package:domus_app/dto/utente_dto.dart';
+import 'package:domus_app/services/aws_cognito.dart';
 import 'package:http/http.dart' as http;
 
 class AnnuncioService {
   static Future<int> creaAnnuncio(String tipoAnnuncio, String prezzo, String superficie, String indirizzo,
     String descrizione, bool isGarageSelected, bool isAscensoreSelected, bool isPiscinaSelected,
     bool isArredatoSelected, bool isBalconeSelected, bool isGiardinoSelected, String stanze, String numeroPiano,
-    String sceltaClasseEnergetica, String sceltaPiano, double latitudine, double longitudine) async {
+    String sceltaClasseEnergetica, String sceltaPiano, double latitudine, double longitudine, String idUtente) async {
 
     AnnuncioDto nuovoAnnuncio = creaAnnuncioDto(tipoAnnuncio, prezzo, superficie, indirizzo, descrizione, isGarageSelected,
       isAscensoreSelected, isPiscinaSelected, isArredatoSelected, isBalconeSelected, isGiardinoSelected, stanze, numeroPiano,
-      sceltaClasseEnergetica, sceltaPiano, latitudine, longitudine);
+      sceltaClasseEnergetica, sceltaPiano, latitudine, longitudine, idUtente);
 
       try {
         return await inviaAnnuncio(nuovoAnnuncio);
@@ -43,7 +46,7 @@ class AnnuncioService {
   static AnnuncioDto creaAnnuncioDto(String tipoAnnuncio, String prezzo, String superficie, String indirizzo,
     String descrizione, bool isGarageSelected, bool isAscensoreSelected, bool isPiscinaSelected,
     bool isArredatoSelected, bool isBalconeSelected, bool isGiardinoSelected, String stanze, String numeroPiano,
-    String sceltaClasseEnergetica, String sceltaPiano, double latitudine, double longitudine){
+    String sceltaClasseEnergetica, String sceltaPiano, double latitudine, double longitudine, String idUtente){
 
     String prezzoStringa = prezzo;
     double prezzoDouble = double.parse(prezzoStringa);
@@ -61,6 +64,7 @@ class AnnuncioService {
       nPianoInt = int.parse(nPianoStringa);
     }
 
+
     return AnnuncioDto(
       tipoAnnuncio: tipoAnnuncio.toUpperCase(),
       prezzo: prezzoDouble, 
@@ -75,11 +79,53 @@ class AnnuncioService {
       classeEnergetica: sceltaClasseEnergetica.toUpperCase(),
       piano: sceltaPiano.toUpperCase(),
       numeroPiano: nPianoInt,
-      agente: "159cb08f-351f-4d63-8330-822bd55f8721",
+      agente: idUtente,
       indirizzo: indirizzo,
       latitudine: latitudine,
       longitudine: longitudine,
       descrizione: descrizione,
     );
+  }
+
+  static Future<http.Response> chiamataHTTPrecuperaAnnunciByAgenteSub(String sub) async {
+    final url = Urlbuilder.createUrl(Urlbuilder.LOCALHOST_ANDROID, Urlbuilder.PORTA_SPRINGBOOT, Urlbuilder.ENDOPOINT_ANNUNCI_AGENTE, queryParams: {'sub': sub});
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    ).timeout(
+      const Duration(seconds: 30),
+      onTimeout: () {
+        throw TimeoutException("Il server non risponde.");
+      },
+    );
+    
+    return response;
+  }
+
+  static Future<List<AnnuncioDto>> recuperaAnnunciByAgenteSub(String sub) async {
+    try{
+      http.Response response = await chiamataHTTPrecuperaAnnunciByAgenteSub(sub);
+      
+      if(response.statusCode == 200){
+        List<dynamic> data = json.decode(response.body);
+
+        List<AnnuncioDto> annunci = data.map((item) => AnnuncioDto.fromJson(item)).toList();
+        return annunci;        
+      }
+      else{
+        throw Exception("Errore nel recupero degli annunci dell'agente");
+      }
+
+    } on TimeoutException {
+      throw Exception("Errore nel recupero dell'utente.");
+    }
+  }
+
+  static Future<List<AnnuncioDto>> recuperaAnnunciByAgenteLoggato() async{
+    String? sub = await AWSServices().recuperaSubUtenteLoggato();
+    return recuperaAnnunciByAgenteSub(sub!);
   }
 }

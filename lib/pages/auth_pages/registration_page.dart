@@ -1,3 +1,4 @@
+import 'package:domus_app/costants/costants.dart';
 import 'package:domus_app/services/aws_cognito.dart';
 import 'package:domus_app/theme/theme_provider.dart';
 import 'package:domus_app/theme/ui_constants.dart';
@@ -22,7 +23,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   TextEditingController nomeController = TextEditingController();
   TextEditingController cognomeController = TextEditingController();
 
-  register(String nome, String cognome, String email, String password, String userGroup) => AWSServices().register(nome, cognome, email, password, userGroup);
+  register(String nome, String cognome, String email, String password, String userGroup) => AWSServices().register(nome, cognome, email, password, userGroup, null);
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +102,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   }
 
   Future<void> registraETornaAlLogin(BuildContext context) async {
-    Future<bool> isAllOk = register(nomeController.text, cognomeController.text, mailController.text, passwordController.text, 'cliente');
+    Future<bool> isAllOk = register(nomeController.text, cognomeController.text, mailController.text, passwordController.text, TipoRuolo.CLIENTE);
     if (await isAllOk) {
       showDialog(
         barrierDismissible: false,

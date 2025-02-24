@@ -1,3 +1,4 @@
+import 'package:domus_app/costants/costants.dart';
 import 'package:domus_app/pages/admin_pages/admin_crea_nuovo_admin_o_agente_page.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_eliminazione_account_page.dart';
 import 'package:domus_app/pages/shared_pages/cambia_password_page.dart';
@@ -120,7 +121,7 @@ class _ProfiloPageState extends State<ProfiloPage> {
                       ),
 
           Visibility(
-            visible: gruppoUtenteLoggato == "admin",
+            visible: gruppoUtenteLoggato == TipoRuolo.ADMIN,
             child: GestureDetector(
               onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => AdminCreaNuovoAdminPage(isNewUserAdmin: true,)));},
               child: Card(
@@ -141,7 +142,7 @@ class _ProfiloPageState extends State<ProfiloPage> {
           ),
 
           Visibility(
-            visible: gruppoUtenteLoggato == "agente" || gruppoUtenteLoggato == "admin",
+            visible: gruppoUtenteLoggato == TipoRuolo.AGENTE || gruppoUtenteLoggato == TipoRuolo.ADMIN,
             child: GestureDetector(
               onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => AdminCreaNuovoAdminPage(isNewUserAdmin: false,)));},
               child: Card(
@@ -203,7 +204,7 @@ class _ProfiloPageState extends State<ProfiloPage> {
           ),
 
           Visibility(
-            visible: gruppoUtenteLoggato == "cliente",
+            visible: gruppoUtenteLoggato == TipoRuolo.CLIENTE,
             child: GestureDetector(
               onTap: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteEliminazioneAccountPage(emailUtente: mailUtenteLoggato,)));

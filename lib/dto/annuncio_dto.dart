@@ -19,6 +19,9 @@ class AnnuncioDto implements DTO{
   double latitudine;
   double longitudine;
   String descrizione;
+  bool? vicinoParchi;
+  bool? vicinoScuole;
+  bool? vicinoTrasporti;
 
    AnnuncioDto({
     required this.tipoAnnuncio,
@@ -38,7 +41,11 @@ class AnnuncioDto implements DTO{
     required this.indirizzo,
     required this.latitudine,
     required this.longitudine,
-    required this.descrizione,
+    required this.descrizione, 
+    this.vicinoScuole,
+    this.vicinoParchi,
+    this.vicinoTrasporti
+
   });
 
   @override
@@ -63,12 +70,14 @@ class AnnuncioDto implements DTO{
       "indirizzo": indirizzo,
       "latitudine": latitudine,
       "longitudine": longitudine,
-      "descrizione": descrizione
+      "descrizione": descrizione,
+      "vicino_scuole": vicinoScuole,
+      "vicino_parchi": vicinoParchi,
+      "vicino_trasporti": vicinoTrasporti
     };
   }
 
-  @override
-  AnnuncioDto fromJson(Map<String, dynamic> json) {
+  static AnnuncioDto fromJson(Map<String, dynamic> json) {
     return AnnuncioDto(
       tipoAnnuncio: json['tipo_annuncio'],
       prezzo: json['prezzo'],
@@ -88,6 +97,9 @@ class AnnuncioDto implements DTO{
       latitudine: json['latitudine'],
       longitudine: json['longitudine'],
       descrizione: json['descrizione'],
+      vicinoScuole: json['vicino_scuole'],
+      vicinoParchi: json['vicino_parchi'],
+      vicinoTrasporti: json['vicino_trasporti']
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:domus_app/costants/costants.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_controllore_pagine.dart';
 import 'package:domus_app/pages/agente_pages/agente_controllore_pagine.dart';
 import 'package:domus_app/pages/auth_pages/login_page.dart';
@@ -35,7 +36,7 @@ class _InitialPageState extends State<InitialPage> {
               } else if (adminSnapshot.hasError){
                 return Scaffold(body: Center(child: Text('Errore durante il caricamento della pagina'),),);
               } else {
-                if (userGroup == 'admin' || userGroup == "agente") {
+                if (userGroup == TipoRuolo.ADMIN || userGroup == TipoRuolo.AGENTE) {
                   return ControllorePagineAgente();
                 }
                 return ControllorePagine();

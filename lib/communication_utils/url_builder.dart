@@ -3,6 +3,8 @@ class Urlbuilder {
   static final String LOCALHOST_WINDOWS = "localhost";
   static final String PORTA_SPRINGBOOT = "8080";
   static final String ENDPOINT_ANNUNCI = "api/annunci";
+  static final String ENDOPOINT_UTENTI = "api/users";
+  static final String ENDOPOINT_ANNUNCI_AGENTE = "api/annunci/agente";
   static final String _url = "http://";
 
   static Uri createUrl(String hostName, String port, String path, {Map<String, String>? queryParams}) {

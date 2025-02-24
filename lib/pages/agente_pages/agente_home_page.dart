@@ -1,6 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:domus_app/class_services/annuncio_service.dart';
+import 'package:domus_app/class_services/utente_service.dart';
+import 'package:domus_app/dto/annuncio_dto.dart';
 import 'package:domus_app/pages/agente_pages/agente_annuncio_page.dart';
 import 'package:domus_app/pages/agente_pages/agente_crea_annuncio_page.dart';
+import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:flutter/material.dart';
@@ -13,12 +17,30 @@ class AgenteHomePage extends StatefulWidget {
 }
 
 class _AgenteHomePageState extends State<AgenteHomePage> {
+  List<AnnuncioDto> annunciList = [];
   static const double GRANDEZZA_SCRITTE = 23;
   static const double GRANDEZZA_ICONE = 25;
   static const double GRANDEZZA_SCRITTE_PICCOLE = 18;
   static const double GRANDEZZA_ICONE_PICCOLE = 20;
   int _currentSliderIndex = 0;
   List<bool> selectedOffertePrenotazioni = <bool>[false, false];
+
+  Future<void> getAnnunci() async {
+    try {
+        List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciByAgenteLoggato();
+      setState(() {
+        annunciList = data;
+      });
+    } catch (error) {
+      print('cacca');
+    }
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    getAnnunci();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -183,13 +205,13 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
     ];
     
     return CarouselSlider(
-      items: listaCase.asMap().entries.map((entry) {
+      items: annunciList.asMap().entries.map((entry) {
         int indice = entry.key;
-        Map<String, dynamic> casaCorrente = entry.value;
-        double scaleFactor = indice == _currentSliderIndex ? 1.0 : 1.0;
+        AnnuncioDto annuncioCorrente = entry.value;
+        double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.8;
         return GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPage(casaSelezionata: casaCorrente)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPage(casaSelezionata: annuncioCorrente)));
           },
           child: Container(
             width: MediaQuery.of(context).size.width,
@@ -198,21 +220,20 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
               color: context.primaryContainer,
               borderRadius: BorderRadius.circular(10),
               shape: BoxShape.rectangle,
-              boxShadow: [BoxShadow(color: context.shadow.withOpacity(0.2),
-                spreadRadius: 5,
-                blurRadius: 15,
-                offset: Offset(0, 10),)],
             ),
             child: Column(
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
                   child: SizedBox(
-                    child: Image.asset(casaCorrente['image1']))),
+                    // child: Image.asset(casaCorrente['image1']))),
+                    child: Image.asset('lib/assets/casa3_1_placeholder.png'))),
                 Row(
                   children: [
-                    Expanded(child: Image.asset(casaCorrente['image2'])),
-                    Expanded(child: Image.asset(casaCorrente['image3'])),
+                    Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
+                    Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
+                    // Expanded(child: Image.asset(casaCorrente['image2'])),
+                    // Expanded(child: Image.asset(casaCorrente['image3'])),
                   ],
                 ),
                 SizedBox(
@@ -222,7 +243,7 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(casaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: context.outline)),
+                    Text(FormatStrings.formatNumber(annuncioCorrente.prezzo), style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: context.outline)),
                     Text(" EUR", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: context.outline)),
                   ],
                 ),
@@ -231,7 +252,15 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     Icon(Icons.location_on, size: scaleFactor * GRANDEZZA_ICONE, color: context.outline,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(casaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline)),
+                    Expanded(
+                        child: FittedBox(
+                          alignment: Alignment.centerLeft,
+                          fit: BoxFit.scaleDown,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(annuncioCorrente.indirizzo, style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline),))),
+                      ),
+                    SizedBox(width: MediaQuery.of(context).size.width/45,),
                   ],
                 ),
               ],

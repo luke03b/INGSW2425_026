@@ -1,3 +1,4 @@
+import 'package:domus_app/costants/costants.dart';
 import 'package:domus_app/services/aws_cognito.dart';
 import 'package:domus_app/theme/theme_provider.dart';
 import 'package:domus_app/theme/ui_constants.dart';
@@ -158,10 +159,10 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
     
-    if (userGroup == 'admin' || userGroup == 'agente'){
+    if (userGroup == TipoRuolo.ADMIN || userGroup == TipoRuolo.AGENTE){
       debugPrint('Admin action or Agente action');
       Navigator.pushNamedAndRemoveUntil(context, '/ControllorePagineAgente', (r) => false);
-    } else if (userGroup == 'cliente') {
+    } else if (userGroup == TipoRuolo.CLIENTE) {
       debugPrint('Cliente action');
       Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (r) => false);
     } else {
