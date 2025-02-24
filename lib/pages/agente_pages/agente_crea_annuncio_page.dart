@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:io'; 
 import 'package:domus_app/class_services/annuncio_service.dart';
-import 'package:domus_app/communication_utils/url_builder.dart';
-import 'package:domus_app/dto/annuncio_dto.dart';
 import 'package:domus_app/enum/enumerations.dart';
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
@@ -13,8 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 List<String> listaClassiEnergetiche = Enumerations.listaClassiEnergetiche;
 List<String> listaPiani = Enumerations.listaPiani;
@@ -613,7 +609,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                   children: [
                     SizedBox(width: 30.0),
                     Text("N. Stanze", style: TextStyle(color: coloreScritte, fontWeight: FontWeight.normal, fontSize: GRANDEZZA_SCRITTE_PICCOLE),),
-                    SizedBox(width: 115),
+                    SizedBox(width: 119),
                     SizedBox(
                       width: MediaQuery.sizeOf(context).width * 0.37,
                       child: MyTextFieldOnlyPositiveNumbersWithValidation(
@@ -847,7 +843,6 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
       isClasseEnergeticaOk = false;
       allValid = false;
     }
-
 
     return allValid;
   }

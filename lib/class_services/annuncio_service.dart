@@ -22,7 +22,7 @@ class AnnuncioService {
   }
 
   static Future<int> inviaAnnuncio(AnnuncioDto annuncio) async {
-    final url = Urlbuilder.createUrl("10.0.2.2", "8080", "api/annunci");
+    final url = Urlbuilder.createUrl(Urlbuilder.LOCALHOST_ANDROID, Urlbuilder.PORTA_SPRINGBOOT, Urlbuilder.ENDPOINT_ANNUNCI);
     
     final response = await http.post(
       url,
