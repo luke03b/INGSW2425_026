@@ -1,3 +1,5 @@
+import 'package:domus_app/dto/annuncio_dto.dart';
+import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
@@ -5,7 +7,7 @@ import 'package:domus_app/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
 
 class ClienteCreaOffertaPage extends StatefulWidget {
-  final Map<String, dynamic> casaSelezionata;
+  final AnnuncioDto casaSelezionata;
   const ClienteCreaOffertaPage({
     super.key,
     required this.casaSelezionata,
@@ -134,7 +136,7 @@ class _ClienteCreaOffertaPageState extends State<ClienteCreaOffertaPage> {
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         Text("Prezzo iniziale: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                        Text(widget.casaSelezionata['prezzo'], style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
+                        Text(FormatStrings.formatNumber(widget.casaSelezionata.prezzo), style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
                         Text(" EUR", style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
                       ],
                     ),
@@ -236,7 +238,7 @@ class _ClienteCreaOffertaPageState extends State<ClienteCreaOffertaPage> {
 
     try {
       //conversione delle stringhe in numeri
-      String prezzoAnnuncioStringa = widget.casaSelezionata['prezzo'];
+      String prezzoAnnuncioStringa = FormatStrings.formatNumber(widget.casaSelezionata.prezzo);
       int prezzoAnnuncio = int.parse(prezzoAnnuncioStringa.replaceAll('.', ''));
       int nuovaOfferta = int.parse(offertaController.text);
 

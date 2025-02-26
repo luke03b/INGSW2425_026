@@ -80,118 +80,119 @@ class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
         elevation: 5,
         shadowColor: context.shadow,
       ),
-      body: myCarouselSlider(context));
+      body: //myCarouselSlider(context));
+      Text("data"));
   }
 
-  CarouselSlider myCarouselSlider(BuildContext context) {
+  // CarouselSlider myCarouselSlider(BuildContext context) {
 
-    Color selettoreColoreStatoPrenotazione(String statoPrenotazione) {
-      if(statoPrenotazione == "Accettata") {
-        return Colors.green;
-      } else if(statoPrenotazione == "Rifiutata") {
-        return context.error;
-      } else if(statoPrenotazione == "In Attesa") {
-        return Colors.grey;
-      } else if(statoPrenotazione == "Controproposta") {
-        return context.tertiary;
-      }
-      return context.outline;
-    }
+  //   Color selettoreColoreStatoPrenotazione(String statoPrenotazione) {
+  //     if(statoPrenotazione == "Accettata") {
+  //       return Colors.green;
+  //     } else if(statoPrenotazione == "Rifiutata") {
+  //       return context.error;
+  //     } else if(statoPrenotazione == "In Attesa") {
+  //       return Colors.grey;
+  //     } else if(statoPrenotazione == "Controproposta") {
+  //       return context.tertiary;
+  //     }
+  //     return context.outline;
+  //   }
 
-    return CarouselSlider(
-      items: listaCase.asMap().entries.map((entry) {
-        int indice = entry.key;
-        Map<String, dynamic> indiceCasaCorrente = entry.value;
-        double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.7;
-        return GestureDetector(
-          onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(casaSelezionata: indiceCasaCorrente)));
-          },
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-              color: context.primaryContainer,
-              borderRadius: BorderRadius.circular(10),
-              shape: BoxShape.rectangle,
-              boxShadow: [BoxShadow(color: context.shadow.withOpacity(0.2),
-                spreadRadius: 5,
-                blurRadius: 15,
-                offset: Offset(0, 10),)],
-            ),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
-                  child: SizedBox(
-                    child: Image.asset(indiceCasaCorrente['image1']))),
-                Row(
-                  children: [
-                    Expanded(child: Image.asset(indiceCasaCorrente['image2'])),
-                    Expanded(child: Image.asset(indiceCasaCorrente['image3'])),
-                  ],
-                ),
-                SizedBox(
-                  height: scaleFactor * MediaQuery.of(context).size.height/50,
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text("Data prenotazione: ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: context.outline)),
-                    Text(indiceCasaCorrente['data_richiesta_prenotazione'], style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: context.outline)),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['stato_prenotazione'], style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoPrenotazione(indiceCasaCorrente['stato_prenotazione']))),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text("Richiesta effettuata in data: ", style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.bold, color: context.outline)),
-                    Text(indiceCasaCorrente['data_prenotazione'], style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.normal, color: context.outline)),
-                  ],
-                ),
-                SizedBox(
-                  height: scaleFactor * MediaQuery.of(context).size.height/75,
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
-                    Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.location_on, size: scaleFactor * 22, color: context.outline,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.normal, color: context.outline)),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      }).toList(),
-      options: CarouselOptions(
-        enableInfiniteScroll: false,
-        viewportFraction: 0.68,
-        height: 753,
-        enlargeCenterPage: true,
-        scrollDirection: Axis.vertical,
-        onPageChanged: (indiceCasaCorrente, reason) {
-          setState(() {
-            _currentSliderIndex = indiceCasaCorrente;
-          });
-        }
-      ));
-  }
+  //   return CarouselSlider(
+  //     items: listaCase.asMap().entries.map((entry) {
+  //       int indice = entry.key;
+  //       Map<String, dynamic> indiceCasaCorrente = entry.value;
+  //       double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.7;
+  //       return GestureDetector(
+  //         onTap: (){
+  //           Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(casaSelezionata: indiceCasaCorrente)));
+  //         },
+  //         child: Container(
+  //           width: MediaQuery.of(context).size.width,
+  //           margin: EdgeInsets.symmetric(horizontal: 5),
+  //           decoration: BoxDecoration(
+  //             color: context.primaryContainer,
+  //             borderRadius: BorderRadius.circular(10),
+  //             shape: BoxShape.rectangle,
+  //             boxShadow: [BoxShadow(color: context.shadow.withOpacity(0.2),
+  //               spreadRadius: 5,
+  //               blurRadius: 15,
+  //               offset: Offset(0, 10),)],
+  //           ),
+  //           child: Column(
+  //             children: [
+  //               ClipRRect(
+  //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
+  //                 child: SizedBox(
+  //                   child: Image.asset(indiceCasaCorrente['image1']))),
+  //               Row(
+  //                 children: [
+  //                   Expanded(child: Image.asset(indiceCasaCorrente['image2'])),
+  //                   Expanded(child: Image.asset(indiceCasaCorrente['image3'])),
+  //                 ],
+  //               ),
+  //               SizedBox(
+  //                 height: scaleFactor * MediaQuery.of(context).size.height/50,
+  //               ),
+  //               Row(
+  //                 children: [
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   Text("Data prenotazione: ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: context.outline)),
+  //                   Text(indiceCasaCorrente['data_richiesta_prenotazione'], style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: context.outline)),
+  //                 ],
+  //               ),
+  //               Row(
+  //                 children: [
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   Text(indiceCasaCorrente['stato_prenotazione'], style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoPrenotazione(indiceCasaCorrente['stato_prenotazione']))),
+  //                 ],
+  //               ),
+  //               Row(
+  //                 children: [
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   Text("Richiesta effettuata in data: ", style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.bold, color: context.outline)),
+  //                   Text(indiceCasaCorrente['data_prenotazione'], style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.normal, color: context.outline)),
+  //                 ],
+  //               ),
+  //               SizedBox(
+  //                 height: scaleFactor * MediaQuery.of(context).size.height/75,
+  //               ),
+  //               Row(
+  //                 children: [
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
+  //                   Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
+  //                 ],
+  //               ),
+  //               Row(
+  //                 children: [
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   Icon(Icons.location_on, size: scaleFactor * 22, color: context.outline,),
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.normal, color: context.outline)),
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       );
+  //     }).toList(),
+  //     options: CarouselOptions(
+  //       enableInfiniteScroll: false,
+  //       viewportFraction: 0.68,
+  //       height: 753,
+  //       enlargeCenterPage: true,
+  //       scrollDirection: Axis.vertical,
+  //       onPageChanged: (indiceCasaCorrente, reason) {
+  //         setState(() {
+  //           _currentSliderIndex = indiceCasaCorrente;
+  //         });
+  //       }
+  //     ));
+  // }
 }

@@ -2,10 +2,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
+import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:domus_app/utils/my_slider_widgets.dart';
 import 'package:domus_app/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
 
 const List<String> listaClassiEnergetiche = <String>['Tutte', 'A4', 'A3', 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G'];
 const List<String> listaPiani = <String>['Tutti', 'Terra', 'Intermedio', 'Ultimo'];
@@ -19,7 +21,7 @@ class CercaPage extends StatefulWidget {
 
 class _CercaPageState extends State<CercaPage> {
 
-  final TextEditingController _affittaController = TextEditingController();
+  final TextEditingController _indirizzoController = TextEditingController();
 
   final TextEditingController _prezzoMaxController = TextEditingController();
 
@@ -34,6 +36,7 @@ class _CercaPageState extends State<CercaPage> {
   final TextEditingController _numeroStanzeMinController = TextEditingController();
 
   final TextEditingController _numeroStanzeMaxController = TextEditingController();
+
 
   final ScrollController _ricercaAvanzataScrollableController = ScrollController();
 
@@ -61,9 +64,12 @@ class _CercaPageState extends State<CercaPage> {
 
   double raggioRicerca = 2;
   
-
-  final List<Widget> _widgetCompraAffitta = <Widget>[Text('Compra'), Text('Affitta')];
   final List<bool> selectedCompraAffitta = <bool>[true, false];
+
+  double? latitudine;
+  double? longitudine;
+
+  bool isIndirizzoValido = false;
 
   String sceltaClasseEnergetica = listaClassiEnergetiche.first;
   String sceltaPiano = listaPiani.first;
@@ -153,12 +159,48 @@ class _CercaPageState extends State<CercaPage> {
             //TextBox
             SizedBox(
               width: MediaQuery.sizeOf(context).width * 0.92,
-              child: MyTextFieldSuffixIcon(
-                controller: _affittaController, 
-                text: "Inserisci una zona di ricerca", 
-                icon: Icon(Icons.search),
-                colore: context.outline,
-              )
+              child: GooglePlacesAutoCompleteTextFormField(
+                onChanged: (value){
+                  setState(() {
+                    latitudine = null;
+                    longitudine = null;
+                    isIndirizzoValido = true;
+                  });
+                },
+                textEditingController: _indirizzoController,
+                googleAPIKey: "AIzaSyBUkzr-VCtKVyTTfssndaWR5Iy5TyfM0as",
+                decoration: InputDecoration(
+                  hintText: 'Inserire una zona di ricerca',
+                  hintStyle: TextStyle(color: context.onSecondary),
+                  labelText: 'Cerca',
+                  labelStyle: TextStyle(color: context.onSecondary),
+                ),
+                style: TextStyle(color: context.onPrimary),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
+                // proxyURL: _yourProxyURL,
+                maxLines: 1,
+                overlayContainerBuilder: (child) => Material(
+                  elevation: 1.0,
+                  color: context.primary,
+                  borderRadius: BorderRadius.circular(12),
+                  child: child
+                ),
+                fetchCoordinates: true,
+                onPlaceDetailsWithCoordinatesReceived: (prediction) {
+                  print('placeDetails ${prediction.lat} , ${prediction.lng}');
+                  latitudine = double.tryParse(prediction.lat ?? '');
+                  longitudine = double.tryParse(prediction.lng ?? '');
+                  print('new coordinates $latitudine , $longitudine');
+                },
+                onSuggestionClicked: (Prediction prediction) =>
+                    _indirizzoController.text = prediction.description!,
+                minInputLength: 3,
+              ),
             ),
 
             //Tasto ricerca avanzata
@@ -197,7 +239,42 @@ class _CercaPageState extends State<CercaPage> {
             //tasto cerca
             MyElevatedButtonWidget(
               text: "Cerca",
-              onPressed: (){Navigator.pushNamed(context, '/ControllorePagine2');},
+              onPressed: (){
+                if(_indirizzoController.text.isEmpty || !isIndirizzoValido){
+                  showDialog(
+                    context: context, 
+                    builder: (BuildContext context) => MyInfoDialog(title: "Errore", bodyText: "Inserire un indirizzo valido e riprovare.", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
+                  );
+                } else {
+                  Navigator.pushNamed(
+                    context, 
+                    '/ControllorePagine2', 
+                    arguments: {
+                      'tipoAnnuncio' : selectedCompraAffitta.first ? "VENDITA" : "AFFITTO",
+                      'latitudine': latitudine ?? 0.0,
+                      'longitudine': longitudine ?? 0.0,
+                      'raggioRicerca' : raggioRicerca,
+                      'prezzoMin' : _prezzoMinController.text.isNotEmpty ? _prezzoMinController.text : null,
+                      'prezzoMax' : _prezzoMaxController.text.isNotEmpty ? _prezzoMaxController.text : null,
+                      'superficieMin' : _superficieMinController.text.isNotEmpty ? _superficieMinController.text : null,
+                      'superficieMax' : _superficieMaxController.text.isNotEmpty ? _superficieMaxController.text : null,
+                      'nStanzeMin' : _numeroStanzeMinController.text.isNotEmpty ?  _numeroStanzeMinController.text : null,
+                      'nStanzeMax' : _numeroStanzeMaxController.text.isNotEmpty ? _numeroStanzeMaxController.text : null,
+                      'garage' : _isGarageSelected ? _isGarageSelected : null,
+                      'ascensore' : _isAscensoreSelected ? _isAscensoreSelected : null,
+                      'arredato' : _isArredatoSelected ? _isArredatoSelected : null,
+                      'giardino' : _isGiardinoSelected ? _isGiardinoSelected : null,
+                      'piscina' : _isPiscinaSelected ? _isPiscinaSelected : null,
+                      'balcone' : _isBalconeSelected ? _isBalconeSelected : null,
+                      'vicinoScuole' : _isVicinoScuoleSelected ? _isVicinoScuoleSelected : null,
+                      'vicinoParchi' : _isVicinoParchiSelected ? _isVicinoParchiSelected : null,
+                      'vicinoMezzi' : _isVicinoMezziPubbliciSelected ? _isVicinoMezziPubbliciSelected : null,
+                      'piano' : sceltaPiano == "Tutti" ? null : sceltaPiano,
+                      'classeEnergetica' : sceltaClasseEnergetica == "Tutte" ? null :  sceltaClasseEnergetica,
+                    }
+                  );
+                }
+              },
               color: context.tertiary
             ),
 
@@ -225,77 +302,77 @@ class _CercaPageState extends State<CercaPage> {
               Text('Ultime visite', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: colorePulsanti),),
             ],
           ),
-          myCarouselSlider(context),
+          // myCarouselSlider(context),
         ],
       )
     );
   }
 
-  CarouselSlider myCarouselSlider(BuildContext context) {
-    return CarouselSlider(
-      items: listaCase.asMap().entries.map((entry) {
-        int indice = entry.key;
-        Map<String, dynamic> indiceCasaCorrente = entry.value;
-        double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.7;
-        return GestureDetector(
-          onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(casaSelezionata: indiceCasaCorrente)));
-          },
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-              color: context.primaryContainer, 
-              borderRadius: BorderRadius.circular(10),
-              shape: BoxShape.rectangle,
-            ),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
-                  child: SizedBox(
-                    child: Image.asset(indiceCasaCorrente['image1']))),
-                Row(
-                  children: [
-                    Expanded(child: Image.asset(indiceCasaCorrente['image2'])),
-                    Expanded(child: Image.asset(indiceCasaCorrente['image3'])),
-                  ],
-                ),
-                SizedBox(
-                  height: scaleFactor * MediaQuery.of(context).size.height/50,
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline),),
-                    Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline),),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.location_on, size: scaleFactor * 22, color: context.outline,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.normal, color: context.outline)),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      }).toList(),
-      options: CarouselOptions(
-        viewportFraction: 0.8,
-        height: 360,
-        enlargeCenterPage: true,
-        onPageChanged: (indiceCasaCorrente, reason) {
-          setState(() {
-            _currentSliderIndex = indiceCasaCorrente;
-          });
-        }
-      ));
-  }
+  // CarouselSlider myCarouselSlider(BuildContext context) {
+  //   return CarouselSlider(
+  //     items: listaCase.asMap().entries.map((entry) {
+  //       int indice = entry.key;
+  //       Map<String, dynamic> indiceCasaCorrente = entry.value;
+  //       double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.7;
+  //       return GestureDetector(
+  //         onTap: (){
+  //           Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(casaSelezionata: indiceCasaCorrente)));
+  //         },
+  //         child: Container(
+  //           width: MediaQuery.of(context).size.width,
+  //           margin: EdgeInsets.symmetric(horizontal: 5),
+  //           decoration: BoxDecoration(
+  //             color: context.primaryContainer, 
+  //             borderRadius: BorderRadius.circular(10),
+  //             shape: BoxShape.rectangle,
+  //           ),
+  //           child: Column(
+  //             children: [
+  //               ClipRRect(
+  //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
+  //                 child: SizedBox(
+  //                   child: Image.asset(indiceCasaCorrente['image1']))),
+  //               Row(
+  //                 children: [
+  //                   Expanded(child: Image.asset(indiceCasaCorrente['image2'])),
+  //                   Expanded(child: Image.asset(indiceCasaCorrente['image3'])),
+  //                 ],
+  //               ),
+  //               SizedBox(
+  //                 height: scaleFactor * MediaQuery.of(context).size.height/50,
+  //               ),
+  //               Row(
+  //                 children: [
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline),),
+  //                   Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline),),
+  //                 ],
+  //               ),
+  //               Row(
+  //                 children: [
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   Icon(Icons.location_on, size: scaleFactor * 22, color: context.outline,),
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.normal, color: context.outline)),
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       );
+  //     }).toList(),
+  //     options: CarouselOptions(
+  //       viewportFraction: 0.8,
+  //       height: 360,
+  //       enlargeCenterPage: true,
+  //       onPageChanged: (indiceCasaCorrente, reason) {
+  //         setState(() {
+  //           _currentSliderIndex = indiceCasaCorrente;
+  //         });
+  //       }
+  //     ));
+  // }
 
   Visibility myParametriRicercaAvanzata(Color colorePulsanti, BuildContext context) {
     return Visibility(
@@ -667,30 +744,60 @@ class _CercaPageState extends State<CercaPage> {
   }
 
   Align myCompraAffittaButton(BuildContext context) {
+    final List<IconData> icons = [Icons.monetization_on, Icons.real_estate_agent];
+    final List<String> labels = ["Compra", "Affitta"];
     return Align(
-            alignment: Alignment.centerLeft,
-            widthFactor: 2.37,
-            heightFactor: 1.5,
-            child: ToggleButtons(
-              onPressed: (int index){
-                setState(() {
-                  for (int i = 0; i < selectedCompraAffitta.length; i++){
-                    selectedCompraAffitta[i] = i == index;
-                  }
-                });
-              },
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              borderColor: context.outline,
-              selectedBorderColor: context.onSecondary,
-              selectedColor: context.onError,
-              fillColor: context.onSecondary,
-              color: context.outline,
-              constraints: const BoxConstraints(
-                minHeight: 40.0,
-                minWidth: 80.0,
-              ),
-              isSelected: selectedCompraAffitta,
-              children: _widgetCompraAffitta),
+      alignment: Alignment.centerLeft,
+      widthFactor: 2.37,
+      heightFactor: 1.5,
+      child: ToggleButtons(
+        onPressed: (int index) {
+          setState(() {
+            for (int i = 0; i < selectedCompraAffitta.length; i++) {
+              selectedCompraAffitta[i] = i == index;
+            }
+          });
+        },
+        borderRadius: BorderRadius.circular(30),
+        borderColor: context.outline,
+        selectedBorderColor: context.outline,
+        selectedColor: context.onError,
+        fillColor: context.onSecondary,
+        color: context.outline,
+        constraints: const BoxConstraints(
+          minHeight: 30.0,
+          minWidth: 40.0,
+        ),
+        isSelected: selectedCompraAffitta,
+        children: List.generate(selectedCompraAffitta.length, (index) {
+          return AnimatedContainer(
+            duration: Duration(milliseconds: 200),
+            padding: EdgeInsets.symmetric(horizontal: selectedCompraAffitta[index] ? 16 : 8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(selectedCompraAffitta[index] ? 30 : 15),
+              color: selectedCompraAffitta[index] ? context.onSecondary : Colors.transparent,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  icons[index],
+                  color: selectedCompraAffitta[index]
+                      ? context.onError
+                      : context.outline,
+                ),
+                if (selectedCompraAffitta[index]) ...[
+                  SizedBox(width: 8),
+                  Text(
+                    labels[index],
+                    style: TextStyle(color: context.onError),
+                  ),
+                ],
+              ],
+            ),
           );
+        }),
+      ),
+    );
   }
 }

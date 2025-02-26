@@ -68,7 +68,7 @@ class _MyAppState extends State<MyApp> {
         '/LoginPage': (context) => LoginPage(),
         '/RegistrationPage': (context) => RegistrationPage(),
         '/HomePage' : (context) => ControllorePagine(),
-        '/RisultatiCercaPage' : (context) => RisultatiCercaPage(),
+        // '/RisultatiCercaPage' : (context) => RisultatiCercaPage(),
         '/ControllorePagine2': (context) => ControllorePagine2(),
         '/PasswordDimenticataPage' : (context) => PasswordDimenticataPage(),
         '/ControllorePagineAgente' : (context) => ControllorePagineAgente(),

@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:domus_app/dto/annuncio_dto.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_crea_offerta_page.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_crea_prenotazione.dart';
+import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:flutter/foundation.dart';
@@ -13,7 +15,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ClienteAnnuncioPage extends StatefulWidget {
-  final Map<String, dynamic> casaSelezionata;
+  final AnnuncioDto casaSelezionata;
 
   const ClienteAnnuncioPage({super.key, required this.casaSelezionata});
 
@@ -24,21 +26,18 @@ class ClienteAnnuncioPage extends StatefulWidget {
 class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
   final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
   int _currentIndex = 0;
-  final latitude = 40.8189507;
-  final longitude = 14.1896127;
-
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(40.8189507, 14.1896127),
-    zoom: 14.4746,
-  );
 
   @override
   Widget build(BuildContext context) {
+    CameraPosition posizioneIniziale = CameraPosition(target: LatLng(widget.casaSelezionata.latitudine, widget.casaSelezionata.longitudine), zoom: 14.4746);
 
     final List<Widget> listaImmagini = [
-      Image.asset(widget.casaSelezionata['image1']),
-      Image.asset(widget.casaSelezionata['image2']),
-      Image.asset(widget.casaSelezionata['image3']),
+      // Image.asset(widget.casaSelezionata['image1']),
+      // Image.asset(widget.casaSelezionata['image2']),
+      // Image.asset(widget.casaSelezionata['image3']),
+      Image.asset('lib/assets/casa3_1_placeholder.png'),
+      Image.asset('lib/assets/casa3_1_placeholder.png'),
+      Image.asset('lib/assets/casa3_1_placeholder.png'),
     ];
 
     return Scaffold(
@@ -84,14 +83,14 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                     Row(
                       children: [
                         SizedBox(width: 10.0),
-                        Text("In affitto", style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: context.outline),),
+                        Text(FormatStrings.trasformareInizialeMaiuscola(widget.casaSelezionata.tipoAnnuncio), style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: context.outline),),
                       ],
                     ),
 
                     Row(
                       children: [
                         SizedBox(width: 10.0),
-                        Text(widget.casaSelezionata['prezzo'], style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: context.outline),),
+                        Text(FormatStrings.formatNumber(widget.casaSelezionata.prezzo), style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: context.outline),),
                         Text(" EUR", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: context.outline),),
                       ],
                     ),
@@ -99,7 +98,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                     Row(
                       children: [
                         SizedBox(width: 10.0),
-                        Text(widget.casaSelezionata['indirizzo'], style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: context.outline),),
+                        Text(widget.casaSelezionata.indirizzo, style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: context.outline),),
                       ],
                     ),
         
@@ -116,7 +115,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: ReadMoreText(
-                        widget.casaSelezionata['descrizione'],
+                        widget.casaSelezionata.descrizione,
                         textAlign: TextAlign.justify,
                         trimCollapsedText: "    mostra altro",
                         trimExpandedText: "    mostra meno",
@@ -151,7 +150,8 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Piano", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
+                                Text(widget.casaSelezionata.piano == 'INTERMEDIO' ? widget.casaSelezionata.numeroPiano.toString() : FormatStrings.trasformareInizialeMaiuscola(widget.casaSelezionata.piano),
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -165,7 +165,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Giardino", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
+                                Text(widget.casaSelezionata.giardino ? 'Si' : 'No', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -179,7 +179,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("N. Stanze", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
+                                Text(widget.casaSelezionata.numStanze.toString(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -193,7 +193,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Garage", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
+                                Text(widget.casaSelezionata.garage ? 'Si' : 'No', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -207,7 +207,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Piscina", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
+                                Text(widget.casaSelezionata.piscina ? 'Si' : 'No', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -230,7 +230,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Superficie", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
+                                Text('${widget.casaSelezionata.superficie} m²', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -244,7 +244,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Ascensore", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
+                                Text(widget.casaSelezionata.ascensore ? 'Si' : 'No', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -258,7 +258,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Arredato", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
+                                Text(widget.casaSelezionata.arredo ? 'Si' : 'No', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -272,7 +272,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Balcone", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
+                                Text(widget.casaSelezionata.balcone ? 'Si' : 'No', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -286,7 +286,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("C. Energetica", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
-                                Text("Vendita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
+                                Text(widget.casaSelezionata.classeEnergetica, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline),)
                               ],
                             ),
                             ],
@@ -309,9 +309,9 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                     child: GoogleMap(
                       gestureRecognizers: Set()..add(Factory<PanGestureRecognizer>(() => PanGestureRecognizer())),
                       mapType: MapType.normal,
-                      initialCameraPosition: _kGooglePlex,
+                      initialCameraPosition: posizioneIniziale,
                       onMapCreated: (GoogleMapController controller) {_controller.complete(controller);},
-                      markers: {const Marker(markerId: MarkerId('Posizione'), position:  LatLng(40.8189507, 14.1896127),)},),
+                      markers: {Marker(markerId: MarkerId('Posizione'), position:  LatLng(widget.casaSelezionata.latitudine, widget.casaSelezionata.longitudine),)},),
                   ),
 
                   Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
@@ -376,11 +376,11 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                                   //colonna contenente valori
                                   Column(
                                     children: [
-                                      Icon(widget.casaSelezionata['vicino_scuole'] == 'si' ? Icons.check :  Icons.close, size: 30, color: context.outline),
+                                      Icon(widget.casaSelezionata.vicinoScuole! ? Icons.check :  Icons.close, size: 30, color: context.outline),
                                       SizedBox(height: 16,),
-                                      Icon(widget.casaSelezionata['vicino_parchi'] == 'si' ? Icons.check :  Icons.close, size: 30, color: context.outline),
+                                      Icon(widget.casaSelezionata.vicinoParchi! ? Icons.check :  Icons.close, size: 30, color: context.outline),
                                       SizedBox(height: 16,),
-                                      Icon(widget.casaSelezionata['vicino_mezzi'] == 'si' ? Icons.check :  Icons.close, size: 30, color: context.outline),                    
+                                      Icon(widget.casaSelezionata.vicinoTrasporti! ? Icons.check :  Icons.close, size: 30, color: context.outline),                    
                                     ],
                                   ),
                                 ],
@@ -400,24 +400,24 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                       ],
                     ),
 
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(width: 10.0),
-                          Text("Agenzia immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
-                          Text(widget.casaSelezionata['agenzia'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline))
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(width: 10.0),
-                          Text("Agente immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
-                          Text(widget.casaSelezionata['agente'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline))
-                        ],
-                      ),
-                    ],
-                  ),
+                  // Column(
+                  //   children: [
+                  //     Row(
+                  //       children: [
+                  //         SizedBox(width: 10.0),
+                  //         Text("Agenzia immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
+                  //         Text(widget.casaSelezionata['agenzia'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline))
+                  //       ],
+                  //     ),
+                  //     Row(
+                  //       children: [
+                  //         SizedBox(width: 10.0),
+                  //         Text("Agente immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
+                  //         Text(widget.casaSelezionata['agente'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline))
+                  //       ],
+                  //     ),
+                  //   ],
+                  // ),
 
                   Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
                   SizedBox(height: 65,)
@@ -449,7 +449,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                     SizedBox(width: 5,),
                     Expanded(child: MyElevatedButtonRectWidget(text: "Visita", onPressed: (){
                       // Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteCreaPrenotazionePage(casaSelezionata: widget.casaSelezionata)));
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => WeatherScreen(latitude: latitude, longitude: longitude,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => WeatherScreen(latitude: widget.casaSelezionata.latitudine, longitude: widget.casaSelezionata.longitudine,)));
                     }, color: context.onSecondary)),
                     SizedBox(width: 5,),
                     ],),

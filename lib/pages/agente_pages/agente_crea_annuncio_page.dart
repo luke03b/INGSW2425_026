@@ -121,7 +121,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
         centerTitle: true,
         backgroundColor: context.primary,
         elevation: 5,
-        shadowColor: Colors.black,
+        shadowColor: context.shadow,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -158,7 +158,6 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                       ),
                       itemBuilder: (BuildContext context, int index) {
                         if (index == imageList!.length && imageList!.length < 15) {
-                          // Mostra il pulsante "+" solo se ci sono meno di 15 immagini
                           return GestureDetector(
                             onTap: () {
                               selectImages();
@@ -180,7 +179,6 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                             ),
                           );
                         } else if (index < imageList!.length) {
-                          // Mostra le immagini solo se l'indice è valido
                           return Stack(
                             children: [
                               ClipRRect(
@@ -197,7 +195,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                                 right: 3,
                                 child: GestureDetector(
                                   onTap: () {
-                                    removeImage(index); // Aggiungi la logica per rimuovere l'immagine
+                                    removeImage(index);
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -214,8 +212,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                             ],
                           );
                         } else {
-                          // Evita errori se l'indice è fuori dai limiti
-                          return SizedBox.shrink();  // Non visualizzare nulla se l'indice è fuori dai limiti
+                          return SizedBox.shrink();
                         }
                       },
                     ),
@@ -260,7 +257,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                       });
                     },
                     constraints: BoxConstraints(
-                      minHeight: 30, // imposta l'altezza minima
+                      minHeight: 30,
                     ),
                     children: [
                       Row(

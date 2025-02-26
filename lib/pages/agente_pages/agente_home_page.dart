@@ -1,6 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/class_services/annuncio_service.dart';
-import 'package:domus_app/class_services/utente_service.dart';
 import 'package:domus_app/dto/annuncio_dto.dart';
 import 'package:domus_app/pages/agente_pages/agente_annuncio_page.dart';
 import 'package:domus_app/pages/agente_pages/agente_crea_annuncio_page.dart';
@@ -24,15 +23,19 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
   static const double GRANDEZZA_ICONE_PICCOLE = 20;
   int _currentSliderIndex = 0;
   List<bool> selectedOffertePrenotazioni = <bool>[false, false];
+  bool hasUserAnnunci = false;
 
   Future<void> getAnnunci() async {
     try {
-        List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciByAgenteLoggato();
+      List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciByAgenteLoggato();
       setState(() {
         annunciList = data;
+        if(annunciList.isNotEmpty) {
+          hasUserAnnunci = true;
+        }
       });
     } catch (error) {
-      print('cacca');
+      print('errore con il recupero degli annunci (il server potrebbe non essere raggiungibile)');
     }
   }
 
@@ -58,49 +61,54 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
       ),
       body: Stack(
         children: [
-          myCarouselSlider(context),
+          hasUserAnnunci ? myCarouselSlider(context) : Center(child: Text("Non possiedi annunci", style: TextStyle(color: context.onSecondary, fontSize: 20),)),
           Align(
             alignment: Alignment.topCenter,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 63),
-              child: Card(
-                elevation: 3,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
-                color: context.primaryContainer,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(width: 10,),
-                    Icon(Icons.filter_alt_outlined, color: context.onPrimary,),
-                    Text("Filtri", style: TextStyle(color: context.onPrimary, fontWeight: FontWeight.bold),),
-                    SizedBox(width: 10,),
-                    ToggleButtons(
-                      borderRadius: BorderRadius.circular(100),
-                      isSelected: selectedOffertePrenotazioni,
-                      onPressed: (int index){
-                        setState(() {
-                          selectedOffertePrenotazioni[index] = !selectedOffertePrenotazioni[index];
-                        });
-                      },
-                      children: [
-                        Row(
-                          children: [
-                            Icon(selectedOffertePrenotazioni[0] ? Icons.radio_button_on : Icons.radio_button_off, color: context.onPrimary, size: 18,),
-                            SizedBox(width: 6,),
-                            Text("Offerte", style: TextStyle(color: context.onPrimary),),
-                            SizedBox(width: 10,)
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Icon(selectedOffertePrenotazioni[1] ? Icons.radio_button_on : Icons.radio_button_off, color: context.onPrimary, size: 18,),
-                            SizedBox(width: 6,),
-                            Text("Prenotazioni", style: TextStyle(color: context.onPrimary),),
-                            SizedBox(width: 15,)
-                          ],
-                        ),
-                      ]),
-                  ],
+              child: Visibility(
+                visible: hasUserAnnunci,
+                child: Card(
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+                  color: context.primaryContainer,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(width: 10,),
+                      Icon(Icons.filter_alt_outlined, color: context.onPrimary,),
+                      Text("Filtri", style: TextStyle(color: context.onPrimary, fontWeight: FontWeight.bold),),
+                      SizedBox(width: 10,),
+                      ToggleButtons(
+                        borderRadius: BorderRadius.circular(100),
+                        isSelected: selectedOffertePrenotazioni,
+                        onPressed: (int index){
+                          setState(() {
+                            selectedOffertePrenotazioni[index] = !selectedOffertePrenotazioni[index];
+                            // AnnuncioService.recuperaAnnunciByAgenteLoggato(selectedOffertePrenotazioni);
+                          });
+                        },
+                        children: [
+                          Row(
+                            children: [
+                              Icon(selectedOffertePrenotazioni[0] ? Icons.radio_button_on : Icons.radio_button_off, color: context.onPrimary, size: 18,),
+                              SizedBox(width: 6,),
+                              Text("Offerte", style: TextStyle(color: context.onPrimary),),
+                              SizedBox(width: 10,)
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Icon(selectedOffertePrenotazioni[1] ? Icons.radio_button_on : Icons.radio_button_off, color: context.onPrimary, size: 18,),
+                              SizedBox(width: 6,),
+                              Text("Prenotazioni", style: TextStyle(color: context.onPrimary),),
+                              SizedBox(width: 15,)
+                            ],
+                          ),
+                        ]
+                      ),
+                    ],
+                  ),
                 ),
               ),
             )
@@ -253,12 +261,9 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
                     Icon(Icons.location_on, size: scaleFactor * GRANDEZZA_ICONE, color: context.outline,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     Expanded(
-                        child: FittedBox(
+                        child: Align(
                           alignment: Alignment.centerLeft,
-                          fit: BoxFit.scaleDown,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(annuncioCorrente.indirizzo, style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline),))),
+                          child: Text(annuncioCorrente.indirizzo, style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline), softWrap: true,)),
                       ),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                   ],

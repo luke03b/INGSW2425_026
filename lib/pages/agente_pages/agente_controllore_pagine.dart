@@ -36,7 +36,7 @@ class _ControllorePagineAgenteState extends State<ControllorePagineAgente> {
         children: [
           Container(
             height: 0.3,
-            color: context.outline, // Colore della linea separatrice
+            color: context.outline,
           ),
           BottomNavigationBar(
             currentIndex: _selectedIndex,

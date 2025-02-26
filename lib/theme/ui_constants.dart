@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AppTypography {
-  static const double headline1 = 24.0;
-  static const double headline2 = 20.0;
-  static const double bodyText = 16.0;
-  static const double smallText = 12.0;
+  static const double titolo = 23;
+  static const double sottotitolo = 20.0;
+  static const double corpo = 16.0;
+  static const double scrittaPiccola = 12.0;
+  static const double iconeGrandi = 25;
+  static const double iconePiccole = 20;
 }
 
 class AppSpacing {

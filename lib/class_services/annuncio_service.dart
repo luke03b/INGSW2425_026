@@ -128,4 +128,147 @@ class AnnuncioService {
     String? sub = await AWSServices().recuperaSubUtenteLoggato();
     return recuperaAnnunciByAgenteSub(sub!);
   }
+
+  static Future<List<AnnuncioDto>> recuperaAnnunciByCriteriDiRicerca(
+    double latitudine,
+    double longitudine,
+    String tipoAnnuncio, {
+    double? raggioRicerca,
+    String? prezzoMin,
+    String? prezzoMax,
+    String? superficieMin,
+    String? superficieMax,
+    String? nStanzeMin,
+    String? nStanzeMax,
+    bool? garage,
+    bool? ascensore,
+    bool? arredato,
+    bool? giardino,
+    bool? piscina,
+    bool? balcone,
+    bool? vicinoScuole,
+    bool? vicinoParchi,
+    bool? vicinoMezzi,
+    String? piano,
+    String? classeEnergetica,
+  }) async {
+    try{
+      print("chiamo il server");
+      http.Response response = await chiamataHTTPrecuperaAnnunciByCriteriDiRicerca(
+        latitudine, 
+        longitudine, 
+        tipoAnnuncio, 
+        raggioRicerca,
+        prezzoMin: prezzoMin,
+        prezzoMax: prezzoMax,
+        superficieMin: superficieMin,
+        superficieMax: superficieMax,
+        nStanzeMin: nStanzeMin,
+        nStanzeMax: nStanzeMax,
+        garage: garage,
+        ascensore: ascensore,
+        arredato: arredato,
+        giardino: giardino,
+        piscina: piscina,
+        balcone: balcone,
+        vicinoScuole: vicinoScuole,
+        vicinoParchi: vicinoParchi,
+        vicinoMezzi: vicinoMezzi,
+        piano: piano,
+        classeEnergetica: classeEnergetica,);
+      
+      if(response.statusCode == 200){
+        List<dynamic> data = json.decode(response.body);
+
+        List<AnnuncioDto> annunci = data.map((item) => AnnuncioDto.fromJson(item)).toList();
+        return annunci;        
+      }
+      else{
+        throw Exception("Errore nel recupero degli annunci");
+      }
+
+    } on TimeoutException {
+      throw Exception("Errore nel recupero degli annunci. Timeout");
+    }
+  }
+
+  static Future<http.Response> chiamataHTTPrecuperaAnnunciByCriteriDiRicerca(
+    double latitudine,
+    double longitudine,
+    String tipoAnnuncio,
+    double? raggioRicerca, {
+    String? prezzoMin,
+    String? prezzoMax,
+    String? superficieMin,
+    String? superficieMax,
+    String? nStanzeMin,
+    String? nStanzeMax,
+    bool? garage,
+    bool? ascensore,
+    bool? arredato,
+    bool? giardino,
+    bool? piscina,
+    bool? balcone,
+    bool? vicinoScuole,
+    bool? vicinoParchi,
+    bool? vicinoMezzi,
+    String? piano,
+    String? classeEnergetica,
+  }) async {
+    final url = Urlbuilder.createUrl(
+      Urlbuilder.LOCALHOST_ANDROID, 
+      Urlbuilder.PORTA_SPRINGBOOT, 
+      Urlbuilder.ENDPOINT_ANNUNCI,
+      queryParams: filterQueryParams({
+        'tipo_annuncio' : tipoAnnuncio.toString().toUpperCase(),
+        'latitudine': latitudine.toString(),
+        'longitudine': longitudine.toString(),
+        'raggioKm' : raggioRicerca.toString(),
+        'prezzoMinimo' : prezzoMin.toString(),
+        'prezzoMassimo' :prezzoMax.toString(),
+        'superficieMinima' :superficieMin.toString(),
+        'superficieMassima' : superficieMax.toString(),
+        'numStanzeMinime' :nStanzeMin.toString(),
+        'numStanzeMassime' : nStanzeMax.toString(),
+        'garage' : garage.toString(),
+        'ascensore' : ascensore.toString(),
+        'arredo' : arredato.toString(),
+        'giardino' : giardino.toString(),
+        'piscina' : piscina.toString(),
+        'balcone' : balcone.toString(),
+        'vicino_scuole' : vicinoScuole.toString(),
+        'vicino_parchi' : vicinoParchi.toString(),
+        'vicino_trasporti' : vicinoMezzi.toString(),
+        'piano' : piano.toString().toUpperCase(),
+        'classeEnergetica' : classeEnergetica.toString().toUpperCase(),
+      })
+    );
+
+    print("\n\n\n\n\n\n\n\n\n\n\n");
+    print(url);
+    print("\n\n\n\n\n\n\n\n\n\n\n");
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    ).timeout(
+      const Duration(seconds: 30),
+      onTimeout: () {
+        throw TimeoutException("Il server non risponde.");
+      },
+    );
+    
+    return response;
+  }
+
+  static Map<String, String> filterQueryParams(Map<String, String> params) {
+    // Rimuovi i parametri o nulli o vuoti o false
+    params.removeWhere((key, value) {
+      return value == "false" || value.isEmpty || value == "null";
+    });
+    return params;
+  }
+
 }

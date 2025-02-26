@@ -21,25 +21,49 @@ class _ControllorePagine2State extends State<ControllorePagine2> {
     });
   }
 
-  final List<Widget> _pages = [
-    RisultatiCercaPage(),
-    OffertePage(),
-    ClientePrenotazioniPage(),
-    ProfiloPage(),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+
+    final List<Widget> pages = [
+      RisultatiCercaPage(
+        latitudine: args?['latitudine'] ?? 0.0,
+        longitudine: args?['longitudine'] ?? 0.0,
+        tipoAnnuncio: args?['tipoAnnuncio'] ?? "",
+        raggioRicerca: args?['raggioRicerca'] ?? 0.0,
+        prezzoMin: args?['prezzoMin'],
+        prezzoMax: args?['prezzoMax'],
+        superficieMin: args?['superficieMin'],
+        superficieMax: args?['superficieMax'],
+        nStanzeMin: args?['nStanzeMin'],
+        nStanzeMax: args?['nStanzeMax'],
+        garage: args?['garage'] ?? false,
+        ascensore: args?['ascensore'] ?? false,
+        arredato: args?['arredato'] ?? false,
+        giardino: args?['giardino'] ?? false,
+        piscina: args?['piscina'] ?? false,
+        balcone: args?['balcone'] ?? false,
+        vicinoScuole: args?['vicinoScuole'] ?? false,
+        vicinoParchi: args?['vicinoParchi'] ?? false,
+        vicinoMezzi: args?['vicinoMezzi'] ?? false,
+        piano: args?['piano'] ?? "",
+        classeEnergetica: args?['classeEnergetica'] ?? "",
+      ),
+      OffertePage(),
+      ClientePrenotazioniPage(),
+      ProfiloPage(),
+    ];
+
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: _pages[_selectedIndex],
+      body: pages[_selectedIndex],
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Aggiungi qui la linea separatrice
           Container(
             height: 0.3,
-            color: context.outline, // Colore della linea separatrice
+            color: context.outline,
           ),
           BottomNavigationBar(
             currentIndex: _selectedIndex,

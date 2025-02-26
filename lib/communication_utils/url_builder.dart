@@ -7,7 +7,7 @@ class Urlbuilder {
   static final String ENDOPOINT_ANNUNCI_AGENTE = "api/annunci/agente";
   static final String _url = "http://";
 
-  static Uri createUrl(String hostName, String port, String path, {Map<String, String>? queryParams}) {
+  static Uri createUrl(String hostName, String port, String path, {Map<String, dynamic>? queryParams}) {
     Uri uri = Uri.parse("$_url$hostName:$port/$path");
 
     if (queryParams != null && queryParams.isNotEmpty) {

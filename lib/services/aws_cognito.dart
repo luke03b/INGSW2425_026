@@ -189,7 +189,6 @@ class AWSServices {
 
     //decodifica il token
     Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
-    print("Token ID:           $idToken");
 
     //recupera la mail
     String? nome = payload['name'];
