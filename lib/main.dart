@@ -9,7 +9,6 @@ import 'amplifyconfiguration.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_controllore_pagine.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_controllore_pagine2.dart';
 import 'package:domus_app/pages/auth_pages/registration_page.dart';
-import 'package:domus_app/pages/cliente_pages/cliente_risultati_cerca_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'pages/auth_pages/login_page.dart';

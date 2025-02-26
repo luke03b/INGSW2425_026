@@ -1,6 +1,12 @@
+import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:domus_app/class_services/annuncio_service.dart';
+import 'package:domus_app/dto/annuncio_dto.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
 import 'package:domus_app/theme/ui_constants.dart';
+import 'package:domus_app/utils/my_loading.dart';
+import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
 
 class OffertePage extends StatefulWidget {
@@ -13,6 +19,45 @@ class OffertePage extends StatefulWidget {
 class _OffertePageState extends State<OffertePage> {
 
   int _currentSliderIndex = 0;
+  List<AnnuncioDto> annunciList = [];
+  bool hasUserAnnunci = false;
+
+  // Future<void> getAnnunci() async {
+  //   try {
+  //     // Apri il loading dialog DOPO la fase di build
+  //     Future.delayed(Duration.zero, () {
+  //       LoadingHelper.showLoadingDialog(context, color: context.secondary);
+  //     });
+
+  //     List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciConOfferte();
+
+  //     if (mounted) {
+  //       setState(() {
+  //         annunciList = data;
+  //         hasUserAnnunci = annunciList.isNotEmpty;
+  //       });
+  //     }
+
+  //     Navigator.pop(context);
+
+  //   } on TimeoutException {
+  //     if (mounted) {
+  //       Navigator.pop(context);
+  //       showDialog(
+  //         context: context, 
+  //         builder: (BuildContext context) => MyInfoDialog(
+  //           title: "Connessione non riuscita", 
+  //           bodyText: "Annuncio non creato, la connessione con i nostri server non è stata stabilita correttamente.", 
+  //           buttonText: "Ok", 
+  //           onPressed: () { Navigator.pop(context); }
+  //         )
+  //       );
+  //     }
+  //   } catch (error) {
+  //     Navigator.pop(context);
+  //     print('Errore con il recupero degli annunci (il server potrebbe non essere raggiungibile) $error');
+  //   }
+  // }
 
   final List<Map<String, dynamic>> listaCase = [
     {
@@ -87,7 +132,7 @@ class _OffertePageState extends State<OffertePage> {
         elevation: 5,
         shadowColor: context.shadow,
       ),
-      body: //myCarouselSlider(context));
+      body: // myCarouselSlider(context));
       Text("ciao"));
   }
 
@@ -106,111 +151,111 @@ class _OffertePageState extends State<OffertePage> {
   //     return context.outline;
   //   }
 
-    // return CarouselSlider(
-    //   items: listaCase.asMap().entries.map((entry) {
-    //     int indice = entry.key;
-    //     Map<String, dynamic> indiceCasaCorrente = entry.value;
-    //     double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.7;
-    //     return GestureDetector(
-    //       onTap: (){
-    //         Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(casaSelezionata: indiceCasaCorrente)));
-    //       },
-    //       child: Container(
-    //         width: MediaQuery.of(context).size.width,
-    //         margin: EdgeInsets.symmetric(horizontal: 5),
-    //         decoration: BoxDecoration(
-    //           color: context.primaryContainer,
-    //           borderRadius: BorderRadius.circular(10),
-    //           shape: BoxShape.rectangle,
-    //           boxShadow: [BoxShadow(color: context.shadow.withOpacity(0.2),
-    //             spreadRadius: 5,
-    //             blurRadius: 15,
-    //             offset: Offset(0, 10),)],
-    //         ),
-    //         child: Column(
-    //           children: [
-    //             ClipRRect(
-    //               borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
-    //               child: SizedBox(
-    //                 child: Image.asset(indiceCasaCorrente['image1']))),
-    //             Row(
-    //               children: [
-    //                 Expanded(child: Image.asset(indiceCasaCorrente['image2'])),
-    //                 Expanded(child: Image.asset(indiceCasaCorrente['image3'])),
-    //               ],
-    //             ),
-    //             SizedBox(
-    //               height: scaleFactor * MediaQuery.of(context).size.height/50,
-    //             ),
-    //             Row(
-    //               children: [
-    //                 SizedBox(width: MediaQuery.of(context).size.width/45,),
-    //                 SizedBox(width: MediaQuery.of(context).size.width/45,),
-    //                 Text("La tua offerta: ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: context.outline)),
-    //                 Text(indiceCasaCorrente['offerta'], style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: context.outline)),
-    //                 Text(" EUR", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: context.outline)),
-    //               ],
-    //             ),
-    //             Row(
-    //               children: [
-    //                 SizedBox(width: MediaQuery.of(context).size.width/45,),
-    //                 SizedBox(width: MediaQuery.of(context).size.width/45,),
-    //                 Text(indiceCasaCorrente['stato_offerta'], style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
-    //                 Visibility(
-    //                   visible: indiceCasaCorrente['stato_offerta'] == "Controproposta",
-    //                   child: Row(
-    //                     children: [
-    //                       Text(": ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
-    //                       Text(indiceCasaCorrente['valore_controproposta'], style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
-    //                       Text(" EUR", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
-    //                     ],
-    //                   ),
-    //                 ),
-    //               ],
-    //             ),
-    //             Row(
-    //               children: [
-    //                 SizedBox(width: MediaQuery.of(context).size.width/45,),
-    //                 SizedBox(width: MediaQuery.of(context).size.width/45,),
-    //                 Text("Data offerta: ", style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.bold, color: context.outline)),
-    //                 Text(indiceCasaCorrente['data_offerta'], style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.normal, color: context.outline)),
-    //               ],
-    //             ),
-    //             SizedBox(
-    //               height: scaleFactor * MediaQuery.of(context).size.height/75,
-    //             ),
-    //             Row(
-    //               children: [
-    //                 SizedBox(width: MediaQuery.of(context).size.width/45,),
-    //                 SizedBox(width: MediaQuery.of(context).size.width/45,),
-    //                 Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
-    //                 Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
-    //               ],
-    //             ),
-    //             Row(
-    //               children: [
-    //                 SizedBox(width: MediaQuery.of(context).size.width/45,),
-    //                 Icon(Icons.location_on, size: scaleFactor * 22, color: context.outline,),
-    //                 SizedBox(width: MediaQuery.of(context).size.width/45,),
-    //                 Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.normal, color: context.outline)),
-    //               ],
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-    //     );
-    //   }).toList(),
-    //   options: CarouselOptions(
-    //     enableInfiniteScroll: false,
-    //     viewportFraction: 0.68,
-    //     height: 753,
-    //     enlargeCenterPage: true,
-    //     scrollDirection: Axis.vertical,
-    //     onPageChanged: (indiceCasaCorrente, reason) {
-    //       setState(() {
-    //         _currentSliderIndex = indiceCasaCorrente;
-    //       });
-    //     }
-    //   ));
-  // }
+  //   return CarouselSlider(
+  //     items: listaCase.asMap().entries.map((entry) {
+  //       int indice = entry.key;
+  //       Map<String, dynamic> indiceCasaCorrente = entry.value;
+  //       double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.7;
+  //       return GestureDetector(
+  //         onTap: (){
+  //           Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(casaSelezionata: indiceCasaCorrente)));
+  //         },
+  //         child: Container(
+  //           width: MediaQuery.of(context).size.width,
+  //           margin: EdgeInsets.symmetric(horizontal: 5),
+  //           decoration: BoxDecoration(
+  //             color: context.primaryContainer,
+  //             borderRadius: BorderRadius.circular(10),
+  //             shape: BoxShape.rectangle,
+  //             boxShadow: [BoxShadow(color: context.shadow.withOpacity(0.2),
+  //               spreadRadius: 5,
+  //               blurRadius: 15,
+  //               offset: Offset(0, 10),)],
+  //           ),
+  //           child: Column(
+  //             children: [
+  //               ClipRRect(
+  //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
+  //                 child: SizedBox(
+  //                   child: Image.asset(indiceCasaCorrente['image1']))),
+  //               Row(
+  //                 children: [
+  //                   Expanded(child: Image.asset(indiceCasaCorrente['image2'])),
+  //                   Expanded(child: Image.asset(indiceCasaCorrente['image3'])),
+  //                 ],
+  //               ),
+  //               SizedBox(
+  //                 height: scaleFactor * MediaQuery.of(context).size.height/50,
+  //               ),
+  //               Row(
+  //                 children: [
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   Text("La tua offerta: ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: context.outline)),
+  //                   Text(indiceCasaCorrente['offerta'], style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: context.outline)),
+  //                   Text(" EUR", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: context.outline)),
+  //                 ],
+  //               ),
+  //               Row(
+  //                 children: [
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   Text(indiceCasaCorrente['stato_offerta'], style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
+  //                   Visibility(
+  //                     visible: indiceCasaCorrente['stato_offerta'] == "Controproposta",
+  //                     child: Row(
+  //                       children: [
+  //                         Text(": ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
+  //                         Text(indiceCasaCorrente['valore_controproposta'], style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
+  //                         Text(" EUR", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: selettoreColoreStatoOfferta(indiceCasaCorrente['stato_offerta']))),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //               Row(
+  //                 children: [
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   Text("Data offerta: ", style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.bold, color: context.outline)),
+  //                   Text(indiceCasaCorrente['data_offerta'], style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.normal, color: context.outline)),
+  //                 ],
+  //               ),
+  //               SizedBox(
+  //                 height: scaleFactor * MediaQuery.of(context).size.height/75,
+  //               ),
+  //               Row(
+  //                 children: [
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
+  //                   Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
+  //                 ],
+  //               ),
+  //               Row(
+  //                 children: [
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   Icon(Icons.location_on, size: scaleFactor * 22, color: context.outline,),
+  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
+  //                   Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.normal, color: context.outline)),
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       );
+  //     }).toList(),
+  //     options: CarouselOptions(
+  //       enableInfiniteScroll: false,
+  //       viewportFraction: 0.68,
+  //       height: 753,
+  //       enlargeCenterPage: true,
+  //       scrollDirection: Axis.vertical,
+  //       onPageChanged: (indiceCasaCorrente, reason) {
+  //         setState(() {
+  //           _currentSliderIndex = indiceCasaCorrente;
+  //         });
+  //       }
+  //     ));
+  //}
 }

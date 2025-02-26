@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:domus_app/dto/filtri_ricerca.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
@@ -20,6 +21,8 @@ class CercaPage extends StatefulWidget {
 }
 
 class _CercaPageState extends State<CercaPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
 
   final TextEditingController _indirizzoController = TextEditingController();
 
@@ -139,6 +142,8 @@ class _CercaPageState extends State<CercaPage> {
   
   @override
   Widget build(BuildContext context) {
+    Color coloreScritte = context.onSecondary;
+    Color coloreScritte2 = context.onPrimary;
     return DefaultTabController(
       initialIndex: 0,
       length: 2,
@@ -156,50 +161,53 @@ class _CercaPageState extends State<CercaPage> {
             //tasto Compra Affitta
             myCompraAffittaButton(context),
 
-            //TextBox
-            SizedBox(
-              width: MediaQuery.sizeOf(context).width * 0.92,
-              child: GooglePlacesAutoCompleteTextFormField(
-                onChanged: (value){
-                  setState(() {
-                    latitudine = null;
-                    longitudine = null;
+            Form(
+              key: _formKey,
+              autovalidateMode: _autovalidateMode,
+              child: SizedBox(
+                width: MediaQuery.sizeOf(context).width * 0.92,
+                child: GooglePlacesAutoCompleteTextFormField(
+                  onChanged: (value){
+                    setState(() {
+                      latitudine = null;
+                      longitudine = null;
+                    });
+                  },
+                  textEditingController: _indirizzoController,
+                  googleAPIKey: "AIzaSyBUkzr-VCtKVyTTfssndaWR5Iy5TyfM0as",
+                  decoration: InputDecoration(
+                    hintText: 'Inserire una zona di ricerca',
+                    hintStyle: TextStyle(color: coloreScritte),
+                    labelText: 'Cerca',
+                    labelStyle: TextStyle(color: coloreScritte),
+                  ),
+                  style: TextStyle(color: coloreScritte2),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },
+                  // proxyURL: _yourProxyURL,
+                  maxLines: 1,
+                  overlayContainerBuilder: (child) => Material(
+                    elevation: 1.0,
+                    color: context.primary,
+                    borderRadius: BorderRadius.circular(12),
+                    child: child
+                  ),
+                  fetchCoordinates: true,
+                  onPlaceDetailsWithCoordinatesReceived: (prediction) {
+                    print('placeDetails ${prediction.lat} , ${prediction.lng}');
+                    latitudine = double.tryParse(prediction.lat ?? '');
+                    longitudine = double.tryParse(prediction.lng ?? '');
+                    print('new coordinates $latitudine , $longitudine');
                     isIndirizzoValido = true;
-                  });
-                },
-                textEditingController: _indirizzoController,
-                googleAPIKey: "AIzaSyBUkzr-VCtKVyTTfssndaWR5Iy5TyfM0as",
-                decoration: InputDecoration(
-                  hintText: 'Inserire una zona di ricerca',
-                  hintStyle: TextStyle(color: context.onSecondary),
-                  labelText: 'Cerca',
-                  labelStyle: TextStyle(color: context.onSecondary),
+                  },
+                  onSuggestionClicked: (Prediction prediction) =>
+                      _indirizzoController.text = prediction.description!,
+                  minInputLength: 3,
                 ),
-                style: TextStyle(color: context.onPrimary),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-                // proxyURL: _yourProxyURL,
-                maxLines: 1,
-                overlayContainerBuilder: (child) => Material(
-                  elevation: 1.0,
-                  color: context.primary,
-                  borderRadius: BorderRadius.circular(12),
-                  child: child
-                ),
-                fetchCoordinates: true,
-                onPlaceDetailsWithCoordinatesReceived: (prediction) {
-                  print('placeDetails ${prediction.lat} , ${prediction.lng}');
-                  latitudine = double.tryParse(prediction.lat ?? '');
-                  longitudine = double.tryParse(prediction.lng ?? '');
-                  print('new coordinates $latitudine , $longitudine');
-                },
-                onSuggestionClicked: (Prediction prediction) =>
-                    _indirizzoController.text = prediction.description!,
-                minInputLength: 3,
               ),
             ),
 
@@ -246,32 +254,11 @@ class _CercaPageState extends State<CercaPage> {
                     builder: (BuildContext context) => MyInfoDialog(title: "Errore", bodyText: "Inserire un indirizzo valido e riprovare.", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
                   );
                 } else {
+                  FiltriRicerca filtriRicerca = setCriteriRicerca();
                   Navigator.pushNamed(
                     context, 
                     '/ControllorePagine2', 
-                    arguments: {
-                      'tipoAnnuncio' : selectedCompraAffitta.first ? "VENDITA" : "AFFITTO",
-                      'latitudine': latitudine ?? 0.0,
-                      'longitudine': longitudine ?? 0.0,
-                      'raggioRicerca' : raggioRicerca,
-                      'prezzoMin' : _prezzoMinController.text.isNotEmpty ? _prezzoMinController.text : null,
-                      'prezzoMax' : _prezzoMaxController.text.isNotEmpty ? _prezzoMaxController.text : null,
-                      'superficieMin' : _superficieMinController.text.isNotEmpty ? _superficieMinController.text : null,
-                      'superficieMax' : _superficieMaxController.text.isNotEmpty ? _superficieMaxController.text : null,
-                      'nStanzeMin' : _numeroStanzeMinController.text.isNotEmpty ?  _numeroStanzeMinController.text : null,
-                      'nStanzeMax' : _numeroStanzeMaxController.text.isNotEmpty ? _numeroStanzeMaxController.text : null,
-                      'garage' : _isGarageSelected ? _isGarageSelected : null,
-                      'ascensore' : _isAscensoreSelected ? _isAscensoreSelected : null,
-                      'arredato' : _isArredatoSelected ? _isArredatoSelected : null,
-                      'giardino' : _isGiardinoSelected ? _isGiardinoSelected : null,
-                      'piscina' : _isPiscinaSelected ? _isPiscinaSelected : null,
-                      'balcone' : _isBalconeSelected ? _isBalconeSelected : null,
-                      'vicinoScuole' : _isVicinoScuoleSelected ? _isVicinoScuoleSelected : null,
-                      'vicinoParchi' : _isVicinoParchiSelected ? _isVicinoParchiSelected : null,
-                      'vicinoMezzi' : _isVicinoMezziPubbliciSelected ? _isVicinoMezziPubbliciSelected : null,
-                      'piano' : sceltaPiano == "Tutti" ? null : sceltaPiano,
-                      'classeEnergetica' : sceltaClasseEnergetica == "Tutte" ? null :  sceltaClasseEnergetica,
-                    }
+                    arguments: filtriRicerca
                   );
                 }
               },
@@ -284,6 +271,33 @@ class _CercaPageState extends State<CercaPage> {
         )
       ),
     );
+  }
+
+  FiltriRicerca setCriteriRicerca() {
+    FiltriRicerca filtriRicerca = FiltriRicerca(
+      latitudine: latitudine ?? 0.0, 
+      longitudine: longitudine ?? 0.0, 
+      tipoAnnuncio: selectedCompraAffitta.first ? "VENDITA" : "AFFITTO",
+      raggioRicerca: raggioRicerca,
+      prezzoMin : _prezzoMinController.text.isNotEmpty ? _prezzoMinController.text : null,
+      prezzoMax : _prezzoMaxController.text.isNotEmpty ? _prezzoMaxController.text : null,
+      superficieMin : _superficieMinController.text.isNotEmpty ? _superficieMinController.text : null,
+      superficieMax : _superficieMaxController.text.isNotEmpty ? _superficieMaxController.text : null,
+      nStanzeMin : _numeroStanzeMinController.text.isNotEmpty ?  _numeroStanzeMinController.text : null,
+      nStanzeMax : _numeroStanzeMaxController.text.isNotEmpty ? _numeroStanzeMaxController.text : null,
+      garage : _isGarageSelected ? _isGarageSelected : null,
+      ascensore : _isAscensoreSelected ? _isAscensoreSelected : null,
+      arredato : _isArredatoSelected ? _isArredatoSelected : null,
+      giardino : _isGiardinoSelected ? _isGiardinoSelected : null,
+      piscina : _isPiscinaSelected ? _isPiscinaSelected : null,
+      balcone : _isBalconeSelected ? _isBalconeSelected : null,
+      vicinoScuole : _isVicinoScuoleSelected ? _isVicinoScuoleSelected : null,
+      vicinoParchi : _isVicinoParchiSelected ? _isVicinoParchiSelected : null,
+      vicinoMezzi : _isVicinoMezziPubbliciSelected ? _isVicinoMezziPubbliciSelected : null,
+      piano : sceltaPiano == "Tutti" ? null : sceltaPiano,
+      classeEnergetica : sceltaClasseEnergetica == "Tutte" ? null :  sceltaClasseEnergetica,
+    );
+    return filtriRicerca;
   }
 
   Visibility myCronologia(BuildContext context, Color colorePulsanti) {

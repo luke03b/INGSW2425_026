@@ -98,7 +98,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                     Row(
                       children: [
                         SizedBox(width: 10.0),
-                        Text(widget.casaSelezionata.indirizzo, style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: context.outline),),
+                        Expanded(child: Text(widget.casaSelezionata.indirizzo, style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: context.outline),)),
                       ],
                     ),
         

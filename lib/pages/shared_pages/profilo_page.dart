@@ -18,7 +18,7 @@ class ProfiloPage extends StatefulWidget {
 }
 
 class _ProfiloPageState extends State<ProfiloPage> {
-  logout() => AWSServices().signOut();
+  logout() async => await AWSServices().signOut();
   String? nomeUtenteLoggato;
   String? cognomeUtenteLoggato;
   String? mailUtenteLoggato;
@@ -242,9 +242,9 @@ class _ProfiloPageState extends State<ProfiloPage> {
                       rightButtonText: 'Esci', 
                       rightButtonColor: context.error,
                       onPressLeftButton: (){Navigator.pop(context);}, 
-                      onPressRightButton: () async {logout(); Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);}
+                      onPressRightButton: () async {await logout(); Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);}
                     )
-                );
+              );
             }, color: context.error),
           SizedBox(height: MediaQuery.sizeOf(context).height/29),
           Align(

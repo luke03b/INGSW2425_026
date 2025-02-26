@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/class_services/annuncio_service.dart';
 import 'package:domus_app/dto/annuncio_dto.dart';
+import 'package:domus_app/dto/filtri_ricerca.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
 import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/theme/ui_constants.dart';
@@ -11,52 +12,12 @@ import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
 
 class RisultatiCercaPage extends StatefulWidget {
-  
-  final String tipoAnnuncio;
-  final double latitudine;
-  final double longitudine;
-  final double? raggioRicerca;
-  final String? prezzoMin;
-  final String? prezzoMax;
-  final String? superficieMin;
-  final String? superficieMax;
-  final String? nStanzeMin;
-  final String? nStanzeMax;
-  final bool? garage;
-  final bool? ascensore;
-  final bool? arredato;
-  final bool? giardino;
-  final bool? piscina;
-  final bool? balcone;
-  final bool? vicinoScuole;
-  final bool? vicinoParchi;
-  final bool? vicinoMezzi;
-  final String? piano;
-  final String? classeEnergetica;
+
+  final FiltriRicerca filtriRicerca;
 
   const RisultatiCercaPage({
     super.key,
-    required this.latitudine,
-    required this.longitudine,
-    required this.tipoAnnuncio,
-    this.raggioRicerca,
-    this.prezzoMin,
-    this.prezzoMax,
-    this.superficieMin,
-    this.superficieMax,
-    this.nStanzeMin,
-    this.nStanzeMax,
-    this.garage,
-    this.ascensore,
-    this.arredato,
-    this.giardino,
-    this.piscina,
-    this.balcone,
-    this.vicinoScuole,
-    this.vicinoParchi,
-    this.vicinoMezzi,
-    this.piano,
-    this.classeEnergetica,
+    required this.filtriRicerca,
   });
 
   @override
@@ -94,29 +55,7 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
         LoadingHelper.showLoadingDialog(context, color: context.secondary);
       });
 
-      List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciByCriteriDiRicerca(
-        widget.latitudine,
-        widget.longitudine,
-        widget.tipoAnnuncio,
-        raggioRicerca: widget.raggioRicerca,
-        prezzoMin: widget.prezzoMin,
-        prezzoMax: widget.prezzoMax,
-        superficieMin: widget.superficieMin,
-        superficieMax: widget.superficieMax,
-        nStanzeMin: widget.nStanzeMin,
-        nStanzeMax: widget.nStanzeMax,
-        garage: widget.garage,
-        ascensore: widget.ascensore,
-        arredato: widget.arredato,
-        giardino: widget.giardino,
-        piscina: widget.piscina,
-        balcone: widget.balcone,
-        vicinoScuole: widget.vicinoScuole,
-        vicinoParchi: widget.vicinoParchi,
-        vicinoMezzi: widget.vicinoMezzi,
-        piano: widget.piano,
-        classeEnergetica: widget.classeEnergetica,
-      );
+      List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciByCriteriDiRicerca(widget.filtriRicerca);
 
       if (mounted) {
         setState(() {
@@ -125,11 +64,11 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
         });
       }
 
-      Navigator.pop(context); // Chiudi il loading dialog
+      Navigator.pop(context);
 
     } on TimeoutException {
       if (mounted) {
-        Navigator.pop(context); // Chiudi il loading dialog prima di mostrare l'errore
+        Navigator.pop(context);
         showDialog(
           context: context, 
           builder: (BuildContext context) => MyInfoDialog(
@@ -235,10 +174,6 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
               color: context.primaryContainer,
               borderRadius: BorderRadius.circular(10),
               shape: BoxShape.rectangle,
-              boxShadow: [BoxShadow(color: context.shadow.withOpacity(0.2),
-                spreadRadius: 5,
-                blurRadius: 15,
-                offset: Offset(0, 10),)],
             ),
             child: Column(
               children: [
@@ -271,7 +206,11 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     Icon(Icons.location_on, size: scaleFactor * GRANDEZZA_ICONE, color: context.outline,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(casaCorrente.indirizzo, style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline), softWrap: true),
+                    Expanded(
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(casaCorrente.indirizzo, style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline), softWrap: true,)),
+                      ),
                   ],
                 ),
               ],

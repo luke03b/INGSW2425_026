@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:domus_app/class_services/utente_service.dart';
 import 'package:domus_app/communication_utils/url_builder.dart';
 import 'package:domus_app/dto/annuncio_dto.dart';
+import 'package:domus_app/dto/filtri_ricerca.dart';
 import 'package:domus_app/dto/utente_dto.dart';
 import 'package:domus_app/services/aws_cognito.dart';
 import 'package:http/http.dart' as http;
@@ -129,53 +130,32 @@ class AnnuncioService {
     return recuperaAnnunciByAgenteSub(sub!);
   }
 
-  static Future<List<AnnuncioDto>> recuperaAnnunciByCriteriDiRicerca(
-    double latitudine,
-    double longitudine,
-    String tipoAnnuncio, {
-    double? raggioRicerca,
-    String? prezzoMin,
-    String? prezzoMax,
-    String? superficieMin,
-    String? superficieMax,
-    String? nStanzeMin,
-    String? nStanzeMax,
-    bool? garage,
-    bool? ascensore,
-    bool? arredato,
-    bool? giardino,
-    bool? piscina,
-    bool? balcone,
-    bool? vicinoScuole,
-    bool? vicinoParchi,
-    bool? vicinoMezzi,
-    String? piano,
-    String? classeEnergetica,
-  }) async {
+  static Future<List<AnnuncioDto>> recuperaAnnunciByCriteriDiRicerca(FiltriRicerca filtriRicerca) async {
     try{
       print("chiamo il server");
       http.Response response = await chiamataHTTPrecuperaAnnunciByCriteriDiRicerca(
-        latitudine, 
-        longitudine, 
-        tipoAnnuncio, 
-        raggioRicerca,
-        prezzoMin: prezzoMin,
-        prezzoMax: prezzoMax,
-        superficieMin: superficieMin,
-        superficieMax: superficieMax,
-        nStanzeMin: nStanzeMin,
-        nStanzeMax: nStanzeMax,
-        garage: garage,
-        ascensore: ascensore,
-        arredato: arredato,
-        giardino: giardino,
-        piscina: piscina,
-        balcone: balcone,
-        vicinoScuole: vicinoScuole,
-        vicinoParchi: vicinoParchi,
-        vicinoMezzi: vicinoMezzi,
-        piano: piano,
-        classeEnergetica: classeEnergetica,);
+        filtriRicerca.latitudine,
+        filtriRicerca.longitudine, 
+        filtriRicerca.tipoAnnuncio, 
+        filtriRicerca.raggioRicerca,
+        prezzoMin: filtriRicerca.prezzoMin,
+        prezzoMax: filtriRicerca.prezzoMax,
+        superficieMin: filtriRicerca.superficieMin,
+        superficieMax: filtriRicerca.superficieMax,
+        nStanzeMin: filtriRicerca.nStanzeMin,
+        nStanzeMax: filtriRicerca.nStanzeMax,
+        garage: filtriRicerca.garage,
+        ascensore: filtriRicerca.ascensore,
+        arredato: filtriRicerca.arredato,
+        giardino: filtriRicerca.giardino,
+        piscina: filtriRicerca.piscina,
+        balcone: filtriRicerca.balcone,
+        vicinoScuole: filtriRicerca.vicinoScuole,
+        vicinoParchi: filtriRicerca.vicinoParchi,
+        vicinoMezzi: filtriRicerca.vicinoMezzi,
+        piano: filtriRicerca.piano,
+        classeEnergetica: filtriRicerca.classeEnergetica
+      );
       
       if(response.statusCode == 200){
         List<dynamic> data = json.decode(response.body);
@@ -264,11 +244,80 @@ class AnnuncioService {
   }
 
   static Map<String, String> filterQueryParams(Map<String, String> params) {
-    // Rimuovi i parametri o nulli o vuoti o false
+    // Rimuove i parametri o nulli o vuoti o false
     params.removeWhere((key, value) {
-      return value == "false" || value.isEmpty || value == "null";
+      return value == "false" || value.isEmpty || value == "null" || value == "NULL";
     });
     return params;
   }
+
+  // static Future<List<AnnuncioDto>> recuperaAnnunciConOfferte() async {
+  //   try{
+  //     print("chiamo il server");
+  //     http.Response response = await chiamataHTTPrecuperaAnnunciConOfferte();
+      
+  //     if(response.statusCode == 200){
+  //       List<dynamic> data = json.decode(response.body);
+
+  //       List<AnnuncioDto> annunci = data.map((item) => AnnuncioDto.fromJson(item)).toList();
+  //       return annunci;        
+  //     }
+  //     else{
+  //       throw Exception("Errore nel recupero degli annunci");
+  //     }
+
+  //   } on TimeoutException {
+  //     throw Exception("Errore nel recupero degli annunci. Timeout");
+  //   }
+  // }
+
+  // static Future<http.Response> chiamataHTTPrecuperaAnnunciConOfferte() async {
+  //   final url = Urlbuilder.createUrl(
+  //     Urlbuilder.LOCALHOST_ANDROID, 
+  //     Urlbuilder.PORTA_SPRINGBOOT, 
+  //     Urlbuilder.ENDPOINT_ANNUNCI,
+  //     queryParams: filterQueryParams({
+  //       'tipo_annuncio' : tipoAnnuncio.toString().toUpperCase(),
+  //       'latitudine': latitudine.toString(),
+  //       'longitudine': longitudine.toString(),
+  //       'raggioKm' : raggioRicerca.toString(),
+  //       'prezzoMinimo' : prezzoMin.toString(),
+  //       'prezzoMassimo' :prezzoMax.toString(),
+  //       'superficieMinima' :superficieMin.toString(),
+  //       'superficieMassima' : superficieMax.toString(),
+  //       'numStanzeMinime' :nStanzeMin.toString(),
+  //       'numStanzeMassime' : nStanzeMax.toString(),
+  //       'garage' : garage.toString(),
+  //       'ascensore' : ascensore.toString(),
+  //       'arredo' : arredato.toString(),
+  //       'giardino' : giardino.toString(),
+  //       'piscina' : piscina.toString(),
+  //       'balcone' : balcone.toString(),
+  //       'vicino_scuole' : vicinoScuole.toString(),
+  //       'vicino_parchi' : vicinoParchi.toString(),
+  //       'vicino_trasporti' : vicinoMezzi.toString(),
+  //       'piano' : piano.toString().toUpperCase(),
+  //       'classeEnergetica' : classeEnergetica.toString().toUpperCase(),
+  //     })
+  //   );
+
+  //   print("\n\n\n\n\n\n\n\n\n\n\n");
+  //   print(url);
+  //   print("\n\n\n\n\n\n\n\n\n\n\n");
+
+  //   final response = await http.get(
+  //     url,
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   ).timeout(
+  //     const Duration(seconds: 30),
+  //     onTimeout: () {
+  //       throw TimeoutException("Il server non risponde.");
+  //     },
+  //   );
+    
+  //   return response;
+  // }
 
 }

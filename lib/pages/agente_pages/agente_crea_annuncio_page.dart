@@ -303,65 +303,55 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                     padding: const EdgeInsets.all(20),
                     child: Row(
                       children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Form(
-                              key: _formKey,
-                              autovalidateMode: _autovalidateMode,
-                              child: SizedBox(
-                                width: 309,
-                                child: GooglePlacesAutoCompleteTextFormField(
-                                  onChanged: (value){setState(() {
-                                    latitude = null;
-                                    longitude = null;
-                                    isIndirizzoValidato = false;
-                                    isIndirizzoOk = true;
-                                  });},
-                                  textEditingController: indirizzoController,
-                                  googleAPIKey: "AIzaSyBUkzr-VCtKVyTTfssndaWR5Iy5TyfM0as",
-                                  decoration: InputDecoration(
-                                    hintText: 'Inserire un indirizzo',
-                                    hintStyle: TextStyle(color: coloreScritte),
-                                    labelText: 'Indirizzo',
-                                    labelStyle: TextStyle(color: isIndirizzoOk ? context.onSecondary : coloreErrore),
-                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.outline),),
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  style: TextStyle(color: context.onPrimary),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Please enter some text';
-                                    }
-                                    return null;
-                                  },
-                                  // proxyURL: _yourProxyURL,
-                                  maxLines: 1,
-                                  overlayContainerBuilder: (child) => Material(
-                                    elevation: 1.0,
-                                    color: coloreSfondo,
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: child
-                                  ),
-                                  fetchCoordinates: true,
-                                  onPlaceDetailsWithCoordinatesReceived: (prediction) {
-                                    print('placeDetails ${prediction.lat} , ${prediction.lng}');
-                                    latitude = double.tryParse(prediction.lat ?? '');
-                                    longitude = double.tryParse(prediction.lng ?? '');
-                                    print('new coordinates $latitude , $longitude');
-                                  },
-                                  onSuggestionClicked: (Prediction prediction) =>
-                                      indirizzoController.text = prediction.description!,
-                                  minInputLength: 3,
-                                ),
+                        Form(
+                          key: _formKey,
+                          autovalidateMode: _autovalidateMode,
+                          child: SizedBox(
+                            width: 309,
+                            child: GooglePlacesAutoCompleteTextFormField(
+                              onChanged: (value){setState(() {
+                                latitude = null;
+                                longitude = null;
+                                isIndirizzoValidato = false;
+                                isIndirizzoOk = true;
+                              });},
+                              textEditingController: indirizzoController,
+                              googleAPIKey: "AIzaSyBUkzr-VCtKVyTTfssndaWR5Iy5TyfM0as",
+                              decoration: InputDecoration(
+                                hintText: 'Inserire un indirizzo',
+                                hintStyle: TextStyle(color: coloreScritte),
+                                labelText: 'Indirizzo',
+                                labelStyle: TextStyle(color: isIndirizzoOk ? context.onSecondary : coloreErrore),
+                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: context.outline),),
+                                border: OutlineInputBorder(),
                               ),
+                              style: TextStyle(color: context.onPrimary),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter some text';
+                                }
+                                return null;
+                              },
+                              // proxyURL: _yourProxyURL,
+                              maxLines: 1,
+                              overlayContainerBuilder: (child) => Material(
+                                elevation: 1.0,
+                                color: coloreSfondo,
+                                borderRadius: BorderRadius.circular(12),
+                                child: child
+                              ),
+                              fetchCoordinates: true,
+                              onPlaceDetailsWithCoordinatesReceived: (prediction) {
+                                print('placeDetails ${prediction.lat} , ${prediction.lng}');
+                                latitude = double.tryParse(prediction.lat ?? '');
+                                longitude = double.tryParse(prediction.lng ?? '');
+                                print('new coordinates $latitude , $longitude');
+                              },
+                              onSuggestionClicked: (Prediction prediction) =>
+                                  indirizzoController.text = prediction.description!,
+                              minInputLength: 3,
                             ),
-                            // const SizedBox(height: 24),
-                            // TextButton(
-                            //   onPressed: _onSubmit,
-                            //   child: const Text('Submit'),
-                            // ),
-                          ],
+                          ),
                         ),
                         SizedBox(width: 10,),
                         Container(
@@ -746,7 +736,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                       context: context, 
                       builder: (BuildContext context) => MyInfoDialog(
                         title: "Connessione non riuscita", 
-                        bodyText: "Annuncio non creato, la connessione con i nostri server non è stata stabilita correttamente.", 
+                        bodyText: "Annuncio non creato, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
                         buttonText: "Ok", 
                         onPressed: () {Navigator.pop(context);}
                       )
@@ -758,7 +748,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                       context: context, 
                       builder: (BuildContext context) => MyInfoDialog(
                         title: "Errore",
-                        bodyText: "Annuncio non creato. Errore che non riguarda la connessione con i nostri server e l'inserimento errato dei campi.", 
+                        bodyText: "Annuncio non creato. Il server potrebbe non essere raggiungibile. Riprova più tardi.", 
                         buttonText: "Ok", 
                         onPressed: () {Navigator.pop(context);}
                       )
