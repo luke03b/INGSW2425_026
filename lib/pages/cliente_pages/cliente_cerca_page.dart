@@ -15,6 +15,7 @@ import 'package:domus_app/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 import '../../utils/my_loading.dart';
 
@@ -449,7 +450,7 @@ class _CercaPageState extends State<CercaPage> {
       items: annunciRecentiList.asMap().entries.map((entry) {
         int indice = entry.key;
         AnnuncioDto annuncioCorrente = entry.value;
-        double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.7;
+        double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.5;
         return GestureDetector(
           onTap: (){
             Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(annuncioSelezionato: annuncioCorrente)));
@@ -491,10 +492,18 @@ class _CercaPageState extends State<CercaPage> {
                     Icon(Icons.location_on, size: scaleFactor * 22, color: context.outline,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     Expanded(
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(annuncioCorrente.indirizzo, style: TextStyle(fontSize: scaleFactor * 18, fontWeight: FontWeight.normal, color: context.outline), softWrap: true,)),
-                    ),
+                      child: AutoSizeText(
+                        annuncioCorrente.indirizzo,
+                        style: TextStyle(
+                          fontSize: scaleFactor * 18,
+                          fontWeight: FontWeight.normal,
+                          color: context.outline,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        minFontSize: 12,
+                      ),
+                    )
                   ],
                 ),
               ],
