@@ -77,6 +77,8 @@ class _CercaPageState extends State<CercaPage> {
   String sceltaClasseEnergetica = listaClassiEnergetiche.first;
   String sceltaPiano = listaPiani.first;
 
+  bool areFiltriValidi = true;
+
   int _currentSliderIndex = 0;
 
   final List<Map<String, dynamic>> listaCase = [
@@ -273,10 +275,11 @@ class _CercaPageState extends State<CercaPage> {
             MyElevatedButtonWidget(
               text: "Cerca",
               onPressed: (){
-                if(_indirizzoController.text.isEmpty || !isIndirizzoOk){
+                controllaFiltri();
+                if(_indirizzoController.text.isEmpty || !isIndirizzoOk || !areFiltriValidi){
                   showDialog(
                     context: context, 
-                    builder: (BuildContext context) => MyInfoDialog(title: "Errore", bodyText: "Inserire un indirizzo valido e riprovare.", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
+                    builder: (BuildContext context) => MyInfoDialog(title: "Errore", bodyText: "Compilare i campi correttamente e riprovare", buttonText: "Ok", onPressed: (){Navigator.pop(context); areFiltriValidi = true;})
                   );
                 } else {
                   FiltriRicerca filtriRicerca = setCriteriRicerca();
@@ -296,6 +299,25 @@ class _CercaPageState extends State<CercaPage> {
         )
       ),
     );
+  }
+
+  void controllaFiltri() {
+    if(_prezzoMaxController.text.isNotEmpty && _prezzoMinController.text.isNotEmpty) {
+      if(int.parse(_prezzoMaxController.text) < int.parse(_prezzoMinController.text)){
+        areFiltriValidi = false;
+      }
+    }
+    if(_superficieMaxController.text.isNotEmpty && _superficieMinController.text.isNotEmpty) {
+      if(int.parse(_superficieMaxController.text) < int.parse(_superficieMinController.text)){
+        areFiltriValidi = false;
+      }
+    }
+    
+    if(_numeroStanzeMaxController.text.isNotEmpty && _numeroStanzeMinController.text.isNotEmpty) {
+      if(int.parse(_numeroStanzeMaxController.text) < int.parse(_numeroStanzeMinController.text)){
+        areFiltriValidi = false;
+      }
+    }
   }
 
   FiltriRicerca setCriteriRicerca() {
@@ -416,7 +438,7 @@ class _CercaPageState extends State<CercaPage> {
   Visibility myParametriRicercaAvanzata(Color colorePulsanti, BuildContext context) {
     return Visibility(
             visible: _ricercaAvanzataVisibile,
-            child: Container(
+            child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.5,
               child: Scrollbar(
                 controller: _ricercaAvanzataScrollableController,
@@ -429,9 +451,10 @@ class _CercaPageState extends State<CercaPage> {
                     children: [
                       
                       RadiusSlider(
+                        initialRadius: raggioRicerca,
                         onChanged: (value) {
                           setState(() {
-                            raggioRicerca = value; // Aggiorna lo stato con il nuovo valore
+                            raggioRicerca = value;
                           });
                         }
                       ),

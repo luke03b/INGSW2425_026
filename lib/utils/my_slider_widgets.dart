@@ -4,21 +4,23 @@ import 'package:table_calendar/table_calendar.dart';
 
 class RadiusSlider extends StatefulWidget {
   final Function(double) onChanged;
+  final double initialRadius;
   
-  const RadiusSlider({Key? key, required this.onChanged}) : super(key: key);
+  const RadiusSlider({Key? key, required this.onChanged, required this.initialRadius}) : super(key: key);
 
   @override
   _RadiusSliderState createState() => _RadiusSliderState();
 }
 
 class _RadiusSliderState extends State<RadiusSlider> {
-  double _radius = 2; // Valore iniziale del raggio in km
+  double _radius = 2;
   final TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _controller.text = _radius.toString();
+    _radius = widget.initialRadius;
+    _controller.text = widget.initialRadius.toString();
   }
 
   @override
