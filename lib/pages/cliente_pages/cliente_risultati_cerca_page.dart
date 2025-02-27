@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/class_services/annuncio_service.dart';
 import 'package:domus_app/dto/annuncio_dto.dart';
-import 'package:domus_app/dto/filtri_ricerca.dart';
+import 'package:domus_app/dto/filtri_ricerca_dto.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
 import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/theme/ui_constants.dart';
@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 
 class RisultatiCercaPage extends StatefulWidget {
 
-  final FiltriRicerca filtriRicerca;
+  final FiltriRicercaDto filtriRicerca;
 
   const RisultatiCercaPage({
     super.key,

@@ -1,4 +1,4 @@
-import 'package:domus_app/dto/filtri_ricerca.dart';
+import 'package:domus_app/dto/filtri_ricerca_dto.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_prenotazioni_page.dart';
 import 'package:domus_app/pages/shared_pages/profilo_page.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_risultati_cerca_page.dart';
@@ -24,7 +24,7 @@ class _ControllorePagine2State extends State<ControllorePagine2> {
 
   @override
   Widget build(BuildContext context) {
-    final FiltriRicerca filtriRicerca = ModalRoute.of(context)?.settings.arguments as FiltriRicerca;
+    final FiltriRicercaDto filtriRicerca = ModalRoute.of(context)?.settings.arguments as FiltriRicercaDto;
 
     final List<Widget> pages = [
       RisultatiCercaPage(filtriRicerca: filtriRicerca,),

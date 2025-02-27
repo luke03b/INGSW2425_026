@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:domus_app/class_services/utente_service.dart';
 import 'package:domus_app/communication_utils/url_builder.dart';
 import 'package:domus_app/dto/annuncio_dto.dart';
-import 'package:domus_app/dto/filtri_ricerca.dart';
+import 'package:domus_app/dto/cronologia_dto.dart';
+import 'package:domus_app/dto/filtri_ricerca_dto.dart';
 import 'package:domus_app/dto/utente_dto.dart';
 import 'package:domus_app/services/aws_cognito.dart';
 import 'package:http/http.dart' as http;
@@ -129,9 +130,8 @@ class AnnuncioService {
     return recuperaAnnunciByAgenteSub(sub!);
   }
 
-  static Future<List<AnnuncioDto>> recuperaAnnunciByCriteriDiRicerca(FiltriRicerca filtriRicerca) async {
+  static Future<List<AnnuncioDto>> recuperaAnnunciByCriteriDiRicerca(FiltriRicercaDto filtriRicerca) async {
     try{
-      print("chiamo il server");
       http.Response response = await chiamataHTTPrecuperaAnnunciByCriteriDiRicerca(filtriRicerca);
       
       if(response.statusCode == 200){
@@ -148,12 +148,12 @@ class AnnuncioService {
     }
   }
 
-  static Future<http.Response> chiamataHTTPrecuperaAnnunciByCriteriDiRicerca(FiltriRicerca filtriRicerca) async {
+  static Future<http.Response> chiamataHTTPrecuperaAnnunciByCriteriDiRicerca(FiltriRicercaDto filtriRicerca) async {
     final url = Urlbuilder.createUrl(
       Urlbuilder.LOCALHOST_ANDROID, 
       Urlbuilder.PORTA_SPRINGBOOT, 
       Urlbuilder.ENDPOINT_ANNUNCI,
-      queryParams: filtriRicerca.toJson(filtriRicerca)
+      queryParams: filtriRicerca.toJson()
     );
 
     print("\n\n\n\n\n\n\n\n\n\n\n");
@@ -175,73 +175,54 @@ class AnnuncioService {
     return response;
   }
 
-  // static Future<List<AnnuncioDto>> recuperaAnnunciConOfferte() async {
-  //   try{
-  //     print("chiamo il server");
-  //     http.Response response = await chiamataHTTPrecuperaAnnunciConOfferte();
+  static Future<List<AnnuncioDto>> recuperaAnnunciRecentementeVisusalizzatiCliente(String sub) async {
+    try{
+      http.Response response = await chiamataHTTPrecuperaAnnunciRecentementeVisusalizzatiCliente(sub);
       
-  //     if(response.statusCode == 200){
-  //       List<dynamic> data = json.decode(response.body);
+      if(response.statusCode == 200){
+        List<dynamic> data = json.decode(response.body);
 
-  //       List<AnnuncioDto> annunci = data.map((item) => AnnuncioDto.fromJson(item)).toList();
-  //       return annunci;        
-  //     }
-  //     else{
-  //       throw Exception("Errore nel recupero degli annunci");
-  //     }
+        List<AnnuncioDto> annunci = data.map((item) => AnnuncioDto.fromJson(item)).toList();
+        return annunci;        
+      }else{
+        throw Exception("Errore nel recupero degli annunci (non timeout)");
+      }
 
-  //   } on TimeoutException {
-  //     throw Exception("Errore nel recupero degli annunci. Timeout");
-  //   }
-  // }
+    } on TimeoutException {
+      throw TimeoutException("Errore nel recupero degli annunci. Timeout");
+    }
+  }
 
-  // static Future<http.Response> chiamataHTTPrecuperaAnnunciConOfferte() async {
-  //   final url = Urlbuilder.createUrl(
-  //     Urlbuilder.LOCALHOST_ANDROID, 
-  //     Urlbuilder.PORTA_SPRINGBOOT, 
-  //     Urlbuilder.ENDPOINT_ANNUNCI,
-  //     queryParams: filterQueryParams({
-  //       'tipo_annuncio' : tipoAnnuncio.toString().toUpperCase(),
-  //       'latitudine': latitudine.toString(),
-  //       'longitudine': longitudine.toString(),
-  //       'raggioKm' : raggioRicerca.toString(),
-  //       'prezzoMinimo' : prezzoMin.toString(),
-  //       'prezzoMassimo' :prezzoMax.toString(),
-  //       'superficieMinima' :superficieMin.toString(),
-  //       'superficieMassima' : superficieMax.toString(),
-  //       'numStanzeMinime' :nStanzeMin.toString(),
-  //       'numStanzeMassime' : nStanzeMax.toString(),
-  //       'garage' : garage.toString(),
-  //       'ascensore' : ascensore.toString(),
-  //       'arredo' : arredato.toString(),
-  //       'giardino' : giardino.toString(),
-  //       'piscina' : piscina.toString(),
-  //       'balcone' : balcone.toString(),
-  //       'vicino_scuole' : vicinoScuole.toString(),
-  //       'vicino_parchi' : vicinoParchi.toString(),
-  //       'vicino_trasporti' : vicinoMezzi.toString(),
-  //       'piano' : piano.toString().toUpperCase(),
-  //       'classeEnergetica' : classeEnergetica.toString().toUpperCase(),
-  //     })
-  //   );
+  static Future<http.Response> chiamataHTTPrecuperaAnnunciRecentementeVisusalizzatiCliente(String sub) async {
+    final url = Urlbuilder.createUrl(
+      Urlbuilder.LOCALHOST_ANDROID, 
+      Urlbuilder.PORTA_SPRINGBOOT, 
+      Urlbuilder.ENDPOINT__ANNUNCI_RECENTI_CLIENTE,
+      queryParams: {'sub' : sub}
+    );
 
-  //   print("\n\n\n\n\n\n\n\n\n\n\n");
-  //   print(url);
-  //   print("\n\n\n\n\n\n\n\n\n\n\n");
+    print("\n\n\n\n\n\n\n\n\n\n\n");
+    print(url);
+    print("\n\n\n\n\n\n\n\n\n\n\n");
 
-  //   final response = await http.get(
-  //     url,
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   ).timeout(
-  //     const Duration(seconds: 30),
-  //     onTimeout: () {
-  //       throw TimeoutException("Il server non risponde.");
-  //     },
-  //   );
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    ).timeout(
+      const Duration(seconds: 30),
+      onTimeout: () {
+        throw TimeoutException("Il server non risponde.");
+      },
+    );
     
-  //   return response;
-  // }
+    return response;
+  }
+
+  static Future<List<AnnuncioDto>> recuperaAnnunciByClienteLoggato() async{
+    String? sub = await AWSServices().recuperaSubUtenteLoggato();
+    return recuperaAnnunciRecentementeVisusalizzatiCliente(sub!);
+  }
 
 }

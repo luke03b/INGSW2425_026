@@ -1,4 +1,6 @@
-class FiltriRicerca {
+import 'package:domus_app/dto/dto.dart';
+
+class FiltriRicercaDto implements DTO {
   final String tipoAnnuncio;
   final double latitudine;
   final double longitudine;
@@ -21,7 +23,7 @@ class FiltriRicerca {
   final String? piano;
   final String? classeEnergetica;
 
-  const FiltriRicerca({
+  const FiltriRicercaDto({
     required this.latitudine,
     required this.longitudine,
     required this.tipoAnnuncio,
@@ -45,7 +47,8 @@ class FiltriRicerca {
     this.classeEnergetica,
   });
 
-  Map<String, dynamic> toJson(FiltriRicerca filtri) {
+  @override
+  Map<String, dynamic> toJson() {
     return _filterQueryParams({
       'tipo_annuncio' : tipoAnnuncio.toString().toUpperCase(),
       'latitudine': latitudine.toString(),

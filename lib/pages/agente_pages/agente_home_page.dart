@@ -261,10 +261,10 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
                     Icon(Icons.location_on, size: scaleFactor * GRANDEZZA_ICONE, color: context.outline,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     Expanded(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(annuncioCorrente.indirizzo, style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline), softWrap: true,)),
-                      ),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(annuncioCorrente.indirizzo, style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline), softWrap: true,)),
+                    ),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                   ],
                 ),

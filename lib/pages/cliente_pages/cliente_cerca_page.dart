@@ -1,6 +1,12 @@
+import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:domus_app/dto/filtri_ricerca.dart';
+import 'package:domus_app/class_services/annuncio_service.dart';
+import 'package:domus_app/dto/annuncio_dto.dart';
+import 'package:domus_app/dto/filtri_ricerca_dto.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
+import 'package:domus_app/services/aws_cognito.dart';
+import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
@@ -9,6 +15,8 @@ import 'package:domus_app/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
+
+import '../../utils/my_loading.dart';
 
 const List<String> listaClassiEnergetiche = <String>['Tutte', 'A4', 'A3', 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G'];
 const List<String> listaPiani = <String>['Tutti', 'Terra', 'Intermedio', 'Ultimo'];
@@ -21,6 +29,7 @@ class CercaPage extends StatefulWidget {
 }
 
 class _CercaPageState extends State<CercaPage> {
+  List<AnnuncioDto> annunciRecentiList = [];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
 
@@ -79,6 +88,8 @@ class _CercaPageState extends State<CercaPage> {
 
   bool areFiltriValidi = true;
 
+  bool hasUserAnnunciRecenti = false;
+
   int _currentSliderIndex = 0;
 
   final List<Map<String, dynamic>> listaCase = [
@@ -135,6 +146,67 @@ class _CercaPageState extends State<CercaPage> {
     },
 
   ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    
+    // Esegui getAnnunci dopo la fase di build
+    Future.delayed(Duration.zero, () {
+      getAnnunciRecenti();
+    });
+  }
+
+  Future<void> getAnnunciRecenti() async {
+    try {
+      // Apri il loading dialog DOPO la fase di build
+      Future.delayed(Duration.zero, () {
+        LoadingHelper.showLoadingDialog(context, color: context.secondary);
+      });
+
+      List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciByClienteLoggato();
+
+      if (mounted) {
+        setState(() {
+          annunciRecentiList = data;
+          hasUserAnnunciRecenti = annunciRecentiList.isNotEmpty;
+        });
+      }
+
+      Navigator.pop(context);
+
+    } on TimeoutException {
+      if (mounted) {
+        Navigator.pop(context);
+        showDialog(
+          context: context, 
+          builder: (BuildContext context) => MyInfoDialog(
+            title: "Connessione non riuscita", 
+            bodyText: "Non è stato possibile recuperare gli annunci, la connessione con i nostri server non è stata stabilita correttamente.", 
+            buttonText: "Ok", 
+            onPressed: () { Navigator.pop(context);}
+          )
+        );
+      }
+    } catch (error) {
+      Navigator.pop(context);
+      showDialog(
+          context: context, 
+          builder: (BuildContext context) => MyInfoDialog(
+            title: "Connessione non riuscita", 
+            bodyText: "Non è stato possibile recuperare gli annunci, Probabilmente i server non sono raggiungibili.", 
+            buttonText: "Ok", 
+            onPressed: () { Navigator.pop(context);}
+          )
+        );
+      print('Errore con il recupero degli annunci (il server potrebbe non essere raggiungibile) $error');
+    }
+  }
 
   void _toggleRicercaAvanzata(){
     setState(() {
@@ -282,7 +354,7 @@ class _CercaPageState extends State<CercaPage> {
                     builder: (BuildContext context) => MyInfoDialog(title: "Errore", bodyText: "Compilare i campi correttamente e riprovare", buttonText: "Ok", onPressed: (){Navigator.pop(context); areFiltriValidi = true;})
                   );
                 } else {
-                  FiltriRicerca filtriRicerca = setCriteriRicerca();
+                  FiltriRicercaDto filtriRicerca = setCriteriRicerca();
                   Navigator.pushNamed(
                     context, 
                     '/ControllorePagine2', 
@@ -320,8 +392,8 @@ class _CercaPageState extends State<CercaPage> {
     }
   }
 
-  FiltriRicerca setCriteriRicerca() {
-    FiltriRicerca filtriRicerca = FiltriRicerca(
+  FiltriRicercaDto setCriteriRicerca() {
+    FiltriRicercaDto filtriRicerca = FiltriRicercaDto(
       latitudine: latitudine ?? 0.0, 
       longitudine: longitudine ?? 0.0, 
       tipoAnnuncio: selectedCompraAffitta.first ? "VENDITA" : "AFFITTO",
@@ -363,77 +435,81 @@ class _CercaPageState extends State<CercaPage> {
               Text('Ultime visite', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: colorePulsanti),),
             ],
           ),
-          // myCarouselSlider(context),
+          myCarouselSlider(context),
         ],
       )
     );
   }
 
-  // CarouselSlider myCarouselSlider(BuildContext context) {
-  //   return CarouselSlider(
-  //     items: listaCase.asMap().entries.map((entry) {
-  //       int indice = entry.key;
-  //       Map<String, dynamic> indiceCasaCorrente = entry.value;
-  //       double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.7;
-  //       return GestureDetector(
-  //         onTap: (){
-  //           Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(casaSelezionata: indiceCasaCorrente)));
-  //         },
-  //         child: Container(
-  //           width: MediaQuery.of(context).size.width,
-  //           margin: EdgeInsets.symmetric(horizontal: 5),
-  //           decoration: BoxDecoration(
-  //             color: context.primaryContainer, 
-  //             borderRadius: BorderRadius.circular(10),
-  //             shape: BoxShape.rectangle,
-  //           ),
-  //           child: Column(
-  //             children: [
-  //               ClipRRect(
-  //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
-  //                 child: SizedBox(
-  //                   child: Image.asset(indiceCasaCorrente['image1']))),
-  //               Row(
-  //                 children: [
-  //                   Expanded(child: Image.asset(indiceCasaCorrente['image2'])),
-  //                   Expanded(child: Image.asset(indiceCasaCorrente['image3'])),
-  //                 ],
-  //               ),
-  //               SizedBox(
-  //                 height: scaleFactor * MediaQuery.of(context).size.height/50,
-  //               ),
-  //               Row(
-  //                 children: [
-  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
-  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
-  //                   Text(indiceCasaCorrente['prezzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline),),
-  //                   Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline),),
-  //                 ],
-  //               ),
-  //               Row(
-  //                 children: [
-  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
-  //                   Icon(Icons.location_on, size: scaleFactor * 22, color: context.outline,),
-  //                   SizedBox(width: MediaQuery.of(context).size.width/45,),
-  //                   Text(indiceCasaCorrente['indirizzo'], style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.normal, color: context.outline)),
-  //                 ],
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       );
-  //     }).toList(),
-  //     options: CarouselOptions(
-  //       viewportFraction: 0.8,
-  //       height: 360,
-  //       enlargeCenterPage: true,
-  //       onPageChanged: (indiceCasaCorrente, reason) {
-  //         setState(() {
-  //           _currentSliderIndex = indiceCasaCorrente;
-  //         });
-  //       }
-  //     ));
-  // }
+  CarouselSlider myCarouselSlider(BuildContext context) {
+    return CarouselSlider(
+      items: annunciRecentiList.asMap().entries.map((entry) {
+        int indice = entry.key;
+        AnnuncioDto annuncioCorrente = entry.value;
+        double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.7;
+        return GestureDetector(
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(casaSelezionata: annuncioCorrente)));
+          },
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            margin: EdgeInsets.symmetric(horizontal: 5),
+            decoration: BoxDecoration(
+              color: context.primaryContainer, 
+              borderRadius: BorderRadius.circular(10),
+              shape: BoxShape.rectangle,
+            ),
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
+                  child: SizedBox(
+                    child: Image.asset("lib/assets/casa1_1_placeholder.png"))),
+                Row(
+                  children: [
+                    Expanded(child: Image.asset("lib/assets/casa1_1_placeholder.png")),
+                    Expanded(child: Image.asset("lib/assets/casa1_1_placeholder.png")),
+                  ],
+                ),
+                SizedBox(
+                  height: scaleFactor * MediaQuery.of(context).size.height/50,
+                ),
+                Row(
+                  children: [
+                    SizedBox(width: MediaQuery.of(context).size.width/45,),
+                    SizedBox(width: MediaQuery.of(context).size.width/45,),
+                    Text(FormatStrings.formatNumber(annuncioCorrente.prezzo), style: TextStyle(fontSize: scaleFactor * 23, fontWeight: FontWeight.bold, color: context.outline)),
+                    Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline),),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(width: MediaQuery.of(context).size.width/45,),
+                    Icon(Icons.location_on, size: scaleFactor * 22, color: context.outline,),
+                    SizedBox(width: MediaQuery.of(context).size.width/45,),
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(annuncioCorrente.indirizzo, style: TextStyle(fontSize: scaleFactor * 18, fontWeight: FontWeight.normal, color: context.outline), softWrap: true,)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      }).toList(),
+      options: CarouselOptions(
+        viewportFraction: 0.8,
+        height: 360,
+        enlargeCenterPage: true,
+        onPageChanged: (indiceCasaCorrente, reason) {
+          setState(() {
+            _currentSliderIndex = indiceCasaCorrente;
+          });
+        }
+      ));
+  }
 
   Visibility myParametriRicercaAvanzata(Color colorePulsanti, BuildContext context) {
     return Visibility(

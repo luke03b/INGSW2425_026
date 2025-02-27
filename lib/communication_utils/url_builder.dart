@@ -5,6 +5,7 @@ class Urlbuilder {
   static final String ENDPOINT_ANNUNCI = "api/annunci";
   static final String ENDOPOINT_UTENTI = "api/users";
   static final String ENDOPOINT_ANNUNCI_AGENTE = "api/annunci/agente";
+  static final String ENDPOINT__ANNUNCI_RECENTI_CLIENTE = "api/annunci/cliente";
   static final String _url = "http://";
 
   static Uri createUrl(String hostName, String port, String path, {Map<String, dynamic>? queryParams}) {
