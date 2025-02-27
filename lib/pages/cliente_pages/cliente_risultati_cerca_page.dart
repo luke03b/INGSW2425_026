@@ -73,14 +73,23 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
           context: context, 
           builder: (BuildContext context) => MyInfoDialog(
             title: "Connessione non riuscita", 
-            bodyText: "Annuncio non creato, la connessione con i nostri server non è stata stabilita correttamente.", 
+            bodyText: "Non è stato possibile recuperare gli annunci, la connessione con i nostri server non è stata stabilita correttamente.", 
             buttonText: "Ok", 
-            onPressed: () { Navigator.pop(context); }
+            onPressed: () { Navigator.pop(context);  Navigator.pop(context);}
           )
         );
       }
     } catch (error) {
       Navigator.pop(context);
+      showDialog(
+          context: context, 
+          builder: (BuildContext context) => MyInfoDialog(
+            title: "Connessione non riuscita", 
+            bodyText: "Non è stato possibile recuperare gli annunci, Probabilmente i server non sono raggiungibili.", 
+            buttonText: "Ok", 
+            onPressed: () { Navigator.pop(context); Navigator.pop(context);}
+          )
+        );
       print('Errore con il recupero degli annunci (il server potrebbe non essere raggiungibile) $error');
     }
   }

@@ -115,13 +115,12 @@ class AnnuncioService {
 
         List<AnnuncioDto> annunci = data.map((item) => AnnuncioDto.fromJson(item)).toList();
         return annunci;        
-      }
-      else{
+      }else{
         throw Exception("Errore nel recupero degli annunci dell'agente");
       }
 
     } on TimeoutException {
-      throw Exception("Errore nel recupero dell'utente.");
+      throw TimeoutException("Errore nel recupero dell'utente.");
     }
   }
 
@@ -162,13 +161,12 @@ class AnnuncioService {
 
         List<AnnuncioDto> annunci = data.map((item) => AnnuncioDto.fromJson(item)).toList();
         return annunci;        
-      }
-      else{
-        throw Exception("Errore nel recupero degli annunci");
+      }else{
+        throw Exception("Errore nel recupero degli annunci (non timeout)");
       }
 
     } on TimeoutException {
-      throw Exception("Errore nel recupero degli annunci. Timeout");
+      throw TimeoutException("Errore nel recupero degli annunci. Timeout");
     }
   }
 

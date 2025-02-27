@@ -72,7 +72,7 @@ class _CercaPageState extends State<CercaPage> {
   double? latitudine;
   double? longitudine;
 
-  bool isIndirizzoValido = false;
+  bool isIndirizzoOk = false;
 
   String sceltaClasseEnergetica = listaClassiEnergetiche.first;
   String sceltaPiano = listaPiani.first;
@@ -142,8 +142,9 @@ class _CercaPageState extends State<CercaPage> {
   
   @override
   Widget build(BuildContext context) {
-    Color coloreScritte = context.onSecondary;
-    Color coloreScritte2 = context.onPrimary;
+    Color coloreErrore = context.error;
+    Color coloreSfondo = context.primary;
+    Color coloreScritte = context.outline;
     return DefaultTabController(
       initialIndex: 0,
       length: 2,
@@ -165,48 +166,66 @@ class _CercaPageState extends State<CercaPage> {
               key: _formKey,
               autovalidateMode: _autovalidateMode,
               child: SizedBox(
-                width: MediaQuery.sizeOf(context).width * 0.92,
-                child: GooglePlacesAutoCompleteTextFormField(
-                  onChanged: (value){
-                    setState(() {
-                      latitudine = null;
-                      longitudine = null;
-                    });
-                  },
-                  textEditingController: _indirizzoController,
-                  googleAPIKey: "AIzaSyBUkzr-VCtKVyTTfssndaWR5Iy5TyfM0as",
-                  decoration: InputDecoration(
-                    hintText: 'Inserire una zona di ricerca',
-                    hintStyle: TextStyle(color: coloreScritte),
-                    labelText: 'Cerca',
-                    labelStyle: TextStyle(color: coloreScritte),
-                  ),
-                  style: TextStyle(color: coloreScritte2),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    return null;
-                  },
-                  // proxyURL: _yourProxyURL,
-                  maxLines: 1,
-                  overlayContainerBuilder: (child) => Material(
-                    elevation: 1.0,
-                    color: context.primary,
-                    borderRadius: BorderRadius.circular(12),
-                    child: child
-                  ),
-                  fetchCoordinates: true,
-                  onPlaceDetailsWithCoordinatesReceived: (prediction) {
-                    print('placeDetails ${prediction.lat} , ${prediction.lng}');
-                    latitudine = double.tryParse(prediction.lat ?? '');
-                    longitudine = double.tryParse(prediction.lng ?? '');
-                    print('new coordinates $latitudine , $longitudine');
-                    isIndirizzoValido = true;
-                  },
-                  onSuggestionClicked: (Prediction prediction) =>
-                      _indirizzoController.text = prediction.description!,
-                  minInputLength: 3,
+                width: 390,
+                child: Stack(
+                  alignment: Alignment.centerRight,
+                  children: [
+                    GooglePlacesAutoCompleteTextFormField(
+                      onChanged: (value) {
+                        setState(() {
+                          latitudine = null;
+                          longitudine = null;
+                          isIndirizzoOk = false;
+                        });
+                      },
+                      textEditingController: _indirizzoController,
+                      googleAPIKey: "AIzaSyBUkzr-VCtKVyTTfssndaWR5Iy5TyfM0as",
+                      decoration: InputDecoration(
+                        hintText: 'Inserire un indirizzo',
+                        hintStyle: TextStyle(color: coloreScritte),
+                        labelText: 'Cerca',
+                        labelStyle: TextStyle(color: context.onSecondary),
+                        suffixIcon: _indirizzoController.text.isNotEmpty
+                            ? IconButton(
+                                icon: Icon(Icons.clear, color: Colors.grey),
+                                onPressed: () {
+                                  setState(() {
+                                    _indirizzoController.clear();
+                                    latitudine = null;
+                                    longitudine = null;
+                                    isIndirizzoOk = false;
+                                  });
+                                },
+                              )
+                            : null,
+                      ),
+                      style: TextStyle(color: context.onPrimary),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                      maxLines: 1,
+                      overlayContainerBuilder: (child) => Material(
+                        elevation: 1.0,
+                        color: coloreSfondo,
+                        borderRadius: BorderRadius.circular(12),
+                        child: child,
+                      ),
+                      fetchCoordinates: true,
+                      onPlaceDetailsWithCoordinatesReceived: (prediction) {
+                        print('placeDetails ${prediction.lat} , ${prediction.lng}');
+                        latitudine = double.tryParse(prediction.lat ?? '');
+                        longitudine = double.tryParse(prediction.lng ?? '');
+                        print('new coordinates $latitudine , $longitudine');
+                        isIndirizzoOk = true;
+                      },
+                      onSuggestionClicked: (Prediction prediction) =>
+                          _indirizzoController.text = prediction.description!,
+                      minInputLength: 3,
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -248,7 +267,7 @@ class _CercaPageState extends State<CercaPage> {
             MyElevatedButtonWidget(
               text: "Cerca",
               onPressed: (){
-                if(_indirizzoController.text.isEmpty || !isIndirizzoValido){
+                if(_indirizzoController.text.isEmpty || !isIndirizzoOk){
                   showDialog(
                     context: context, 
                     builder: (BuildContext context) => MyInfoDialog(title: "Errore", bodyText: "Inserire un indirizzo valido e riprovare.", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
