@@ -54,23 +54,26 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    return MaterialApp(
-      title: 'House Hunters',
-      debugShowCheckedModeBanner: false,
-      themeMode: themeProvider.themeMode,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      home: InitialPage(),
-      routes: {
-        '/LoginPage': (context) => LoginPage(),
-        '/RegistrationPage': (context) => RegistrationPage(),
-        '/HomePage' : (context) => ControllorePagine(),
-        // '/RisultatiCercaPage' : (context) => RisultatiCercaPage(),
-        '/ControllorePagine2': (context) => ControllorePagine2(),
-        '/PasswordDimenticataPage' : (context) => PasswordDimenticataPage(),
-        '/ControllorePagineAgente' : (context) => ControllorePagineAgente(),
+    return Selector<ThemeProvider, ThemeMode>(
+      selector: (_, provider) => provider.themeMode, // Ascolta solo il tema
+      builder: (context, themeMode, child) {
+        return MaterialApp(
+          title: 'House Hunters',
+          debugShowCheckedModeBanner: false,
+          themeMode: themeMode,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          home: const InitialPage(),
+          routes: {
+            '/LoginPage': (context) => const LoginPage(),
+            '/RegistrationPage': (context) => const RegistrationPage(),
+            '/HomePage': (context) => const ControllorePagine(),
+            '/ControllorePagine2': (context) => const ControllorePagine2(),
+            '/PasswordDimenticataPage': (context) => const PasswordDimenticataPage(),
+            '/ControllorePagineAgente': (context) => const ControllorePagineAgente(),
+          },
+        );
       },
     );
   }
