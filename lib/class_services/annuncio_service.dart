@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:domus_app/class_services/utente_service.dart';
 import 'package:domus_app/communication_utils/url_builder.dart';
 import 'package:domus_app/dto/annuncio_dto.dart';
-import 'package:domus_app/dto/cronologia_dto.dart';
 import 'package:domus_app/dto/filtri_ricerca_dto.dart';
 import 'package:domus_app/dto/utente_dto.dart';
 import 'package:domus_app/services/aws_cognito.dart';

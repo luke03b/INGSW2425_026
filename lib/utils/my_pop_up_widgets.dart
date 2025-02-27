@@ -70,7 +70,7 @@ class MyOptionsDialog extends StatelessWidget {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: leftButtonColor,
-                  fixedSize: Size(MediaQuery.sizeOf(context).width/5, MediaQuery.sizeOf(context).height/27),
+                  fixedSize: Size(MediaQuery.sizeOf(context).width/4, MediaQuery.sizeOf(context).height/27),
                 ),
                 onPressed: (){
                   onPressLeftButton();
@@ -80,7 +80,7 @@ class MyOptionsDialog extends StatelessWidget {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: rightButtonColor,
-                  fixedSize: Size(MediaQuery.sizeOf(context).width/5, MediaQuery.sizeOf(context).height/27),
+                  fixedSize: Size(MediaQuery.sizeOf(context).width/4, MediaQuery.sizeOf(context).height/27),
                 ),
                 onPressed: (){
                   onPressRightButton();

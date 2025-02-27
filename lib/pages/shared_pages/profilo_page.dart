@@ -8,7 +8,9 @@ import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfiloPage extends StatefulWidget {
   const ProfiloPage({super.key});
@@ -181,10 +183,62 @@ class _ProfiloPageState extends State<ProfiloPage> {
           ),
 
           GestureDetector(
+              onTap: () async {
+                final Uri url = Uri.parse("https://www.instagram.com/househunters004/");
+                if (await canLaunchUrl(url)) {
+                  await launchUrl(url, mode: LaunchMode.externalApplication);
+                } else {
+                  showDialog(
+                    context: context, 
+                    builder: (BuildContext context) => MyInfoDialog(title: "Errore", bodyText: "Non è stato possibile aprire instagram", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
+                  );
+                }
+              },
+              child: Card(
+              color: context.primaryContainer,
+              child: ListTile(
+                title: Text("Instagram", style: TextStyle(color: context.outline),),
+                leading: Icon(FontAwesomeIcons.instagram, color: context.outline,),
+                trailing: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 12,
+                  children: <Widget>[
+                    Icon(Icons.arrow_circle_right_outlined, color: context.outline,),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          GestureDetector(
               onTap: (){
                 showDialog(
                   context: context,
-                  builder: (BuildContext context) => MyInfoDialog(title: "Assistenza", bodyText: "Se ha bisogno di assistenza ci contatti tramite la seguente email: househunters004@gmail.com", buttonText: "Ok", onPressed:(){Navigator.pop(context);})
+                  builder: (BuildContext context) => MyOptionsDialog(
+                    title: "Assistenza", 
+                    bodyText: "Se ha bisogno di assistenza ci contatti tramite la seguente email: househunters004@gmail.com", 
+                    rightButtonText: "Scrivici",
+                    rightButtonColor: context.tertiary,
+                    onPressRightButton:() async {
+                      Navigator.pop(context); 
+                      final Uri emailUri = Uri(
+                        scheme: 'mailto',
+                        path: 'househunters004@gmail.com',
+                        query: 'subject=Richiesta informazioni&body=Salve, vorrei informazioni su...',
+                      );
+                      if (await canLaunchUrl(emailUri)) {
+                        await launchUrl(emailUri);
+                      } else {
+                        showDialog(
+                          context: context, 
+                          builder: (BuildContext context) => MyInfoDialog(title: "Errore", bodyText: "Non è stato possibile aprire l'app per scrivere le email", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
+                        );
+                      }
+                    },
+                    leftButtonText: "Annulla",
+                    leftButtonColor: context.secondary,
+                    onPressLeftButton: (){Navigator.pop(context);},
+                  )
                 );
               },
               child: Card(
@@ -226,7 +280,7 @@ class _ProfiloPageState extends State<ProfiloPage> {
             ),
           ),
 
-          SizedBox(height: MediaQuery.sizeOf(context).height/7),
+          SizedBox(height: MediaQuery.sizeOf(context).height/11),
           MyElevatedButtonWidget(
             text: "Logout", 
             onPressed: (){

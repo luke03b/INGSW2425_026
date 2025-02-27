@@ -14,7 +14,7 @@ class CronologiaService {
     String? sub = await AWSServices().recuperaSubUtenteLoggato();
     UtenteDto? cliente = await UtenteService.recuperaUtenteBySub(sub!);
 
-    return _aggiornaCronologiaByClienteSub(cliente!, annuncio!);
+    return _aggiornaCronologiaByClienteSub(cliente, annuncio!);
   }
   
   static Future<int> _aggiornaCronologiaByClienteSub(UtenteDto cliente, AnnuncioDto annuncio) async {

@@ -1,6 +1,5 @@
 import 'package:domus_app/class_services/utente_service.dart';
 import 'package:domus_app/costants/costants.dart';
-import 'package:domus_app/dto/utente_dto.dart';
 import 'package:domus_app/services/aws_cognito.dart';
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
