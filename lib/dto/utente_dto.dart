@@ -17,13 +17,15 @@ class UtenteDto implements DTO{
   Map<String, dynamic> toJson() {
     if (agenziaImmobiliare == null){
       return {
-      "sub": sub,
-      "tipo": tipo,
-      "agenzia" : agenziaImmobiliare
+        "id" : id,
+        "sub": sub,
+        "tipo": tipo,
+        "agenzia" : agenziaImmobiliare
       };
     }
 
     return {
+      "id" : id,
       "sub": sub,
       "tipo": tipo,
       "agenzia" : {
@@ -33,11 +35,20 @@ class UtenteDto implements DTO{
   }
 
   static UtenteDto fromJson(Map<String, dynamic> json) {
-    return UtenteDto(
-      id: json['id'],
-      sub: json['sub'],
-      tipo: json['tipo'],
-      agenziaImmobiliare: json['agenzia']['id']
-    );
+    if(json["agenzia"] != null){
+      return UtenteDto(
+        id: json['id'],
+        sub: json['sub'],
+        tipo: json['tipo'],
+        agenziaImmobiliare: json['agenzia']['id']
+      );
+    } else {
+      return UtenteDto(
+        id: json['id'],
+        sub: json['sub'],
+        tipo: json['tipo'],
+        agenziaImmobiliare: json['agenzia']
+      );
+    }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:domus_app/dto/dto.dart';
 
 class AnnuncioDto implements DTO{
+  String? idAnnuncio;
   String tipoAnnuncio;
   double prezzo;
   int superficie;
@@ -44,13 +45,14 @@ class AnnuncioDto implements DTO{
     required this.descrizione, 
     this.vicinoScuole,
     this.vicinoParchi,
-    this.vicinoTrasporti
-
+    this.vicinoTrasporti,
+    this.idAnnuncio
   });
 
   @override
   Map<String, dynamic> toJson() {
     return {
+      'id' : idAnnuncio,
       "tipo_annuncio": tipoAnnuncio,
       "prezzo": prezzo,
       "superficie": superficie,
@@ -79,6 +81,7 @@ class AnnuncioDto implements DTO{
 
   static AnnuncioDto fromJson(Map<String, dynamic> json) {
     return AnnuncioDto(
+      idAnnuncio: json['id'],
       tipoAnnuncio: json['tipo_annuncio'],
       prezzo: json['prezzo'],
       superficie: json['superficie'],

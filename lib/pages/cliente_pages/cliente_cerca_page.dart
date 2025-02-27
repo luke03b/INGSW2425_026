@@ -346,7 +346,7 @@ class _CercaPageState extends State<CercaPage> {
             //tasto cerca
             MyElevatedButtonWidget(
               text: "Cerca",
-              onPressed: (){
+              onPressed: () async {
                 controllaFiltri();
                 if(_indirizzoController.text.isEmpty || !isIndirizzoOk || !areFiltriValidi){
                   showDialog(
@@ -355,11 +355,14 @@ class _CercaPageState extends State<CercaPage> {
                   );
                 } else {
                   FiltriRicercaDto filtriRicerca = setCriteriRicerca();
-                  Navigator.pushNamed(
+                  await Navigator.pushNamed(
                     context, 
                     '/ControllorePagine2', 
                     arguments: filtriRicerca
                   );
+                  setState(() {
+                    getAnnunciRecenti();
+                  });
                 }
               },
               color: context.tertiary
@@ -449,7 +452,7 @@ class _CercaPageState extends State<CercaPage> {
         double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.7;
         return GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(casaSelezionata: annuncioCorrente)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(annuncioSelezionato: annuncioCorrente)));
           },
           child: Container(
             width: MediaQuery.of(context).size.width,

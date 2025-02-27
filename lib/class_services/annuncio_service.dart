@@ -175,9 +175,9 @@ class AnnuncioService {
     return response;
   }
 
-  static Future<List<AnnuncioDto>> recuperaAnnunciRecentementeVisusalizzatiCliente(String sub) async {
+  static Future<List<AnnuncioDto>> recuperaAnnunciRecentementeVisusalizzatiCliente(UtenteDto cliente) async {
     try{
-      http.Response response = await chiamataHTTPrecuperaAnnunciRecentementeVisusalizzatiCliente(sub);
+      http.Response response = await chiamataHTTPrecuperaAnnunciRecentementeVisusalizzatiCliente(cliente);
       
       if(response.statusCode == 200){
         List<dynamic> data = json.decode(response.body);
@@ -193,12 +193,12 @@ class AnnuncioService {
     }
   }
 
-  static Future<http.Response> chiamataHTTPrecuperaAnnunciRecentementeVisusalizzatiCliente(String sub) async {
+  static Future<http.Response> chiamataHTTPrecuperaAnnunciRecentementeVisusalizzatiCliente(UtenteDto cliente) async {
     final url = Urlbuilder.createUrl(
       Urlbuilder.LOCALHOST_ANDROID, 
       Urlbuilder.PORTA_SPRINGBOOT, 
-      Urlbuilder.ENDPOINT__ANNUNCI_RECENTI_CLIENTE,
-      queryParams: {'sub' : sub}
+      Urlbuilder.ENDPOINT_GET_ANNUNCI_RECENTI,
+      queryParams: {'id' : cliente.id}
     );
 
     print("\n\n\n\n\n\n\n\n\n\n\n");
@@ -222,7 +222,8 @@ class AnnuncioService {
 
   static Future<List<AnnuncioDto>> recuperaAnnunciByClienteLoggato() async{
     String? sub = await AWSServices().recuperaSubUtenteLoggato();
-    return recuperaAnnunciRecentementeVisusalizzatiCliente(sub!);
+    UtenteDto cliente = await UtenteService.recuperaUtenteBySub(sub!);
+    return recuperaAnnunciRecentementeVisusalizzatiCliente(cliente);
   }
 
 }

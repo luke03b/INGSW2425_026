@@ -174,7 +174,7 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
         double scaleFactor = indice == _currentSliderIndex ? 1.0 : 1.0;
         return GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(casaSelezionata: casaCorrente)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(annuncioSelezionato: casaCorrente)));
           },
           child: Container(
             width: MediaQuery.of(context).size.width,
