@@ -142,9 +142,9 @@ class _CercaPageState extends State<CercaPage> {
   
   @override
   Widget build(BuildContext context) {
-    Color coloreErrore = context.error;
     Color coloreSfondo = context.primary;
     Color coloreScritte = context.outline;
+    Color coloreSottolineatura = context.onPrimaryContainer;
     return DefaultTabController(
       initialIndex: 0,
       length: 2,
@@ -198,6 +198,12 @@ class _CercaPageState extends State<CercaPage> {
                                 },
                               )
                             : null,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: coloreSottolineatura),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: coloreSottolineatura),
+                        ),
                       ),
                       style: TextStyle(color: context.onPrimary),
                       validator: (value) {

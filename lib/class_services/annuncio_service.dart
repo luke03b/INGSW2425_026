@@ -132,29 +132,7 @@ class AnnuncioService {
   static Future<List<AnnuncioDto>> recuperaAnnunciByCriteriDiRicerca(FiltriRicerca filtriRicerca) async {
     try{
       print("chiamo il server");
-      http.Response response = await chiamataHTTPrecuperaAnnunciByCriteriDiRicerca(
-        filtriRicerca.latitudine,
-        filtriRicerca.longitudine, 
-        filtriRicerca.tipoAnnuncio, 
-        filtriRicerca.raggioRicerca,
-        prezzoMin: filtriRicerca.prezzoMin,
-        prezzoMax: filtriRicerca.prezzoMax,
-        superficieMin: filtriRicerca.superficieMin,
-        superficieMax: filtriRicerca.superficieMax,
-        nStanzeMin: filtriRicerca.nStanzeMin,
-        nStanzeMax: filtriRicerca.nStanzeMax,
-        garage: filtriRicerca.garage,
-        ascensore: filtriRicerca.ascensore,
-        arredato: filtriRicerca.arredato,
-        giardino: filtriRicerca.giardino,
-        piscina: filtriRicerca.piscina,
-        balcone: filtriRicerca.balcone,
-        vicinoScuole: filtriRicerca.vicinoScuole,
-        vicinoParchi: filtriRicerca.vicinoParchi,
-        vicinoMezzi: filtriRicerca.vicinoMezzi,
-        piano: filtriRicerca.piano,
-        classeEnergetica: filtriRicerca.classeEnergetica
-      );
+      http.Response response = await chiamataHTTPrecuperaAnnunciByCriteriDiRicerca(filtriRicerca);
       
       if(response.statusCode == 200){
         List<dynamic> data = json.decode(response.body);
@@ -170,56 +148,12 @@ class AnnuncioService {
     }
   }
 
-  static Future<http.Response> chiamataHTTPrecuperaAnnunciByCriteriDiRicerca(
-    double latitudine,
-    double longitudine,
-    String tipoAnnuncio,
-    double? raggioRicerca, {
-    String? prezzoMin,
-    String? prezzoMax,
-    String? superficieMin,
-    String? superficieMax,
-    String? nStanzeMin,
-    String? nStanzeMax,
-    bool? garage,
-    bool? ascensore,
-    bool? arredato,
-    bool? giardino,
-    bool? piscina,
-    bool? balcone,
-    bool? vicinoScuole,
-    bool? vicinoParchi,
-    bool? vicinoMezzi,
-    String? piano,
-    String? classeEnergetica,
-  }) async {
+  static Future<http.Response> chiamataHTTPrecuperaAnnunciByCriteriDiRicerca(FiltriRicerca filtriRicerca) async {
     final url = Urlbuilder.createUrl(
       Urlbuilder.LOCALHOST_ANDROID, 
       Urlbuilder.PORTA_SPRINGBOOT, 
       Urlbuilder.ENDPOINT_ANNUNCI,
-      queryParams: filterQueryParams({
-        'tipo_annuncio' : tipoAnnuncio.toString().toUpperCase(),
-        'latitudine': latitudine.toString(),
-        'longitudine': longitudine.toString(),
-        'raggioKm' : raggioRicerca.toString(),
-        'prezzoMinimo' : prezzoMin.toString(),
-        'prezzoMassimo' :prezzoMax.toString(),
-        'superficieMinima' :superficieMin.toString(),
-        'superficieMassima' : superficieMax.toString(),
-        'numStanzeMinime' :nStanzeMin.toString(),
-        'numStanzeMassime' : nStanzeMax.toString(),
-        'garage' : garage.toString(),
-        'ascensore' : ascensore.toString(),
-        'arredo' : arredato.toString(),
-        'giardino' : giardino.toString(),
-        'piscina' : piscina.toString(),
-        'balcone' : balcone.toString(),
-        'vicino_scuole' : vicinoScuole.toString(),
-        'vicino_parchi' : vicinoParchi.toString(),
-        'vicino_trasporti' : vicinoMezzi.toString(),
-        'piano' : piano.toString().toUpperCase(),
-        'classeEnergetica' : classeEnergetica.toString().toUpperCase(),
-      })
+      queryParams: filtriRicerca.toJson(filtriRicerca)
     );
 
     print("\n\n\n\n\n\n\n\n\n\n\n");
@@ -239,14 +173,6 @@ class AnnuncioService {
     );
     
     return response;
-  }
-
-  static Map<String, String> filterQueryParams(Map<String, String> params) {
-    // Rimuove i parametri o nulli o vuoti o false
-    params.removeWhere((key, value) {
-      return value == "false" || value.isEmpty || value == "null" || value == "NULL";
-    });
-    return params;
   }
 
   // static Future<List<AnnuncioDto>> recuperaAnnunciConOfferte() async {
