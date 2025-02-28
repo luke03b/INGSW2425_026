@@ -1,6 +1,5 @@
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class RadiusSlider extends StatefulWidget {
   final Function(double) onChanged;

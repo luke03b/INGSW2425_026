@@ -110,6 +110,7 @@ class AWSServices {
     try {
       var data = await userPool.signUp(email, password, userAttributes: userAttributes);
       int statuscode = await UtenteService.creaUtente(data.userSub!, userGroup, agenziaImmobiliare);
+      safePrint("status code richiesta creazione utente: $statuscode");
       return true;
     } catch (e) {
       safePrint(e);

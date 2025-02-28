@@ -1,16 +1,21 @@
+import 'dart:async';
+
+import 'package:domus_app/class_services/offerta_service.dart';
 import 'package:domus_app/dto/annuncio_dto.dart';
+import 'package:domus_app/dto/offerta_dto.dart';
 import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
+import 'package:domus_app/utils/my_loading.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:domus_app/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
 
 class ClienteCreaOffertaPage extends StatefulWidget {
-  final AnnuncioDto casaSelezionata;
+  final AnnuncioDto annuncioSelezionato;
   const ClienteCreaOffertaPage({
     super.key,
-    required this.casaSelezionata,
+    required this.annuncioSelezionato,
     });
 
   @override
@@ -136,7 +141,7 @@ class _ClienteCreaOffertaPageState extends State<ClienteCreaOffertaPage> {
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         Text("Prezzo iniziale: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                        Text(FormatStrings.formatNumber(widget.casaSelezionata.prezzo), style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
+                        Text(FormatStrings.formatNumber(widget.annuncioSelezionato.prezzo), style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
                         Text(" EUR", style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
                       ],
                     ),
@@ -163,7 +168,7 @@ class _ClienteCreaOffertaPageState extends State<ClienteCreaOffertaPage> {
                     MyElevatedButtonRectWidget(
                       text: "Invia", 
                       onPressed: (){
-                        inviaOfferta(context);
+                        controllaOfferta(context);
                       },
                       color: context.tertiary
                     ),
@@ -227,7 +232,7 @@ class _ClienteCreaOffertaPageState extends State<ClienteCreaOffertaPage> {
       );
   }
 
-  void inviaOfferta(BuildContext context) {
+  void controllaOfferta(BuildContext context) {
     if(offertaController.text.isEmpty){
       showDialog(
         barrierDismissible: false,
@@ -238,7 +243,7 @@ class _ClienteCreaOffertaPageState extends State<ClienteCreaOffertaPage> {
 
     try {
       //conversione delle stringhe in numeri
-      String prezzoAnnuncioStringa = FormatStrings.formatNumber(widget.casaSelezionata.prezzo);
+      String prezzoAnnuncioStringa = FormatStrings.formatNumber(widget.annuncioSelezionato.prezzo);
       int prezzoAnnuncio = int.parse(prezzoAnnuncioStringa.replaceAll('.', ''));
       int nuovaOfferta = int.parse(offertaController.text);
 
@@ -259,13 +264,67 @@ class _ClienteCreaOffertaPageState extends State<ClienteCreaOffertaPage> {
                                             leftButtonColor: context.tertiary,
                                             rightButtonText: "No",
                                             rightButtonColor: context.secondary,
-                                            onPressLeftButton: (){debugPrint("offerta inviata");},
+                                            onPressLeftButton: () async {
+                                              LoadingHelper.showLoadingDialogNotDissmissible(context, color: context.secondary);
+                                              try {
+                                                int statusCode = await OffertaService.creaOfferta(widget.annuncioSelezionato, double.parse(offertaController.text));
+                                                Navigator.pop(context);
+                                                controllaStatusCode(statusCode, context);
+                                              } on TimeoutException {
+                                                Navigator.pop(context);
+                                                showDialog(
+                                                  context: context, 
+                                                  builder: (BuildContext context) => MyInfoDialog(
+                                                    title: "Connessione non riuscita", 
+                                                    bodyText: "Offerta non inviata, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
+                                                    buttonText: "Ok", 
+                                                    onPressed: () {Navigator.pop(context); Navigator.pop(context);}
+                                                  )
+                                                );
+                                              } catch (e) {
+                                                print(e);
+                                                Navigator.pop(context);
+                                                showDialog(
+                                                  context: context, 
+                                                  builder: (BuildContext context) => MyInfoDialog(
+                                                    title: "Errore",
+                                                    bodyText: "Offerta non inviata. Il server potrebbe non essere raggiungibile. Riprova più tardi.", 
+                                                    buttonText: "Ok", 
+                                                    onPressed: () {Navigator.pop(context); Navigator.pop(context);}
+                                                  )
+                                                );
+                                              }
+                                            },
                                             onPressRightButton: (){Navigator.pop(context);}
                                           )
         );
       }
     } catch (e) {
        print("Errore durante la conversione: $e");
+    }
+  }
+
+  void controllaStatusCode(int statusCode, BuildContext context) {
+    if (statusCode == 201) {
+      showDialog(
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(
+          title: "Conferma", 
+          bodyText: "Offerta creata", 
+          buttonText: "Ok", 
+          onPressed: () {Navigator.pop(context); Navigator.pop(context);}
+        )
+      );
+    } else {
+      showDialog(
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(
+          title: "Errore", 
+          bodyText: "Offerta non creata", 
+          buttonText: "Ok", 
+          onPressed: () {Navigator.pop(context); Navigator.pop(context);}
+        )
+      );
     }
   }
 }
