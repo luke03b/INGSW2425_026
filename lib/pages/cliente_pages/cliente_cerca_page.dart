@@ -11,6 +11,7 @@ import 'package:domus_app/utils/my_buttons_widgets.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:domus_app/utils/my_slider_widgets.dart';
 import 'package:domus_app/utils/my_text_widgets.dart';
+import 'package:domus_app/utils/my_ui_messages_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
@@ -303,9 +304,20 @@ class _CercaPageState extends State<CercaPage> {
 
             if (!_ricercaAvanzataVisibile)
               switch ((areDataRetrieved, areServersAvailable, hasUserAnnunciRecenti)) {
-                (false, _, _) => myRetrievingData(),
-                (true, false, _) => myServersNotAvailable(),
-                (true, true, false) => myWelcome(),
+                (false, _, _) => MyUiMessagesWidgets.myTextWithLoading(context, "Sto recuperando le tue attività recenti, un po' di pazienza"),
+                (true, false, _) => MyUiMessagesWidgets.myErrorWithButton(context, 
+                                      "Server non raggiungibili. Controlla la tua connessione a internet e riprova", 
+                                      "Riprova", 
+                                      (){
+                                        setState(() {
+                                          hasUserAnnunciRecenti = false;
+                                          areDataRetrieved = false;
+                                          areServersAvailable = false;
+                                        });
+                                        getAnnunciRecenti();
+                                      }
+                                    ),
+                (true, true, false) => MyUiMessagesWidgets.myText(context, "Benvenuto! Non hai ancora annunci visitati di recente"),
                 (true, true, true) => myCronologia(context, context.outline),
             }
 
@@ -888,52 +900,5 @@ class _CercaPageState extends State<CercaPage> {
         }),
       ),
     );
-  }
-
-  Visibility myRetrievingData(){
-    return Visibility(
-      visible: !_ricercaAvanzataVisibile,
-      child: Column(
-        children: [
-          SizedBox(height: MediaQuery.of(context).size.height/5,),
-          Text("Sto raccogliendo le tue ultime attività, un po' di pazienza", style: TextStyle(color: context.outline),),
-          SizedBox(height: MediaQuery.of(context).size.height/35,),
-          LoadingHelper.showLoadingDialog(context),
-        ],
-      ),
-    );
-  }
-
-  Visibility myServersNotAvailable(){
-    return Visibility(
-      visible: !_ricercaAvanzataVisibile,
-      child: Column(
-        children: [
-          SizedBox(height: MediaQuery.of(context).size.height/5,),
-          Text("Server non disponibili", style: TextStyle(color: context.error, fontSize: 20),),
-          MyTextButtonWidget(text: "Riprova", 
-            colore: context.error, 
-            onPressed: (){
-              setState(() {
-                hasUserAnnunciRecenti = false;
-                areDataRetrieved = false;
-                areServersAvailable = false;
-              });
-              getAnnunciRecenti();
-            },
-          ),
-        ],
-      ));
-  }
-
-  Visibility myWelcome(){
-    return Visibility(
-      visible: !_ricercaAvanzataVisibile,
-      child: Column(
-        children: [
-          SizedBox(height: MediaQuery.of(context).size.height/5,),
-          Text("Benvenuto! Inizia a navigare nella nostra app", style: TextStyle(color: context.onSecondary, fontSize: 18),),
-        ],
-      ));
   }
 }

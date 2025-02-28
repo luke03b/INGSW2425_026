@@ -1,4 +1,5 @@
 import 'package:domus_app/dto/dto.dart';
+import 'package:domus_app/dto/offerta_dto.dart';
 
 class AnnuncioDto implements DTO{
   String? idAnnuncio;
@@ -46,7 +47,7 @@ class AnnuncioDto implements DTO{
     this.vicinoScuole,
     this.vicinoParchi,
     this.vicinoTrasporti,
-    this.idAnnuncio
+    this.idAnnuncio,
   });
 
   @override
@@ -75,7 +76,7 @@ class AnnuncioDto implements DTO{
       "descrizione": descrizione,
       "vicino_scuole": vicinoScuole,
       "vicino_parchi": vicinoParchi,
-      "vicino_trasporti": vicinoTrasporti
+      "vicino_trasporti": vicinoTrasporti,
     };
   }
 
@@ -102,7 +103,7 @@ class AnnuncioDto implements DTO{
       descrizione: json['descrizione'],
       vicinoScuole: json['vicino_scuole'],
       vicinoParchi: json['vicino_parchi'],
-      vicinoTrasporti: json['vicino_trasporti']
+      vicinoTrasporti: json['vicino_trasporti'],
     );
   }
 }

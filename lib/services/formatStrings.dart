@@ -15,4 +15,17 @@ class FormatStrings {
   static String formattaDataGGMMAAAAeHHMM(DateTime input) {
     return DateFormat("dd/MM/yyyy HH:mm").format(input);
   }
+
+  static String mappaStatoOfferta(String input) {
+    if(input == "ACCETTATA") {
+        return "Accettata";
+      } else if(input == "RIFIUTATA") {
+        return "Rifiutata";
+      } else if(input == "IN_ATTESA") {
+        return "In Attesa";
+      } else if(input == "CONTROPROPOSTA") {
+        return "Controproposta";
+      }
+      return "";
+  }
 }

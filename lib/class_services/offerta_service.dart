@@ -106,4 +106,58 @@ class OffertaService {
     
     return response;
   }
+
+  static Future<List<OffertaDto>> recuperaAnnunciConOfferteCliente(UtenteDto cliente) async {
+    try{
+      http.Response response = await chiamataHTTPrecuperaAnnunciConOfferteCliente(cliente);
+      
+      if(response.statusCode == 200){
+        List<dynamic> data = json.decode(response.body);
+
+        List<OffertaDto> offerte = data.map((item) => OffertaDto.fromJson(item)).toList();
+        return offerte;        
+      }else{
+        throw Exception("Errore nel recupero degli annunci (non timeout)");
+      }
+
+    } on TimeoutException {
+      throw TimeoutException("Errore nel recupero degli annunci. Timeout");
+    }
+  }
+
+  static Future<http.Response> chiamataHTTPrecuperaAnnunciConOfferteCliente(UtenteDto cliente) async {
+    final url = Urlbuilder.createUrl(
+      Urlbuilder.LOCALHOST_ANDROID, 
+      Urlbuilder.PORTA_SPRINGBOOT, 
+      Urlbuilder.ENDPOINT_GET_ANNUNCI_OFFERTE,
+      queryParams: {'idCliente' : cliente.id}
+    );
+
+    print("\n\n\n\n\n\n\n\n\n\n\n");
+    print(url);
+    print("\n\n\n\n\n\n\n\n\n\n\n");
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    ).timeout(
+      const Duration(seconds: 30),
+      onTimeout: () {
+        throw TimeoutException("Il server non risponde.");
+      },
+    );
+    
+    return response;
+  }
+
+
+  static Future<List<OffertaDto>> recuperaAnnunciConOfferteByClienteLoggato() async {
+    String? sub = await AWSServices().recuperaSubUtenteLoggato();
+    UtenteDto cliente = await UtenteService.recuperaUtenteBySub(sub!);
+    return recuperaAnnunciConOfferteCliente(cliente);
+  }
+
+
 }

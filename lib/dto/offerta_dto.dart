@@ -8,12 +8,14 @@ class OffertaDto implements DTO {
   final UtenteDto? cliente;
   final double prezzo;
   final DateTime? data;
+  final String? stato;
 
   OffertaDto({
     this.annuncio,
     this.cliente,
     required this.prezzo,
-    this.data
+    this.data,
+    this.stato
   });
 
   @override
@@ -27,8 +29,10 @@ class OffertaDto implements DTO {
 
   static OffertaDto fromJson(Map<String, dynamic> json) {
     return OffertaDto(
+      annuncio: AnnuncioDto.fromJson(json["annuncio"]),
       prezzo: json["prezzo"],
-      data: DateTime.parse(json["data"])
+      data: DateTime.parse(json["data"]),
+      stato: json["stato"]
     );
   }
 }

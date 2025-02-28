@@ -219,7 +219,7 @@ class AnnuncioService {
     return response;
   }
 
-  static Future<List<AnnuncioDto>> recuperaAnnunciByClienteLoggato() async{
+  static Future<List<AnnuncioDto>> recuperaAnnunciByClienteLoggato() async {
     String? sub = await AWSServices().recuperaSubUtenteLoggato();
     UtenteDto cliente = await UtenteService.recuperaUtenteBySub(sub!);
     return recuperaAnnunciRecentementeVisusalizzatiCliente(cliente);
