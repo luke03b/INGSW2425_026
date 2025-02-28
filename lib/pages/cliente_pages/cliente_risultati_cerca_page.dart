@@ -52,7 +52,7 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
     try {
       // Apri il loading dialog DOPO la fase di build
       Future.delayed(Duration.zero, () {
-        LoadingHelper.showLoadingDialog(context, color: context.secondary);
+        LoadingHelper.showLoadingDialogNotDissmissible(context, color: context.secondary);
       });
 
       List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciByCriteriDiRicerca(widget.filtriRicerca);

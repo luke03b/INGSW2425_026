@@ -1,7 +1,8 @@
+import 'package:domus_app/theme/ui_constants.dart';
 import 'package:flutter/material.dart';
 
 class LoadingHelper {
-  static void showLoadingDialog(BuildContext context, {Color color = Colors.blue}) {
+  static void showLoadingDialogNotDissmissible(BuildContext context, {Color color = Colors.blue}) {
     showDialog(
       context: context,
       barrierDismissible: false, // Impedisce la chiusura del dialogo cliccando fuori
@@ -15,6 +16,12 @@ class LoadingHelper {
           ),
         );
       },
+    );
+  }
+
+  static CircularProgressIndicator showLoadingDialog(BuildContext context) {
+     return CircularProgressIndicator(
+      valueColor: AlwaysStoppedAnimation<Color>(context.secondary),
     );
   }
 }

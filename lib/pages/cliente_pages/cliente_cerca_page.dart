@@ -5,7 +5,6 @@ import 'package:domus_app/class_services/annuncio_service.dart';
 import 'package:domus_app/dto/annuncio_dto.dart';
 import 'package:domus_app/dto/filtri_ricerca_dto.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
-import 'package:domus_app/services/aws_cognito.dart';
 import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';
@@ -91,6 +90,10 @@ class _CercaPageState extends State<CercaPage> {
 
   bool hasUserAnnunciRecenti = false;
 
+  bool areServersAvailable = true;
+
+  bool areDataRetrieved = false;
+
   int _currentSliderIndex = 0;
 
   final List<Map<String, dynamic>> listaCase = [
@@ -165,10 +168,6 @@ class _CercaPageState extends State<CercaPage> {
 
   Future<void> getAnnunciRecenti() async {
     try {
-      // Apri il loading dialog DOPO la fase di build
-      Future.delayed(Duration.zero, () {
-        LoadingHelper.showLoadingDialog(context, color: context.secondary);
-      });
 
       List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciByClienteLoggato();
 
@@ -176,35 +175,23 @@ class _CercaPageState extends State<CercaPage> {
         setState(() {
           annunciRecentiList = data;
           hasUserAnnunciRecenti = annunciRecentiList.isNotEmpty;
+          areDataRetrieved = true;
+          areServersAvailable = true;
         });
       }
 
-      Navigator.pop(context);
-
     } on TimeoutException {
       if (mounted) {
-        Navigator.pop(context);
-        showDialog(
-          context: context, 
-          builder: (BuildContext context) => MyInfoDialog(
-            title: "Connessione non riuscita", 
-            bodyText: "Non è stato possibile recuperare gli annunci, la connessione con i nostri server non è stata stabilita correttamente.", 
-            buttonText: "Ok", 
-            onPressed: () { Navigator.pop(context);}
-          )
-        );
+        setState(() {
+          areServersAvailable = false;
+          areDataRetrieved = true;
+        });
       }
     } catch (error) {
-      Navigator.pop(context);
-      showDialog(
-          context: context, 
-          builder: (BuildContext context) => MyInfoDialog(
-            title: "Connessione non riuscita", 
-            bodyText: "Non è stato possibile recuperare gli annunci, Probabilmente i server non sono raggiungibili.", 
-            buttonText: "Ok", 
-            onPressed: () { Navigator.pop(context);}
-          )
-        );
+      setState(() {
+        areServersAvailable = false;
+        areDataRetrieved = true;
+      });
       print('Errore con il recupero degli annunci (il server potrebbe non essere raggiungibile) $error');
     }
   }
@@ -369,7 +356,13 @@ class _CercaPageState extends State<CercaPage> {
               color: context.tertiary
             ),
 
-            myCronologia(context, context.outline)
+            if (!_ricercaAvanzataVisibile)
+              switch ((areDataRetrieved, areServersAvailable, hasUserAnnunciRecenti)) {
+                (false, _, _) => myRetrievingData(),
+                (true, false, _) => myServersNotAvailable(),
+                (true, true, false) => myWelcome(),
+                (true, true, true) => myCronologia(context, context.outline),
+              }
 
           ],
         )
@@ -512,6 +505,7 @@ class _CercaPageState extends State<CercaPage> {
         );
       }).toList(),
       options: CarouselOptions(
+        enableInfiniteScroll: false,
         viewportFraction: 0.8,
         height: 360,
         enlargeCenterPage: true,
@@ -949,5 +943,52 @@ class _CercaPageState extends State<CercaPage> {
         }),
       ),
     );
+  }
+
+  Visibility myRetrievingData(){
+    return Visibility(
+      visible: !_ricercaAvanzataVisibile,
+      child: Column(
+        children: [
+          SizedBox(height: MediaQuery.of(context).size.height/5,),
+          Text("Sto raccogliendo le tue ultime attività, un po' di pazienza", style: TextStyle(color: context.outline),),
+          SizedBox(height: MediaQuery.of(context).size.height/35,),
+          LoadingHelper.showLoadingDialog(context),
+        ],
+      ),
+    );
+  }
+
+  Visibility myServersNotAvailable(){
+    return Visibility(
+      visible: !_ricercaAvanzataVisibile,
+      child: Column(
+        children: [
+          SizedBox(height: MediaQuery.of(context).size.height/5,),
+          Text("Server non disponibili", style: TextStyle(color: context.error, fontSize: 20),),
+          MyTextButtonWidget(text: "Riprova", 
+            colore: context.error, 
+            onPressed: (){
+              setState(() {
+                hasUserAnnunciRecenti = false;
+                areDataRetrieved = false;
+                areServersAvailable = false;
+              });
+              getAnnunciRecenti();
+            },
+          ),
+        ],
+      ));
+  }
+
+  Visibility myWelcome(){
+    return Visibility(
+      visible: !_ricercaAvanzataVisibile,
+      child: Column(
+        children: [
+          SizedBox(height: MediaQuery.of(context).size.height/5,),
+          Text("Benvenuto! Inizia a navigare nella nostra app", style: TextStyle(color: context.onSecondary, fontSize: 18),),
+        ],
+      ));
   }
 }

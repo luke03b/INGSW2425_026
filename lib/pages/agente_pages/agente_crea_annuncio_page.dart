@@ -721,7 +721,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
               onPressed: () async {
                 FocusScope.of(context).requestFocus(FocusNode());
                 if(_validateFields()){
-                  LoadingHelper.showLoadingDialog(context, color: context.secondary);
+                  LoadingHelper.showLoadingDialogNotDissmissible(context, color: context.secondary);
                   try{
                     String? idUtenteLoggato = await recuperaIdUtenteLoggato();
                     print(idUtenteLoggato);
