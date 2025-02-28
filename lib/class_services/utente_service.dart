@@ -20,7 +20,7 @@ class UtenteService{
   }
 
   static Future<int> inviaUtente(UtenteDto utente) async {
-    final url = Urlbuilder.createUrl(Urlbuilder.LOCALHOST_ANDROID, Urlbuilder.PORTA_SPRINGBOOT, Urlbuilder.ENDOPOINT_UTENTI);
+    final url = Urlbuilder.createUrl(Urlbuilder.LOCALHOST_ANDROID, Urlbuilder.PORTA_SPRINGBOOT, Urlbuilder.ENDPOINT_UTENTI);
     
     final response = await http.post(
       url,
@@ -61,7 +61,7 @@ class UtenteService{
   }
 
   static Future<http.Response> chiamataHTTPRecuperaUtenteBySub(String sub) async{
-    final url = Urlbuilder.createUrl(Urlbuilder.LOCALHOST_ANDROID, Urlbuilder.PORTA_SPRINGBOOT, Urlbuilder.ENDOPOINT_UTENTI, queryParams: {'sub': sub});
+    final url = Urlbuilder.createUrl(Urlbuilder.LOCALHOST_ANDROID, Urlbuilder.PORTA_SPRINGBOOT, Urlbuilder.ENDPOINT_UTENTI, queryParams: {'sub': sub});
 
     final response = await http.get(
       url,

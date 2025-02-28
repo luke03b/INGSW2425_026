@@ -89,7 +89,7 @@ class AnnuncioService {
   }
 
   static Future<http.Response> chiamataHTTPrecuperaAnnunciByAgenteSub(String sub) async {
-    final url = Urlbuilder.createUrl(Urlbuilder.LOCALHOST_ANDROID, Urlbuilder.PORTA_SPRINGBOOT, Urlbuilder.ENDOPOINT_ANNUNCI_AGENTE, queryParams: {'sub': sub});
+    final url = Urlbuilder.createUrl(Urlbuilder.LOCALHOST_ANDROID, Urlbuilder.PORTA_SPRINGBOOT, Urlbuilder.ENDPOINT_ANNUNCI_AGENTE, queryParams: {'sub': sub});
 
     final response = await http.get(
       url,

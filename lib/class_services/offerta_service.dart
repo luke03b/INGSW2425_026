@@ -11,15 +11,15 @@ import 'package:http/http.dart' as http;
 
 class OffertaService {
 
-  static Future<int> creaOfferta(AnnuncioDto annuncio, double prezzo) async {
+  static Future<int> creaOfferta(AnnuncioDto annuncio, String prezzo) async {
     String? sub = await AWSServices().recuperaSubUtenteLoggato();
     UtenteDto? cliente = await UtenteService.recuperaUtenteBySub(sub!);
 
     return _creaOffertaCliente(cliente, annuncio, prezzo);
   }
 
-  static Future<int> _creaOffertaCliente(UtenteDto cliente, AnnuncioDto annuncio, double prezzo) async {
-    OffertaDto offerta = OffertaDto(annuncio: annuncio, cliente: cliente, prezzo: prezzo);
+  static Future<int> _creaOffertaCliente(UtenteDto cliente, AnnuncioDto annuncio, String prezzo) async {
+    OffertaDto offerta = OffertaDto(annuncio: annuncio, cliente: cliente, prezzo: double.parse(prezzo));
     try{
       http.Response response = await _chiamataHTTPcreaOffertaCliente(offerta);
       
@@ -52,6 +52,51 @@ class OffertaService {
         'Content-Type': 'application/json',
       },
       body: json.encode(offerta),
+    ).timeout(
+      const Duration(seconds: 30),
+      onTimeout: () {
+        throw TimeoutException("Il server non risponde.");
+      },
+    );
+    
+    return response;
+  }
+
+  static Future<List<OffertaDto>> recuperaOfferteByAnnuncio(AnnuncioDto annuncio) async {
+    try{
+      http.Response response = await _chiamataHTTPrecuperaOfferteByAnnuncio(annuncio);
+      
+      if(response.statusCode == 200){
+        List<dynamic> data = json.decode(response.body);
+
+        List<OffertaDto> offerte = data.map((item) => OffertaDto.fromJson(item)).toList();
+        return offerte;
+      }else{
+        throw Exception("Errore nel recupero delle offerte");
+      }
+    } on TimeoutException {
+      throw TimeoutException("Errore nel recupero delle offerte (i server potrebbero non essere raggiungibili).");
+    }
+  }
+
+  static Future<http.Response> _chiamataHTTPrecuperaOfferteByAnnuncio(AnnuncioDto annuncio) async {
+    print(annuncio.idAnnuncio);
+    final url = Urlbuilder.createUrl(
+      Urlbuilder.LOCALHOST_ANDROID, 
+      Urlbuilder.PORTA_SPRINGBOOT, 
+      Urlbuilder.ENDPOINT_GET_OFFERTE, 
+      queryParams: { "idAnnuncio" : annuncio.idAnnuncio }
+    );
+
+    print("\n\n\n\n\n\n\n\n");
+    print(url);
+    print("\n\n\n\n\n\n\n\n");
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
     ).timeout(
       const Duration(seconds: 30),
       onTimeout: () {

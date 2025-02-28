@@ -11,4 +11,8 @@ class FormatStrings {
     if (input.isEmpty) return input;
     return input[0].toUpperCase() + input.substring(1).toLowerCase();
   }
+
+  static String formattaDataGGMMAAAAeHHMM(DateTime input) {
+    return DateFormat("dd/MM/yyyy HH:mm").format(input);
+  }
 }
