@@ -36,7 +36,7 @@ class _ClienteCreaOffertaPageState extends State<ClienteCreaOffertaPage> {
 
   List<OffertaDto> listaStoricoOfferte = [];
 
-  getStoricoOfferte() async {
+  void getStoricoOfferte() async {
     try{
       List<OffertaDto> data = await OffertaService.recuperaOfferteByAnnuncio(widget.annuncioSelezionato);
       if (mounted) {

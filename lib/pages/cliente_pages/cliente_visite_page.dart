@@ -2,28 +2,27 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:domus_app/back_end_communication/class_services/offerta_service.dart';
-import 'package:domus_app/back_end_communication/dto/offerta_dto.dart';
+import 'package:domus_app/back_end_communication/class_services/visita_service.dart';
+import 'package:domus_app/back_end_communication/dto/visita_dto.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
 import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/theme/ui_constants.dart';
-import 'package:domus_app/utils/my_ui_messages_widgets.dart';
 import 'package:flutter/material.dart';
 
-class OffertePage extends StatefulWidget {
-  const OffertePage({super.key});
+class ClientePrenotazioniPage extends StatefulWidget {
+  const ClientePrenotazioniPage({super.key});
 
   @override
-  State<OffertePage> createState() => _OffertePageState();
+  State<ClientePrenotazioniPage> createState() => _ClientePrenotazioniPageState();
 }
 
-class _OffertePageState extends State<OffertePage> {
-
+class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
   int _currentSliderIndex = 0;
-  List<OffertaDto> annunciList = [];
   bool hasUserOfferte = false;
   bool areServersAvailable = false;
   bool areDataRetrieved = false;
+
+  List<VisitaDto> annunciList = [];
 
   @override
   void initState() {
@@ -36,14 +35,14 @@ class _OffertePageState extends State<OffertePage> {
     
     // Esegui getAnnunci dopo la fase di build
     Future.delayed(Duration.zero, () {
-      getAnnunciConOfferte();
+      getAnnunciConVisite();
     });
   }
 
-  Future<void> getAnnunciConOfferte() async {
+  Future<void> getAnnunciConVisite() async {
     try {
 
-      List<OffertaDto> data = await OffertaService.recuperaAnnunciConOfferteByClienteLoggato();
+      List<VisitaDto> data = await VisitaService.recuperaAnnunciConVisiteByClienteLoggato();
 
       if (mounted) {
         setState(() {
@@ -70,7 +69,6 @@ class _OffertePageState extends State<OffertePage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,37 +81,19 @@ class _OffertePageState extends State<OffertePage> {
         elevation: 5,
         shadowColor: context.shadow,
       ),
-      body: switch ((areDataRetrieved, areServersAvailable, hasUserOfferte)) {
-                (false, _, _) => MyUiMessagesWidgets.myTextWithLoading(context, "Sto recuperando le tue offerte"),
-                (true, false, _) => MyUiMessagesWidgets.myErrorWithButton(
-                  context, 
-                  "Server non raggiungibili. Controlla la tua connessione a internet e riprova", 
-                  "Riprova", 
-                  (){
-                    setState(() {
-                      areServersAvailable = false;
-                      areDataRetrieved = false;
-                      hasUserOfferte = false;
-                    });
-                    getAnnunciConOfferte();
-                  }
-                ),
-                (true, true, false) => MyUiMessagesWidgets.myText(context, "Non hai fatto offerte"),
-                (true, true, true) => myCarouselSlider(context),
-            }
-    );
+      body: myCarouselSlider(context));
   }
 
   CarouselSlider myCarouselSlider(BuildContext context) {
 
-    Color selettoreColoreStatoOfferta(String statoOfferta) {
-      if(statoOfferta == "Accettata") {
+    Color selettoreColoreStatoPrenotazione(String statoPrenotazione) {
+      if(statoPrenotazione == "Accettata") {
         return Colors.green;
-      } else if(statoOfferta == "Rifiutata") {
+      } else if(statoPrenotazione == "Rifiutata") {
         return context.error;
-      } else if(statoOfferta == "In Attesa") {
+      } else if(statoPrenotazione == "In Attesa") {
         return Colors.grey;
-      } else if(statoOfferta == "Controproposta") {
+      } else if(statoPrenotazione == "Controproposta") {
         return context.tertiary;
       }
       return context.outline;
@@ -122,11 +102,11 @@ class _OffertePageState extends State<OffertePage> {
     return CarouselSlider(
       items: annunciList.asMap().entries.map((entry) {
         int indice = entry.key;
-        OffertaDto offertaSelezionata = entry.value;
+        VisitaDto visitaCorrente = entry.value;
         double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.7;
         return GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(annuncioSelezionato: offertaSelezionata.annuncio!,)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(annuncioSelezionato: visitaCorrente.annuncio)));
           },
           child: Container(
             width: MediaQuery.of(context).size.width,
@@ -135,6 +115,10 @@ class _OffertePageState extends State<OffertePage> {
               color: context.primaryContainer,
               borderRadius: BorderRadius.circular(10),
               shape: BoxShape.rectangle,
+              boxShadow: [BoxShadow(color: context.shadow.withOpacity(0.2),
+                spreadRadius: 5,
+                blurRadius: 15,
+                offset: Offset(0, 10),)],
             ),
             child: Column(
               children: [
@@ -155,36 +139,25 @@ class _OffertePageState extends State<OffertePage> {
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text("La tua offerta: ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: context.outline)),
-                    Text(FormatStrings.formatNumber(offertaSelezionata.prezzo), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: context.outline)),
-                    Text(" EUR", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: context.outline)),
+                    Text("Data prenotazione: ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: context.outline)),
+                    Text(FormatStrings.formattaDataGGMMAAAAeHHMM(visitaCorrente.data), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: context.outline)),
                   ],
                 ),
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!)))),
-                    Visibility(
-                      visible: FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!) == "Controproposta",
-                      child: Row(
-                        children: [
-                          Text(": ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!)))),
-                          Text(FormatStrings.formatNumber(offertaSelezionata.prezzo), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: selettoreColoreStatoOfferta(FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!)))),
-                          Text(" EUR", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: selettoreColoreStatoOfferta(FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!)))),
-                        ],
-                      ),
-                    ),
+                    Text(FormatStrings.mappaStatoOfferta(visitaCorrente.stato!), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoPrenotazione(FormatStrings.mappaStatoOfferta(visitaCorrente.stato!)))),
                   ],
                 ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text("Data offerta: ", style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.bold, color: context.outline)),
-                    Text(FormatStrings.formattaDataGGMMAAAAeHHMM(offertaSelezionata.data!), style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.normal, color: context.outline)),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     SizedBox(width: MediaQuery.of(context).size.width/45,),
+                //     SizedBox(width: MediaQuery.of(context).size.width/45,),
+                //     Text("Richiesta effettuata in data: ", style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.bold, color: context.outline)),
+                //     Text(visitaCorrente['data_prenotazione'], style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.normal, color: context.outline)),
+                //   ],
+                // ),
                 SizedBox(
                   height: scaleFactor * MediaQuery.of(context).size.height/75,
                 ),
@@ -192,7 +165,7 @@ class _OffertePageState extends State<OffertePage> {
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(FormatStrings.formatNumber(offertaSelezionata.annuncio!.prezzo), style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
+                    Text(FormatStrings.formatNumber(visitaCorrente.annuncio.prezzo), style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
                     Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
                   ],
                 ),
@@ -203,7 +176,7 @@ class _OffertePageState extends State<OffertePage> {
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     Expanded(
                       child: AutoSizeText(
-                        offertaSelezionata.annuncio!.indirizzo,
+                        visitaCorrente.annuncio.indirizzo,
                         style: TextStyle(
                           fontSize: scaleFactor * 18,
                           fontWeight: FontWeight.normal,

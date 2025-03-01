@@ -32,7 +32,8 @@ class OffertaDto implements DTO {
       annuncio: AnnuncioDto.fromJson(json["annuncio"]),
       prezzo: json["prezzo"],
       data: DateTime.parse(json["data"]),
-      stato: json["stato"]
+      stato: json["stato"],
+      cliente: UtenteDto.fromJson(json["cliente"])
     );
   }
 }

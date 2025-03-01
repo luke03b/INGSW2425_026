@@ -14,7 +14,7 @@ class AnnuncioService {
     bool isArredatoSelected, bool isBalconeSelected, bool isGiardinoSelected, String stanze, String numeroPiano,
     String sceltaClasseEnergetica, String sceltaPiano, double latitudine, double longitudine, String idUtente) async {
 
-    AnnuncioDto nuovoAnnuncio = creaAnnuncioDto(tipoAnnuncio, prezzo, superficie, indirizzo, descrizione, isGarageSelected,
+    AnnuncioDto nuovoAnnuncio = _creaAnnuncioDto(tipoAnnuncio, prezzo, superficie, indirizzo, descrizione, isGarageSelected,
       isAscensoreSelected, isPiscinaSelected, isArredatoSelected, isBalconeSelected, isGiardinoSelected, stanze, numeroPiano,
       sceltaClasseEnergetica, sceltaPiano, latitudine, longitudine, idUtente);
 
@@ -25,7 +25,7 @@ class AnnuncioService {
       }
   }
 
-  static AnnuncioDto creaAnnuncioDto(String tipoAnnuncio, String prezzo, String superficie, String indirizzo,
+  static AnnuncioDto _creaAnnuncioDto(String tipoAnnuncio, String prezzo, String superficie, String indirizzo,
     String descrizione, bool isGarageSelected, bool isAscensoreSelected, bool isPiscinaSelected,
     bool isArredatoSelected, bool isBalconeSelected, bool isGiardinoSelected, String stanze, String numeroPiano,
     String sceltaClasseEnergetica, String sceltaPiano, double latitudine, double longitudine, String idUtente){
@@ -69,7 +69,7 @@ class AnnuncioService {
     );
   }
 
-  static Future<List<AnnuncioDto>> recuperaAnnunciByAgenteSub(String sub) async {
+  static Future<List<AnnuncioDto>> _recuperaAnnunciByAgenteSub(String sub) async {
     try{
       http.Response response = await AnnuncioController.chiamataHTTPrecuperaAnnunciByAgenteSub(sub);
       
@@ -89,7 +89,7 @@ class AnnuncioService {
 
   static Future<List<AnnuncioDto>> recuperaAnnunciByAgenteLoggato() async{
     String? sub = await AWSServices().recuperaSubUtenteLoggato();
-    return recuperaAnnunciByAgenteSub(sub!);
+    return _recuperaAnnunciByAgenteSub(sub!);
   }
 
   static Future<List<AnnuncioDto>> recuperaAnnunciByCriteriDiRicerca(FiltriRicercaDto filtriRicerca) async {
@@ -110,7 +110,7 @@ class AnnuncioService {
     }
   }
 
-  static Future<List<AnnuncioDto>> recuperaAnnunciRecentementeVisusalizzatiCliente(UtenteDto cliente) async {
+  static Future<List<AnnuncioDto>> _recuperaAnnunciRecentementeVisusalizzatiCliente(UtenteDto cliente) async {
     try{
       http.Response response = await AnnuncioController.chiamataHTTPrecuperaAnnunciRecentementeVisusalizzatiCliente(cliente);
       
@@ -128,10 +128,10 @@ class AnnuncioService {
     }
   }
 
-  static Future<List<AnnuncioDto>> recuperaAnnunciByClienteLoggato() async {
+  static Future<List<AnnuncioDto>> recuperaAnnunciRecentementeVisualizzatiByClienteLoggato() async {
     String? sub = await AWSServices().recuperaSubUtenteLoggato();
     UtenteDto cliente = await UtenteService.recuperaUtenteBySub(sub!);
-    return recuperaAnnunciRecentementeVisusalizzatiCliente(cliente);
+    return _recuperaAnnunciRecentementeVisusalizzatiCliente(cliente);
   }
 
 }

@@ -1,4 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
+import 'package:domus_app/back_end_communication/class_services/visita_service.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
+import 'package:domus_app/back_end_communication/dto/visita_dto.dart';
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
@@ -85,10 +89,9 @@ IconData _getWeatherIcon(int weatherCode) {
 
 
 class WeatherScreen extends StatefulWidget {
-  final double latitude;
-  final double longitude;
+  final AnnuncioDto annuncioSelezionato;
 
-  const WeatherScreen({super.key, required this.latitude, required this.longitude});
+  const WeatherScreen({super.key, required this.annuncioSelezionato});
 
   @override
   _WeatherScreenState createState() => _WeatherScreenState();
@@ -98,11 +101,47 @@ class _WeatherScreenState extends State<WeatherScreen> {
   final String apiUrl = "https://api.open-meteo.com/v1/forecast";
   Map<String, dynamic>? weatherData;
   bool isLoading = true;
+  bool areServersAvailable = false;
+  bool areDataRetrieved = false;
+  bool hasAnnuncioOfferte = false;
+  List<VisitaDto> listaVisite = [];
+
+  Future<void> getVisiteAnnuncio() async {
+  try {
+    List<VisitaDto> data = await VisitaService.recuperaVisiteAnnuncio(widget.annuncioSelezionato);
+    if (mounted) {
+      setState(() {
+        listaVisite = data;
+        hasAnnuncioOfferte = listaVisite.isNotEmpty;
+        areDataRetrieved = true;
+        areServersAvailable = true;
+      });
+    }
+  } on TimeoutException {
+    if (mounted) {
+      setState(() {
+        areServersAvailable = false;
+        areDataRetrieved = true;
+      });
+    }
+  } catch (error) {
+    setState(() {
+      areServersAvailable = false;
+      areDataRetrieved = true;
+    });
+    print('Errore con il recupero delle offerte (il server potrebbe non essere raggiungibile) $error');
+  }
+}
 
   @override
-  void initState() {
-    super.initState();
-    fetchWeather(widget.latitude, widget.longitude);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    
+    // Esegui dopo la fase di build
+    Future.delayed(Duration.zero, () {
+      fetchWeather(widget.annuncioSelezionato.latitudine, widget.annuncioSelezionato.longitudine);
+      getVisiteAnnuncio();
+    });
   }
 
   Future<void> fetchWeather(double latitude, double longitude) async {
@@ -174,6 +213,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) => HourlyWeatherScreen(
+                  annuncioSelezionato: widget.annuncioSelezionato,
                   hourlyData: weatherData!["hourly"],
                   selectedDate: date,
                 ),
@@ -209,8 +249,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
 class HourlyWeatherScreen extends StatelessWidget {
   final Map<String, dynamic> hourlyData;
   final String selectedDate;
+  final AnnuncioDto annuncioSelezionato;
 
-  HourlyWeatherScreen({required this.hourlyData, required this.selectedDate});
+  HourlyWeatherScreen({required this.annuncioSelezionato, required this.hourlyData, required this.selectedDate});
 
   @override
   Widget build(BuildContext context) {
@@ -269,14 +310,43 @@ class HourlyWeatherScreen extends StatelessWidget {
                     rightButtonText: "Si", 
                     rightButtonColor: context.tertiary, 
                     onPressLeftButton: (){Navigator.pop(context);}, 
-                    onPressRightButton: (){}
+                    onPressRightButton: () async {
+                      try {
+                        int statusCode = await VisitaService.creaVisita(annuncioSelezionato, selectedDate, time);
+                        Navigator.pop(context);
+                        controllaStatusCode(statusCode, context);
+                      } on TimeoutException {
+                        Navigator.pop(context);
+                        showDialog(
+                          context: context, 
+                          builder: (BuildContext context) => MyInfoDialog(
+                            title: "Connessione non riuscita", 
+                            bodyText: "Visita non creata, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
+                            buttonText: "Ok", 
+                            onPressed: () {Navigator.pop(context);}
+                          )
+                        );
+                      } catch (e) {
+                        print(e);
+                        Navigator.pop(context);
+                        showDialog(
+                          context: context, 
+                          builder: (BuildContext context) => MyInfoDialog(
+                            title: "Errore",
+                            bodyText: "Visista non creata. Il server potrebbe non essere raggiungibile. Riprova più tardi.", 
+                            buttonText: "Ok", 
+                            onPressed: () {Navigator.pop(context);}
+                          )
+                        );
+                      }
+                    }
                   )
                 );
               },
             child: Card(
               color: _getWeatherColor(weatherCode),
               child: ListTile(
-                title: Text("Ora: $time"),
+                title: Text("Orario: $time - ${time}"),
                 subtitle: Text("Temp: $temp°C"),
                 leading: Icon(_getWeatherIcon(weatherCode)),
                 trailing: Wrap(
@@ -293,5 +363,29 @@ class HourlyWeatherScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  void controllaStatusCode(int statusCode, BuildContext context) {
+    if (statusCode == 201) {
+      showDialog(
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(
+          title: "Conferma", 
+          bodyText: "Visita creata", 
+          buttonText: "Ok", 
+          onPressed: () {Navigator.pop(context);}
+        )
+      );
+    } else {
+      showDialog(
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(
+          title: "Errore", 
+          bodyText: "Visita non creato, controllare i campi e riprovare.", 
+          buttonText: "Ok", 
+          onPressed: () {Navigator.pop(context);}
+        )
+      );
+    }
   }
 }

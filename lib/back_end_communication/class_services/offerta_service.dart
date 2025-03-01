@@ -51,7 +51,7 @@ class OffertaService {
     }
   }
 
-  static Future<List<OffertaDto>> recuperaAnnunciConOfferteCliente(UtenteDto cliente) async {
+  static Future<List<OffertaDto>> _recuperaAnnunciConOfferteCliente(UtenteDto cliente) async {
     try{
       http.Response response = await OffertaController.chiamataHTTPrecuperaAnnunciConOfferteCliente(cliente);
       
@@ -72,6 +72,6 @@ class OffertaService {
   static Future<List<OffertaDto>> recuperaAnnunciConOfferteByClienteLoggato() async {
     String? sub = await AWSServices().recuperaSubUtenteLoggato();
     UtenteDto cliente = await UtenteService.recuperaUtenteBySub(sub!);
-    return recuperaAnnunciConOfferteCliente(cliente);
+    return _recuperaAnnunciConOfferteCliente(cliente);
   }
 }

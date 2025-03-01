@@ -11,6 +11,9 @@ class Urlbuilder {
   static final String ENDPOINT_POST_OFFERTE = "api/offerte";
   static final String ENDPOINT_GET_OFFERTE = "api/offerte";
   static final String ENDPOINT_GET_ANNUNCI_OFFERTE = "api/offerte/cliente";
+  static final String ENDPOINT_POST_VISITE = "api/visite";
+  static final String ENDPOINT_GET_VISITE_ANNUNCIO = "api/visite";
+  static final String ENDPOINT_GET_VISITE_CLIENTE = "api/visite/cliente";
 
   static Uri createUrl(String hostName, String port, String path, {Map<String, dynamic>? queryParams}) {
     Uri uri = Uri.parse("$_url$hostName:$port/$path");

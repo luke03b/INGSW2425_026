@@ -17,8 +17,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
-import '../../utils/my_loading.dart';
-
 const List<String> listaClassiEnergetiche = <String>['Tutte', 'A4', 'A3', 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G'];
 const List<String> listaPiani = <String>['Tutti', 'Terra', 'Intermedio', 'Ultimo'];
 
@@ -115,7 +113,7 @@ class _CercaPageState extends State<CercaPage> {
   Future<void> getAnnunciRecenti() async {
     try {
 
-      List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciByClienteLoggato();
+      List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciRecentementeVisualizzatiByClienteLoggato();
 
       if (mounted) {
         setState(() {
