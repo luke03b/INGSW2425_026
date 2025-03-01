@@ -7,6 +7,7 @@ import 'package:domus_app/back_end_communication/dto/visita_dto.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
 import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/theme/ui_constants.dart';
+import 'package:domus_app/utils/my_ui_messages_widgets.dart';
 import 'package:flutter/material.dart';
 
 class ClientePrenotazioniPage extends StatefulWidget {
@@ -18,7 +19,7 @@ class ClientePrenotazioniPage extends StatefulWidget {
 
 class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
   int _currentSliderIndex = 0;
-  bool hasUserOfferte = false;
+  bool hasUserVisite = false;
   bool areServersAvailable = false;
   bool areDataRetrieved = false;
 
@@ -47,7 +48,7 @@ class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
       if (mounted) {
         setState(() {
           annunciList = data;
-          hasUserOfferte = annunciList.isNotEmpty;
+          hasUserVisite = annunciList.isNotEmpty;
           areDataRetrieved = true;
           areServersAvailable = true;
         });
@@ -81,7 +82,24 @@ class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
         elevation: 5,
         shadowColor: context.shadow,
       ),
-      body: myCarouselSlider(context));
+      body: switch ((areDataRetrieved, areServersAvailable, hasUserVisite)) {
+                (false, _, _) => MyUiMessagesWidgets.myTextWithLoading(context, "Sto recuperando le tue visite prenotate"),
+                (true, false, _) => MyUiMessagesWidgets.myErrorWithButton(
+                  context, 
+                  "Server non raggiungibili. Controlla la tua connessione a internet e riprova", 
+                  "Riprova", 
+                  (){
+                    setState(() {
+                      areServersAvailable = false;
+                      areDataRetrieved = false;
+                      hasUserVisite = false;
+                    });
+                    getAnnunciConVisite();
+                  }
+                ),
+                (true, true, false) => MyUiMessagesWidgets.myText(context, "Non hai prenotato visite"),
+                (true, true, true) => myCarouselSlider(context),
+            });
   }
 
   CarouselSlider myCarouselSlider(BuildContext context) {
@@ -137,10 +155,33 @@ class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
                 ),
                 Row(
                   children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text("Data prenotazione: ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: context.outline)),
-                    Text(FormatStrings.formattaDataGGMMAAAAeHHMM(visitaCorrente.data), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: context.outline)),
+                    SizedBox(width: MediaQuery.of(context).size.width / 45),
+                    SizedBox(width: MediaQuery.of(context).size.width / 45),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Data prenotazione: ",
+                          style: TextStyle(
+                            fontSize: scaleFactor * 22,
+                            fontWeight: FontWeight.bold,
+                            color: context.outline,
+                          ),
+                        ),
+                        AutoSizeText(
+                          "${FormatStrings.formattaDataGGMMAAAA(visitaCorrente.data)} dalle ${FormatStrings.formattaOrario(visitaCorrente.orarioInizio)} alle ${FormatStrings.formattaOrario(visitaCorrente.orarioFine!)}",
+                          style: TextStyle(
+                            fontSize: scaleFactor * 18,
+                            fontWeight: FontWeight.normal,
+                            color: context.outline,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          minFontSize: 12,
+                          maxFontSize: 20,
+                        ),
+                      ],
+                    ),
                   ],
                 ),
                 Row(

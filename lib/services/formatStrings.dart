@@ -16,6 +16,14 @@ class FormatStrings {
     return DateFormat("dd/MM/yyyy HH:mm").format(input);
   }
 
+  static String formattaDataGGMMAAAA(DateTime input) {
+    return DateFormat("dd/MM/yyyy").format(input);
+  }
+
+  static String formattaOrario(String input) {
+    return input.substring(0, input.length - 3);
+  }
+
   static String mappaStatoOfferta(String input) {
     if(input == "ACCETTATA") {
         return "Accettata";

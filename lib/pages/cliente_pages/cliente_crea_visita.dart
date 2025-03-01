@@ -88,16 +88,16 @@ IconData _getWeatherIcon(int weatherCode) {
   }
 
 
-class WeatherScreen extends StatefulWidget {
+class ClienteCreaVisitaPage extends StatefulWidget {
   final AnnuncioDto annuncioSelezionato;
 
-  const WeatherScreen({super.key, required this.annuncioSelezionato});
+  const ClienteCreaVisitaPage({super.key, required this.annuncioSelezionato});
 
   @override
-  _WeatherScreenState createState() => _WeatherScreenState();
+  _ClienteCreaVisitaPageState createState() => _ClienteCreaVisitaPageState();
 }
 
-class _WeatherScreenState extends State<WeatherScreen> {
+class _ClienteCreaVisitaPageState extends State<ClienteCreaVisitaPage> {
   final String apiUrl = "https://api.open-meteo.com/v1/forecast";
   Map<String, dynamic>? weatherData;
   bool isLoading = true;
@@ -139,12 +139,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
     
     // Esegui dopo la fase di build
     Future.delayed(Duration.zero, () {
-      fetchWeather(widget.annuncioSelezionato.latitudine, widget.annuncioSelezionato.longitudine);
+      recuperaPrevisioniMeteo(widget.annuncioSelezionato.latitudine, widget.annuncioSelezionato.longitudine);
       getVisiteAnnuncio();
     });
   }
 
-  Future<void> fetchWeather(double latitude, double longitude) async {
+  Future<void> recuperaPrevisioniMeteo(double latitude, double longitude) async {
     final url = Uri.parse(
         "$apiUrl?latitude=$latitude&longitude=$longitude&daily=temperature_2m_max,temperature_2m_min,weathercode&hourly=temperature_2m,weathercode&timezone=Europe/Rome&forecast_days=14");
 
@@ -154,6 +154,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
       if (response.statusCode == 200) {
         setState(() {
           weatherData = jsonDecode(response.body);
+          print(response.body);
           isLoading = false;
         });
       } else {
@@ -212,7 +213,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => HourlyWeatherScreen(
+                builder: (context) => ClienteFasceOrarieVisita(
                   annuncioSelezionato: widget.annuncioSelezionato,
                   hourlyData: weatherData!["hourly"],
                   selectedDate: date,
@@ -246,12 +247,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
 
 
-class HourlyWeatherScreen extends StatelessWidget {
+class ClienteFasceOrarieVisita extends StatelessWidget {
   final Map<String, dynamic> hourlyData;
   final String selectedDate;
   final AnnuncioDto annuncioSelezionato;
 
-  HourlyWeatherScreen({required this.annuncioSelezionato, required this.hourlyData, required this.selectedDate});
+  ClienteFasceOrarieVisita({required this.annuncioSelezionato, required this.hourlyData, required this.selectedDate});
 
   @override
   Widget build(BuildContext context) {

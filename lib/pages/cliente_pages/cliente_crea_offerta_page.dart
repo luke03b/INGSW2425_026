@@ -170,7 +170,6 @@ class _ClienteCreaOffertaPageState extends State<ClienteCreaOffertaPage> {
                               }
                       ),
                     ),
-                    SizedBox(width: 10,),
                 ],),
         ),
       );
@@ -261,6 +260,7 @@ class _ClienteCreaOffertaPageState extends State<ClienteCreaOffertaPage> {
                                                   hasAnnuncioOfferte = false;
                                                   areDataRetrieved = false;
                                                   areServersAvailable = false;
+                                                  offertaController.text = "";
                                                 });
                                                 getStoricoOfferte();
                                               } on TimeoutException {

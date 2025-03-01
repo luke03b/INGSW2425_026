@@ -484,7 +484,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                     SizedBox(width: 5,),
                     Expanded(child: MyElevatedButtonRectWidget(text: "Visita", onPressed: (){
                       // Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteCreaPrenotazionePage(casaSelezionata: widget.casaSelezionata)));
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => WeatherScreen(annuncioSelezionato: widget.annuncioSelezionato,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteCreaVisitaPage(annuncioSelezionato: widget.annuncioSelezionato,)));
                     }, color: context.onSecondary)),
                     SizedBox(width: 5,),
                     ],),
