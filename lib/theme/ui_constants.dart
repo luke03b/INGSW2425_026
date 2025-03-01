@@ -38,6 +38,11 @@ class AppTheme {
       scrim: Colors.grey,
       tertiaryFixed: Colors.white,
       onPrimaryContainer: Color.fromARGB(255, 138, 150, 156),
+      primaryFixed: Color.fromARGB(255, 255, 191, 96),
+      secondaryFixed: Color.fromARGB(255, 223, 223, 223),
+      tertiaryFixedDim: Color.fromARGB(255, 144, 202, 249),
+      surfaceBright: Color.fromARGB(255, 179, 229, 252),
+      secondaryFixedDim: Colors.white,
     )
   );
 
@@ -65,6 +70,11 @@ class AppTheme {
       scrim: Colors.grey,
       tertiaryFixed: Color(0xFF1D1B1B),
       onPrimaryContainer: Color(0xFF292629),
+      primaryFixed: Color.fromARGB(255, 153, 112, 52),
+      secondaryFixed: Color.fromARGB(255, 77, 77, 77),
+      tertiaryFixedDim: Color.fromARGB(255, 73, 96, 116),
+      surfaceBright: Color.fromARGB(255, 87, 109, 119),
+      secondaryFixedDim: Color.fromARGB(255, 180, 180, 180),
     )
   );
 }
@@ -87,4 +97,9 @@ extension ThemeExtensions on BuildContext {
   Color get scrim => Theme.of(this).colorScheme.scrim;
   Color get tertiaryFixed => Theme.of(this).colorScheme.tertiaryFixed;
   Color get onPrimaryContainer => Theme.of(this).colorScheme.onPrimaryContainer;
+  Color get primaryFixed => Theme.of(this).colorScheme.primaryFixed;
+  Color get secondaryFixed => Theme.of(this).colorScheme.secondaryFixed;
+  Color get tertiaryFixedDim => Theme.of(this).colorScheme.tertiaryFixedDim;
+  Color get surfaceBright => Theme.of(this).colorScheme.surfaceBright;
+  Color get secondaryFixedDim=> Theme.of(this).colorScheme.secondaryFixedDim;
 }
