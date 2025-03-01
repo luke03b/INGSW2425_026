@@ -1,4 +1,4 @@
-import 'package:domus_app/dto/dto.dart';
+import 'package:domus_app/back_end_communication/dto/dto.dart';
 
 class FiltriRicercaDto implements DTO {
   final String tipoAnnuncio;

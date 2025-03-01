@@ -1,5 +1,5 @@
-import 'package:domus_app/dto/dto.dart';
-import 'package:domus_app/dto/offerta_dto.dart';
+import 'package:domus_app/back_end_communication/dto/dto.dart';
+import 'package:domus_app/back_end_communication/dto/offerta_dto.dart';
 
 class AnnuncioDto implements DTO{
   String? idAnnuncio;

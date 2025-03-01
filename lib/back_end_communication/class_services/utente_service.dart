@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:domus_app/communication_utils/url_builder.dart';
-import 'package:domus_app/dto/utente_dto.dart';
+import 'package:domus_app/back_end_communication/class_controllers/utente_controller.dart';
+import 'package:domus_app/back_end_communication/communication_utils/url_builder.dart';
+import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
 import 'package:http/http.dart' as http;
 
 class UtenteService{
@@ -13,34 +14,15 @@ class UtenteService{
     UtenteDto utenteDto = creaUtenteDto(sub, tipo, agenziaImmobiliare);
 
     try {
-        return await inviaUtente(utenteDto);
+        return await UtenteController.inviaUtente(utenteDto);
       } on TimeoutException {
         throw TimeoutException("Il server non risponde.");
       }
   }
 
-  static Future<int> inviaUtente(UtenteDto utente) async {
-    final url = Urlbuilder.createUrl(Urlbuilder.LOCALHOST_ANDROID, Urlbuilder.PORTA_SPRINGBOOT, Urlbuilder.ENDPOINT_UTENTI);
-    
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: json.encode(utente),
-    ).timeout(
-      const Duration(seconds: 30),
-      onTimeout: () {
-        throw TimeoutException("Il server non risponde.");
-      },
-    );
-    
-    return response.statusCode;
-  }
-
   static Future<UtenteDto> recuperaUtenteBySub(String sub) async {
     try {
-      http.Response response = await chiamataHTTPRecuperaUtenteBySub(sub);
+      http.Response response = await UtenteController.chiamataHTTPRecuperaUtenteBySub(sub);
       print(response);
       print(response.body);
 
@@ -58,24 +40,6 @@ class UtenteService{
     } on TimeoutException {
       throw TimeoutException("Il server non risponde.");
     }
-  }
-
-  static Future<http.Response> chiamataHTTPRecuperaUtenteBySub(String sub) async{
-    final url = Urlbuilder.createUrl(Urlbuilder.LOCALHOST_ANDROID, Urlbuilder.PORTA_SPRINGBOOT, Urlbuilder.ENDPOINT_UTENTI, queryParams: {'sub': sub});
-
-    final response = await http.get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    ).timeout(
-      const Duration(seconds: 30),
-      onTimeout: () {
-        throw TimeoutException("Il server non risponde.");
-      },
-    );
-    
-    return response;
   }
 
   static Future<String?> recuperaAgenziaDaUtenteSub (String sub) async{

@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:domus_app/class_services/offerta_service.dart';
-import 'package:domus_app/dto/annuncio_dto.dart';
-import 'package:domus_app/dto/offerta_dto.dart';
+import 'package:domus_app/back_end_communication/class_services/offerta_service.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
+import 'package:domus_app/back_end_communication/dto/offerta_dto.dart';
 import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/theme/ui_constants.dart';
 import 'package:domus_app/utils/my_buttons_widgets.dart';

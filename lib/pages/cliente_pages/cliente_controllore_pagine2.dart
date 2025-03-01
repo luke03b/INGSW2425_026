@@ -1,4 +1,4 @@
-import 'package:domus_app/dto/filtri_ricerca_dto.dart';
+import 'package:domus_app/back_end_communication/dto/filtri_ricerca_dto.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_prenotazioni_page.dart';
 import 'package:domus_app/pages/shared_pages/profilo_page.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_risultati_cerca_page.dart';

@@ -1,6 +1,6 @@
-import 'package:domus_app/dto/annuncio_dto.dart';
-import 'package:domus_app/dto/dto.dart';
-import 'package:domus_app/dto/utente_dto.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
+import 'package:domus_app/back_end_communication/dto/dto.dart';
+import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
 
 class CronologiaDto implements DTO {
 

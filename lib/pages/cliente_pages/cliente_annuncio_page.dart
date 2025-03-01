@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:domus_app/class_services/cronologia_service.dart';
-import 'package:domus_app/dto/annuncio_dto.dart';
+import 'package:domus_app/back_end_communication/class_services/cronologia_service.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_crea_offerta_page.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_crea_prenotazione.dart';
 import 'package:domus_app/services/formatStrings.dart';

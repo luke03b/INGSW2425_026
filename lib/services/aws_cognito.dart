@@ -1,7 +1,7 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:domus_app/class_services/utente_service.dart';
+import 'package:domus_app/back_end_communication/class_services/utente_service.dart';
 import 'package:domus_app/costants/costants.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
