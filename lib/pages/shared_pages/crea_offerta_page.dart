@@ -12,18 +12,18 @@ import 'package:domus_app/ui_elements/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:domus_app/ui_elements/utils/my_ui_messages_widgets.dart';
 
-class ClienteCreaOffertaPage extends StatefulWidget {
+class CreaOffertaPage extends StatefulWidget {
   final AnnuncioDto annuncioSelezionato;
-  const ClienteCreaOffertaPage({
+  const CreaOffertaPage({
     super.key,
     required this.annuncioSelezionato,
   });
 
   @override
-  State<ClienteCreaOffertaPage> createState() => _ClienteCreaOffertaPageState();
+  State<CreaOffertaPage> createState() => _CreaOffertaPageState();
 }
 
-class _ClienteCreaOffertaPageState extends State<ClienteCreaOffertaPage> {
+class _CreaOffertaPageState extends State<CreaOffertaPage> {
   bool areServersAvailable = false;
   bool areDataRetrieved = false;
   bool hasAnnuncioOfferte = false;

@@ -1,5 +1,5 @@
 import 'package:domus_app/back_end_communication/dto/dto.dart';
-import 'package:domus_app/back_end_communication/dto/offerta_dto.dart';
+import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
 
 class AnnuncioDto implements DTO{
   String? idAnnuncio;
@@ -16,7 +16,7 @@ class AnnuncioDto implements DTO{
   String classeEnergetica;
   String piano;
   int? numeroPiano;
-  String agente;
+  UtenteDto agente;
   String indirizzo;
   double latitudine;
   double longitudine;
@@ -68,7 +68,7 @@ class AnnuncioDto implements DTO{
       "piano": piano,
       "numero_piano": numeroPiano,
       "agente": {
-        "id": agente
+        'id' : agente.id
       },
       "indirizzo": indirizzo,
       "latitudine": latitudine,
@@ -96,7 +96,7 @@ class AnnuncioDto implements DTO{
       classeEnergetica: json['classe_energetica'],
       piano: json['piano'],
       numeroPiano: json['numero_piano'],
-      agente: json['agente']['id'],
+      agente: UtenteDto.fromJson(json['agente']),
       indirizzo: json['indirizzo'],
       latitudine: json['latitudine'],
       longitudine: json['longitudine'],

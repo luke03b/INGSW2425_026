@@ -74,4 +74,20 @@ class OffertaService {
     UtenteDto cliente = await UtenteService.recuperaUtenteBySub(sub!);
     return _recuperaAnnunciConOfferteCliente(cliente);
   }
+
+  static Future<int> rifiutaOfferta(OffertaDto offerta, String stato) async {
+    try{
+      http.Response response = await OffertaController.chiamataHTTPrifiutaOfferta(offerta, stato);
+      
+      if(response.statusCode == 200){
+        return response.statusCode;        
+      }else{
+        throw Exception("Errore nell'aggiornamento dello stato dell'offerta");
+      }
+
+    } on TimeoutException {
+      throw TimeoutException("Errore nell'aggiornamento dello stato dell'offerta (i server potrebbero non essere raggiungibili).");
+    }
+  }
+
 }

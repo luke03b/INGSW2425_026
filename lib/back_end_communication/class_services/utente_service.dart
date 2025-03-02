@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:domus_app/back_end_communication/class_controllers/utente_controller.dart';
-import 'package:domus_app/back_end_communication/communication_utils/url_builder.dart';
+import 'package:domus_app/back_end_communication/dto/agenzia_immobiliare_dto.dart';
 import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
 import 'package:http/http.dart' as http;
 
 class UtenteService{
-  static UtenteDto creaUtenteDto(String sub, String tipo, String? agenziaImmobiliare){
-    return UtenteDto(sub: sub, tipo: tipo, agenziaImmobiliare: agenziaImmobiliare);
+  static UtenteDto creaUtenteDto(String sub, String tipo, String nome, String cognome, String email, AgenziaImmobiliareDto? agenziaImmobiliare){
+    return UtenteDto(sub: sub, tipo: tipo, nome: nome, cognome: cognome, email: email, agenziaImmobiliare: agenziaImmobiliare);
   }
 
-  static Future<int> creaUtente(String sub, String tipo, String? agenziaImmobiliare) async{
-    UtenteDto utenteDto = creaUtenteDto(sub, tipo, agenziaImmobiliare);
+  static Future<int> creaUtente(String sub, String tipo, String nome, String cognome, String email, AgenziaImmobiliareDto? agenziaImmobiliare) async{
+    UtenteDto utenteDto = creaUtenteDto(sub, tipo, nome, cognome, email, agenziaImmobiliare);
 
     try {
         return await UtenteController.inviaUtente(utenteDto);
@@ -42,7 +42,7 @@ class UtenteService{
     }
   }
 
-  static Future<String?> recuperaAgenziaDaUtenteSub (String sub) async{
+  static Future<AgenziaImmobiliareDto?> recuperaAgenziaDaUtenteSub (String sub) async {
     UtenteDto utenteDto = await recuperaUtenteBySub(sub);
     return utenteDto.agenziaImmobiliare ?? null;
   }

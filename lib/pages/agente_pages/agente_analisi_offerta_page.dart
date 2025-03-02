@@ -1,3 +1,8 @@
+import 'dart:async';
+
+import 'package:domus_app/back_end_communication/class_services/offerta_service.dart';
+import 'package:domus_app/back_end_communication/dto/offerta_dto.dart';
+import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
 import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
@@ -5,7 +10,7 @@ import 'package:domus_app/ui_elements/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
 
 class AgenteAnalizzaOffertaPage extends StatefulWidget {
-  final Map<String, dynamic> offertaSelezionata;
+  final OffertaDto offertaSelezionata;
   const AgenteAnalizzaOffertaPage({super.key, required this.offertaSelezionata});
 
   @override
@@ -17,13 +22,54 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
   static const double GRANDEZZA_ICONE = 25;
   static const double GRANDEZZA_SCRITTE_PICCOLE = 18;
   static const double GRANDEZZA_ICONE_PICCOLE = 20;
+  bool areServersAvailable = false;
+  bool areDataRetrieved = false;
+  bool hasAnnuncioOfferte = false;
   TextEditingController contropropostaController = TextEditingController();
   late ScrollController scrollController;
+  List<OffertaDto> listaStoricoOfferte = [];
+
+  void getStoricoOfferte() async {
+    try{
+      List<OffertaDto> data = await OffertaService.recuperaOfferteByAnnuncio(widget.offertaSelezionata.annuncio!);
+      if (mounted) {
+        setState(() {
+          listaStoricoOfferte = data;
+          hasAnnuncioOfferte = listaStoricoOfferte.isNotEmpty;
+          areDataRetrieved = true;
+          areServersAvailable = true;
+        });
+      }
+    } on TimeoutException {
+      if (mounted) {
+        setState(() {
+          areServersAvailable = false;
+          areDataRetrieved = true;
+        });
+      }
+    } catch (error) {
+      setState(() {
+        areServersAvailable = false;
+        areDataRetrieved = true;
+      });
+      print('Errore con il recupero delle offerte (il server potrebbe non essere raggiungibile) $error');
+    }
+  }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     scrollController = ScrollController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    
+    // Esegui getAnnunci dopo la fase di build
+    Future.delayed(Duration.zero, () {
+      getStoricoOfferte();
+    });
   }
 
   @override
@@ -32,81 +78,6 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
     super.dispose();
   }
 
-  final List<Map<String, String>> listaOfferte = [
-    {
-      'prezzo': '275.000',
-      'data_offerta': '13-01-2025',
-      'valore_offerta' : '260.000',
-      'nome_offerente' : 'Paolo',
-      'cognome_offerente' : 'Centonze',
-      'email_offerente' : 'paolo.centonze@icloud.com',
-      'stato_offerta' : 'In Attesa',
-    },
-    {
-      'prezzo': '275.000',
-      'data_offerta': '5-01-2025',
-      'valore_offerta' : '280.000',
-      'nome_offerente' : 'Marco',
-      'cognome_offerente' : 'Lombari',
-      'email_offerente' : 'marcolombari65@gmail.com',
-      'stato_offerta' : 'In Attesa',
-    },
-    {
-      'prezzo': '275.000',
-      'data_offerta': '25-12-2024',
-      'valore_offerta' : '225.000',
-      'nome_offerente' : 'Massimiliano',
-      'cognome_offerente' : 'De Santis',
-      'email_offerente' : 'madmax@gmail.com',
-      'stato_offerta' : 'In Attesa',
-    },
-    {
-      'prezzo': '275.000',
-      'data_offerta': '13-01-2025',
-      'valore_offerta' : '260.000',
-      'nome_offerente' : 'Paolo',
-      'cognome_offerente' : 'Centonze',
-      'email_offerente' : 'paolo.centonze@icloud.com',
-      'stato_offerta' : 'In Attesa',
-    },
-    {
-      'prezzo': '275.000',
-      'data_offerta': '13-01-2025',
-      'valore_offerta' : '260.000',
-      'nome_offerente' : 'Paolo',
-      'cognome_offerente' : 'Centonze',
-      'email_offerente' : 'paolo.centonze@icloud.com',
-      'stato_offerta' : 'In Attesa',
-    },
-    {
-      'prezzo': '275.000',
-      'data_offerta': '13-01-2025',
-      'valore_offerta' : '260.000',
-      'nome_offerente' : 'Paolo',
-      'cognome_offerente' : 'Centonze',
-      'email_offerente' : 'paolo.centonze@icloud.com',
-      'stato_offerta' : 'In Attesa',
-    },
-    {
-      'prezzo': '275.000',
-      'data_offerta': '13-01-2025',
-      'valore_offerta' : '260.000',
-      'nome_offerente' : 'Paolo',
-      'cognome_offerente' : 'Centonze',
-      'email_offerente' : 'paolo.centonze@icloud.com',
-      'stato_offerta' : 'In Attesa',
-    },
-    {
-      'prezzo': '275.000',
-      'data_offerta': '13-01-2025',
-      'valore_offerta' : '260.000',
-      'nome_offerente' : 'Paolo',
-      'cognome_offerente' : 'Centonze',
-      'email_offerente' : 'paolo.centonze@icloud.com',
-      'stato_offerta' : 'In Attesa',
-    },
-
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +103,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         Text("Prezzo iniziale: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                        Text(widget.offertaSelezionata['prezzo'], style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
+                        Text(FormatStrings.formatNumber(widget.offertaSelezionata.annuncio!.prezzo), style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
                         Text(" EUR", style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
                       ],
                     ),
@@ -141,7 +112,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         Text("Offerta cliente: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                        Text(widget.offertaSelezionata['valore_offerta'], style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
+                        Text(FormatStrings.formatNumber(widget.offertaSelezionata.prezzo), style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
                         Text(" EUR", style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
                       ],
                     ),
@@ -150,7 +121,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         Text("Data offerta: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                        Text(widget.offertaSelezionata['data_offerta'], style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
+                        Text(FormatStrings.formattaDataGGMMAAAAeHHMM(widget.offertaSelezionata.data!), style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
                       ],
                     ),
                     Row(
@@ -158,7 +129,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         Text("Nome: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                        Text(widget.offertaSelezionata['nome_offerente'], style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
+                        Text(widget.offertaSelezionata.cliente!.nome, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
                       ],
                     ),
                     Row(
@@ -166,7 +137,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         Text("Cognome: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                        Text(widget.offertaSelezionata['cognome_offerente'], style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
+                        Text(widget.offertaSelezionata.cliente!.cognome, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
                       ],
                     ),
                     Row(
@@ -180,7 +151,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                               fit: BoxFit.scaleDown,
                               child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text(widget.offertaSelezionata['email_offerente'], style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline),))),
+                                child: Text(widget.offertaSelezionata.cliente!.email, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline),))),
                           ),
                       ],
                     ),
@@ -301,14 +272,14 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                 radius: Radius.circular(8),
                                 child: ListView.builder(
                                   controller: scrollController,
-                                  itemCount: listaOfferte.length,
+                                  itemCount: listaStoricoOfferte.length,
                                   itemBuilder: (context, index) {
-                                    final elemento = listaOfferte[index];
+                                    final elemento = listaStoricoOfferte[index];
                                     return ListTile(
                                       title: Column(
                                         children: [
-                                          Text("${elemento['valore_offerta']} EUR", style: TextStyle(color: coloreScritte),),
-                                          Text("Data offerta: ${elemento['data_offerta']}", style: TextStyle(color: coloreScritte),),
+                                          Text("${FormatStrings.formatNumber(elemento.prezzo)} EUR", style: TextStyle(color: coloreScritte),),
+                                          Text("Data offerta: ${FormatStrings.formattaDataGGMMAAAAeHHMM(elemento.data!)}", style: TextStyle(color: coloreScritte),),
                                           Divider(color: coloreScritte, thickness: 0.7,),
                                         ],
                                       ),
@@ -339,22 +310,15 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
     }
 
     try {
-      //conversione delle stringhe in numeri
-      String offertaAttualeStringa = widget.offertaSelezionata['valore_offerta'];
-      int offertaAttuale = int.parse(offertaAttualeStringa.replaceAll('.', ''));
-
       int nuovaControproposta = int.parse(contropropostaController.text);
 
-      String prezzoInizialeStringa = widget.offertaSelezionata['prezzo'];
-      int prezzoIniziale = int.parse(prezzoInizialeStringa.replaceAll('.', ''));
-
-      if(offertaAttuale >= nuovaControproposta){
+      if(widget.offertaSelezionata.prezzo >= nuovaControproposta){
         showDialog(
         barrierDismissible: false,
         context: context, 
         builder: (BuildContext context) => MyInfoDialog(title: "Attenzione", bodyText: "La controproposta deve essere maggiore dell'offerta", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
         );
-      }else if(nuovaControproposta > prezzoIniziale){
+      }else if(nuovaControproposta > widget.offertaSelezionata.annuncio!.prezzo){
         showDialog(
         barrierDismissible: false,
         context: context, 

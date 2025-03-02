@@ -163,7 +163,6 @@ class _ClienteCreaVisitaPageState extends State<ClienteCreaVisitaPage> {
         final maxTemp = maxTemps[index];
         final minTemp = minTemps[index];
         final weatherCode = weatherCodes[index];
-        final availability = availabities;
 
         return GestureDetector(
           onTap: () {
@@ -226,7 +225,7 @@ class _ClienteFasceOrarieVisitaState extends State<ClienteFasceOrarieVisita> {
     DateTime dataBuona = DateTime.parse(widget.selectedDate);
     String dataFormattataBene = DateFormat('dd-MM').format(dataBuona);
 
-        // Converti le visite prenotate in un set di orari prenotati per un confronto rapido
+    // Converti le visite prenotate in un set di orari prenotati per un confronto rapido
     final Set<String> orariPrenotati = widget.listaVisite
         .where((visita) => visita.data == dataBuona)
         .map((visita) => visita.orarioInizio)

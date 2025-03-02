@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/back_end_communication/class_services/cronologia_service.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
-import 'package:domus_app/pages/cliente_pages/cliente_crea_offerta_page.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_crea_visita.dart';
+import 'package:domus_app/pages/shared_pages/crea_offerta_page.dart';
 import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
@@ -435,24 +435,24 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                       ],
                     ),
 
-                  // Column(
-                  //   children: [
-                  //     Row(
-                  //       children: [
-                  //         SizedBox(width: 10.0),
-                  //         Text("Agenzia immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
-                  //         Text(widget.casaSelezionata['agenzia'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline))
-                  //       ],
-                  //     ),
-                  //     Row(
-                  //       children: [
-                  //         SizedBox(width: 10.0),
-                  //         Text("Agente immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
-                  //         Text(widget.casaSelezionata['agente'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline))
-                  //       ],
-                  //     ),
-                  //   ],
-                  // ),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(width: 10.0),
+                          Text("Agente immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
+                          Text(widget.annuncioSelezionato.agente.agenziaImmobiliare!.nome, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline))
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(width: 10.0),
+                          Text("Agenzia immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
+                          Text("${widget.annuncioSelezionato.agente.nome} ${widget.annuncioSelezionato.agente.cognome}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline))
+                        ],
+                      ),
+                    ],
+                  ),
 
                   Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
                   SizedBox(height: 65,)
@@ -479,7 +479,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                     Row(children: [
                     SizedBox(width: 5,),
                     Expanded(child: MyElevatedButtonRectWidget(text: "Offerta", onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteCreaOffertaPage(annuncioSelezionato: widget.annuncioSelezionato)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => CreaOffertaPage(annuncioSelezionato: widget.annuncioSelezionato)));
                     }, color: context.onSecondary)),
                     SizedBox(width: 5,),
                     Expanded(child: MyElevatedButtonRectWidget(text: "Visita", onPressed: (){

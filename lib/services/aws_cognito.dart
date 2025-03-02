@@ -2,6 +2,7 @@ import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:domus_app/back_end_communication/class_services/utente_service.dart';
+import 'package:domus_app/back_end_communication/dto/agenzia_immobiliare_dto.dart';
 import 'package:domus_app/costants/costants.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -99,7 +100,7 @@ class AWSServices {
     }
   }
 
-  Future<bool> register(name, surname, email, password, userGroup, String? agenziaImmobiliare) async{
+  Future<bool> register(name, surname, email, password, userGroup, AgenziaImmobiliareDto? agenziaImmobiliare) async{
     debugPrint('Registering User...');
     final userAttributes = [
       AttributeArg(name: 'name', value: name),
@@ -109,7 +110,7 @@ class AWSServices {
 
     try {
       var data = await userPool.signUp(email, password, userAttributes: userAttributes);
-      int statuscode = await UtenteService.creaUtente(data.userSub!, userGroup, agenziaImmobiliare);
+      int statuscode = await UtenteService.creaUtente(data.userSub!, userGroup, name, surname, email, agenziaImmobiliare);
       safePrint("status code richiesta creazione utente: $statuscode");
       return true;
     } catch (e) {

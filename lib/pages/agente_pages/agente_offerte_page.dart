@@ -1,12 +1,23 @@
+import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:domus_app/back_end_communication/class_services/offerta_service.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
+import 'package:domus_app/back_end_communication/dto/offerta_dto.dart';
+import 'package:domus_app/costants/enumerations.dart';
 import 'package:domus_app/pages/agente_pages/agente_analisi_offerta_page.dart';
+import 'package:domus_app/pages/shared_pages/crea_offerta_page.dart';
+import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
 import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
 
 class AgenteOffertePage extends StatefulWidget {
-  const AgenteOffertePage({super.key});
+
+  final AnnuncioDto annuncioSelezionato;
+
+  const AgenteOffertePage({super.key, required this.annuncioSelezionato});
 
   @override
   State<AgenteOffertePage> createState() => _AgenteOffertePageState();
@@ -16,82 +27,47 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
   final double GRANDEZZA_SCRITTE_GRANDI = 22;
   final double GRANDEZZA_SCRITTE_PICCOLE = 18;
   int _currentSliderIndex = 0;
+  bool areServersAvailable = false;
+  bool areDataRetrieved = false;
+  bool hasAnnuncioOfferte = false;
+  List<OffertaDto> listaOfferte = [];
 
-  final List<Map<String, String>> listaOfferte = [
-    {
-      'prezzo': '275.000',
-      'data_offerta': '13-01-2025',
-      'valore_offerta' : '260.000',
-      'nome_offerente' : 'Paolo',
-      'cognome_offerente' : 'Centonze',
-      'email_offerente' : 'paolo.centonze@icloud.com',
-      'stato_offerta' : 'In Attesa',
-    },
-    {
-      'prezzo': '275.000',
-      'data_offerta': '5-01-2025',
-      'valore_offerta' : '280.000',
-      'nome_offerente' : 'Marco',
-      'cognome_offerente' : 'Lombari',
-      'email_offerente' : 'marcolombari65@gmail.com',
-      'stato_offerta' : 'In Attesa',
-    },
-    {
-      'prezzo': '275.000',
-      'data_offerta': '25-12-2024',
-      'valore_offerta' : '225.000',
-      'nome_offerente' : 'Massimiliano',
-      'cognome_offerente' : 'De Santis',
-      'email_offerente' : 'madmax@gmail.com',
-      'stato_offerta' : 'In Attesa',
-    },
-    {
-      'prezzo': '275.000',
-      'data_offerta': '13-01-2025',
-      'valore_offerta' : '260.000',
-      'nome_offerente' : 'Paolo',
-      'cognome_offerente' : 'Centonze',
-      'email_offerente' : 'paolo.centonze@icloud.com',
-      'stato_offerta' : 'In Attesa',
-    },
-    {
-      'prezzo': '275.000',
-      'data_offerta': '13-01-2025',
-      'valore_offerta' : '260.000',
-      'nome_offerente' : 'Paolo',
-      'cognome_offerente' : 'Centonze',
-      'email_offerente' : 'paolo.centonze@icloud.com',
-      'stato_offerta' : 'In Attesa',
-    },
-    {
-      'prezzo': '275.000',
-      'data_offerta': '13-01-2025',
-      'valore_offerta' : '260.000',
-      'nome_offerente' : 'Paolo',
-      'cognome_offerente' : 'Centonze',
-      'email_offerente' : 'paolo.centonze@icloud.com',
-      'stato_offerta' : 'In Attesa',
-    },
-    {
-      'prezzo': '275.000',
-      'data_offerta': '13-01-2025',
-      'valore_offerta' : '260.000',
-      'nome_offerente' : 'Paolo',
-      'cognome_offerente' : 'Centonze',
-      'email_offerente' : 'paolo.centonze@icloud.com',
-      'stato_offerta' : 'In Attesa',
-    },
-    {
-      'prezzo': '275.000',
-      'data_offerta': '13-01-2025',
-      'valore_offerta' : '260.000',
-      'nome_offerente' : 'Paolo',
-      'cognome_offerente' : 'Centonze',
-      'email_offerente' : 'paolo.centonze@icloud.com',
-      'stato_offerta' : 'In Attesa',
-    },
+  void getStoricoOfferte() async {
+    try{
+      List<OffertaDto> data = await OffertaService.recuperaOfferteByAnnuncio(widget.annuncioSelezionato);
+      if (mounted) {
+        setState(() {
+          listaOfferte = data;
+          hasAnnuncioOfferte = listaOfferte.isNotEmpty;
+          areDataRetrieved = true;
+          areServersAvailable = true;
+        });
+      }
+    } on TimeoutException {
+      if (mounted) {
+        setState(() {
+          areServersAvailable = false;
+          areDataRetrieved = true;
+        });
+      }
+    } catch (error) {
+      setState(() {
+        areServersAvailable = false;
+        areDataRetrieved = true;
+      });
+      print('Errore con il recupero delle offerte (il server potrebbe non essere raggiungibile) $error');
+    }
+  }
 
-  ];
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    
+    // Esegui getAnnunci dopo la fase di build
+    Future.delayed(Duration.zero, () {
+      getStoricoOfferte();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +105,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                         fit: BoxFit.scaleDown,
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text(listaOfferte[0]['prezzo']!, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline),))),
+                          child: Text(FormatStrings.formatNumber(widget.annuncioSelezionato.prezzo), style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline),))),
                     ),
                     Text("EUR", style: TextStyle(fontWeight: FontWeight.normal, fontSize: GRANDEZZA_SCRITTE_PICCOLE, color: context.outline),),
                     SizedBox(width: 10,),
@@ -138,7 +114,28 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
               ),
             )
           ),
-          ]));
+          Positioned(
+            bottom: 30,
+            left: 250,
+            right: -60,
+            child: Column(
+              children: [
+                SizedBox(height: 10,),
+                Row(children: [
+                SizedBox(width: 5,),
+                Expanded(child: MyAddButtonWidget(onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => CreaOffertaPage(annuncioSelezionato: widget.annuncioSelezionato,)));
+                },
+                color: context.onSecondary)),
+                SizedBox(width: 5,),
+                ],),
+                SizedBox(height: 10,)
+              ],
+            )
+          ),
+        ]
+      )
+    );
   }
 
  CarouselSlider myCarouselSlider(BuildContext context) {
@@ -148,7 +145,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
     return CarouselSlider(
       items: listaOfferte.asMap().entries.map((entry) {
         int indice = entry.key;
-        Map<String, dynamic> indiceOffertaCorrente = entry.value;
+        OffertaDto offertaCorrente = entry.value;
         double scaleFactor = indice == _currentSliderIndex ? 1.0 : 1.0;
         return Container(
           width: MediaQuery.of(context).size.width,
@@ -156,11 +153,6 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
           decoration: BoxDecoration(
             color: context.primaryContainer,
             borderRadius: BorderRadius.circular(10),
-            shape: BoxShape.rectangle,
-            boxShadow: [BoxShadow(color: context.shadow.withOpacity(0.2),
-              spreadRadius: 5,
-              blurRadius: 15,
-              offset: Offset(0, 10),)],
           ),
           child: Column(
             children: [
@@ -170,14 +162,14 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   Text("Data offerta: ", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_GRANDI, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  Text(indiceOffertaCorrente['data_offerta'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_GRANDI, fontWeight: FontWeight.bold, color: coloreScritte)),
+                  Text(FormatStrings.formattaDataGGMMAAAAeHHMM(offertaCorrente.data!), style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_GRANDI, fontWeight: FontWeight.bold, color: coloreScritte)),
                 ],
               ),
               Row(
                 children: [
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
-                  Text(indiceOffertaCorrente['valore_offerta'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
+                  Text(FormatStrings.formatNumber(offertaCorrente.prezzo), style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
                   Text(" EUR", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
                 ],
               ),
@@ -186,7 +178,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   Text("Nome: ", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  Text(indiceOffertaCorrente['nome_offerente'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
+                  Text(offertaCorrente.cliente!.nome, style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
                 ],
               ),
               Row(
@@ -194,7 +186,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   Text("Cognome: ", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  Text(indiceOffertaCorrente['cognome_offerente'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
+                  Text(offertaCorrente.cliente!.cognome, style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
                 ],
               ),
               Row(
@@ -208,7 +200,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                         fit: BoxFit.scaleDown,
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text(indiceOffertaCorrente['email_offerente'], style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline),))),
+                          child: Text(offertaCorrente.cliente!.email, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline),))),
                     ),
                 ],
               ),
@@ -220,7 +212,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                     child: MyElevatedButtonRectWidget(
                             text: "Analizza",
                             onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnalizzaOffertaPage(offertaSelezionata: indiceOffertaCorrente)));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnalizzaOffertaPage(offertaSelezionata: offertaCorrente)));
                             },
                             color: context.onSecondary,
                           )
@@ -241,7 +233,10 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                                                                     rightButtonText: "Si",
                                                                     rightButtonColor: context.tertiary,
                                                                     onPressLeftButton: (){Navigator.pop(context);},
-                                                                    onPressRightButton: (){debugPrint("Prenotazione accettata");},
+                                                                    onPressRightButton: () async {
+                                                                      int statusCode = await OffertaService.rifiutaOfferta(offertaCorrente, Enumerations.statoOfferte[2]);
+                                                                      Navigator.pop(context);
+                                                                    },
                                                                   )
                                 );
                             },

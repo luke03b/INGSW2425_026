@@ -723,11 +723,10 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                 if(_validateFields()){
                   LoadingHelper.showLoadingDialogNotDissmissible(context, color: context.secondary);
                   try{
-                    String? idUtenteLoggato = await recuperaIdUtenteLoggato();
-                    print(idUtenteLoggato);
+                    UtenteDto? utenteLoggato = await recuperaIdUtenteLoggato();
                     int statusCode = await AnnuncioService.creaAnnuncio(selectedVendiAffitta[0] ? "VENDITA" : "AFFITTO", prezzoController.text, superficieController.text, indirizzoController.text,
                       descrizioneController.text, _isGarageSelected, _isAscensoreSelected, _isPiscinaSelected, _isArredatoSelected, _isBalconeSelected, _isGiardinoSelected, stanzeController.text,
-                      numeroPianoController.text, sceltaClasseEnergetica, sceltaPiano, latitude ?? 0.0, longitude ?? 0.0, idUtenteLoggato!);
+                      numeroPianoController.text, sceltaClasseEnergetica, sceltaPiano, latitude ?? 0.0, longitude ?? 0.0, utenteLoggato);
                     Navigator.pop(context);
                     controllaStatusCode(statusCode, context);
                   } on TimeoutException {
@@ -772,12 +771,12 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
     );
   }
 
-  Future<String?> recuperaIdUtenteLoggato() async {
+  Future<UtenteDto> recuperaIdUtenteLoggato() async {
     String? sub = await AWSServices().recuperaSubUtenteLoggato();
     print(sub!);
     UtenteDto utenteLoggato = await UtenteService.recuperaUtenteBySub(sub);
     print(utenteLoggato.id);
-    return utenteLoggato.id;
+    return utenteLoggato;
   }
 
   void controllaStatusCode(int statusCode, BuildContext context) {

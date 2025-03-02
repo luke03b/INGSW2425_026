@@ -10,6 +10,11 @@ import 'package:http/http.dart' as http;
 class AnnuncioController {
   static Future<int> inviaAnnuncio(AnnuncioDto annuncio) async {
     final url = UrlBuilder.createUrl(UrlBuilder.PROTOCOL_HTTP, UrlBuilder.LOCALHOST_ANDROID, port: UrlBuilder.PORTA_SPRINGBOOT, UrlBuilder.ENDPOINT_ANNUNCI);
+
+    print("\n\n\n\n\n\n\n\n\n\n\n");
+    print(url);
+    print("\n\n\n\n\n\n\n\n\n\n\n");
+    print(json.encode(annuncio));
     
     final response = await http.post(
       url,

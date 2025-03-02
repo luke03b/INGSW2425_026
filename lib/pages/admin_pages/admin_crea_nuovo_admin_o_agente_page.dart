@@ -1,4 +1,5 @@
 import 'package:domus_app/back_end_communication/class_services/utente_service.dart';
+import 'package:domus_app/back_end_communication/dto/agenzia_immobiliare_dto.dart';
 import 'package:domus_app/costants/costants.dart';
 import 'package:domus_app/services/aws_cognito.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
@@ -26,7 +27,7 @@ class _AdminCreaNuovoAdminPageState extends State<AdminCreaNuovoAdminPage> {
   TextEditingController newAdminNomeController = TextEditingController();
   TextEditingController newAdminCognomeController = TextEditingController();
 
-  register(String nome, String cognome, String email, String password, String userGroup, String? agenziaImmobiliare) => AWSServices().register(nome, cognome, email, password, userGroup, agenziaImmobiliare);
+  register(String nome, String cognome, String email, String password, String userGroup, AgenziaImmobiliareDto? agenziaImmobiliare) => AWSServices().register(nome, cognome, email, password, userGroup, agenziaImmobiliare);
 
   @override
   Widget build(BuildContext context) {
@@ -98,9 +99,9 @@ class _AdminCreaNuovoAdminPageState extends State<AdminCreaNuovoAdminPage> {
   }
 
   Future<void> aggiungiAdmin(BuildContext context) async {
-    String? idAgenziaUtenteLoggato = await recuperaAgenzia();
+    AgenziaImmobiliareDto? agenziaUtenteLoggato = await recuperaAgenzia();
 
-    Future<bool> isAllOk = register(newAdminNomeController.text, newAdminCognomeController.text, newAdminMailController.text, newAdminPasswordController.text, TipoRuolo.ADMIN, idAgenziaUtenteLoggato);
+    Future<bool> isAllOk = register(newAdminNomeController.text, newAdminCognomeController.text, newAdminMailController.text, newAdminPasswordController.text, TipoRuolo.ADMIN, agenziaUtenteLoggato);
     if (await isAllOk) {
       showDialog(
         barrierDismissible: false,
@@ -116,19 +117,19 @@ class _AdminCreaNuovoAdminPageState extends State<AdminCreaNuovoAdminPage> {
     }
   }
 
-  Future<String?> recuperaAgenzia() async {
+  Future<AgenziaImmobiliareDto?> recuperaAgenzia() async {
     String? subUtenteLoggato = await AWSServices().recuperaSubUtenteLoggato();
-    String? idAgenziaUtenteLoggato;
+    AgenziaImmobiliareDto? agenziaUtenteLoggato;
     if (subUtenteLoggato != null){
-      idAgenziaUtenteLoggato = await UtenteService.recuperaAgenziaDaUtenteSub(subUtenteLoggato);
+      agenziaUtenteLoggato = await UtenteService.recuperaAgenziaDaUtenteSub(subUtenteLoggato);
     }
-    return idAgenziaUtenteLoggato;
+    return agenziaUtenteLoggato;
   }
 
   Future<void> aggiungiAgente(BuildContext context) async {
-    String? idAgenziaUtenteLoggato = await recuperaAgenzia();
+    AgenziaImmobiliareDto? agenziaUtenteLoggato = await recuperaAgenzia();
     
-    Future<bool> isAllOk = register(newAdminNomeController.text, newAdminCognomeController.text, newAdminMailController.text, newAdminPasswordController.text, TipoRuolo.AGENTE, idAgenziaUtenteLoggato);
+    Future<bool> isAllOk = register(newAdminNomeController.text, newAdminCognomeController.text, newAdminMailController.text, newAdminPasswordController.text, TipoRuolo.AGENTE, agenziaUtenteLoggato);
     if (await isAllOk) {
       showDialog(
         barrierDismissible: false,

@@ -219,7 +219,7 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
         double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.8;
         return GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPage(casaSelezionata: annuncioCorrente)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPage(annuncioSelezionato: annuncioCorrente)));
           },
           child: Container(
             width: MediaQuery.of(context).size.width,

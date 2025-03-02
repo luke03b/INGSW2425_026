@@ -15,10 +15,10 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class AgenteAnnuncioPage extends StatefulWidget {
-  final AnnuncioDto casaSelezionata;
+  final AnnuncioDto annuncioSelezionato;
   
 
-  const AgenteAnnuncioPage({super.key, required this.casaSelezionata});
+  const AgenteAnnuncioPage({super.key, required this.annuncioSelezionato});
 
   @override
   State<AgenteAnnuncioPage> createState() => _AgenteAnnuncioPageState();
@@ -36,7 +36,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
   @override
   Widget build(BuildContext context) {
     Color coloriPulsanti = context.outline;
-    CameraPosition posizioneIniziale = CameraPosition(target: LatLng(widget.casaSelezionata.latitudine, widget.casaSelezionata.longitudine), zoom: 14.4746);
+    CameraPosition posizioneIniziale = CameraPosition(target: LatLng(widget.annuncioSelezionato.latitudine, widget.annuncioSelezionato.longitudine), zoom: 14.4746);
 
     final List<Widget> listaImmagini = [
       Image.asset('lib/assets/casa3_1_placeholder.png'),
@@ -87,14 +87,14 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                     Row(
                       children: [
                         SizedBox(width: 10.0),
-                        Text(FormatStrings.trasformareInizialeMaiuscola(widget.casaSelezionata.tipoAnnuncio), style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: coloriPulsanti),),
+                        Text(FormatStrings.trasformareInizialeMaiuscola(widget.annuncioSelezionato.tipoAnnuncio), style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: coloriPulsanti),),
                       ],
                     ),
 
                     Row(
                       children: [
                         SizedBox(width: 10.0),
-                        Text(FormatStrings.formatNumber(widget.casaSelezionata.prezzo), style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                        Text(FormatStrings.formatNumber(widget.annuncioSelezionato.prezzo), style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: coloriPulsanti),),
                         Text(" EUR", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: coloriPulsanti),),
                       ],
                     ),
@@ -108,7 +108,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                           fit: BoxFit.scaleDown,
                           child: Align(
                             alignment: Alignment.centerLeft,
-                            child: Text(widget.casaSelezionata.indirizzo, style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal, color: coloriPulsanti),))),
+                            child: Text(widget.annuncioSelezionato.indirizzo, style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal, color: coloriPulsanti),))),
                         ),
                         SizedBox(width: 10.0),
                       ],
@@ -126,7 +126,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: ReadMoreText(
                         colorClickableText: context.onSecondary,
-                        widget.casaSelezionata.descrizione,
+                        widget.annuncioSelezionato.descrizione,
                         textAlign: TextAlign.justify,
                         trimCollapsedText: "    mostra altro",
                         trimExpandedText: "    mostra meno",
@@ -161,7 +161,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                               children: [
                                 Text("Piano", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
                                 Text(
-                                  widget.casaSelezionata.piano == 'INTERMEDIO' ? widget.casaSelezionata.numeroPiano.toString() : FormatStrings.trasformareInizialeMaiuscola(widget.casaSelezionata.piano), 
+                                  widget.annuncioSelezionato.piano == 'INTERMEDIO' ? widget.annuncioSelezionato.numeroPiano.toString() : FormatStrings.trasformareInizialeMaiuscola(widget.annuncioSelezionato.piano), 
                                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
                               ],
                             ),
@@ -176,7 +176,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Giardino", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text(widget.casaSelezionata.giardino ? 'Si' : 'No', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                                Text(widget.annuncioSelezionato.giardino ? 'Si' : 'No', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
                               ],
                             ),
                             ],
@@ -190,7 +190,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("N. Stanze", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text(widget.casaSelezionata.numStanze.toString(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                                Text(widget.annuncioSelezionato.numStanze.toString(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
                               ],
                             ),
                             ],
@@ -204,7 +204,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Garage", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text(widget.casaSelezionata.garage ? 'Si' : 'No', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                                Text(widget.annuncioSelezionato.garage ? 'Si' : 'No', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
                               ],
                             ),
                             ],
@@ -218,7 +218,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Piscina", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text(widget.casaSelezionata.piscina ? 'Si' : 'No', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                                Text(widget.annuncioSelezionato.piscina ? 'Si' : 'No', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
                               ],
                             ),
                             ],
@@ -241,7 +241,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Superficie", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text('${widget.casaSelezionata.superficie} m²', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                                Text('${widget.annuncioSelezionato.superficie} m²', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
                               ],
                             ),
                             ],
@@ -255,7 +255,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Ascensore", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text(widget.casaSelezionata.ascensore ? 'Si' : 'No', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                                Text(widget.annuncioSelezionato.ascensore ? 'Si' : 'No', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
                               ],
                             ),
                             ],
@@ -269,7 +269,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Arredato", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text(widget.casaSelezionata.arredo ? 'Si' : 'No', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                                Text(widget.annuncioSelezionato.arredo ? 'Si' : 'No', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
                               ],
                             ),
                             ],
@@ -283,7 +283,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Balcone", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text(widget.casaSelezionata.balcone ? 'Si' : 'No', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                                Text(widget.annuncioSelezionato.balcone ? 'Si' : 'No', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
                               ],
                             ),
                             ],
@@ -297,7 +297,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("C. Energetica", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                                Text(widget.casaSelezionata.classeEnergetica, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
+                                Text(widget.annuncioSelezionato.classeEnergetica, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti),)
                               ],
                             ),
                             ],
@@ -322,7 +322,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                       mapType: MapType.normal,
                       initialCameraPosition: posizioneIniziale,
                       onMapCreated: (GoogleMapController controller) {_controller.complete(controller);},
-                      markers: {Marker(markerId: MarkerId('Posizione'), position:  LatLng(widget.casaSelezionata.latitudine, widget.casaSelezionata.longitudine),)},),
+                      markers: {Marker(markerId: MarkerId('Posizione'), position:  LatLng(widget.annuncioSelezionato.latitudine, widget.annuncioSelezionato.longitudine),)},),
                   ),
                   Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
 
@@ -386,11 +386,11 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                                   //colonna contenente valori
                                   Column(
                                     children: [
-                                      Icon(widget.casaSelezionata.vicinoScuole! ? Icons.check :  Icons.close, size: 30, color: coloriPulsanti,),
+                                      Icon(widget.annuncioSelezionato.vicinoScuole! ? Icons.check :  Icons.close, size: 30, color: coloriPulsanti,),
                                       SizedBox(height: 22,),
-                                      Icon(widget.casaSelezionata.vicinoParchi! ? Icons.check :  Icons.close, size: 30, color: coloriPulsanti),
+                                      Icon(widget.annuncioSelezionato.vicinoParchi! ? Icons.check :  Icons.close, size: 30, color: coloriPulsanti),
                                       SizedBox(height: 22,),
-                                      Icon(widget.casaSelezionata.vicinoTrasporti! ? Icons.check :  Icons.close, size: 30, color: coloriPulsanti),                       
+                                      Icon(widget.annuncioSelezionato.vicinoTrasporti! ? Icons.check :  Icons.close, size: 30, color: coloriPulsanti),                       
                                     ],
                                   ),
                                 ],
@@ -410,24 +410,24 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                       ],
                     ),
 
-                  // Column(
-                  //   children: [
-                  //     Row(
-                  //       children: [
-                  //         SizedBox(width: 10.0),
-                  //         Text("Agenzia immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                  //         Text(widget.casaSelezionata['agenzia'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti))
-                  //       ],
-                  //     ),
-                  //     Row(
-                  //       children: [
-                  //         SizedBox(width: 10.0),
-                  //         Text("Agente immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
-                  //         Text(widget.casaSelezionata['agente'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti))
-                  //       ],
-                  //     ),
-                  //   ],
-                  // ),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(width: 10.0),
+                          Text("Agenzia immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
+                          Text(widget.annuncioSelezionato.agente.agenziaImmobiliare!.nome, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti))
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(width: 10.0),
+                          Text("Agente immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: coloriPulsanti),),
+                          Text("${widget.annuncioSelezionato.agente.nome} ${widget.annuncioSelezionato.agente.cognome}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: coloriPulsanti))
+                        ],
+                      ),
+                    ],
+                  ),
 
                   Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
                   SizedBox(height: 65,)
@@ -454,7 +454,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                     child: MyElevatedButtonRectWidget(
                       text: "Offerte",
                       onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteOffertePage()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteOffertePage(annuncioSelezionato: widget.annuncioSelezionato,)));
                       },
                   color: context.onSecondary)),
                   SizedBox(width: 5,),

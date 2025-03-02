@@ -12,11 +12,11 @@ class AnnuncioService {
   static Future<int> creaAnnuncio(String tipoAnnuncio, String prezzo, String superficie, String indirizzo,
     String descrizione, bool isGarageSelected, bool isAscensoreSelected, bool isPiscinaSelected,
     bool isArredatoSelected, bool isBalconeSelected, bool isGiardinoSelected, String stanze, String numeroPiano,
-    String sceltaClasseEnergetica, String sceltaPiano, double latitudine, double longitudine, String idUtente) async {
+    String sceltaClasseEnergetica, String sceltaPiano, double latitudine, double longitudine, UtenteDto agente) async {
 
     AnnuncioDto nuovoAnnuncio = _creaAnnuncioDto(tipoAnnuncio, prezzo, superficie, indirizzo, descrizione, isGarageSelected,
       isAscensoreSelected, isPiscinaSelected, isArredatoSelected, isBalconeSelected, isGiardinoSelected, stanze, numeroPiano,
-      sceltaClasseEnergetica, sceltaPiano, latitudine, longitudine, idUtente);
+      sceltaClasseEnergetica, sceltaPiano, latitudine, longitudine, agente);
 
       try {
         return await AnnuncioController.inviaAnnuncio(nuovoAnnuncio);
@@ -28,7 +28,7 @@ class AnnuncioService {
   static AnnuncioDto _creaAnnuncioDto(String tipoAnnuncio, String prezzo, String superficie, String indirizzo,
     String descrizione, bool isGarageSelected, bool isAscensoreSelected, bool isPiscinaSelected,
     bool isArredatoSelected, bool isBalconeSelected, bool isGiardinoSelected, String stanze, String numeroPiano,
-    String sceltaClasseEnergetica, String sceltaPiano, double latitudine, double longitudine, String idUtente){
+    String sceltaClasseEnergetica, String sceltaPiano, double latitudine, double longitudine, UtenteDto agente){
 
     String prezzoStringa = prezzo;
     double prezzoDouble = double.parse(prezzoStringa);
@@ -61,7 +61,7 @@ class AnnuncioService {
       classeEnergetica: sceltaClasseEnergetica.toUpperCase(),
       piano: sceltaPiano.toUpperCase(),
       numeroPiano: nPianoInt,
-      agente: idUtente,
+      agente: agente,
       indirizzo: indirizzo,
       latitudine: latitudine,
       longitudine: longitudine,

@@ -93,4 +93,36 @@ class OffertaController {
     
     return response;
   }
+
+  static Future<http.Response> chiamataHTTPrifiutaOfferta(OffertaDto offerta, String stato) async {
+    final url = UrlBuilder.createUrl(
+      UrlBuilder.PROTOCOL_HTTP, 
+      UrlBuilder.LOCALHOST_ANDROID, 
+      port: UrlBuilder.PORTA_SPRINGBOOT, 
+      UrlBuilder.ENDPOINT_GET_OFFERTE,
+      queryParams: {"stato" : stato.toUpperCase()}
+    );
+
+    print("\n\n\n\n\n\n\n\n\n\n\n");
+    print(url);
+    print("\n\n\n\n\n\n\n\n\n\n\n");
+
+    final response = await http.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(offerta),
+    ).timeout(
+      const Duration(seconds: 30),
+      onTimeout: () {
+        throw TimeoutException("Il server non risponde.");
+      },
+    );
+
+    print(json.encode(offerta));
+    print(response.body);
+    
+    return response;
+  }
 }
