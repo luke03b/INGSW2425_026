@@ -226,21 +226,6 @@ class _ClienteFasceOrarieVisitaState extends State<ClienteFasceOrarieVisita> {
     DateTime dataBuona = DateTime.parse(widget.selectedDate);
     String dataFormattataBene = DateFormat('dd-MM').format(dataBuona);
 
-//     // Filtra i dati orari per la data selezionata
-//     final filteredData = List.generate(times.length, (index) {
-//       if (times[index].startsWith(widget.selectedDate)) {
-//         final hour = DateTime.parse(times[index]).hour;
-//         if (hour >= 9 && hour < 13 || hour >= 14 && hour < 18) {
-//           return {
-//             "time": times[index],
-//             "temperature": temperatures[index],
-//             "weatherCode": weatherCodes[index]
-//           };
-//         }
-//       }
-//       return null;
-//     }).where((element) => element != null).toList();
-
         // Converti le visite prenotate in un set di orari prenotati per un confronto rapido
     final Set<String> orariPrenotati = widget.listaVisite
         .where((visita) => visita.data == dataBuona)
@@ -280,81 +265,94 @@ class _ClienteFasceOrarieVisitaState extends State<ClienteFasceOrarieVisita> {
   }
 
   ListView myListaOrariVisitabili(List<Map<String, dynamic>?> filteredData, BuildContext context) {
-    return ListView.builder(
-      itemCount: filteredData.length,
-      itemBuilder: (context, index) {
-        final entry = filteredData[index];
-        final time = entry!["time"].substring(11, 16);
-        final temp = entry["temperature"];
-        final weatherCode = entry["weatherCode"];
+  return ListView.builder(
+    itemCount: filteredData.length,
+    itemBuilder: (context, index) {
+      final entry = filteredData[index];
+      final time = entry!["time"].substring(11, 16);
+      final temp = entry["temperature"];
+      final weatherCode = entry["weatherCode"];
 
-        return GestureDetector(
-          onTap: (){
-            showDialog(
-              context: context, 
-              builder: (BuildContext context) => 
-                MyOptionsDialog(
-                  title: "Conferma", 
-                  bodyText: "Vuoi prenotare una visita per il giorno ${widget.selectedDate} alle ore $time?", 
-                  leftButtonText: "No", 
-                  leftButtonColor: context.scrim, 
-                  rightButtonText: "Si", 
-                  rightButtonColor: context.tertiary, 
-                  onPressLeftButton: (){Navigator.pop(context);}, 
-                  onPressRightButton: () async {
-                    try {
-                      int statusCode = await VisitaService.creaVisita(widget.annuncioSelezionato, widget.selectedDate, time);
-                      Navigator.pop(context);
-                      controllaStatusCode(statusCode, context);
-                    } on TimeoutException {
-                      Navigator.pop(context);
-                      showDialog(
-                        context: context, 
-                        builder: (BuildContext context) => MyInfoDialog(
-                          title: "Connessione non riuscita", 
-                          bodyText: "Visita non creata, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
-                          buttonText: "Ok", 
-                          onPressed: () {Navigator.pop(context);}
-                        )
-                      );
-                    } catch (e) {
-                      print(e);
-                      Navigator.pop(context);
-                      showDialog(
-                        context: context, 
-                        builder: (BuildContext context) => MyInfoDialog(
-                          title: "Errore",
-                          bodyText: "Visista non creata. Hai già inoltrato una richiesta di visita per questo annuncio. Prima di poterne creare un'altra devi aspettare che un agente la esamini e la rifiuti.", 
-                          buttonText: "Ok", 
-                          onPressed: () {Navigator.pop(context);}
-                        )
-                      );
-                    }
+      // Controlla se l'orario è già prenotato
+      bool isTimeSlotBooked = widget.listaVisite.any((visita) {
+        return visita.data == DateTime.parse(widget.selectedDate) && FormatStrings.formattaOrario(visita.orarioInizio) == time;
+      });
+
+      // Se l'orario è già prenotato, non mostrarlo
+      if (isTimeSlotBooked) {
+        return SizedBox.shrink(); // Non visualizzare nulla per questo orario
+      }
+
+      return GestureDetector(
+        onTap: (){
+          showDialog(
+            context: context, 
+            builder: (BuildContext context) => 
+              MyOptionsDialog(
+                title: "Conferma", 
+                bodyText: "Vuoi prenotare una visita per il giorno ${widget.selectedDate} alle ore $time?", 
+                leftButtonText: "No", 
+                leftButtonColor: context.scrim, 
+                rightButtonText: "Si", 
+                rightButtonColor: context.tertiary, 
+                onPressLeftButton: (){Navigator.pop(context);}, 
+                onPressRightButton: () async {
+                  try {
+                    int statusCode = await VisitaService.creaVisita(widget.annuncioSelezionato, widget.selectedDate, time);
+                    Navigator.pop(context);
+                    await controllaStatusCode(statusCode, context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  } on TimeoutException {
+                    Navigator.pop(context);
+                    showDialog(
+                      context: context, 
+                      builder: (BuildContext context) => MyInfoDialog(
+                        title: "Connessione non riuscita", 
+                        bodyText: "Visita non creata, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
+                        buttonText: "Ok", 
+                        onPressed: () {Navigator.pop(context);},
+                      )
+                    );
+                  } catch (e) {
+                    Navigator.pop(context);
+                    showDialog(
+                      context: context, 
+                      builder: (BuildContext context) => MyInfoDialog(
+                        title: "Errore",
+                        bodyText: "Visita non creata. Hai già inoltrato una richiesta di visita per questo annuncio. Prima di poterne creare un'altra devi aspettare che un agente la esamini e la rifiuti.", 
+                        buttonText: "Ok", 
+                        onPressed: () {Navigator.pop(context);},
+                      )
+                    );
                   }
-                )
-              );
-            },
-          child: Card(
-            color: MyPrevisioniMeteoUiProvider.getWeatherColor(weatherCode, context),
-            child: ListTile(
-              title: Text("Orario: $time - ${int.parse(FormatStrings.formattaOrario(time)) + 1}:00", style: TextStyle(color: context.outline),),
-              subtitle: Text("Temp: $temp°C", style: TextStyle(color: context.outline),),
-              leading: Icon(MyPrevisioniMeteoUiProvider.getWeatherIcon(weatherCode), color: context.outline,),
-              trailing: Wrap(
+                }
+              )
+            );
+        },
+        child: Card(
+          color: MyPrevisioniMeteoUiProvider.getWeatherColor(weatherCode, context),
+          child: ListTile(
+            title: Text("Orario: $time - ${int.parse(FormatStrings.formattaOrario(time)) + 1}:00", style: TextStyle(color: context.outline),),
+            subtitle: Text("Temp: $temp°C", style: TextStyle(color: context.outline),),
+            leading: Icon(MyPrevisioniMeteoUiProvider.getWeatherIcon(weatherCode), color: context.outline,),
+            trailing: Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               spacing: 12, // space between two icons
               children: <Widget>[
                 Icon(Icons.arrow_circle_right_outlined, color: context.outline),
               ],
             ),
-            ),
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
 
-  void controllaStatusCode(int statusCode, BuildContext context) {
+
+  Future<void> controllaStatusCode(int statusCode, BuildContext context) async {
     if (statusCode == 201) {
       showDialog(
         context: context, 
