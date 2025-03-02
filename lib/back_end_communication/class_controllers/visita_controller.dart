@@ -9,10 +9,11 @@ import 'package:http/http.dart' as http;
 
 class VisitaController {
   static Future<http.Response> chiamataHTTPrecuperaVisiteAnnuncio(AnnuncioDto annuncio) async {
-    final url = Urlbuilder.createUrl(
-      Urlbuilder.LOCALHOST_ANDROID, 
-      Urlbuilder.PORTA_SPRINGBOOT, 
-      Urlbuilder.ENDPOINT_GET_VISITE_ANNUNCIO, 
+    final url = UrlBuilder.createUrl(
+      UrlBuilder.PROTOCOL_HTTP, 
+      UrlBuilder.LOCALHOST_ANDROID, 
+      port: UrlBuilder.PORTA_SPRINGBOOT, 
+      UrlBuilder.ENDPOINT_GET_VISITE_ANNUNCIO, 
       queryParams: { "idAnnuncio" : annuncio.idAnnuncio }
     );
 
@@ -36,11 +37,12 @@ class VisitaController {
   }
 
   static Future<http.Response> chiamataHTTPcreaVisitaCliente(VisitaDto visita) async {
-    print(Urlbuilder.ENDPOINT_POST_VISITE);
-    final url = Urlbuilder.createUrl(
-      Urlbuilder.LOCALHOST_ANDROID, 
-      Urlbuilder.PORTA_SPRINGBOOT, 
-      Urlbuilder.ENDPOINT_POST_VISITE,
+    print(UrlBuilder.ENDPOINT_POST_VISITE);
+    final url = UrlBuilder.createUrl(
+      UrlBuilder.PROTOCOL_HTTP, 
+      UrlBuilder.LOCALHOST_ANDROID, 
+      port: UrlBuilder.PORTA_SPRINGBOOT, 
+      UrlBuilder.ENDPOINT_POST_VISITE,
     );
 
     print("\n\n\n\n\n\n\n");
@@ -65,10 +67,11 @@ class VisitaController {
   }
 
   static Future<http.Response> chiamataHTTPrecuperaVisiteByCliente(UtenteDto cliente) async {
-    final url = Urlbuilder.createUrl(
-      Urlbuilder.LOCALHOST_ANDROID, 
-      Urlbuilder.PORTA_SPRINGBOOT, 
-      Urlbuilder.ENDPOINT_GET_VISITE_CLIENTE, 
+    final url = UrlBuilder.createUrl(
+      UrlBuilder.PROTOCOL_HTTP, 
+      UrlBuilder.LOCALHOST_ANDROID, 
+      port: UrlBuilder.PORTA_SPRINGBOOT, 
+      UrlBuilder.ENDPOINT_GET_VISITE_CLIENTE, 
       queryParams: { "idCliente" : cliente.id }
     );
 

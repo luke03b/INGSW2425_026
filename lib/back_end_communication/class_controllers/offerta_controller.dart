@@ -9,10 +9,11 @@ import 'package:http/http.dart' as http;
 
 class OffertaController {
   static Future<http.Response> chiamataHTTPcreaOffertaCliente(OffertaDto offerta) async {
-    final url = Urlbuilder.createUrl(
-      Urlbuilder.LOCALHOST_ANDROID, 
-      Urlbuilder.PORTA_SPRINGBOOT, 
-      Urlbuilder.ENDPOINT_POST_OFFERTE,
+    final url = UrlBuilder.createUrl(
+      UrlBuilder.PROTOCOL_HTTP, 
+      UrlBuilder.LOCALHOST_ANDROID, 
+      port: UrlBuilder.PORTA_SPRINGBOOT, 
+      UrlBuilder.ENDPOINT_POST_OFFERTE,
     );
 
     print("\n\n\n\n\n\n\n");
@@ -38,10 +39,11 @@ class OffertaController {
 
   static Future<http.Response> chiamataHTTPrecuperaOfferteByAnnuncio(AnnuncioDto annuncio) async {
     print(annuncio.idAnnuncio);
-    final url = Urlbuilder.createUrl(
-      Urlbuilder.LOCALHOST_ANDROID, 
-      Urlbuilder.PORTA_SPRINGBOOT, 
-      Urlbuilder.ENDPOINT_GET_OFFERTE, 
+    final url = UrlBuilder.createUrl(
+      UrlBuilder.PROTOCOL_HTTP, 
+      UrlBuilder.LOCALHOST_ANDROID, 
+      port: UrlBuilder.PORTA_SPRINGBOOT, 
+      UrlBuilder.ENDPOINT_GET_OFFERTE, 
       queryParams: { "idAnnuncio" : annuncio.idAnnuncio }
     );
 
@@ -65,10 +67,11 @@ class OffertaController {
   }
 
   static Future<http.Response> chiamataHTTPrecuperaAnnunciConOfferteCliente(UtenteDto cliente) async {
-    final url = Urlbuilder.createUrl(
-      Urlbuilder.LOCALHOST_ANDROID, 
-      Urlbuilder.PORTA_SPRINGBOOT, 
-      Urlbuilder.ENDPOINT_GET_ANNUNCI_OFFERTE,
+    final url = UrlBuilder.createUrl(
+      UrlBuilder.PROTOCOL_HTTP, 
+      UrlBuilder.LOCALHOST_ANDROID, 
+      port: UrlBuilder.PORTA_SPRINGBOOT, 
+      UrlBuilder.ENDPOINT_GET_ANNUNCI_OFFERTE,
       queryParams: {'idCliente' : cliente.id}
     );
 

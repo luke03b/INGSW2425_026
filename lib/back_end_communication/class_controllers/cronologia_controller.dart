@@ -7,10 +7,11 @@ import 'package:http/http.dart' as http;
 
 class CronologiaController {
   static Future<http.Response> chiamataHTTPaggiornaCronologiaCliente(CronologiaDto cronologia) async {
-    final url = Urlbuilder.createUrl(
-      Urlbuilder.LOCALHOST_ANDROID, 
-      Urlbuilder.PORTA_SPRINGBOOT, 
-      Urlbuilder.ENDPOINT_POST_ANNUNCI_RECENTI,
+    final url = UrlBuilder.createUrl(
+      UrlBuilder.PROTOCOL_HTTP, 
+      UrlBuilder.LOCALHOST_ANDROID, 
+      port: UrlBuilder.PORTA_SPRINGBOOT, 
+      UrlBuilder.ENDPOINT_POST_ANNUNCI_RECENTI,
     );
 
     print("\n\n\n\n\n\n\n");

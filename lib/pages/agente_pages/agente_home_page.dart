@@ -4,8 +4,8 @@ import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
 import 'package:domus_app/pages/agente_pages/agente_annuncio_page.dart';
 import 'package:domus_app/pages/agente_pages/agente_crea_annuncio_page.dart';
 import 'package:domus_app/services/formatStrings.dart';
-import 'package:domus_app/theme/ui_constants.dart';
-import 'package:domus_app/utils/my_buttons_widgets.dart';
+import 'package:domus_app/ui_elements/theme/ui_constants.dart';
+import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
 import 'package:flutter/material.dart';
 
 class AgenteHomePage extends StatefulWidget {

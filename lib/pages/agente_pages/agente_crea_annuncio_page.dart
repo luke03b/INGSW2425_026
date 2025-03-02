@@ -5,11 +5,11 @@ import 'package:domus_app/back_end_communication/class_services/utente_service.d
 import 'package:domus_app/costants/enumerations.dart';
 import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
 import 'package:domus_app/services/aws_cognito.dart';
-import 'package:domus_app/theme/ui_constants.dart';
-import 'package:domus_app/utils/my_buttons_widgets.dart';
-import 'package:domus_app/utils/my_loading.dart';
-import 'package:domus_app/utils/my_pop_up_widgets.dart';
-import 'package:domus_app/utils/my_text_widgets.dart';
+import 'package:domus_app/ui_elements/theme/ui_constants.dart';
+import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_loading.dart';
+import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';

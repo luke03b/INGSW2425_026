@@ -1,7 +1,7 @@
 import 'package:domus_app/pages/agente_pages/agente_calendario_visite_page.dart';
 import 'package:domus_app/pages/agente_pages/agente_home_page.dart';
 import 'package:domus_app/pages/shared_pages/profilo_page.dart';
-import 'package:domus_app/theme/ui_constants.dart';
+import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:flutter/material.dart';
 
 class ControllorePagineAgente extends StatefulWidget {

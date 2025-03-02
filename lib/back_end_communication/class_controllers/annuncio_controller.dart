@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 class AnnuncioController {
   static Future<int> inviaAnnuncio(AnnuncioDto annuncio) async {
-    final url = Urlbuilder.createUrl(Urlbuilder.LOCALHOST_ANDROID, Urlbuilder.PORTA_SPRINGBOOT, Urlbuilder.ENDPOINT_ANNUNCI);
+    final url = UrlBuilder.createUrl(UrlBuilder.PROTOCOL_HTTP, UrlBuilder.LOCALHOST_ANDROID, port: UrlBuilder.PORTA_SPRINGBOOT, UrlBuilder.ENDPOINT_ANNUNCI);
     
     final response = await http.post(
       url,
@@ -28,7 +28,7 @@ class AnnuncioController {
   }
 
   static Future<http.Response> chiamataHTTPrecuperaAnnunciByAgenteSub(String sub) async {
-    final url = Urlbuilder.createUrl(Urlbuilder.LOCALHOST_ANDROID, Urlbuilder.PORTA_SPRINGBOOT, Urlbuilder.ENDPOINT_ANNUNCI_AGENTE, queryParams: {'sub': sub});
+    final url = UrlBuilder.createUrl(UrlBuilder.PROTOCOL_HTTP, UrlBuilder.LOCALHOST_ANDROID, port: UrlBuilder.PORTA_SPRINGBOOT, UrlBuilder.ENDPOINT_ANNUNCI_AGENTE, queryParams: {'sub': sub});
 
     final response = await http.get(
       url,
@@ -46,10 +46,11 @@ class AnnuncioController {
   }
 
    static Future<http.Response> chiamataHTTPrecuperaAnnunciByCriteriDiRicerca(FiltriRicercaDto filtriRicerca) async {
-    final url = Urlbuilder.createUrl(
-      Urlbuilder.LOCALHOST_ANDROID, 
-      Urlbuilder.PORTA_SPRINGBOOT, 
-      Urlbuilder.ENDPOINT_ANNUNCI,
+    final url = UrlBuilder.createUrl(
+      UrlBuilder.PROTOCOL_HTTP, 
+      UrlBuilder.LOCALHOST_ANDROID, 
+      port: UrlBuilder.PORTA_SPRINGBOOT, 
+      UrlBuilder.ENDPOINT_ANNUNCI,
       queryParams: filtriRicerca.toJson()
     );
 
@@ -73,10 +74,11 @@ class AnnuncioController {
   }
 
   static Future<http.Response> chiamataHTTPrecuperaAnnunciRecentementeVisusalizzatiCliente(UtenteDto cliente) async {
-    final url = Urlbuilder.createUrl(
-      Urlbuilder.LOCALHOST_ANDROID, 
-      Urlbuilder.PORTA_SPRINGBOOT, 
-      Urlbuilder.ENDPOINT_GET_ANNUNCI_RECENTI,
+    final url = UrlBuilder.createUrl(
+      UrlBuilder.PROTOCOL_HTTP, 
+      UrlBuilder.LOCALHOST_ANDROID, 
+      port: UrlBuilder.PORTA_SPRINGBOOT, 
+      UrlBuilder.ENDPOINT_GET_ANNUNCI_RECENTI,
       queryParams: {'id' : cliente.id}
     );
 

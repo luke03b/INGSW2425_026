@@ -1,6 +1,6 @@
 import 'package:domus_app/pages/cliente_pages/cliente_visite_page.dart';
 import 'package:domus_app/pages/shared_pages/profilo_page.dart';
-import 'package:domus_app/theme/ui_constants.dart';
+import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:flutter/material.dart';
 import 'cliente_cerca_page.dart';
 import 'cliente_offerte_page.dart';

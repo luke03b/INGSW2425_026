@@ -1,4 +1,4 @@
-import 'package:domus_app/theme/ui_constants.dart';
+import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:flutter/material.dart';
 
 class RadiusSlider extends StatefulWidget {

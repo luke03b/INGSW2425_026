@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:domus_app/services/aws_cognito.dart';
-import 'package:domus_app/theme/theme_provider.dart';
-import 'package:domus_app/theme/ui_constants.dart';
-import 'package:domus_app/utils/my_buttons_widgets.dart';
-import 'package:domus_app/utils/my_countdown_timer_widgets.dart';
-import 'package:domus_app/utils/my_pop_up_widgets.dart';
+import 'package:domus_app/ui_elements/theme/theme_provider.dart';
+import 'package:domus_app/ui_elements/theme/ui_constants.dart';
+import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_countdown_timer_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../utils/my_text_widgets.dart';
+import '../../ui_elements/utils/my_text_widgets.dart';
 
 class PasswordDimenticataPage extends StatefulWidget {
   const PasswordDimenticataPage({super.key});

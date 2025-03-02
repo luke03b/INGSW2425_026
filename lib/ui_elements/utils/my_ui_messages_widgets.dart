@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:domus_app/theme/ui_constants.dart';
-import 'package:domus_app/utils/my_buttons_widgets.dart';
-import 'package:domus_app/utils/my_loading.dart';
+import 'package:domus_app/ui_elements/theme/ui_constants.dart';
+import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_loading.dart';
 import 'package:flutter/material.dart';
 
 class MyUiMessagesWidgets {

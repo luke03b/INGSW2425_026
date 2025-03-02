@@ -4,13 +4,13 @@ import 'package:domus_app/back_end_communication/class_services/offerta_service.
 import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/offerta_dto.dart';
 import 'package:domus_app/services/formatStrings.dart';
-import 'package:domus_app/theme/ui_constants.dart';
-import 'package:domus_app/utils/my_buttons_widgets.dart';
-import 'package:domus_app/utils/my_loading.dart';
-import 'package:domus_app/utils/my_pop_up_widgets.dart';
-import 'package:domus_app/utils/my_text_widgets.dart';
+import 'package:domus_app/ui_elements/theme/ui_constants.dart';
+import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_loading.dart';
+import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:domus_app/utils/my_ui_messages_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_ui_messages_widgets.dart';
 
 class ClienteCreaOffertaPage extends StatefulWidget {
   final AnnuncioDto annuncioSelezionato;

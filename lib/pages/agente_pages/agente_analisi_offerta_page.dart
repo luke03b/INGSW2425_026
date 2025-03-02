@@ -1,7 +1,7 @@
-import 'package:domus_app/theme/ui_constants.dart';
-import 'package:domus_app/utils/my_buttons_widgets.dart';
-import 'package:domus_app/utils/my_pop_up_widgets.dart';
-import 'package:domus_app/utils/my_text_widgets.dart';
+import 'package:domus_app/ui_elements/theme/ui_constants.dart';
+import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
 
 class AgenteAnalizzaOffertaPage extends StatefulWidget {

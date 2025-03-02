@@ -1,8 +1,8 @@
 import 'package:domus_app/services/aws_cognito.dart';
-import 'package:domus_app/theme/ui_constants.dart';
-import 'package:domus_app/utils/my_buttons_widgets.dart';
-import 'package:domus_app/utils/my_pop_up_widgets.dart';
-import 'package:domus_app/utils/my_text_widgets.dart';
+import 'package:domus_app/ui_elements/theme/ui_constants.dart';
+import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

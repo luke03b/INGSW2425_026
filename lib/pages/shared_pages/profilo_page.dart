@@ -3,10 +3,10 @@ import 'package:domus_app/pages/admin_pages/admin_crea_nuovo_admin_o_agente_page
 import 'package:domus_app/pages/cliente_pages/cliente_eliminazione_account_page.dart';
 import 'package:domus_app/pages/shared_pages/cambia_password_page.dart';
 import 'package:domus_app/services/aws_cognito.dart';
-import 'package:domus_app/theme/theme_provider.dart';
-import 'package:domus_app/theme/ui_constants.dart';
-import 'package:domus_app/utils/my_buttons_widgets.dart';
-import 'package:domus_app/utils/my_pop_up_widgets.dart';
+import 'package:domus_app/ui_elements/theme/theme_provider.dart';
+import 'package:domus_app/ui_elements/theme/ui_constants.dart';
+import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';

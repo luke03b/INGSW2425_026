@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 class UtenteController {
   static Future<int> inviaUtente(UtenteDto utente) async {
-    final url = Urlbuilder.createUrl(Urlbuilder.LOCALHOST_ANDROID, Urlbuilder.PORTA_SPRINGBOOT, Urlbuilder.ENDPOINT_UTENTI);
+    final url = UrlBuilder.createUrl(UrlBuilder.PROTOCOL_HTTP, UrlBuilder.LOCALHOST_ANDROID, port: UrlBuilder.PORTA_SPRINGBOOT, UrlBuilder.ENDPOINT_UTENTI);
     
     final response = await http.post(
       url,
@@ -26,7 +26,7 @@ class UtenteController {
   }
 
   static Future<http.Response> chiamataHTTPRecuperaUtenteBySub(String sub) async{
-    final url = Urlbuilder.createUrl(Urlbuilder.LOCALHOST_ANDROID, Urlbuilder.PORTA_SPRINGBOOT, Urlbuilder.ENDPOINT_UTENTI, queryParams: {'sub': sub});
+    final url = UrlBuilder.createUrl(UrlBuilder.PROTOCOL_HTTP, UrlBuilder.LOCALHOST_ANDROID, port: UrlBuilder.PORTA_SPRINGBOOT, UrlBuilder.ENDPOINT_UTENTI, queryParams: {'sub': sub});
 
     final response = await http.get(
       url,

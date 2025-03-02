@@ -6,12 +6,12 @@ import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/filtri_ricerca_dto.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
 import 'package:domus_app/services/formatStrings.dart';
-import 'package:domus_app/theme/ui_constants.dart';
-import 'package:domus_app/utils/my_buttons_widgets.dart';
-import 'package:domus_app/utils/my_pop_up_widgets.dart';
-import 'package:domus_app/utils/my_slider_widgets.dart';
-import 'package:domus_app/utils/my_text_widgets.dart';
-import 'package:domus_app/utils/my_ui_messages_widgets.dart';
+import 'package:domus_app/ui_elements/theme/ui_constants.dart';
+import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_slider_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_text_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_ui_messages_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
@@ -317,7 +317,7 @@ class _CercaPageState extends State<CercaPage> {
                                     ),
                 (true, true, false) => MyUiMessagesWidgets.myText(context, "Benvenuto! Non hai ancora annunci visitati di recente"),
                 (true, true, true) => myCronologia(context, context.outline),
-            }
+              }
 
           ],
         )
