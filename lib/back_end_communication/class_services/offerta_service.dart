@@ -34,9 +34,26 @@ class OffertaService {
     }
   }
 
-  static Future<List<OffertaDto>> recuperaOfferteByAnnuncio(AnnuncioDto annuncio) async {
+  static Future<List<OffertaDto>> recuperaTutteOfferteByAnnuncio(AnnuncioDto annuncio) async {
     try{
-      http.Response response = await OffertaController.chiamataHTTPrecuperaOfferteByAnnuncio(annuncio);
+      http.Response response = await OffertaController.chiamataHTTPrecuperaTutteOfferteByAnnuncio(annuncio);
+      
+      if(response.statusCode == 200){
+        List<dynamic> data = json.decode(response.body);
+
+        List<OffertaDto> offerte = data.map((item) => OffertaDto.fromJson(item)).toList();
+        return offerte;
+      }else{
+        throw Exception("Errore nel recupero delle offerte");
+      }
+    } on TimeoutException {
+      throw TimeoutException("Errore nel recupero delle offerte (i server potrebbero non essere raggiungibili).");
+    }
+  }
+
+  static Future<List<OffertaDto>> recuperaOfferteConStatoByAnnuncio(AnnuncioDto annuncio, String stato) async {
+    try{
+      http.Response response = await OffertaController.chiamataHTTPrecuperaOfferteConStatoByAnnuncio(annuncio, stato);
       
       if(response.statusCode == 200){
         List<dynamic> data = json.decode(response.body);
@@ -75,9 +92,9 @@ class OffertaService {
     return _recuperaAnnunciConOfferteCliente(cliente);
   }
 
-  static Future<int> rifiutaOfferta(OffertaDto offerta, String stato) async {
+  static Future<int> aggiornaStatoOfferta(OffertaDto offerta, String stato, {double? controproposta}) async {
     try{
-      http.Response response = await OffertaController.chiamataHTTPrifiutaOfferta(offerta, stato);
+      http.Response response = await OffertaController.chiamataHTTPaggiornaStatoOfferta(offerta, stato, controproposta: controproposta);
       
       if(response.statusCode == 200){
         return response.statusCode;        

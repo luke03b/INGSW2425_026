@@ -13,6 +13,7 @@ class UrlBuilder {
   static final String ENDPOINT_GET_ANNUNCI_RECENTI = "api/annunci/cliente/cronologia";
   static final String ENDPOINT_POST_OFFERTE = "api/offerte";
   static final String ENDPOINT_GET_OFFERTE = "api/offerte";
+  static final String ENDPOINT_GET_OFFERTE_STATO = "api/offerte/stato";
   static final String ENDPOINT_GET_ANNUNCI_OFFERTE = "api/offerte/cliente";
   static final String ENDPOINT_POST_VISITE = "api/visite";
   static final String ENDPOINT_GET_VISITE_ANNUNCIO = "api/visite";

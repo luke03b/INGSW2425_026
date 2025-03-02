@@ -318,7 +318,6 @@ class _CercaPageState extends State<CercaPage> {
                 (true, true, false) => MyUiMessagesWidgets.myText(context, "Benvenuto! Non hai ancora annunci visitati di recente"),
                 (true, true, true) => myCronologia(context, context.outline),
               }
-
           ],
         )
       ),

@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:domus_app/back_end_communication/class_services/offerta_service.dart';
 import 'package:domus_app/back_end_communication/dto/offerta_dto.dart';
+import 'package:domus_app/costants/enumerations.dart';
 import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_loading.dart';
 import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
 import 'package:domus_app/ui_elements/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +33,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
 
   void getStoricoOfferte() async {
     try{
-      List<OffertaDto> data = await OffertaService.recuperaOfferteByAnnuncio(widget.offertaSelezionata.annuncio!);
+      List<OffertaDto> data = await OffertaService.recuperaTutteOfferteByAnnuncio(widget.offertaSelezionata.annuncio!);
       if (mounted) {
         setState(() {
           listaStoricoOfferte = data;
@@ -174,7 +176,47 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                                                             leftButtonColor: context.secondary,
                                                                             rightButtonColor: context.tertiary,
                                                                             onPressLeftButton: (){Navigator.pop(context);},
-                                                                            onPressRightButton: (){debugPrint("offerta accettata");},
+                                                                            onPressRightButton: () async {
+                                                                              LoadingHelper.showLoadingDialogNotDissmissible(context, color: context.secondary);
+                                                                              try {
+                                                                                int statusCode = await OffertaService.aggiornaStatoOfferta(widget.offertaSelezionata, Enumerations.statoOfferte[1]);
+                                                                                Navigator.pop(context);
+                                                                                Navigator.pop(context);
+                                                                                controllaStatusCode(statusCode, context);
+                                                                                setState(() {
+                                                                                  hasAnnuncioOfferte = false;
+                                                                                  areDataRetrieved = false;
+                                                                                  areServersAvailable = false;
+                                                                                });
+                                                                                getStoricoOfferte();
+                                                                              }on TimeoutException {
+                                                                                Navigator.pop(context);
+                                                                                Navigator.pop(context);
+                                                                                showDialog(
+                                                                                  context: context, 
+                                                                                  builder: (BuildContext context) => MyInfoDialog(
+                                                                                    title: "Connessione non riuscita", 
+                                                                                    bodyText: "Offerta non rifiutata, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
+                                                                                    buttonText: "Ok", 
+                                                                                    onPressed: () {Navigator.pop(context);}
+                                                                                  )
+                                                                                );
+                                                                              } catch (e) {
+                                                                                print(e);
+                                                                                Navigator.pop(context);
+                                                                                Navigator.pop(context);
+                                                                                showDialog(
+                                                                                  context: context, 
+                                                                                  builder: (BuildContext context) => MyInfoDialog(
+                                                                                    title: "Errore",
+                                                                                    bodyText: "Offerta non rifiutata.", 
+                                                                                    buttonText: "Ok", 
+                                                                                    onPressed: () {Navigator.pop(context);}
+                                                                                  )
+                                                                                );
+                                                                              }
+                                                                            
+                                                                            },
                                                                           )
                                         );
                                     },
@@ -197,7 +239,46 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                                                           rightButtonText: "Si",
                                                                           rightButtonColor: context.tertiary,
                                                                           onPressLeftButton: (){Navigator.pop(context);},
-                                                                          onPressRightButton: (){debugPrint("Prenotazione rifiutata");},
+                                                                          onPressRightButton: () async {
+                                                                            LoadingHelper.showLoadingDialogNotDissmissible(context, color: context.secondary);
+                                                                            try {
+                                                                              int statusCode = await OffertaService.aggiornaStatoOfferta(widget.offertaSelezionata, Enumerations.statoOfferte[2]);
+                                                                              Navigator.pop(context);
+                                                                              Navigator.pop(context);
+                                                                              controllaStatusCode(statusCode, context);
+                                                                              setState(() {
+                                                                                hasAnnuncioOfferte = false;
+                                                                                areDataRetrieved = false;
+                                                                                areServersAvailable = false;
+                                                                              });
+                                                                              getStoricoOfferte();
+                                                                            }on TimeoutException {
+                                                                              Navigator.pop(context);
+                                                                              Navigator.pop(context);
+                                                                              showDialog(
+                                                                                context: context, 
+                                                                                builder: (BuildContext context) => MyInfoDialog(
+                                                                                  title: "Connessione non riuscita", 
+                                                                                  bodyText: "Offerta non rifiutata, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
+                                                                                  buttonText: "Ok", 
+                                                                                  onPressed: () {Navigator.pop(context);}
+                                                                                )
+                                                                              );
+                                                                            } catch (e) {
+                                                                              print(e);
+                                                                              Navigator.pop(context);
+                                                                              Navigator.pop(context);
+                                                                              showDialog(
+                                                                                context: context, 
+                                                                                builder: (BuildContext context) => MyInfoDialog(
+                                                                                  title: "Errore",
+                                                                                  bodyText: "Offerta non rifiutata.", 
+                                                                                  buttonText: "Ok", 
+                                                                                  onPressed: () {Navigator.pop(context);}
+                                                                                )
+                                                                              );
+                                                                            }
+                                                                          },
                                                                         )
                                       );
                                   },
@@ -236,8 +317,8 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                     ),
                     // MyTextFieldOnlyPositiveNumbers(controller: contropropostaController, text: "Controproposta", colore: coloreScritte),
                     SizedBox(height: MediaQuery.of(context).size.height/50,),
-                    MyElevatedButtonRectWidget(text: "Invia", onPressed: (){
-                                      inviaControproposta(context);
+                    MyElevatedButtonRectWidget(text: "Invia", onPressed: () async {
+                                      await inviaControproposta(context);
                                       }, color: context.onSecondary),
                     SizedBox(height: MediaQuery.of(context).size.height/50,),
 
@@ -300,7 +381,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
       );
   }
 
-  void inviaControproposta(BuildContext context) {
+  Future<void> inviaControproposta(BuildContext context) async {
     if(contropropostaController.text.isEmpty){
       showDialog(
         barrierDismissible: false,
@@ -318,7 +399,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
         context: context, 
         builder: (BuildContext context) => MyInfoDialog(title: "Attenzione", bodyText: "La controproposta deve essere maggiore dell'offerta", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
         );
-      }else if(nuovaControproposta > widget.offertaSelezionata.annuncio!.prezzo){
+      }else if(nuovaControproposta > widget.offertaSelezionata.annuncio.prezzo){
         showDialog(
         barrierDismissible: false,
         context: context, 
@@ -336,12 +417,75 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                             rightButtonText: "Si",
                                             rightButtonColor: context.tertiary,
                                             onPressLeftButton: (){Navigator.pop(context);},
-                                            onPressRightButton: (){debugPrint("Controproposta inviata");},
+                                            onPressRightButton: () async {
+                                                    LoadingHelper.showLoadingDialog(context);
+                                                    try {
+                                                      int statusCode = await OffertaService.aggiornaStatoOfferta(widget.offertaSelezionata, Enumerations.statoOfferte[3], controproposta: double.parse(contropropostaController.text));
+                                                      Navigator.pop(context);
+                                                      Navigator.pop(context);
+                                                      controllaStatusCode(statusCode, context);
+                                                      setState(() {
+                                                        hasAnnuncioOfferte = false;
+                                                        areDataRetrieved = false;
+                                                        areServersAvailable = false;
+                                                      });
+                                                      getStoricoOfferte();
+                                                    }on TimeoutException {
+                                                      Navigator.pop(context);
+                                                      Navigator.pop(context);
+                                                      showDialog(
+                                                        context: context, 
+                                                        builder: (BuildContext context) => MyInfoDialog(
+                                                          title: "Connessione non riuscita", 
+                                                          bodyText: "Offerta non rifiutata, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
+                                                          buttonText: "Ok", 
+                                                          onPressed: () {Navigator.pop(context);}
+                                                        )
+                                                      );
+                                                    } catch (e) {
+                                                      print(e);
+                                                      Navigator.pop(context);
+                                                      Navigator.pop(context);
+                                                      showDialog(
+                                                        context: context, 
+                                                        builder: (BuildContext context) => MyInfoDialog(
+                                                          title: "Errore",
+                                                          bodyText: "Offerta non rifiutata.", 
+                                                          buttonText: "Ok", 
+                                                          onPressed: () {Navigator.pop(context);}
+                                                        )
+                                                      );
+                                                    }
+                                            },
                                           )
         );
       }
     } catch (e) {
        print("Errore durante la conversione: $e");
+    }
+  }
+
+  void controllaStatusCode(int statusCode, BuildContext context) {
+    if (statusCode == 200) {
+      showDialog(
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(
+          title: "Conferma", 
+          bodyText: "Offerta accettata", 
+          buttonText: "Ok", 
+          onPressed: () {Navigator.pop(context);}
+        )
+      );
+    } else {
+      showDialog(
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(
+          title: "Errore", 
+          bodyText: "Offerta non accettata, controllare i campi e riprovare.",
+          buttonText: "Ok", 
+          onPressed: () {Navigator.pop(context);}
+        )
+      );
     }
   }
 }

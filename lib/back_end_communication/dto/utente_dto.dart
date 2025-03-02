@@ -22,26 +22,14 @@ class UtenteDto implements DTO{
 
   @override
   Map<String, dynamic> toJson() {
-    if (agenziaImmobiliare == null){
-      return {
-        "id" : id,
-        "sub": sub,
-        "nome" : nome,
-        "cognome" : cognome,
-        "email" : email,
-        "tipo": tipo,
-        "agenzia" : agenziaImmobiliare!.toJson()
-      };
-    }
-
     return {
-      "id" : id,
+      "id": id,
       "sub": sub,
-      "nome" : nome,
-      "cognome" : cognome,
-      "email" : email,
+      "nome": nome,
+      "cognome": cognome,
+      "email": email,
       "tipo": tipo,
-      "agenzia" : agenziaImmobiliare!.toJson()
+      "agenzia": agenziaImmobiliare?.toJson(),
     };
   }
 

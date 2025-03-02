@@ -37,7 +37,7 @@ class OffertaController {
     return response;
   }
 
-  static Future<http.Response> chiamataHTTPrecuperaOfferteByAnnuncio(AnnuncioDto annuncio) async {
+  static Future<http.Response> chiamataHTTPrecuperaTutteOfferteByAnnuncio(AnnuncioDto annuncio) async {
     print(annuncio.idAnnuncio);
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
@@ -94,13 +94,21 @@ class OffertaController {
     return response;
   }
 
-  static Future<http.Response> chiamataHTTPrifiutaOfferta(OffertaDto offerta, String stato) async {
+  static Future<http.Response> chiamataHTTPaggiornaStatoOfferta(OffertaDto offerta, String stato, {double? controproposta}) async {
+    final queryParams = {
+      "stato": stato.toUpperCase(),
+    };
+
+    if (controproposta != null) {
+      queryParams["controproposta"] = controproposta.toString();
+    }
+
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
       UrlBuilder.LOCALHOST_ANDROID, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_GET_OFFERTE,
-      queryParams: {"stato" : stato.toUpperCase()}
+      queryParams: queryParams,
     );
 
     print("\n\n\n\n\n\n\n\n\n\n\n");
@@ -119,9 +127,38 @@ class OffertaController {
         throw TimeoutException("Il server non risponde.");
       },
     );
-
-    print(json.encode(offerta));
     print(response.body);
+    
+    return response;
+  }
+
+  static Future<http.Response> chiamataHTTPrecuperaOfferteConStatoByAnnuncio(AnnuncioDto annuncio, String stato) async {
+    final url = UrlBuilder.createUrl(
+      UrlBuilder.PROTOCOL_HTTP, 
+      UrlBuilder.LOCALHOST_ANDROID, 
+      port: UrlBuilder.PORTA_SPRINGBOOT, 
+      UrlBuilder.ENDPOINT_GET_OFFERTE_STATO, 
+      queryParams: { 
+        "idAnnuncio" : annuncio.idAnnuncio,
+        "stato" : stato.toUpperCase()
+      }
+    );
+
+    print("\n\n\n\n\n\n\n\n");
+    print(url);
+    print("\n\n\n\n\n\n\n\n");
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    ).timeout(
+      const Duration(seconds: 30),
+      onTimeout: () {
+        throw TimeoutException("Il server non risponde.");
+      },
+    );
     
     return response;
   }

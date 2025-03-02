@@ -10,8 +10,11 @@ import 'package:domus_app/pages/shared_pages/crea_offerta_page.dart';
 import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_loading.dart';
 import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
+
+import '../../ui_elements/utils/my_ui_messages_widgets.dart';
 
 class AgenteOffertePage extends StatefulWidget {
 
@@ -32,9 +35,9 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
   bool hasAnnuncioOfferte = false;
   List<OffertaDto> listaOfferte = [];
 
-  void getStoricoOfferte() async {
+  void getOfferteInAttesa() async {
     try{
-      List<OffertaDto> data = await OffertaService.recuperaOfferteByAnnuncio(widget.annuncioSelezionato);
+      List<OffertaDto> data = await OffertaService.recuperaOfferteConStatoByAnnuncio(widget.annuncioSelezionato, Enumerations.statoOfferte[0]);
       if (mounted) {
         setState(() {
           listaOfferte = data;
@@ -65,7 +68,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
     
     // Esegui getAnnunci dopo la fase di build
     Future.delayed(Duration.zero, () {
-      getStoricoOfferte();
+      getOfferteInAttesa();
     });
   }
 
@@ -84,57 +87,100 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
         elevation: 5,
         shadowColor: context.shadow,
       ),
-      body: Stack(
-        children:[ 
-          myCarouselSlider(context),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 63),
-              child: Card(
-                elevation: 3,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
-                color: context.primaryContainer,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+      body: switch ((areDataRetrieved, areServersAvailable, hasAnnuncioOfferte)) {
+                (false, _, _) => MyUiMessagesWidgets.myTextWithLoading(context, "Sto recuperando le offerte sull'annuncio, un po' di pazienza"),
+                (true, false, _) => MyUiMessagesWidgets.myErrorWithButton(context, 
+                                      "Server non raggiungibili. Controlla la tua connessione a internet e riprova", 
+                                      "Riprova", 
+                                      (){
+                                        setState(() {
+                                          hasAnnuncioOfferte = false;
+                                          areDataRetrieved = false;
+                                          areServersAvailable = false;
+                                        });
+                                        getOfferteInAttesa();
+                                      }
+                                    ),
+                (true, true, false) => Column(
                   children: [
-                    SizedBox(width: 10,height: 40,),
-                    Text("Prezzo iniziale: ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: GRANDEZZA_SCRITTE_PICCOLE, color: context.outline),),
-                    Expanded(
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(FormatStrings.formatNumber(widget.annuncioSelezionato.prezzo), style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline),))),
-                    ),
-                    Text("EUR", style: TextStyle(fontWeight: FontWeight.normal, fontSize: GRANDEZZA_SCRITTE_PICCOLE, color: context.outline),),
-                    SizedBox(width: 10,),
+                    MyUiMessagesWidgets.myText(context, "Non hai offerte per questo annuncio"),
+                    SizedBox(height: 10,),
+                    MyElevatedButtonRectWidget(
+                      text: "Aggiungi offerta", 
+                      onPressed: () async {
+                        await Navigator.push(context, MaterialPageRoute(builder: (context) => CreaOffertaPage(annuncioSelezionato: widget.annuncioSelezionato,)));
+                        setState(() {
+                          hasAnnuncioOfferte = false;
+                          areDataRetrieved = false;
+                          areServersAvailable = false;
+                        });
+                        getOfferteInAttesa();
+                      }, 
+                      color: context.tertiary)
                   ],
                 ),
+                (true, true, true) => myOffertePage(context),
+              }
+    );
+  }
+
+  Stack myOffertePage(BuildContext context) {
+    return Stack(
+      children:[ 
+        myCarouselSlider(context),
+        Align(
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 63),
+            child: Card(
+              elevation: 3,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+              color: context.primaryContainer,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(width: 10,height: 40,),
+                  Text("Prezzo iniziale: ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: GRANDEZZA_SCRITTE_PICCOLE, color: context.outline),),
+                  Expanded(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(FormatStrings.formatNumber(widget.annuncioSelezionato.prezzo), style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline),))),
+                  ),
+                  Text("EUR", style: TextStyle(fontWeight: FontWeight.normal, fontSize: GRANDEZZA_SCRITTE_PICCOLE, color: context.outline),),
+                  SizedBox(width: 10,),
+                ],
               ),
-            )
-          ),
-          Positioned(
-            bottom: 30,
-            left: 250,
-            right: -60,
-            child: Column(
-              children: [
-                SizedBox(height: 10,),
-                Row(children: [
-                SizedBox(width: 5,),
-                Expanded(child: MyAddButtonWidget(onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => CreaOffertaPage(annuncioSelezionato: widget.annuncioSelezionato,)));
-                },
-                color: context.onSecondary)),
-                SizedBox(width: 5,),
-                ],),
-                SizedBox(height: 10,)
-              ],
-            )
-          ),
-        ]
-      )
+            ),
+          )
+        ),
+        Positioned(
+          bottom: 30,
+          left: 250,
+          right: -60,
+          child: Column(
+            children: [
+              SizedBox(height: 10,),
+              Row(children: [
+              SizedBox(width: 5,),
+              Expanded(child: MyAddButtonWidget(onPressed: () async {
+                await Navigator.push(context, MaterialPageRoute(builder: (context) => CreaOffertaPage(annuncioSelezionato: widget.annuncioSelezionato,)));
+                setState(() {
+                  hasAnnuncioOfferte = false;
+                  areDataRetrieved = false;
+                  areServersAvailable = false;
+                });
+                getOfferteInAttesa();
+              },
+              color: context.onSecondary)),
+              SizedBox(width: 5,),
+              ],),
+              SizedBox(height: 10,)
+            ],
+          )
+        ),
+      ]
     );
   }
 
@@ -227,15 +273,51 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                                 context: context,
                                 builder: (BuildContext context) => MyOptionsDialog(
                                                                     title: "Rifiuta offerta",
-                                                                    bodyText: "Sei sicuro di voler rifiutare la prenotazione?",
+                                                                    bodyText: "Sei sicuro di voler rifiutare l'offerta?",
                                                                     leftButtonText: "No",
                                                                     leftButtonColor: context.secondary,
                                                                     rightButtonText: "Si",
                                                                     rightButtonColor: context.tertiary,
                                                                     onPressLeftButton: (){Navigator.pop(context);},
                                                                     onPressRightButton: () async {
-                                                                      int statusCode = await OffertaService.rifiutaOfferta(offertaCorrente, Enumerations.statoOfferte[2]);
-                                                                      Navigator.pop(context);
+                                                                      LoadingHelper.showLoadingDialogNotDissmissible(context, color: context.secondary);
+                                                                      try {
+                                                                        int statusCode = await OffertaService.aggiornaStatoOfferta(offertaCorrente, Enumerations.statoOfferte[2]);
+                                                                        Navigator.pop(context);
+                                                                        Navigator.pop(context);
+                                                                        controllaStatusCode(statusCode, context);
+                                                                        setState(() {
+                                                                          hasAnnuncioOfferte = false;
+                                                                          areDataRetrieved = false;
+                                                                          areServersAvailable = false;
+                                                                        });
+                                                                        getOfferteInAttesa();
+                                                                      }on TimeoutException {
+                                                                        Navigator.pop(context);
+                                                                        Navigator.pop(context);
+                                                                        showDialog(
+                                                                          context: context, 
+                                                                          builder: (BuildContext context) => MyInfoDialog(
+                                                                            title: "Connessione non riuscita", 
+                                                                            bodyText: "Offerta non rifiutata, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
+                                                                            buttonText: "Ok", 
+                                                                            onPressed: () {Navigator.pop(context);}
+                                                                          )
+                                                                        );
+                                                                      } catch (e) {
+                                                                        print(e);
+                                                                        Navigator.pop(context);
+                                                                        Navigator.pop(context);
+                                                                        showDialog(
+                                                                          context: context, 
+                                                                          builder: (BuildContext context) => MyInfoDialog(
+                                                                            title: "Errore",
+                                                                            bodyText: "Offerta non rifiutata.", 
+                                                                            buttonText: "Ok", 
+                                                                            onPressed: () {Navigator.pop(context);}
+                                                                          )
+                                                                        );
+                                                                      }
                                                                     },
                                                                   )
                                 );
@@ -264,6 +346,30 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
         }
       )
     );
+  }
+
+   void controllaStatusCode(int statusCode, BuildContext context) {
+    if (statusCode == 200) {
+      showDialog(
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(
+          title: "Conferma", 
+          bodyText: "Offerta rifiutata", 
+          buttonText: "Ok", 
+          onPressed: () {Navigator.pop(context);}
+        )
+      );
+    } else {
+      showDialog(
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(
+          title: "Errore", 
+          bodyText: "Offerta non rifiutata, controllare i campi e riprovare.",
+          buttonText: "Ok", 
+          onPressed: () {Navigator.pop(context);}
+        )
+      );
+    }
   }
 
 }

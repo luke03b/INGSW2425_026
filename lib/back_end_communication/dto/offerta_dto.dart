@@ -5,28 +5,31 @@ import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
 class OffertaDto implements DTO {
 
   final String? id;
-  final AnnuncioDto? annuncio;
-  final UtenteDto? cliente;
+  final AnnuncioDto annuncio;
+  final UtenteDto cliente;
   final double prezzo;
   final DateTime? data;
   final String? stato;
+  final double? controproposta;
 
   OffertaDto({
     this.id,
-    this.annuncio,
-    this.cliente,
+    required this.annuncio,
+    required this.cliente,
     required this.prezzo,
     this.data,
-    this.stato
+    this.stato,
+    this.controproposta,
   });
 
   @override
   Map<String, dynamic> toJson() {
-    return {
-      'id' : id,
-      'annuncio' : annuncio,
-      'cliente' : cliente,
-      'prezzo' : prezzo,
+   return {
+      'id': id,
+      'annuncio': annuncio.toJson(),
+      'cliente': cliente.toJson(),
+      'prezzo': prezzo,
+      'controproposta' : controproposta,
     };
   }
 
@@ -37,7 +40,8 @@ class OffertaDto implements DTO {
       prezzo: json["prezzo"],
       data: DateTime.parse(json["data"]),
       stato: json["stato"],
-      cliente: UtenteDto.fromJson(json["cliente"])
+      cliente: UtenteDto.fromJson(json["cliente"]),
+      controproposta: json["controproposta"],
     );
   }
 }
