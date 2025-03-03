@@ -29,7 +29,7 @@ class OffertaDto implements DTO {
       'annuncio': annuncio.toJson(),
       'cliente': cliente.toJson(),
       'prezzo': prezzo,
-      'controproposta' : controproposta,
+      'controProposta' : controproposta,
     };
   }
 
@@ -41,7 +41,7 @@ class OffertaDto implements DTO {
       data: DateTime.parse(json["data"]),
       stato: json["stato"],
       cliente: UtenteDto.fromJson(json["cliente"]),
-      controproposta: json["controproposta"],
+      controproposta: json["controProposta"],
     );
   }
 }

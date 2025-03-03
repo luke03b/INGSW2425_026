@@ -299,8 +299,8 @@ class _CercaPageState extends State<CercaPage> {
               },
               color: context.tertiary
             ),
-
             if (!_ricercaAvanzataVisibile)
+              SizedBox(height: MediaQuery.of(context).size.height/15),
               switch ((areDataRetrieved, areServersAvailable, hasUserAnnunciRecenti)) {
                 (false, _, _) => MyUiMessagesWidgets.myTextWithLoading(context, "Sto recuperando le tue attività recenti, un po' di pazienza"),
                 (true, false, _) => MyUiMessagesWidgets.myErrorWithButton(context, 
@@ -375,9 +375,6 @@ class _CercaPageState extends State<CercaPage> {
       visible: !_ricercaAvanzataVisibile, 
       child: Column(
         children: [
-          SizedBox(
-              height: MediaQuery.of(context).size.height/15,
-            ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -450,7 +447,8 @@ class _CercaPageState extends State<CercaPage> {
                         overflow: TextOverflow.ellipsis,
                         minFontSize: 12,
                       ),
-                    )
+                    ),
+                    SizedBox(width: MediaQuery.of(context).size.width/45,),
                   ],
                 ),
               ],

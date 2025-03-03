@@ -10,7 +10,6 @@ class MyUiMessagesWidgets {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(height: MediaQuery.of(context).size.height / 5),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.8,
             child: AutoSizeText(
@@ -39,7 +38,6 @@ class MyUiMessagesWidgets {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(height: MediaQuery.of(context).size.height / 5),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.8,
             child: AutoSizeText(
@@ -72,7 +70,6 @@ class MyUiMessagesWidgets {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(height: MediaQuery.of(context).size.height / 5),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.8,
             child: AutoSizeText(
