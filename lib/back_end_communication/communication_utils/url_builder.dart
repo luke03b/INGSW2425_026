@@ -19,6 +19,7 @@ class UrlBuilder {
   static final String ENDPOINT_GET_VISITE_ANNUNCIO = "api/visite";
   static final String ENDPOINT_GET_VISITE_CLIENTE = "api/visite/cliente";
   static final String ENDPOINT_GET_ANNUNCI_CON_OFFERTE_PRENOTAZIONI = "api/annunci/agente/offerte-prenotazioni";
+  static final String ENDPOINT_GET_VISITE_STATO = "api/visite/stato";
 
   static Uri createUrl(String protocol, String hostName, String path, {String? port,  Map<String, dynamic>? queryParams}) {
     Uri uri;

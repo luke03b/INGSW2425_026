@@ -1,11 +1,23 @@
+import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:domus_app/back_end_communication/class_services/visita_service.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
+import 'package:domus_app/back_end_communication/dto/visita_dto.dart';
+import 'package:domus_app/costants/enumerations.dart';
+import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_loading.dart';
 import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_ui_messages_widgets.dart';
 import 'package:flutter/material.dart';
 
 class AgentePrenotazioniPage extends StatefulWidget {
-  const AgentePrenotazioniPage({super.key});
+
+  final AnnuncioDto annuncioSelezionato;
+
+  const AgentePrenotazioniPage({super.key, required this.annuncioSelezionato});
 
   @override
   State<AgentePrenotazioniPage> createState() => _AgentePrenotazioniPageState();
@@ -14,83 +26,48 @@ class AgentePrenotazioniPage extends StatefulWidget {
 class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
   final double GRANDEZZA_SCRITTE_GRANDI = 22;
   final double GRANDEZZA_SCRITTE_PICCOLE = 18;
+  bool areServersAvailable = false;
+  bool areDataRetrieved = false;
+  bool hasAnnuncioVisite = false;
+  List<VisitaDto> listaVisite = [];
   int _currentSliderIndex = 0;
 
-  final List<Map<String, String>> listaPrenotazioni = [
-    {
-      'fascia_oraria': '8:30',
-      'data_prenotazione' : '13-01-2025',
-      'data_richiesta_prenotazione' : '31-01-2025',
-      'stato_prenotazione' : 'Accettata',
-      'nome_prenotante' : 'Giuseppe',
-      'cognome_prenotante' : 'De Santis',
-      'email_prenotante' : 'giuseppe.desantis@icloud.com',
-    },
-    {
-      'fascia_oraria': '18:30',
-      'data_prenotazione' : '5-01-2025',
-      'data_richiesta_prenotazione' : '7-02-2025',
-      'stato_prenotazione' : 'Rifiutata',
-      'nome_prenotante' : 'Massimiliano',
-      'cognome_prenotante' : 'Centonze',
-      'email_prenotante' : 'massimiliano.centonze@icloud.com',
-    },
-    {
-      'fascia_oraria': '8:30',
-      'data_prenotazione' : '5-12-2024',
-      'data_richiesta_prenotazione' : '1-04-2025',
-      'stato_prenotazione' : 'In Attesa',
-      'nome_prenotante' : 'Paolo',
-      'cognome_prenotante' : 'Buonomo',
-      'email_prenotante' : 'paolo.buonomo@icloud.com',
-    },
-    {
-      'fascia_oraria': '12:30',
-      'data_prenotazione' : '5-12-2024',
-      'data_richiesta_prenotazione' : '1-04-2025',
-      'stato_prenotazione' : 'In Attesa',
-      'nome_prenotante' : 'Paolo',
-      'cognome_prenotante' : 'De Santis',
-      'email_prenotante' : 'paolo.desantis@icloud.com',
-    },
-    {
-      'fascia_oraria': '12:30',
-      'data_prenotazione' : '5-12-2024',
-      'data_richiesta_prenotazione' : '1-04-2025',
-      'stato_prenotazione' : 'In Attesa',
-      'nome_prenotante' : 'Massimiliano',
-      'cognome_prenotante' : 'Buonomo',
-      'email_prenotante' : 'massimiliano.buonomo@cloud.com',
-    },
-    {
-      'fascia_oraria': '12:30',
-      'data_prenotazione' : '5-12-2024',
-      'data_richiesta_prenotazione' : '1-04-2025',
-      'stato_prenotazione' : 'In Attesa',
-      'nome_prenotante' : 'Alessio',
-      'cognome_prenotante' : 'De Santis',
-      'email_prenotante' : 'alessio.desantis@icloud.com',
-    },
-    {
-      'fascia_oraria': '12:30',
-      'data_prenotazione' : '5-12-2024',
-      'data_richiesta_prenotazione' : '1-04-2025',
-      'stato_prenotazione' : 'In Attesa',
-      'nome_prenotante' : 'Luca',
-      'cognome_prenotante' : 'Centonze',
-      'email_prenotante' : 'luca.centonze@icloud.com',
-    },
-    {
-      'fascia_oraria': '12:30 - 14',
-      'data_prenotazione' : '5-12-2024',
-      'data_richiesta_prenotazione' : '1-04-2025',
-      'stato_prenotazione' : 'In Attesa',
-      'nome_prenotante' : 'Antonio',
-      'cognome_prenotante' : 'Buonomo',
-      'email_prenotante' : 'antonio.buonomo@icloud.com',
-    },
+  void getVisiteInAttesa() async {
+    try{
+      List<VisitaDto> data = await VisitaService.recuperaOfferteConStatoByAnnuncio(widget.annuncioSelezionato, Enumerations.statoVisite[0]);
+      if (mounted) {
+        setState(() {
+          listaVisite = data;
+          hasAnnuncioVisite = listaVisite.isNotEmpty;
+          areDataRetrieved = true;
+          areServersAvailable = true;
+        });
+      }
+    } on TimeoutException {
+      if (mounted) {
+        setState(() {
+          areServersAvailable = false;
+          areDataRetrieved = true;
+        });
+      }
+    } catch (error) {
+      setState(() {
+        areServersAvailable = false;
+        areDataRetrieved = true;
+      });
+      print('Errore con il recupero delle visite (il server potrebbe non essere raggiungibile) $error');
+    }
+  }
 
-  ];
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    
+    // Esegui getAnnunci dopo la fase di build
+    Future.delayed(Duration.zero, () {
+      getVisiteInAttesa();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +84,28 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
         elevation: 5,
         shadowColor: context.shadow,
       ),
-      body: myCarouselSlider(context));
+      body: switch ((areDataRetrieved, areServersAvailable, hasAnnuncioVisite)) {
+              (false, _, _) => MyUiMessagesWidgets.myTextWithLoading(context, "Sto recuperando le visite prenotate sull'annuncio, un po' di pazienza"),
+              (true, false, _) => MyUiMessagesWidgets.myErrorWithButton(context, 
+                                    "Server non raggiungibili. Controlla la tua connessione a internet e riprova", 
+                                    "Riprova", 
+                                    (){
+                                      setState(() {
+                                        hasAnnuncioVisite = false;
+                                        areDataRetrieved = false;
+                                        areServersAvailable = false;
+                                      });
+                                      getVisiteInAttesa();
+                                    }
+                                  ),
+              (true, true, false) => Column(
+                children: [
+                  MyUiMessagesWidgets.myText(context, "Non hai visite prenotate per questo annuncio")
+                ],
+              ),
+              (true, true, true) => myCarouselSlider(context),
+            }
+          );
   }
 
   CarouselSlider myCarouselSlider(BuildContext context) {
@@ -115,9 +113,9 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
     Color coloreScritte = context.outline;
 
     return CarouselSlider(
-      items: listaPrenotazioni.asMap().entries.map((entry) {
+      items: listaVisite.asMap().entries.map((entry) {
         int indice = entry.key;
-        Map<String, dynamic> indicePrenotazioneCorrente = entry.value;
+        VisitaDto visitaCorrente = entry.value;
         double scaleFactor = indice == _currentSliderIndex ? 1.0 : 1.0;
         return Container(
           width: MediaQuery.of(context).size.width,
@@ -126,10 +124,6 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
             color: context.primaryContainer,
             borderRadius: BorderRadius.circular(10),
             shape: BoxShape.rectangle,
-            boxShadow: [BoxShadow(color: context.shadow.withOpacity(0.2),
-              spreadRadius: 5,
-              blurRadius: 15,
-              offset: Offset(0, 10),)],
           ),
           child: Column(
             children: [
@@ -139,7 +133,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   Text("Data prenotazione: ", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_GRANDI, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  Text(indicePrenotazioneCorrente['data_richiesta_prenotazione'], style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: coloreScritte)),
+                  Text(FormatStrings.formattaDataGGMMAAAA(visitaCorrente.data), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: coloreScritte)),
                 ],
               ),
               Row(
@@ -147,15 +141,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   Text("Fascia oraria: ", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  Text(indicePrenotazioneCorrente['fascia_oraria'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
-                ],
-              ),
-              Row(
-                children: [
-                  SizedBox(width: MediaQuery.of(context).size.width/45,),
-                  SizedBox(width: MediaQuery.of(context).size.width/45,),
-                  Text("Richiesta effettuata in data: ", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  Text(indicePrenotazioneCorrente['data_prenotazione'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
+                  Text("${FormatStrings.formattaOrario(visitaCorrente.orarioInizio)} - ${FormatStrings.formattaOrario(visitaCorrente.orarioFine!)}", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
                 ],
               ),
               Row(
@@ -163,7 +149,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   Text("Nome: ", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  Text(indicePrenotazioneCorrente['nome_prenotante'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
+                  Text(FormatStrings.trasformareInizialeMaiuscola(visitaCorrente.cliente.nome), style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
                 ],
               ),
               Row(
@@ -171,7 +157,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   Text("Cognome: ", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  Text(indicePrenotazioneCorrente['cognome_prenotante'], style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
+                  Text(FormatStrings.trasformareInizialeMaiuscola(visitaCorrente.cliente.cognome), style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
                 ],
               ),
               Row(
@@ -179,14 +165,14 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   Text("Email: ", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                 Expanded(
-                      child: FittedBox(
+                  Expanded(
+                    child: FittedBox(
+                      alignment: Alignment.centerLeft,
+                      fit: BoxFit.scaleDown,
+                      child: Align(
                         alignment: Alignment.centerLeft,
-                        fit: BoxFit.scaleDown,
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(indicePrenotazioneCorrente['email_prenotante'], style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline),))),
-                    ),
+                        child: Text(visitaCorrente.cliente.email, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline),))),
+                  ),
                 ],
               ),
               SizedBox(height: scaleFactor * MediaQuery.of(context).size.height/130,),
@@ -208,7 +194,46 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                                                                     rightButtonText: "Si",
                                                                     rightButtonColor: context.tertiary,
                                                                     onPressLeftButton: (){Navigator.pop(context);},
-                                                                    onPressRightButton: (){debugPrint("Prenotazione accettata");},
+                                                                    onPressRightButton: () async {
+                                                                      LoadingHelper.showLoadingDialogNotDissmissible(context, color: context.secondary);
+                                                                      try {
+                                                                        int statusCode = await VisitaService.aggiornaStatoVisita(visitaCorrente, Enumerations.statoOfferte[1]);
+                                                                        Navigator.pop(context);
+                                                                        Navigator.pop(context);
+                                                                        controllaStatusCode(statusCode, context);
+                                                                        setState(() {
+                                                                          hasAnnuncioVisite = false;
+                                                                          areDataRetrieved = false;
+                                                                          areServersAvailable = false;
+                                                                        });
+                                                                        getVisiteInAttesa();
+                                                                      }on TimeoutException {
+                                                                        Navigator.pop(context);
+                                                                        Navigator.pop(context);
+                                                                        showDialog(
+                                                                          context: context, 
+                                                                          builder: (BuildContext context) => MyInfoDialog(
+                                                                            title: "Connessione non riuscita", 
+                                                                            bodyText: "Offerta non rifiutata, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
+                                                                            buttonText: "Ok", 
+                                                                            onPressed: () {Navigator.pop(context);}
+                                                                          )
+                                                                        );
+                                                                      } catch (e) {
+                                                                        print(e);
+                                                                        Navigator.pop(context);
+                                                                        Navigator.pop(context);
+                                                                        showDialog(
+                                                                          context: context, 
+                                                                          builder: (BuildContext context) => MyInfoDialog(
+                                                                            title: "Errore",
+                                                                            bodyText: "Offerta non rifiutata.", 
+                                                                            buttonText: "Ok", 
+                                                                            onPressed: () {Navigator.pop(context);}
+                                                                          )
+                                                                        );
+                                                                      }
+                                                                    },
                                                                   )
                                 );
                             },
@@ -231,7 +256,46 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                                                                     rightButtonText: "Si",
                                                                     rightButtonColor: context.tertiary,
                                                                     onPressLeftButton: (){Navigator.pop(context);},
-                                                                    onPressRightButton: (){debugPrint("Prenotazione accettata");},
+                                                                    onPressRightButton: () async {
+                                                                      LoadingHelper.showLoadingDialogNotDissmissible(context, color: context.secondary);
+                                                                      try {
+                                                                        int statusCode = await VisitaService.aggiornaStatoVisita(visitaCorrente, Enumerations.statoOfferte[2]);
+                                                                        Navigator.pop(context);
+                                                                        Navigator.pop(context);
+                                                                        controllaStatusCode(statusCode, context);
+                                                                        setState(() {
+                                                                          hasAnnuncioVisite = false;
+                                                                          areDataRetrieved = false;
+                                                                          areServersAvailable = false;
+                                                                        });
+                                                                        getVisiteInAttesa();
+                                                                      }on TimeoutException {
+                                                                        Navigator.pop(context);
+                                                                        Navigator.pop(context);
+                                                                        showDialog(
+                                                                          context: context, 
+                                                                          builder: (BuildContext context) => MyInfoDialog(
+                                                                            title: "Connessione non riuscita", 
+                                                                            bodyText: "Offerta non rifiutata, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
+                                                                            buttonText: "Ok", 
+                                                                            onPressed: () {Navigator.pop(context);}
+                                                                          )
+                                                                        );
+                                                                      } catch (e) {
+                                                                        print(e);
+                                                                        Navigator.pop(context);
+                                                                        Navigator.pop(context);
+                                                                        showDialog(
+                                                                          context: context, 
+                                                                          builder: (BuildContext context) => MyInfoDialog(
+                                                                            title: "Errore",
+                                                                            bodyText: "Offerta non rifiutata.", 
+                                                                            buttonText: "Ok", 
+                                                                            onPressed: () {Navigator.pop(context);}
+                                                                          )
+                                                                        );
+                                                                      }
+                                                                    },
                                                                   )
                                 );
                             },
@@ -257,5 +321,29 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
         }
       )
     );
+  }
+
+  void controllaStatusCode(int statusCode, BuildContext context) {
+    if (statusCode == 200) {
+      showDialog(
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(
+          title: "Conferma", 
+          bodyText: "Offerta rifiutata", 
+          buttonText: "Ok", 
+          onPressed: () {Navigator.pop(context);}
+        )
+      );
+    } else {
+      showDialog(
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(
+          title: "Errore", 
+          bodyText: "Offerta non rifiutata, controllare i campi e riprovare.",
+          buttonText: "Ok", 
+          onPressed: () {Navigator.pop(context);}
+        )
+      );
+    }
   }
 }

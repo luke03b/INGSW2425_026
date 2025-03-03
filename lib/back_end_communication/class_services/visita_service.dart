@@ -73,4 +73,36 @@ class VisitaService {
       throw TimeoutException("Errore nel recupero delle visite (i server potrebbero non essere raggiungibili).");
     }
   }
+
+  static Future<List<VisitaDto>> recuperaOfferteConStatoByAnnuncio(AnnuncioDto annuncio, String stato) async {
+    try{
+      http.Response response = await VisitaController.chiamataHTTPrecuperaOfferteConStatoByAnnuncio(annuncio, stato);
+      
+      if(response.statusCode == 200){
+        List<dynamic> data = json.decode(response.body);
+
+        List<VisitaDto> offerte = data.map((item) => VisitaDto.fromJson(item)).toList();
+        return offerte;
+      }else{
+        throw Exception("Errore nel recupero delle visite");
+      }
+    } on TimeoutException {
+      throw TimeoutException("Errore nel recupero delle visite (i server potrebbero non essere raggiungibili).");
+    }
+  }
+
+  static Future<int> aggiornaStatoVisita(VisitaDto visita, String stato) async {
+    try{
+      http.Response response = await VisitaController.chiamataHTTPaggiornaStatoVisita(visita, stato);
+      
+      if(response.statusCode == 200){
+        return response.statusCode;        
+      }else{
+        throw Exception("Errore nell'aggiornamento dello stato della visita");
+      }
+
+    } on TimeoutException {
+      throw TimeoutException("Errore nell'aggiornamento dello stato della visita (i server potrebbero non essere raggiungibili).");
+    }
+  }
 }

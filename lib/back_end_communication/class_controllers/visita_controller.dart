@@ -5,6 +5,7 @@ import 'package:domus_app/back_end_communication/communication_utils/url_builder
 import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
 import 'package:domus_app/back_end_communication/dto/visita_dto.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class VisitaController {
@@ -90,6 +91,68 @@ class VisitaController {
         throw TimeoutException("Il server non risponde.");
       },
     );
+    
+    return response;
+  }
+
+  static Future<http.Response> chiamataHTTPrecuperaOfferteConStatoByAnnuncio(AnnuncioDto annuncio, String stato) async {
+    final url = UrlBuilder.createUrl(
+      UrlBuilder.PROTOCOL_HTTP, 
+      UrlBuilder.LOCALHOST_ANDROID, 
+      port: UrlBuilder.PORTA_SPRINGBOOT, 
+      UrlBuilder.ENDPOINT_GET_VISITE_STATO,
+      queryParams: { 
+        "idAnnuncio" : annuncio.idAnnuncio,
+        "stato" : stato.toUpperCase()
+      }
+    );
+
+    print("\n\n\n\n\n\n\n\n");
+    print(url);
+    print("\n\n\n\n\n\n\n\n");
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    ).timeout(
+      const Duration(seconds: 30),
+      onTimeout: () {
+        throw TimeoutException("Il server non risponde.");
+      },
+    );
+    
+    return response;
+  }
+
+  static Future<http.Response> chiamataHTTPaggiornaStatoVisita(VisitaDto visita, String stato) async {
+    final url = UrlBuilder.createUrl(
+      UrlBuilder.PROTOCOL_HTTP, 
+      UrlBuilder.LOCALHOST_ANDROID, 
+      port: UrlBuilder.PORTA_SPRINGBOOT, 
+      UrlBuilder.ENDPOINT_GET_VISITE_ANNUNCIO,
+      queryParams: {"stato" : stato.toUpperCase()},
+    );
+
+    print("\n\n\n\n\n\n\n\n\n\n\n");
+    print(url);
+    print("\n\n\n\n\n\n\n\n\n\n\n");
+    debugPrint(json.encode(visita));
+
+    final response = await http.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(visita),
+    ).timeout(
+      const Duration(seconds: 30),
+      onTimeout: () {
+        throw TimeoutException("Il server non risponde.");
+      },
+    );
+    print(response.body);
     
     return response;
   }

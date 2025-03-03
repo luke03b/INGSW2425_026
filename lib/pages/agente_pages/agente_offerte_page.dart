@@ -241,13 +241,13 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   Text("Email: ", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
                   Expanded(
-                      child: FittedBox(
+                    child: FittedBox(
+                      alignment: Alignment.centerLeft,
+                      fit: BoxFit.scaleDown,
+                      child: Align(
                         alignment: Alignment.centerLeft,
-                        fit: BoxFit.scaleDown,
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(offertaCorrente.cliente!.email, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline),))),
-                    ),
+                        child: Text(offertaCorrente.cliente!.email, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline),))),
+                  ),
                 ],
               ),
               SizedBox(height: scaleFactor * MediaQuery.of(context).size.height/130,),

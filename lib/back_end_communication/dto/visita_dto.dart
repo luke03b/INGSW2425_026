@@ -3,6 +3,7 @@ import 'package:domus_app/back_end_communication/dto/dto.dart';
 import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
 
 class VisitaDto implements DTO {
+  String? id;
   AnnuncioDto annuncio;
   UtenteDto cliente;
   DateTime data;
@@ -17,11 +18,13 @@ class VisitaDto implements DTO {
     required this.orarioInizio,
     this.orarioFine,
     this.stato,
+    this.id,
   });
 
   @override
   Map<String, dynamic> toJson() {
     return {
+      'id' : id,
       'annuncio' : annuncio.toJson(),
       'cliente' : cliente.toJson(),
       'data' : data.toIso8601String(),
@@ -33,6 +36,7 @@ class VisitaDto implements DTO {
 
   static VisitaDto fromJson(Map<String, dynamic> json) {
     return VisitaDto(
+      id : json["id"],
       annuncio: AnnuncioDto.fromJson(json["annuncio"]),
       cliente: UtenteDto.fromJson(json["cliente"]),
       data: DateTime.parse(json["data"]),

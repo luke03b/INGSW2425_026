@@ -468,7 +468,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                     child: MyElevatedButtonRectWidget(
                       text: "Prenotazioni",
                       onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => AgentePrenotazioniPage()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => AgentePrenotazioniPage(annuncioSelezionato: widget.annuncioSelezionato)));
                       }, 
                   color: context.onSecondary)),
                   SizedBox(width: 5,),
