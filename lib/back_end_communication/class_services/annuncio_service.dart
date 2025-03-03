@@ -134,4 +134,27 @@ class AnnuncioService {
     return _recuperaAnnunciRecentementeVisusalizzatiCliente(cliente);
   }
 
+  static Future<List<AnnuncioDto>> recuperaAnnunciByAgenteLoggatoConOffertePrenotazioni(bool offerte, bool prenotazioni) async{
+    String? sub = await AWSServices().recuperaSubUtenteLoggato();
+    return _recuperaAnnunciByAgenteSubConOffertePrenotazioni(sub!, offerte, prenotazioni);
+  }
+
+   static Future<List<AnnuncioDto>> _recuperaAnnunciByAgenteSubConOffertePrenotazioni(String sub, bool offerte, bool prenotazioni) async {
+    try{
+      http.Response response = await AnnuncioController.chiamataHTTPrecuperaAnnunciByAgenteSubConOffertePrenotazioni(sub, offerte, prenotazioni);
+      
+      if(response.statusCode == 200){
+        List<dynamic> data = json.decode(response.body);
+
+        List<AnnuncioDto> annunci = data.map((item) => AnnuncioDto.fromJson(item)).toList();
+        return annunci;        
+      }else{
+        throw Exception("Errore nel recupero degli annunci dell'agente");
+      }
+
+    } on TimeoutException {
+      throw TimeoutException("Errore nel recupero dell'utente.");
+    }
+   }
+
 }

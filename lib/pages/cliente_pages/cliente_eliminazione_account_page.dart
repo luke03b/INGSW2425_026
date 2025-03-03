@@ -1,3 +1,4 @@
+import 'package:domus_app/back_end_communication/class_services/utente_service.dart';
 import 'package:domus_app/services/aws_cognito.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
@@ -153,7 +154,6 @@ class _ClienteEliminazioneAccountPageState extends State<ClienteEliminazioneAcco
   }
 
   Future<void> eliminaAccount(BuildContext context) async {
-    debugPrint('Cliente action');
     showDialog(
       context: context,
       builder: (BuildContext context) => MyOptionsDialog(
@@ -166,6 +166,7 @@ class _ClienteEliminazioneAccountPageState extends State<ClienteEliminazioneAcco
                                           onPressLeftButton: (){Navigator.pop(context);}, 
                                           onPressRightButton: () async {
                                             bool isUserDeleted = await deleteUser(widget.emailUtente ?? mailController.text, passwordController.text);
+                                            isUserDeleted &= await UtenteService.eliminaUtenteDalNostroDb(await AWSServices().recuperaSubUtenteLoggato());
                                             if(isUserDeleted){
                                               Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);
                                             } else {

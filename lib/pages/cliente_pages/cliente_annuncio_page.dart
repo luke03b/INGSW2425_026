@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/back_end_communication/class_services/cronologia_service.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
@@ -133,7 +134,19 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                     Row(
                       children: [
                         SizedBox(width: 10.0),
-                        Expanded(child: Text(widget.annuncioSelezionato.indirizzo, style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal, color: context.outline),)),
+                        Expanded(
+                          child: AutoSizeText(
+                            widget.annuncioSelezionato.indirizzo,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal,
+                              color: context.outline,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            minFontSize: 12,
+                          ),
+                        ),
                       ],
                     ),
         

@@ -9,7 +9,12 @@ import 'package:http/http.dart' as http;
 
 class AnnuncioController {
   static Future<int> inviaAnnuncio(AnnuncioDto annuncio) async {
-    final url = UrlBuilder.createUrl(UrlBuilder.PROTOCOL_HTTP, UrlBuilder.LOCALHOST_ANDROID, port: UrlBuilder.PORTA_SPRINGBOOT, UrlBuilder.ENDPOINT_ANNUNCI);
+    final url = UrlBuilder.createUrl(
+      UrlBuilder.PROTOCOL_HTTP, 
+      UrlBuilder.LOCALHOST_ANDROID, 
+      port: UrlBuilder.PORTA_SPRINGBOOT, 
+      UrlBuilder.ENDPOINT_ANNUNCI
+    );
 
     print("\n\n\n\n\n\n\n\n\n\n\n");
     print(url);
@@ -84,7 +89,39 @@ class AnnuncioController {
       UrlBuilder.LOCALHOST_ANDROID, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_GET_ANNUNCI_RECENTI,
-      queryParams: {'id' : cliente.id}
+      queryParams: {'idCliente' : cliente.id}
+    );
+
+    print("\n\n\n\n\n\n\n\n\n\n\n");
+    print(url);
+    print("\n\n\n\n\n\n\n\n\n\n\n");
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    ).timeout(
+      const Duration(seconds: 30),
+      onTimeout: () {
+        throw TimeoutException("Il server non risponde.");
+      },
+    );
+    
+    return response;
+  }
+
+  static Future<http.Response> chiamataHTTPrecuperaAnnunciByAgenteSubConOffertePrenotazioni(sub, offerte, prenotazioni) async {
+    final url = UrlBuilder.createUrl(
+      UrlBuilder.PROTOCOL_HTTP, 
+      UrlBuilder.LOCALHOST_ANDROID, 
+      port: UrlBuilder.PORTA_SPRINGBOOT, 
+      UrlBuilder.ENDPOINT_GET_ANNUNCI_CON_OFFERTE_PRENOTAZIONI, 
+      queryParams: {
+        'sub': sub,
+        'offerte' : offerte.toString(),
+        'prenotazioni' : prenotazioni.toString()
+      }
     );
 
     print("\n\n\n\n\n\n\n\n\n\n\n");

@@ -11,16 +11,15 @@ class AgenziaImmobiliareDto implements DTO {
     required this.partitaIva,
   });
 
-  // Metodo per creare un'istanza di AgenziaDto da una mappa (ad esempio, JSON)
   static AgenziaImmobiliareDto fromJson(Map<String, dynamic> json) {
     return AgenziaImmobiliareDto(
-      id: json['id'] as String,
-      nome: json['nome'] as String,
-      partitaIva: json['partitaiva'] as String,
+      id: json['id'],
+      nome: json['nome'],
+      partitaIva: json['partitaiva'],
     );
   }
 
-  // Metodo per convertire un'istanza di AgenziaDto in una mappa (ad esempio, per inviare un JSON)
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,

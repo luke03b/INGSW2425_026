@@ -44,6 +44,14 @@ class UtenteService{
 
   static Future<AgenziaImmobiliareDto?> recuperaAgenziaDaUtenteSub (String sub) async {
     UtenteDto utenteDto = await recuperaUtenteBySub(sub);
-    return utenteDto.agenziaImmobiliare ?? null;
+    return utenteDto.agenziaImmobiliare;
+  }
+
+  static Future<bool> eliminaUtenteDalNostroDb(String? sub) async {
+    try {
+        return await UtenteController.eliminaUtenteDalNostroDb(sub) == 200;
+      } on TimeoutException {
+        throw TimeoutException("Il server non risponde.");
+      }
   }
 }

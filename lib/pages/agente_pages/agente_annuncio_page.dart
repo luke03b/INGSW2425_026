@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
 import 'package:domus_app/pages/agente_pages/agente_offerte_page.dart';
 import 'package:domus_app/pages/agente_pages/agente_visite_page.dart';
@@ -103,12 +104,17 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                       children: [
                         SizedBox(width: 10.0),
                         Expanded(
-                        child: FittedBox(
-                          alignment: Alignment.centerLeft,
-                          fit: BoxFit.scaleDown,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(widget.annuncioSelezionato.indirizzo, style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal, color: coloriPulsanti),))),
+                          child: AutoSizeText(
+                            widget.annuncioSelezionato.indirizzo,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal,
+                              color: context.outline,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            minFontSize: 12,
+                          ),
                         ),
                         SizedBox(width: 10.0),
                       ],

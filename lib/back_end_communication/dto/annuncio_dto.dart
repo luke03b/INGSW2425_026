@@ -67,9 +67,7 @@ class AnnuncioDto implements DTO{
       "classe_energetica": classeEnergetica,
       "piano": piano,
       "numero_piano": numeroPiano,
-      "agente": {
-        'id' : agente.id
-      },
+      "agente": agente.toJson(),
       "indirizzo": indirizzo,
       "latitudine": latitudine,
       "longitudine": longitudine,

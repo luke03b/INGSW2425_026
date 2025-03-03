@@ -8,6 +8,7 @@ class MyUiMessagesWidgets {
   static Center myTextWithLoading(BuildContext context, String text) {
     return Center(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
@@ -37,6 +38,7 @@ class MyUiMessagesWidgets {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.8,
@@ -69,6 +71,7 @@ class MyUiMessagesWidgets {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.8,
@@ -86,6 +89,42 @@ class MyUiMessagesWidgets {
               textAlign: TextAlign.center,
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  static Center myTextWithButton(BuildContext context, String text, String buttonText, VoidCallback onPressed) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: AutoSizeText(
+              text,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.normal,
+                color: context.outline,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              minFontSize: 12,
+              maxFontSize: 20,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          SizedBox(height: 10,),
+          MyElevatedButtonRectWidget(
+            text: buttonText, 
+            onPressed: () {
+              onPressed();
+            }, 
+            color: context.tertiary
+          )
         ],
       ),
     );

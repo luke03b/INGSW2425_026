@@ -15,15 +15,15 @@ class CronologiaDto implements DTO {
   @override
   Map<String, dynamic> toJson() {
     return {
-      "cliente": cliente,
-      "annuncio": annuncio,
+      "cliente": cliente.toJson(),
+      "annuncio": annuncio.toJson(),
     };
   }
 
   static CronologiaDto fromJson(Map<String, dynamic> json) {
     return CronologiaDto(
-      annuncio: json["annuncio"],
-      cliente: json["cliente"]
+      annuncio: AnnuncioDto.fromJson(json["annuncio"]),
+      cliente: UtenteDto.fromJson(json["cliente"])
     );
   }
 }

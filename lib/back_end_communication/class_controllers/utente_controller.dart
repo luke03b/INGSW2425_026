@@ -42,4 +42,34 @@ class UtenteController {
     
     return response;
   }
+
+  static Future<int> eliminaUtenteDalNostroDb(sub) async {
+    final url = UrlBuilder.createUrl(
+      UrlBuilder.PROTOCOL_HTTP, 
+      UrlBuilder.LOCALHOST_ANDROID, 
+      port: UrlBuilder.PORTA_SPRINGBOOT, 
+      UrlBuilder.ENDPOINT_UTENTI,
+      queryParams: {
+        "sub" : sub,
+      }
+    );
+
+    print("\n\n\n\n\n\n\n\n\n\n");
+    print(url);
+    print("\n\n\n\n\n\n\n\n\n\n");
+    
+    final response = await http.delete(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    ).timeout(
+      const Duration(seconds: 30),
+      onTimeout: () {
+        throw TimeoutException("Il server non risponde.");
+      },
+    );
+    
+    return response.statusCode;
+  }
 }

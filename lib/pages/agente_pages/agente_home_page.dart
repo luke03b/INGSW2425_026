@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/back_end_communication/class_services/annuncio_service.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
@@ -6,6 +8,7 @@ import 'package:domus_app/pages/agente_pages/agente_crea_annuncio_page.dart';
 import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_ui_messages_widgets.dart';
 import 'package:flutter/material.dart';
 
 class AgenteHomePage extends StatefulWidget {
@@ -24,25 +27,71 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
   int _currentSliderIndex = 0;
   List<bool> selectedOffertePrenotazioni = <bool>[false, false];
   bool hasUserAnnunci = false;
+  bool areDataRetrieved = false;
+  bool areServersAvailable = false;
 
-  Future<void> getAnnunci() async {
+  Future<void> getAnnunciAgente() async {
     try {
       List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciByAgenteLoggato();
-      setState(() {
-        annunciList = data;
-        if(annunciList.isNotEmpty) {
-          hasUserAnnunci = true;
-        }
-      });
+      
+      if (mounted) {
+        setState(() {
+          annunciList = data;
+          hasUserAnnunci = annunciList.isNotEmpty;
+          areDataRetrieved = true;
+          areServersAvailable = true;
+        });
+      }
+    } on TimeoutException {
+      if (mounted) {
+        setState(() {
+          areServersAvailable = false;
+          areDataRetrieved = true;
+        });
+      }
     } catch (error) {
-      print('errore con il recupero degli annunci (il server potrebbe non essere raggiungibile)');
+      setState(() {
+        areServersAvailable = false;
+        areDataRetrieved = true;
+      });
+      print('Errore con il recupero degli annunci (il server potrebbe non essere raggiungibile) $error');
+    }
+  }
+
+  Future<void> getAnnunciConOffertePrenotazioniAgente() async {
+    try {
+
+      List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciByAgenteLoggatoConOffertePrenotazioni(selectedOffertePrenotazioni[0], selectedOffertePrenotazioni[1]);
+
+      if (mounted) {
+        setState(() {
+          annunciList = data;
+          hasUserAnnunci = annunciList.isNotEmpty;
+          areDataRetrieved = true;
+          areServersAvailable = true;
+        });
+      }
+
+    } on TimeoutException {
+      if (mounted) {
+        setState(() {
+          areServersAvailable = false;
+          areDataRetrieved = true;
+        });
+      }
+    } catch (error) {
+      setState(() {
+        areServersAvailable = false;
+        areDataRetrieved = true;
+      });
+      print('Errore con il recupero degli annunci (il server potrebbe non essere raggiungibile) $error');
     }
   }
 
   @override
   void initState(){
     super.initState();
-    getAnnunci();
+    getAnnunciAgente();
   }
 
   @override
@@ -61,54 +110,104 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
       ),
       body: Stack(
         children: [
-          hasUserAnnunci ? myCarouselSlider(context) : Center(child: Text("Non possiedi annunci", style: TextStyle(color: context.onSecondary, fontSize: 20),)),
+          switch ((areDataRetrieved, areServersAvailable, hasUserAnnunci, selectedOffertePrenotazioni[0], selectedOffertePrenotazioni[1])) {
+            (false, _, _, _, _) => MyUiMessagesWidgets.myTextWithLoading(
+              context, 
+              "Sto recuperando i tuoi annunci, un po' di pazienza"
+            ),
+
+            (true, false, _, _, _) => MyUiMessagesWidgets.myErrorWithButton(
+              context, 
+              "Server non raggiungibili. Controlla la tua connessione a internet e riprova", 
+              "Riprova", 
+              () {
+                setState(() {
+                  hasUserAnnunci = false;
+                  areDataRetrieved = false;
+                  areServersAvailable = false;
+                });
+                getAnnunciAgente();
+              }
+            ),
+
+            // Caso: selectedOffertePrenotazioni[0] è true e non ci sono annunci
+            (true, true, false, true, false) => MyUiMessagesWidgets.myText(
+              context,
+              "Non ci sono annunci con offerte.",
+            ),
+
+            // Caso: selectedOffertePrenotazioni[1] è true e non ci sono annunci
+            (true, true, false, false, true) => MyUiMessagesWidgets.myText(
+              context,
+              "Non ci sono annunci con prenotazioni.",
+            ),
+
+            // Caso: entrambi selectedOffertePrenotazioni[0] e [1] sono true e non ci sono annunci
+            (true, true, false, true, true) => MyUiMessagesWidgets.myText(
+              context,
+              "Non ci sono annunci con offerte e prenotazioni."
+            ),
+
+            // Caso: nessun filtro attivo e non ci sono annunci
+            (true, true, false, false, false) => MyUiMessagesWidgets.myTextWithButton(
+              context,
+              "Benvenuto! Non hai ancora annunci. Aggiungine subito uno",
+              "Aggiungi annuncio",
+              () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteCreaAnnuncioPage()));
+              }
+            ),
+
+            // Caso: ci sono annunci, quindi mostra il carousel
+            (true, true, true, _, _) => myCarouselSlider(context),
+          },
           Align(
             alignment: Alignment.topCenter,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 63),
-              child: Visibility(
-                visible: hasUserAnnunci,
-                child: Card(
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
-                  color: context.primaryContainer,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(width: 10,),
-                      Icon(Icons.filter_alt_outlined, color: context.onPrimary,),
-                      Text("Filtri", style: TextStyle(color: context.onPrimary, fontWeight: FontWeight.bold),),
-                      SizedBox(width: 10,),
-                      ToggleButtons(
-                        borderRadius: BorderRadius.circular(100),
-                        isSelected: selectedOffertePrenotazioni,
-                        onPressed: (int index){
-                          setState(() {
-                            selectedOffertePrenotazioni[index] = !selectedOffertePrenotazioni[index];
-                            // AnnuncioService.recuperaAnnunciByAgenteLoggato(selectedOffertePrenotazioni);
-                          });
-                        },
-                        children: [
-                          Row(
-                            children: [
-                              Icon(selectedOffertePrenotazioni[0] ? Icons.radio_button_on : Icons.radio_button_off, color: context.onPrimary, size: 18,),
-                              SizedBox(width: 6,),
-                              Text("Offerte", style: TextStyle(color: context.onPrimary),),
-                              SizedBox(width: 10,)
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(selectedOffertePrenotazioni[1] ? Icons.radio_button_on : Icons.radio_button_off, color: context.onPrimary, size: 18,),
-                              SizedBox(width: 6,),
-                              Text("Prenotazioni", style: TextStyle(color: context.onPrimary),),
-                              SizedBox(width: 15,)
-                            ],
-                          ),
-                        ]
-                      ),
-                    ],
-                  ),
+              child: Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+                color: context.primaryContainer,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(width: 10,),
+                    Icon(Icons.filter_alt_outlined, color: context.onPrimary,),
+                    Text("Filtri", style: TextStyle(color: context.onPrimary, fontWeight: FontWeight.bold),),
+                    SizedBox(width: 10,),
+                    ToggleButtons(
+                      borderRadius: BorderRadius.circular(100),
+                      isSelected: selectedOffertePrenotazioni,
+                      onPressed: (int index) async {
+                        setState(() {
+                          selectedOffertePrenotazioni[index] = !selectedOffertePrenotazioni[index];
+                          hasUserAnnunci = false;
+                          areDataRetrieved = false;
+                          areServersAvailable = false;
+                        });
+                        await getAnnunciConOffertePrenotazioniAgente();
+                      },
+                      children: [
+                        Row(
+                          children: [
+                            Icon(selectedOffertePrenotazioni[0] ? Icons.radio_button_on : Icons.radio_button_off, color: context.onPrimary, size: 18,),
+                            SizedBox(width: 6,),
+                            Text("Offerte", style: TextStyle(color: context.onPrimary),),
+                            SizedBox(width: 10,)
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Icon(selectedOffertePrenotazioni[1] ? Icons.radio_button_on : Icons.radio_button_off, color: context.onPrimary, size: 18,),
+                            SizedBox(width: 6,),
+                            Text("Prenotazioni", style: TextStyle(color: context.onPrimary),),
+                            SizedBox(width: 15,)
+                          ],
+                        ),
+                      ]
+                    ),
+                  ],
                 ),
               ),
             )
@@ -137,81 +236,6 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
   }
 
   CarouselSlider myCarouselSlider(BuildContext context) {
-    final List<Map<String, dynamic>> listaCase = [
-      {
-        'image1': 'lib/assets/casa1_1_placeholder.png',
-        'image2' : 'lib/assets/casa1_2_placeholder.png',
-        'image3' : 'lib/assets/casa1_3_placeholder.png',
-        'prezzo': '275.000',
-        'indirizzo': 'Via Dalmazia 13,\nCavalleggeri 80124 (NA)',
-        'superficie': '100 mq',
-        'numero_stanze': '6',
-        'arredato' : "si",
-        'piano' : 'Terra',
-        'descrizione' : 'Nel cuore della rinomata collina di Posillipo, in una posizione dominante che regala una vista senza pari sul golfo di Napoli, Christie\'s International Real Estate propone in vendita un appartamento di 174 mq, un\'esclusiva residenza che fonde eleganza, comfort e luminosità. Questo immobile, caratterizzato da ampi spazi interni, è arricchito da una spettacolare superficie esterna di 286 mq, che include ampi balconi, un terrazzo panoramico di copertura e una veranda, tutti luoghi ideali per godere di momenti di convivialità e relax, circondati da un panorama unico. Posto all\'ultimo piano di un elegante edificio, questo appartamento si distingue per la luminosità che inonda ogni ambiente grazie all\'esposizione ideale e alle ampie vetrate che permettono di godere della vista sul mare in ogni angolo della casa. Il soggiorno doppio, spazioso e raffinato, offre un affaccio diretto sul mare, creando un ambiente perfetto per rilassarsi o intrattenere ospiti. La zona notte comprende tre camere da letto, tutte silenziose e confortevoli, mentre i due bagni e la cucina abitabile con accesso indipendente completano l\'immobile con praticità e funzionalità. Gli spazi esterni, ampi e ben progettati, offrono la possibilità di vivere all\'aperto durante tutto l\'anno, con aree ideali per cene all\'aperto, eventi sociali o semplicemente per godere di momenti di tranquillità, immersi nella bellezza naturale di Posillipo. A completare questa straordinaria proprieta\', una cantina e due posti auto coperti, per garantire il massimo della comodità e della sicurezza. Un\'opportunità imperdibile per chi cerca una residenza di lusso in uno dei quartieri più esclusivi di Napoli, dove la bellezza senza tempo del mare si fonde con il comfort moderno.',
-        'data_offerta': '13-01-2025',
-        'valore_offerta' : '260.000',
-        'nome_offerente' : 'Paolo',
-        'cognome_offerente' : 'Centonze',
-        'mail_offerente' : 'paolo.centonze@icloud.com',
-        'stato_offerta' : 'In Attesa',
-        'valore_contropoposta' : '',
-        'vicino_scuole' : 'si',
-        'vicino_parchi' : 'no',
-        'vicino_mezzi' : 'si',
-        'agenzia' : 'ideaCasa',
-        'agente' : 'Carlo Conti'
-      },
-      {
-        'image1': 'lib/assets/casa2_1_placeholder.png',
-        'image2' : 'lib/assets/casa2_2_placeholder.png',
-        'image3' : 'lib/assets/casa2_3_placeholder.png',
-        'prezzo': '300.000',
-        'indirizzo': 'Via Dalmazia 14,\nCavalleggeri 80124 (NA)',
-        'superficie': '120 mq',
-        'numero_stanze': '7',
-        'arredato' : "no",
-        'piano' : 'Ultimo',
-        'descrizione' : '',
-        'data_offerta': '5-01-2025',
-        'valore_offerta' : '280.000',
-        'nome_offerente' : 'Marco',
-        'cognome_offerente' : 'Lombari',
-        'mail_offerente' : 'marcolombari65@gmail.com',
-        'stato_offerta' : 'In Attesa',
-        'valore_contropoposta' : '',
-        'vicino_scuole' : 'si',
-        'vicino_parchi' : 'si',
-        'vicino_mezzi' : 'si',
-        'agenzia' : 'casaBella',
-        'agente' : 'Lucio Corsi'
-      },
-      {
-        'image1': 'lib/assets/casa3_1_placeholder.png',
-        'image2' : 'lib/assets/casa3_2_placeholder.png',
-        'image3' : 'lib/assets/casa3_3_placeholder.png',
-        'prezzo': '250.000',
-        'indirizzo': 'Via Dalmazia 10,\nCavalleggeri 80124 (NA)',
-        'superficie': '80 mq',
-        'numero_stanze': '5',
-        'arredato' : "si",
-        'piano' : '3',
-        'descrizione' : '',
-        'data_offerta': '25-12-2024',
-        'valore_offerta' : '225.000',
-        'nome_offerente' : 'Massimiliano',
-        'cognome_offerente' : 'De Santis',
-        'mail_offerente' : 'madmax@gmail.com',
-        'stato_offerta' : 'In Attesa',
-        'valore_contropoposta' : '',
-        'vicino_scuole' : 'si',
-        'vicino_parchi' : 'no',
-        'vicino_mezzi' : 'si',
-        'agenzia' : 'trovaCasa',
-        'agente' : 'Marcella Bella'
-      },
-    ];
-    
     return CarouselSlider(
       items: annunciList.asMap().entries.map((entry) {
         int indice = entry.key;

@@ -103,11 +103,11 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                                     ),
                 (true, true, false) => Column(
                   children: [
-                    MyUiMessagesWidgets.myText(context, "Non hai offerte per questo annuncio"),
-                    SizedBox(height: 10,),
-                    MyElevatedButtonRectWidget(
-                      text: "Aggiungi offerta", 
-                      onPressed: () async {
+                    MyUiMessagesWidgets.myTextWithButton(
+                      context, 
+                      "Non hai offerte per questo annuncio", 
+                      "Aggiungi offerta", 
+                      () async {
                         await Navigator.push(context, MaterialPageRoute(builder: (context) => CreaOffertaPage(annuncioSelezionato: widget.annuncioSelezionato,)));
                         setState(() {
                           hasAnnuncioOfferte = false;
@@ -115,8 +115,8 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                           areServersAvailable = false;
                         });
                         getOfferteInAttesa();
-                      }, 
-                      color: context.tertiary)
+                      }
+                    )
                   ],
                 ),
                 (true, true, true) => myOffertePage(context),
