@@ -203,7 +203,7 @@ class _CercaPageState extends State<CercaPage> {
                                   });
                                 },
                               )
-                            : null,
+                            : Icon(Icons.search, color: Colors.grey),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: coloreSottolineatura),
                         ),
@@ -302,20 +302,24 @@ class _CercaPageState extends State<CercaPage> {
             if (!_ricercaAvanzataVisibile)
               SizedBox(height: MediaQuery.of(context).size.height/15),
               switch ((areDataRetrieved, areServersAvailable, hasUserAnnunciRecenti)) {
-                (false, _, _) => MyUiMessagesWidgets.myTextWithLoading(context, "Sto recuperando le tue attività recenti, un po' di pazienza"),
-                (true, false, _) => MyUiMessagesWidgets.myErrorWithButton(context, 
-                                      "Server non raggiungibili. Controlla la tua connessione a internet e riprova", 
-                                      "Riprova", 
-                                      (){
-                                        setState(() {
-                                          hasUserAnnunciRecenti = false;
-                                          areDataRetrieved = false;
-                                          areServersAvailable = false;
-                                        });
-                                        getAnnunciRecenti();
-                                      }
+                (false, _, _) => Visibility(visible: !_ricercaAvanzataVisibile, child: MyUiMessagesWidgets.myTextWithLoading(context, "Sto recuperando le tue attività recenti, un po' di pazienza"),),
+                (true, false, _) => Visibility(
+                                      visible: !_ricercaAvanzataVisibile, 
+                                      child: MyUiMessagesWidgets.myErrorWithButton(
+                                        context, 
+                                        "Server non raggiungibili. Controlla la tua connessione a internet e riprova", 
+                                        "Riprova", 
+                                        (){
+                                          setState(() {
+                                            hasUserAnnunciRecenti = false;
+                                            areDataRetrieved = false;
+                                            areServersAvailable = false;
+                                          });
+                                          getAnnunciRecenti();
+                                        }
+                                      ),
                                     ),
-                (true, true, false) => MyUiMessagesWidgets.myText(context, "Benvenuto! Non hai ancora annunci visitati di recente"),
+                (true, true, false) => Visibility(visible: !_ricercaAvanzataVisibile, child: MyUiMessagesWidgets.myText(context, "Benvenuto! Non hai ancora annunci visitati di recente")),
                 (true, true, true) => myCronologia(context, context.outline),
               }
           ],

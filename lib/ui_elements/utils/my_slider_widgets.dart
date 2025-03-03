@@ -47,7 +47,7 @@ class _RadiusSliderState extends State<RadiusSlider> {
         const SizedBox(width: 8),
         Text(
           "${_radius.toStringAsFixed(0)} km",
-          style: TextStyle(fontSize: 18, color: context.onError),
+          style: TextStyle(fontSize: 18, color: context.outline),
         )
       ],
     );

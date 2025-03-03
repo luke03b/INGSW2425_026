@@ -36,4 +36,14 @@ class FormatStrings {
       }
       return "";
   }
+
+  static String mappaStatoVisita(String input) {
+    if(input == "CONFERMATA") {
+        return "Confermata";
+      } else if(input == "RIFIUTATA") {
+        return "Rifiutata";
+      } else {
+        return "In Attesa";
+      }
+  }
 }

@@ -105,16 +105,13 @@ class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
   CarouselSlider myCarouselSlider(BuildContext context) {
 
     Color selettoreColoreStatoPrenotazione(String statoPrenotazione) {
-      if(statoPrenotazione == "Accettata") {
+      if(statoPrenotazione == "Confermata") {
         return Colors.green;
       } else if(statoPrenotazione == "Rifiutata") {
         return context.error;
-      } else if(statoPrenotazione == "In Attesa") {
+      } else {
         return Colors.grey;
-      } else if(statoPrenotazione == "Controproposta") {
-        return context.tertiary;
       }
-      return context.outline;
     }
 
     return CarouselSlider(
@@ -133,10 +130,6 @@ class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
               color: context.primaryContainer,
               borderRadius: BorderRadius.circular(10),
               shape: BoxShape.rectangle,
-              boxShadow: [BoxShadow(color: context.shadow.withOpacity(0.2),
-                spreadRadius: 5,
-                blurRadius: 15,
-                offset: Offset(0, 10),)],
             ),
             child: Column(
               children: [
@@ -188,19 +181,8 @@ class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(FormatStrings.mappaStatoOfferta(visitaCorrente.stato!), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoPrenotazione(FormatStrings.mappaStatoOfferta(visitaCorrente.stato!)))),
+                    Text(FormatStrings.mappaStatoVisita(visitaCorrente.stato!), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoPrenotazione(FormatStrings.mappaStatoVisita(visitaCorrente.stato!)))),
                   ],
-                ),
-                // Row(
-                //   children: [
-                //     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                //     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                //     Text("Richiesta effettuata in data: ", style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.bold, color: context.outline)),
-                //     Text(visitaCorrente['data_prenotazione'], style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.normal, color: context.outline)),
-                //   ],
-                // ),
-                SizedBox(
-                  height: scaleFactor * MediaQuery.of(context).size.height/75,
                 ),
                 Row(
                   children: [
