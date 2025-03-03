@@ -74,9 +74,27 @@ class VisitaService {
     }
   }
 
-  static Future<List<VisitaDto>> recuperaOfferteConStatoByAnnuncio(AnnuncioDto annuncio, String stato) async {
+  static Future<List<VisitaDto>> recuperaTutteOfferteConStatoByAgenteLoggato(String stato) async {
+    String? sub = await AWSServices().recuperaSubUtenteLoggato();
     try{
-      http.Response response = await VisitaController.chiamataHTTPrecuperaOfferteConStatoByAnnuncio(annuncio, stato);
+      http.Response response = await VisitaController.chiamataHTTPrecuperaTutteVisiteConStatoByAgente(stato, sub!);
+      
+      if(response.statusCode == 200){
+        List<dynamic> data = json.decode(response.body);
+
+        List<VisitaDto> offerte = data.map((item) => VisitaDto.fromJson(item)).toList();
+        return offerte;
+      }else{
+        throw Exception("Errore nel recupero delle visite");
+      }
+    } on TimeoutException {
+      throw TimeoutException("Errore nel recupero delle visite (i server potrebbero non essere raggiungibili).");
+    }
+  }
+
+  static Future<List<VisitaDto>> recuperaVisiteConStatoByAnnuncio(AnnuncioDto annuncio, String stato) async {
+    try{
+      http.Response response = await VisitaController.chiamataHTTPrecuperaVisiteConStatoByAnnuncio(annuncio, stato);
       
       if(response.statusCode == 200){
         List<dynamic> data = json.decode(response.body);

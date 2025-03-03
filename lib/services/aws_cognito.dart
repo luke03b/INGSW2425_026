@@ -272,6 +272,7 @@ class AWSServices {
     bool isAllOk = false;
     try {
       final result = await Amplify.Auth.signInWithWebUI(provider: AuthProvider.google);
+      
       safePrint('Result: $result');
       if (result.isSignedIn){
         // final CognitoAuthSession? result = await Amplify.Auth.getAuthSession();

@@ -34,7 +34,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
 
   void getVisiteInAttesa() async {
     try{
-      List<VisitaDto> data = await VisitaService.recuperaOfferteConStatoByAnnuncio(widget.annuncioSelezionato, Enumerations.statoVisite[0]);
+      List<VisitaDto> data = await VisitaService.recuperaVisiteConStatoByAnnuncio(widget.annuncioSelezionato, Enumerations.statoVisite[0]);
       if (mounted) {
         setState(() {
           listaVisite = data;

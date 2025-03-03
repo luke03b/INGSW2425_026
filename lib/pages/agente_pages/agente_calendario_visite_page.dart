@@ -1,4 +1,12 @@
+import 'dart:async';
+
+import 'package:domus_app/back_end_communication/class_services/visita_service.dart';
+import 'package:domus_app/back_end_communication/dto/visita_dto.dart';
+import 'package:domus_app/costants/enumerations.dart';
+import 'package:domus_app/pages/agente_pages/agente_annuncio_page.dart';
+import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
+import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -10,56 +18,77 @@ class AgenteCalendarioPrenotazioniPage extends StatefulWidget {
       _AgenteCalendarioPrenotazioniPageState();
 }
 
-class _AgenteCalendarioPrenotazioniPageState
-    extends State<AgenteCalendarioPrenotazioniPage> {
-  late final ValueNotifier<List<Map<String, dynamic>>> _selectedEvents;
+class _AgenteCalendarioPrenotazioniPageState extends State<AgenteCalendarioPrenotazioniPage> {
+  late final ValueNotifier<List<VisitaDto>> _visiteSelezionate;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
+  bool areServersAvailable = false;
+  bool areDataRetrieved = false;
+  bool hasAgenteVisite = false;
+  List<VisitaDto> listaVisite = [];
 
-  final List<Map<String, dynamic>> listaEventi = [
-    {
-      'indirizzo': 'Via dalmazia, 13 Cavalleggeri (NA)',
-      'data_e_ora': '04-02-2025 11:00'
-    },
-    {
-      'indirizzo': 'Via raviscanina, 14 Rav (NA)',
-      'data_e_ora': '14-02-2025 15:00'
-    },
-    {
-      'indirizzo': 'Via orta d\'atella, 10 Orta (NA)',
-      'data_e_ora': '14-02-2025 10:00'
-    },
-  ];
+  void getVisiteInAttesa() async {
+    try{
+      List<VisitaDto> data = await VisitaService.recuperaTutteOfferteConStatoByAgenteLoggato(Enumerations.statoVisite[1]);
+      if (mounted) {
+        setState(() {
+          listaVisite = data;
+          hasAgenteVisite = listaVisite.isNotEmpty;
+          areDataRetrieved = true;
+          areServersAvailable = true;
+        });
+      }
+    } on TimeoutException {
+      if (mounted) {
+        setState(() {
+          areServersAvailable = false;
+          areDataRetrieved = true;
+        });
+      }
+    } catch (error) {
+      setState(() {
+        areServersAvailable = false;
+        areDataRetrieved = true;
+      });
+      print('Errore con il recupero delle visite (il server potrebbe non essere raggiungibile) $error');
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    
+    // Esegui getAnnunci dopo la fase di build
+    Future.delayed(Duration.zero, () {
+      getVisiteInAttesa();
+    });
+  }
 
   @override
   void initState() {
     super.initState();
 
     _selectedDay = _focusedDay;
-    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+    _visiteSelezionate = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
 
   @override
   void dispose() {
-    _selectedEvents.dispose();
+    _visiteSelezionate.dispose();
     super.dispose();
   }
 
-  List<Map<String, dynamic>> _getEventsForDay(DateTime day) {
-    //recupera giorno-mese-anno dalla lista di eventi fittizi
-    String giornoSelezionato = "${day.day.toString().padLeft(2, '0')}-${day.month.toString().padLeft(2, '0')}-${day.year}";
-
-    return listaEventi.where((evento) {
-      String dataEvento = evento['data_e_ora'].split(' ')[0];
-      return dataEvento == giornoSelezionato;
+  List<VisitaDto> _getEventsForDay(DateTime giornoSelezionato) {
+    return listaVisite.where((visita) {
+      return FormatStrings.formattaDataGGMMAAAA(visita.data) == FormatStrings.formattaDataGGMMAAAA(giornoSelezionato);
     }).toList();
   }
 
-  List<Map<String, dynamic>> _getEventsForRange(DateTime start, DateTime end) {
+  List<VisitaDto> _getEventsForRange(DateTime start, DateTime end) {
     final days = daysInRange(start, end);
 
     return [
@@ -85,7 +114,7 @@ class _AgenteCalendarioPrenotazioniPageState
         _rangeSelectionMode = RangeSelectionMode.toggledOff;
       });
 
-      _selectedEvents.value = _getEventsForDay(selectedDay);
+      _visiteSelezionate.value = _getEventsForDay(selectedDay);
     }
   }
 
@@ -99,11 +128,11 @@ class _AgenteCalendarioPrenotazioniPageState
     });
 
     if (start != null && end != null) {
-      _selectedEvents.value = _getEventsForRange(start, end);
+      _visiteSelezionate.value = _getEventsForRange(start, end);
     } else if (start != null) {
-      _selectedEvents.value = _getEventsForDay(start);
+      _visiteSelezionate.value = _getEventsForDay(start);
     } else if (end != null) {
-      _selectedEvents.value = _getEventsForDay(end);
+      _visiteSelezionate.value = _getEventsForDay(end);
     }
   }
 
@@ -126,7 +155,7 @@ class _AgenteCalendarioPrenotazioniPageState
       ),
       body: Column(
         children: [
-          TableCalendar<Map<String, dynamic>>(
+          TableCalendar<VisitaDto>(
             weekendDays: [DateTime.sunday],
             enabledDayPredicate: (day) {
             // Rende la domenica non cliccabile
@@ -183,8 +212,8 @@ class _AgenteCalendarioPrenotazioniPageState
           ),
           const SizedBox(height: 8.0),
           Expanded(
-            child: ValueListenableBuilder<List<Map<String, dynamic>>>(
-              valueListenable: _selectedEvents,
+            child: ValueListenableBuilder<List<VisitaDto>>(
+              valueListenable: _visiteSelezionate,
               builder: (context, value, _) {
                 return ListView.builder(
                   itemCount: value.length,
@@ -195,13 +224,28 @@ class _AgenteCalendarioPrenotazioniPageState
                         vertical: 4.0,
                       ),
                       decoration: BoxDecoration(
+                        color: context.onPrimaryContainer,
                         border: Border.all(),
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: ListTile(
-                        onTap: () => print('${value[index]}'),
-                        title: Text('${value[index]['indirizzo']}'),
-                        subtitle: Text('${value[index]['data_e_ora']}'),
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPage(annuncioSelezionato: value[index].annuncio))),
+                        title: Column(
+                          children: [
+                            Text(value[index].annuncio.indirizzo, style: TextStyle(color: context.outline),),
+                            Row(
+                              children: [
+                                Text("${value[index].cliente.nome} ${value[index].cliente.cognome}", style: TextStyle(color: context.outline),),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(value[index].cliente.email, style: TextStyle(color: context.outline),),
+                              ],
+                            ),
+                          ],
+                        ),
+                        subtitle: Text('${FormatStrings.formattaDataGGMMAAAA(value[index].data)} ${FormatStrings.formattaOrario(value[index].orarioInizio)} - ${FormatStrings.formattaOrario(value[index].orarioFine!)}', style: TextStyle(color: context.outline),),
                       ),
                     );
                   },
@@ -212,5 +256,29 @@ class _AgenteCalendarioPrenotazioniPageState
         ],
       ),
     );
+  }
+
+  void controllaStatusCode(int statusCode, BuildContext context) {
+    if (statusCode == 200) {
+      showDialog(
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(
+          title: "Conferma", 
+          bodyText: "Offerta rifiutata", 
+          buttonText: "Ok", 
+          onPressed: () {Navigator.pop(context);}
+        )
+      );
+    } else {
+      showDialog(
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(
+          title: "Errore", 
+          bodyText: "Offerta non rifiutata, controllare i campi e riprovare.",
+          buttonText: "Ok", 
+          onPressed: () {Navigator.pop(context);}
+        )
+      );
+    }
   }
 }

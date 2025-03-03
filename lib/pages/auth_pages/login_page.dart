@@ -142,7 +142,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
-
               const Spacer(flex: 10),
             ],
           ),

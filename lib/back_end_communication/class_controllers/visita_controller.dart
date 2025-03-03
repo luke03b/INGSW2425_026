@@ -18,9 +18,9 @@ class VisitaController {
       queryParams: { "idAnnuncio" : annuncio.idAnnuncio }
     );
 
-    print("\n\n\n\n\n\n\n\n");
-    print(url);
-    print("\n\n\n\n\n\n\n\n");
+    debugPrint("\n\n\n\n\n\n\n\n");
+    debugPrint(url.toString());
+    debugPrint("\n\n\n\n\n\n\n\n");
 
     final response = await http.get(
       url,
@@ -38,7 +38,7 @@ class VisitaController {
   }
 
   static Future<http.Response> chiamataHTTPcreaVisitaCliente(VisitaDto visita) async {
-    print(UrlBuilder.ENDPOINT_POST_VISITE);
+    debugPrint(UrlBuilder.ENDPOINT_POST_VISITE);
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
       UrlBuilder.LOCALHOST_ANDROID, 
@@ -46,10 +46,10 @@ class VisitaController {
       UrlBuilder.ENDPOINT_POST_VISITE,
     );
 
-    print("\n\n\n\n\n\n\n");
-    print(url);
-    print("\n\n\n\n\n\n\n");
-    print(json.encode(visita));
+    debugPrint("\n\n\n\n\n\n\n");
+    debugPrint(url.toString());
+    debugPrint("\n\n\n\n\n\n\n");
+    debugPrint(json.encode(visita));
 
     final response = await http.post(
       url,
@@ -76,9 +76,9 @@ class VisitaController {
       queryParams: { "idCliente" : cliente.id }
     );
 
-    print("\n\n\n\n\n\n\n\n");
-    print(url);
-    print("\n\n\n\n\n\n\n\n");
+    debugPrint("\n\n\n\n\n\n\n\n");
+    debugPrint(url.toString());
+    debugPrint("\n\n\n\n\n\n\n\n");
 
     final response = await http.get(
       url,
@@ -95,7 +95,7 @@ class VisitaController {
     return response;
   }
 
-  static Future<http.Response> chiamataHTTPrecuperaOfferteConStatoByAnnuncio(AnnuncioDto annuncio, String stato) async {
+  static Future<http.Response> chiamataHTTPrecuperaVisiteConStatoByAnnuncio(AnnuncioDto annuncio, String stato) async {
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
       UrlBuilder.LOCALHOST_ANDROID, 
@@ -107,9 +107,40 @@ class VisitaController {
       }
     );
 
-    print("\n\n\n\n\n\n\n\n");
-    print(url);
-    print("\n\n\n\n\n\n\n\n");
+    debugPrint("\n\n\n\n\n\n\n\n");
+    debugPrint(url.toString());
+    debugPrint("\n\n\n\n\n\n\n\n");
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    ).timeout(
+      const Duration(seconds: 30),
+      onTimeout: () {
+        throw TimeoutException("Il server non risponde.");
+      },
+    );
+    
+    return response;
+  }
+
+  static Future<http.Response> chiamataHTTPrecuperaTutteVisiteConStatoByAgente(String stato, String sub) async {
+    final url = UrlBuilder.createUrl(
+      UrlBuilder.PROTOCOL_HTTP, 
+      UrlBuilder.LOCALHOST_ANDROID, 
+      port: UrlBuilder.PORTA_SPRINGBOOT, 
+      UrlBuilder.ENDPOINT_GET_VISITE_AGENTE_STATO,
+      queryParams: { 
+        "stato" : stato.toUpperCase(),
+        "subAgente" : sub,
+      }
+    );
+
+    debugPrint("\n\n\n\n\n\n\n\n");
+    debugPrint(url.toString());
+    debugPrint("\n\n\n\n\n\n\n\n");
 
     final response = await http.get(
       url,
@@ -135,10 +166,10 @@ class VisitaController {
       queryParams: {"stato" : stato.toUpperCase()},
     );
 
-    print("\n\n\n\n\n\n\n\n\n\n\n");
-    print(url);
-    print("\n\n\n\n\n\n\n\n\n\n\n");
-    debugPrint(json.encode(visita));
+    debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
+    debugPrint(url.toString());
+    debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
+    debugPrint(json.encode(visita).toString());
 
     final response = await http.put(
       url,
@@ -152,7 +183,7 @@ class VisitaController {
         throw TimeoutException("Il server non risponde.");
       },
     );
-    print(response.body);
+    debugPrint(response.body);
     
     return response;
   }
