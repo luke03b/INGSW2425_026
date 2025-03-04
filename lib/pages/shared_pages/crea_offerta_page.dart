@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:domus_app/back_end_communication/class_services/offerta_service.dart';
+import 'package:domus_app/back_end_communication/communication_utils/status_code_controller.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/offerta_dto.dart';
 import 'package:domus_app/services/formatStrings.dart';
@@ -319,7 +320,7 @@ class _CreaOffertaPageState extends State<CreaOffertaPage> {
                                                   statusCode = await OffertaService.creaOfferta(widget.annuncioSelezionato, offertaController.text, nomeOfferente: nomeOfferenteController.text, cognomeOfferente: cognomeOfferenteController.text, emailOfferente: emailOfferenteController.text);
                                                 }
                                                 Navigator.pop(context);
-                                                controllaStatusCode(statusCode, context);
+                                                StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 201, "Conferma", "Offerta inviata", "Errore", "Offerta non inviata");
                                                 setState(() {
                                                   hasAnnuncioOfferte = false;
                                                   areDataRetrieved = false;
@@ -363,32 +364,6 @@ class _CreaOffertaPageState extends State<CreaOffertaPage> {
       }
     } catch (e) {
        print("Errore durante la conversione: $e");
-    }
-  }
-
-  void controllaStatusCode(int statusCode, BuildContext context) {
-    if (statusCode == 201) {
-      Navigator.pop(context);
-      showDialog(
-        context: context, 
-        builder: (BuildContext context) => MyInfoDialog(
-          title: "Conferma", 
-          bodyText: "Offerta creata", 
-          buttonText: "Ok", 
-          onPressed: () {Navigator.pop(context);}
-        )
-      );
-    } else {
-      Navigator.pop(context);
-      showDialog(
-        context: context, 
-        builder: (BuildContext context) => MyInfoDialog(
-          title: "Errore", 
-          bodyText: "Offerta non creata", 
-          buttonText: "Ok", 
-          onPressed: () {Navigator.pop(context);}
-        )
-      );
     }
   }
 }

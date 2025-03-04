@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:domus_app/back_end_communication/class_services/offerta_service.dart';
+import 'package:domus_app/back_end_communication/communication_utils/status_code_controller.dart';
 import 'package:domus_app/back_end_communication/dto/offerta_dto.dart';
 import 'package:domus_app/costants/enumerations.dart';
 import 'package:domus_app/services/formatStrings.dart';
@@ -194,7 +195,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                                                                 int statusCode = await OffertaService.aggiornaStatoOfferta(widget.offertaSelezionata, Enumerations.statoOfferte[1]);
                                                                                 Navigator.pop(context);
                                                                                 Navigator.pop(context);
-                                                                                controllaStatusCode(statusCode, context);
+                                                                                StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Offerta accettata", "Errore", "Offerta non accettata");
                                                                                 setState(() {
                                                                                   hasAnnuncioOfferte = false;
                                                                                   areDataRetrieved = false;
@@ -257,7 +258,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                                                               int statusCode = await OffertaService.aggiornaStatoOfferta(widget.offertaSelezionata, Enumerations.statoOfferte[2]);
                                                                               Navigator.pop(context);
                                                                               Navigator.pop(context);
-                                                                              controllaStatusCode(statusCode, context);
+                                                                              StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Offerta rifiutata", "Errore", "Offerta non rifiutata");
                                                                               setState(() {
                                                                                 hasAnnuncioOfferte = false;
                                                                                 areDataRetrieved = false;
@@ -435,7 +436,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                                       int statusCode = await OffertaService.aggiornaStatoOfferta(widget.offertaSelezionata, Enumerations.statoOfferte[3], controproposta: double.parse(contropropostaController.text));
                                                       Navigator.pop(context);
                                                       Navigator.pop(context);
-                                                      controllaStatusCode(statusCode, context);
+                                                      StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Controproposta inviata", "Errore", "Controproposta non inviata");
                                                       setState(() {
                                                         hasAnnuncioOfferte = false;
                                                         areDataRetrieved = false;
@@ -449,7 +450,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                                         context: context, 
                                                         builder: (BuildContext context) => MyInfoDialog(
                                                           title: "Connessione non riuscita", 
-                                                          bodyText: "Offerta non rifiutata, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
+                                                          bodyText: "Controproposta non inviata, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
                                                           buttonText: "Ok", 
                                                           onPressed: () {Navigator.pop(context);}
                                                         )
@@ -462,7 +463,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                                         context: context, 
                                                         builder: (BuildContext context) => MyInfoDialog(
                                                           title: "Errore",
-                                                          bodyText: "Offerta non rifiutata.", 
+                                                          bodyText: "Controproposta non inviata.", 
                                                           buttonText: "Ok", 
                                                           onPressed: () {Navigator.pop(context);}
                                                         )
@@ -474,30 +475,6 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
       }
     } catch (e) {
        print("Errore durante la conversione: $e");
-    }
-  }
-
-  void controllaStatusCode(int statusCode, BuildContext context) {
-    if (statusCode == 200) {
-      showDialog(
-        context: context, 
-        builder: (BuildContext context) => MyInfoDialog(
-          title: "Conferma", 
-          bodyText: "Offerta accettata", 
-          buttonText: "Ok", 
-          onPressed: () {Navigator.pop(context);}
-        )
-      );
-    } else {
-      showDialog(
-        context: context, 
-        builder: (BuildContext context) => MyInfoDialog(
-          title: "Errore", 
-          bodyText: "Offerta non accettata, controllare i campi e riprovare.",
-          buttonText: "Ok", 
-          onPressed: () {Navigator.pop(context);}
-        )
-      );
     }
   }
 }

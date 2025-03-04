@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io'; 
 import 'package:domus_app/back_end_communication/class_services/annuncio_service.dart';
 import 'package:domus_app/back_end_communication/class_services/utente_service.dart';
+import 'package:domus_app/back_end_communication/communication_utils/status_code_controller.dart';
 import 'package:domus_app/costants/enumerations.dart';
 import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
 import 'package:domus_app/services/aws_cognito.dart';
@@ -728,7 +729,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                       descrizioneController.text, _isGarageSelected, _isAscensoreSelected, _isPiscinaSelected, _isArredatoSelected, _isBalconeSelected, _isGiardinoSelected, stanzeController.text,
                       numeroPianoController.text, sceltaClasseEnergetica, sceltaPiano, latitude ?? 0.0, longitude ?? 0.0, utenteLoggato);
                     Navigator.pop(context);
-                    controllaStatusCode(statusCode, context);
+                    StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 201, "Conferma", "Annuncio creato", "Errore", "Annuncio non creato");
                   } on TimeoutException {
                     Navigator.pop(context);
                     showDialog(
@@ -777,30 +778,6 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
     UtenteDto utenteLoggato = await UtenteService.recuperaUtenteBySub(sub);
     print(utenteLoggato.id);
     return utenteLoggato;
-  }
-
-  void controllaStatusCode(int statusCode, BuildContext context) {
-    if (statusCode == 201) {
-      showDialog(
-        context: context, 
-        builder: (BuildContext context) => MyInfoDialog(
-          title: "Conferma", 
-          bodyText: "Annuncio creato", 
-          buttonText: "Ok", 
-          onPressed: () {Navigator.pop(context); Navigator.pushNamedAndRemoveUntil(context, '/ControllorePagineAgente', (r) => false);}
-        )
-      );
-    } else {
-      showDialog(
-        context: context, 
-        builder: (BuildContext context) => MyInfoDialog(
-          title: "Errore", 
-          bodyText: "Annuncio non creato, controllare i campi e riprovare.", 
-          buttonText: "Ok", 
-          onPressed: () {Navigator.pop(context);}
-        )
-      );
-    }
   }
 
   bool _validateFields(){

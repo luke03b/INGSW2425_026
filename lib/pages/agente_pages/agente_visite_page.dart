@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/back_end_communication/class_services/visita_service.dart';
+import 'package:domus_app/back_end_communication/communication_utils/status_code_controller.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/visita_dto.dart';
 import 'package:domus_app/costants/enumerations.dart';
@@ -200,7 +201,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                                                                         int statusCode = await VisitaService.aggiornaStatoVisita(visitaCorrente, Enumerations.statoOfferte[1]);
                                                                         Navigator.pop(context);
                                                                         Navigator.pop(context);
-                                                                        controllaStatusCode(statusCode, context);
+                                                                        StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Visita accettata", "Errore", "Visita non accettata");
                                                                         setState(() {
                                                                           hasAnnuncioVisite = false;
                                                                           areDataRetrieved = false;
@@ -262,7 +263,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                                                                         int statusCode = await VisitaService.aggiornaStatoVisita(visitaCorrente, Enumerations.statoOfferte[2]);
                                                                         Navigator.pop(context);
                                                                         Navigator.pop(context);
-                                                                        controllaStatusCode(statusCode, context);
+                                                                        StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Visita rifiutata", "Errore", "Visita non rifiutata");
                                                                         setState(() {
                                                                           hasAnnuncioVisite = false;
                                                                           areDataRetrieved = false;
@@ -321,29 +322,5 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
         }
       )
     );
-  }
-
-  void controllaStatusCode(int statusCode, BuildContext context) {
-    if (statusCode == 200) {
-      showDialog(
-        context: context, 
-        builder: (BuildContext context) => MyInfoDialog(
-          title: "Conferma", 
-          bodyText: "Offerta rifiutata", 
-          buttonText: "Ok", 
-          onPressed: () {Navigator.pop(context);}
-        )
-      );
-    } else {
-      showDialog(
-        context: context, 
-        builder: (BuildContext context) => MyInfoDialog(
-          title: "Errore", 
-          bodyText: "Offerta non rifiutata, controllare i campi e riprovare.",
-          buttonText: "Ok", 
-          onPressed: () {Navigator.pop(context);}
-        )
-      );
-    }
   }
 }
