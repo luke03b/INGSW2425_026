@@ -177,7 +177,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                   children: [
                     MyUiMessagesWidgets.myText(
                       context, 
-                      "Questo annuncio ha un'offerta accettata", 
+                      "Hai accettato questa offerta", 
                     ),
                     SizedBox(height: 10,),
                     Container(
@@ -189,7 +189,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                       ),
                       child: Column(
                         children: [
-                          SizedBox(height: MediaQuery.of(context).size.height/50,),
+                          SizedBox(height: MediaQuery.of(context).size.height/130,),
                           Row(
                             children: [
                               SizedBox(width: MediaQuery.of(context).size.width/45,),
@@ -248,6 +248,9 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                               ),
                             ],
                           ),
+                          SizedBox(height: MediaQuery.of(context).size.height/130,),
+                          Divider(thickness: 0.7, color: Colors.grey,),
+                          Icon(Icons.check, color: Colors.green, size: 30,),
                           SizedBox(height: MediaQuery.of(context).size.height/130,),
                         ],
                       ),

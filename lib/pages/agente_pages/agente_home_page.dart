@@ -191,17 +191,17 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
                       children: [
                         Row(
                           children: [
-                            Icon(selectedOffertePrenotazioni[0] ? Icons.radio_button_on : Icons.radio_button_off, color: context.onPrimary, size: 18,),
+                            Icon(selectedOffertePrenotazioni[0] ? Icons.radio_button_on : Icons.radio_button_off, color: selectedOffertePrenotazioni[0] ? context.onSecondary : context.onPrimary, size: 18,),
                             SizedBox(width: 6,),
-                            Text("Offerte", style: TextStyle(color: context.onPrimary),),
+                            Text("Offerte", style: TextStyle(color: selectedOffertePrenotazioni[0] ? context.onSecondary : context.onPrimary),),
                             SizedBox(width: 10,)
                           ],
                         ),
                         Row(
                           children: [
-                            Icon(selectedOffertePrenotazioni[1] ? Icons.radio_button_on : Icons.radio_button_off, color: context.onPrimary, size: 18,),
+                            Icon(selectedOffertePrenotazioni[1] ? Icons.radio_button_on : Icons.radio_button_off, color: selectedOffertePrenotazioni[1] ? context.onSecondary : context.onPrimary, size: 18,),
                             SizedBox(width: 6,),
-                            Text("Prenotazioni", style: TextStyle(color: context.onPrimary),),
+                            Text("Prenotazioni", style: TextStyle(color: selectedOffertePrenotazioni[1] ? context.onSecondary : context.onPrimary),),
                             SizedBox(width: 15,)
                           ],
                         ),

@@ -99,7 +99,7 @@ class MyAddButtonWidget extends StatelessWidget {
         backgroundColor: color,
         fixedSize: Size(MediaQuery.sizeOf(context).width/7, MediaQuery.sizeOf(context).width/7),
       ),
-      child: Icon(Icons.add, color: context.tertiaryFixed, size: 40,),
+      child: Icon(Icons.add, color: context.onError, size: 40,),
       );
   }
 }
