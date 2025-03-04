@@ -11,17 +11,26 @@ import 'package:http/http.dart' as http;
 
 class OffertaService {
 
-  static Future<int> creaOfferta(AnnuncioDto annuncio, String prezzo) async {
-    String? sub = await AWSServices().recuperaSubUtenteLoggato();
-    UtenteDto? cliente = await UtenteService.recuperaUtenteBySub(sub!);
-
-    return _creaOffertaCliente(cliente, annuncio, prezzo);
+  static Future<int> creaOfferta(AnnuncioDto annuncio, String prezzo, {String? nomeOfferente, String? cognomeOfferente, String? emailOfferente}) async {
+    if(nomeOfferente != null && cognomeOfferente != null && emailOfferente != null){
+      return _creaOffertaCliente(annuncio, prezzo, nomeOfferente: nomeOfferente, cognomeOfferente: cognomeOfferente, emailOfferente: emailOfferente);
+    } else {
+      String? sub = await AWSServices().recuperaSubUtenteLoggato();
+      UtenteDto? cliente = await UtenteService.recuperaUtenteBySub(sub!);
+      return _creaOffertaCliente(cliente: cliente, annuncio, prezzo);
+    }
   }
 
-  static Future<int> _creaOffertaCliente(UtenteDto cliente, AnnuncioDto annuncio, String prezzo) async {
-    OffertaDto offerta = OffertaDto(annuncio: annuncio, cliente: cliente, prezzo: double.parse(prezzo));
+  static Future<int> _creaOffertaCliente(AnnuncioDto annuncio, String prezzo, {UtenteDto? cliente, String? nomeOfferente, String? cognomeOfferente, String? emailOfferente}) async {
+    OffertaDto offerta;
+    if(cliente != null) {
+      offerta = OffertaDto(annuncio: annuncio, cliente: cliente, prezzo: double.parse(prezzo));
+    } else {
+      offerta = OffertaDto(annuncio: annuncio, prezzo: double.parse(prezzo), nomeOfferente: nomeOfferente, cognomeOfferente: cognomeOfferente, emailOfferente: emailOfferente);
+    }
+    print(offerta.toString());
     try{
-      http.Response response = await OffertaController.chiamataHTTPcreaOffertaCliente(offerta);
+      http.Response response = await OffertaController.chiamataHTTPcreaOfferta(offerta);
       
       if(response.statusCode == 201){
         return response.statusCode;        

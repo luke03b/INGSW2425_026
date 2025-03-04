@@ -6,7 +6,7 @@ import 'package:domus_app/costants/enumerations.dart';
 import 'package:domus_app/pages/agente_pages/agente_annuncio_page.dart';
 import 'package:domus_app/services/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
-import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_ui_messages_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -153,132 +153,130 @@ class _AgenteCalendarioPrenotazioniPageState extends State<AgenteCalendarioPreno
         elevation: 5,
         shadowColor: context.shadow,
       ),
-      body: Column(
-        children: [
-          TableCalendar<VisitaDto>(
-            weekendDays: [DateTime.sunday],
-            enabledDayPredicate: (day) {
-            // Rende la domenica non cliccabile
-              return day.weekday != DateTime.sunday;
-            },
-            headerStyle: HeaderStyle(
-              formatButtonVisible: false,
-              titleCentered: true,
-              titleTextStyle: TextStyle(fontSize: 17.0, color: context.onSecondary),
-            ),
-            firstDay: DateTime.now(),
-            lastDay: DateTime.now().add(Duration(days: 14)),
-            focusedDay: _focusedDay,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            rangeStartDay: _rangeStart,
-            rangeEndDay: _rangeEnd,
-            calendarFormat: _calendarFormat,
-            rangeSelectionMode: _rangeSelectionMode,
-            eventLoader: _getEventsForDay,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: CalendarStyle(
-              todayTextStyle: TextStyle(color: context.onPrimary),
-              defaultTextStyle: TextStyle(color: context.onPrimary),
-              defaultDecoration: BoxDecoration(
-                  color: context.onPrimaryContainer,
-                  shape: BoxShape.circle),
-              rangeStartDecoration: BoxDecoration(
-                  color: context.tertiary,
-                  shape: BoxShape.circle),
-              rangeEndDecoration: BoxDecoration(
-                  color: context.tertiary,
-                  shape: BoxShape.circle),
-              rangeHighlightColor: context.tertiary,
-              selectedDecoration: BoxDecoration(
-                  color: context.onSecondary,
-                  shape: BoxShape.circle),
-              todayDecoration: BoxDecoration(
-                  color: context.primary,
-                  shape: BoxShape.circle),
-              outsideDaysVisible: false,
-            ),
-            onDaySelected: _onDaySelected,
-            onRangeSelected: _onRangeSelected,
-            onFormatChanged: (format) {
-              if (_calendarFormat != format) {
+      body: switch ((areDataRetrieved, areServersAvailable, hasAgenteVisite)) {
+            (false, _, _) => MyUiMessagesWidgets.myTextWithLoading(context, "Sto recuperando i tuoi impegni, un po' di pazienza"),
+            (true, false, _) => MyUiMessagesWidgets.myErrorWithButton(
+              context, 
+              "Server non raggiungibili. Controlla la tua connessione a internet e riprova", 
+              "Riprova", 
+              (){
                 setState(() {
-                  _calendarFormat = format;
+                  hasAgenteVisite = false;
+                  areDataRetrieved = false;
+                  areServersAvailable = false;
                 });
+                getVisiteInAttesa();
               }
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
-          ),
-          const SizedBox(height: 8.0),
-          Expanded(
-            child: ValueListenableBuilder<List<VisitaDto>>(
-              valueListenable: _visiteSelezionate,
-              builder: (context, value, _) {
-                return ListView.builder(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: context.onPrimaryContainer,
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: ListTile(
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPage(annuncioSelezionato: value[index].annuncio))),
-                        title: Column(
-                          children: [
-                            Text(value[index].annuncio.indirizzo, style: TextStyle(color: context.outline),),
-                            Row(
-                              children: [
-                                Text("${value[index].cliente.nome} ${value[index].cliente.cognome}", style: TextStyle(color: context.outline),),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(value[index].cliente.email, style: TextStyle(color: context.outline),),
-                              ],
-                            ),
-                          ],
-                        ),
-                        subtitle: Text('${FormatStrings.formattaDataGGMMAAAA(value[index].data)} ${FormatStrings.formattaOrario(value[index].orarioInizio)} - ${FormatStrings.formattaOrario(value[index].orarioFine!)}', style: TextStyle(color: context.outline),),
-                      ),
-                    );
-                  },
-                );
-              },
             ),
-          ),
-        ],
-      ),
+            (true, true, false) => MyUiMessagesWidgets.myText(context, "Non hai visite prenotate"),
+            (true, true, true) => myTableCalendar(context),
+          },
     );
   }
 
-  void controllaStatusCode(int statusCode, BuildContext context) {
-    if (statusCode == 200) {
-      showDialog(
-        context: context, 
-        builder: (BuildContext context) => MyInfoDialog(
-          title: "Conferma", 
-          bodyText: "Offerta rifiutata", 
-          buttonText: "Ok", 
-          onPressed: () {Navigator.pop(context);}
-        )
-      );
-    } else {
-      showDialog(
-        context: context, 
-        builder: (BuildContext context) => MyInfoDialog(
-          title: "Errore", 
-          bodyText: "Offerta non rifiutata, controllare i campi e riprovare.",
-          buttonText: "Ok", 
-          onPressed: () {Navigator.pop(context);}
-        )
-      );
-    }
+  Column myTableCalendar(BuildContext context) {
+    return Column(
+            children: [
+              TableCalendar<VisitaDto>(
+                      weekendDays: [DateTime.sunday],
+                      enabledDayPredicate: (day) {
+                      // Rende la domenica non cliccabile
+                        return day.weekday != DateTime.sunday;
+                      },
+                      headerStyle: HeaderStyle(
+                        formatButtonVisible: false,
+                        titleCentered: true,
+                        titleTextStyle: TextStyle(fontSize: 17.0, color: context.onSecondary),
+                      ),
+                      firstDay: DateTime.now(),
+                      lastDay: DateTime.now().add(Duration(days: 14)),
+                      focusedDay: _focusedDay,
+                      selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                      rangeStartDay: _rangeStart,
+                      rangeEndDay: _rangeEnd,
+                      calendarFormat: _calendarFormat,
+                      rangeSelectionMode: _rangeSelectionMode,
+                      eventLoader: _getEventsForDay,
+                      startingDayOfWeek: StartingDayOfWeek.monday,
+                      calendarStyle: CalendarStyle(
+                        todayTextStyle: TextStyle(color: context.onPrimary),
+                        defaultTextStyle: TextStyle(color: context.onPrimary),
+                        defaultDecoration: BoxDecoration(
+                            color: context.onPrimaryContainer,
+                            shape: BoxShape.circle),
+                        rangeStartDecoration: BoxDecoration(
+                            color: context.tertiary,
+                            shape: BoxShape.circle),
+                        rangeEndDecoration: BoxDecoration(
+                            color: context.tertiary,
+                            shape: BoxShape.circle),
+                        rangeHighlightColor: context.tertiary,
+                        selectedDecoration: BoxDecoration(
+                            color: context.onSecondary,
+                            shape: BoxShape.circle),
+                        todayDecoration: BoxDecoration(
+                            color: context.primary,
+                            shape: BoxShape.circle),
+                        outsideDaysVisible: false,
+                      ),
+                      onDaySelected: _onDaySelected,
+                      onRangeSelected: _onRangeSelected,
+                      onFormatChanged: (format) {
+                        if (_calendarFormat != format) {
+                          setState(() {
+                            _calendarFormat = format;
+                          });
+                        }
+                      },
+                      onPageChanged: (focusedDay) {
+                        _focusedDay = focusedDay;
+                      },
+                    ),
+                const SizedBox(height: 8.0),
+                Expanded(
+                  child: ValueListenableBuilder<List<VisitaDto>>(
+                    valueListenable: _visiteSelezionate,
+                    builder: (context, value, _) {
+                      return ListView.builder(
+                        itemCount: value.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 12.0,
+                              vertical: 4.0,
+                            ),
+                            decoration: BoxDecoration(
+                              color: context.onPrimaryContainer,
+                              border: Border.all(),
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            child: ListTile(
+                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPage(annuncioSelezionato: value[index].annuncio))),
+                              title: Column(
+                                children: [
+                                  Text(value[index].annuncio.indirizzo, style: TextStyle(color: context.outline),),
+                                  Row(
+                                    children: [
+                                      Text("${value[index].cliente.nome} ${value[index].cliente.cognome}", style: TextStyle(color: context.outline),),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(value[index].cliente.email, style: TextStyle(color: context.outline),),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            subtitle: Text('${FormatStrings.formattaDataGGMMAAAA(value[index].data)} ${FormatStrings.formattaOrario(value[index].orarioInizio)} - ${FormatStrings.formattaOrario(value[index].orarioFine!)}', style: TextStyle(color: context.outline),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              )
+            ]
+          );
   }
 }

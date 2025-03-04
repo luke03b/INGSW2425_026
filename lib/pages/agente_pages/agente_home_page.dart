@@ -61,7 +61,7 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
   Future<void> getAnnunciConOffertePrenotazioniAgente() async {
     try {
 
-      List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciByAgenteLoggatoConOffertePrenotazioni(selectedOffertePrenotazioni[0], selectedOffertePrenotazioni[1]);
+      List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciByAgenteLoggatoConOffertePrenotazioniInAttesa(selectedOffertePrenotazioni[0], selectedOffertePrenotazioni[1]);
 
       if (mounted) {
         setState(() {

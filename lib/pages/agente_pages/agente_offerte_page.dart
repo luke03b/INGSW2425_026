@@ -101,23 +101,19 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                                         getOfferteInAttesa();
                                       }
                                     ),
-                (true, true, false) => Column(
-                  children: [
-                    MyUiMessagesWidgets.myTextWithButton(
-                      context, 
-                      "Non hai offerte per questo annuncio", 
-                      "Aggiungi offerta", 
-                      () async {
-                        await Navigator.push(context, MaterialPageRoute(builder: (context) => CreaOffertaPage(annuncioSelezionato: widget.annuncioSelezionato,)));
-                        setState(() {
-                          hasAnnuncioOfferte = false;
-                          areDataRetrieved = false;
-                          areServersAvailable = false;
-                        });
-                        getOfferteInAttesa();
-                      }
-                    )
-                  ],
+                (true, true, false) => MyUiMessagesWidgets.myTextWithButton(
+                  context, 
+                  "Non hai offerte per questo annuncio", 
+                  "Aggiungi offerta", 
+                  () async {
+                    await Navigator.push(context, MaterialPageRoute(builder: (context) => CreaOffertaPage(annuncioSelezionato: widget.annuncioSelezionato, isOffertaManuale: true,)));
+                    setState(() {
+                      hasAnnuncioOfferte = false;
+                      areDataRetrieved = false;
+                      areServersAvailable = false;
+                    });
+                    getOfferteInAttesa();
+                  }
                 ),
                 (true, true, true) => myOffertePage(context),
               }
@@ -165,7 +161,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
               Row(children: [
               SizedBox(width: 5,),
               Expanded(child: MyAddButtonWidget(onPressed: () async {
-                await Navigator.push(context, MaterialPageRoute(builder: (context) => CreaOffertaPage(annuncioSelezionato: widget.annuncioSelezionato,)));
+                await Navigator.push(context, MaterialPageRoute(builder: (context) => CreaOffertaPage(annuncioSelezionato: widget.annuncioSelezionato, isOffertaManuale: true,)));
                 setState(() {
                   hasAnnuncioOfferte = false;
                   areDataRetrieved = false;
@@ -224,7 +220,10 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   Text("Nome: ", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  Text(offertaCorrente.cliente!.nome, style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
+                  offertaCorrente.cliente != null ? 
+                    Text(offertaCorrente.cliente!.nome, style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)) 
+                    : 
+                    Text(offertaCorrente.nomeOfferente!, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline))
                 ],
               ),
               Row(
@@ -232,7 +231,10 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   SizedBox(width: MediaQuery.of(context).size.width/45,),
                   Text("Cognome: ", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                  Text(offertaCorrente.cliente!.cognome, style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)),
+                  offertaCorrente.cliente != null ? 
+                  Text(offertaCorrente.cliente!.cognome, style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)) 
+                  : 
+                  Text(offertaCorrente.cognomeOfferente!, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline))
                 ],
               ),
               Row(
@@ -246,7 +248,12 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                       fit: BoxFit.scaleDown,
                       child: Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(offertaCorrente.cliente!.email, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline),))),
+                        child: offertaCorrente.cliente != null ? 
+                          Text(offertaCorrente.cliente!.email, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline)) 
+                          : 
+                          Text(offertaCorrente.emailOfferente!, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline))
+                      )
+                    ),
                   ),
                 ],
               ),

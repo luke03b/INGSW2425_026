@@ -11,12 +11,15 @@ import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
 import 'package:domus_app/ui_elements/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:domus_app/ui_elements/utils/my_ui_messages_widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CreaOffertaPage extends StatefulWidget {
   final AnnuncioDto annuncioSelezionato;
+  final bool isOffertaManuale;
   const CreaOffertaPage({
     super.key,
     required this.annuncioSelezionato,
+    required this.isOffertaManuale
   });
 
   @override
@@ -32,6 +35,9 @@ class _CreaOffertaPageState extends State<CreaOffertaPage> {
   static const double GRANDEZZA_SCRITTE_PICCOLE = 18;
   static const double GRANDEZZA_ICONE_PICCOLE = 20;
   TextEditingController offertaController = TextEditingController();
+  TextEditingController nomeOfferenteController = TextEditingController();
+  TextEditingController cognomeOfferenteController = TextEditingController();
+  TextEditingController emailOfferenteController = TextEditingController();
   late ScrollController storicoOfferteScrollController;
 
   List<OffertaDto> listaStoricoOfferte = [];
@@ -114,6 +120,44 @@ class _CreaOffertaPageState extends State<CreaOffertaPage> {
                       ],
                     ),
                     SizedBox(height: 10,),
+                    Visibility(
+                      visible: widget.isOffertaManuale,
+                      child:
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(width: MediaQuery.of(context).size.height/50,),
+                              SizedBox(
+                                width: MediaQuery.sizeOf(context).width * 0.90,
+                                child: MyTextFieldPrefixIcon(controller: nomeOfferenteController, text: "nome offerente", icon: Icon(Icons.face), color: coloreScritte,)
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 10,),
+                          Row(
+                            children: [
+                              SizedBox(width: MediaQuery.of(context).size.height/50,),
+                              SizedBox(
+                                width: MediaQuery.sizeOf(context).width * 0.90,
+                                child: MyTextFieldPrefixIcon(controller: cognomeOfferenteController, text: "cognome offerente", icon: Icon(FontAwesomeIcons.idCard), color: coloreScritte,)
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 10,),
+                          Row(
+                            children: [
+                              SizedBox(width: MediaQuery.of(context).size.height/50,),
+                              SizedBox(
+                                width: MediaQuery.sizeOf(context).width * 0.90,
+                                child: MyTextFieldPrefixIcon(controller: emailOfferenteController, text: "email offerente", icon: Icon(Icons.person), color: coloreScritte,)
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 10,),
+                        ]
+                      )
+                    ),
                     Row(
                       children: [
                         SizedBox(width: MediaQuery.of(context).size.height/50,),
@@ -123,7 +167,7 @@ class _CreaOffertaPageState extends State<CreaOffertaPage> {
                               children: [
                                 Text("Inserisci offerta: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte),),
                                 SizedBox(
-                                  width: MediaQuery.sizeOf(context).width * 0.40,
+                                  width: MediaQuery.sizeOf(context).width * 0.55,
                                   child: MyTextFieldOnlyPositiveNumbers(controller: offertaController, text: "EUR", colore: coloreScritte,)
                                 ),
                               ],
@@ -165,7 +209,22 @@ class _CreaOffertaPageState extends State<CreaOffertaPage> {
                                                                             getStoricoOfferte();
                                                                           }
                                                                         ),
-                                (true, true, false) => MyUiMessagesWidgets.myText(context, "Sii il primo ad aggiungere un'offerta!"),
+                                (true, true, false) => Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Storico offerte',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: coloreScritte
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Divider(color: coloreScritte,),
+                                    MyUiMessagesWidgets.myText(context, "Sii il primo ad aggiungere un'offerta!"),
+                                  ],
+                                ),
                                 (true, true, true) => myStoricoOfferte(),
                               }
                       ),
@@ -253,7 +312,12 @@ class _CreaOffertaPageState extends State<CreaOffertaPage> {
                                             onPressLeftButton: () async {
                                               LoadingHelper.showLoadingDialogNotDissmissible(context, color: context.secondary);
                                               try {
-                                                int statusCode = await OffertaService.creaOfferta(widget.annuncioSelezionato, offertaController.text);
+                                                int statusCode;
+                                                if(nomeOfferenteController.text.isEmpty && cognomeOfferenteController.text.isEmpty && emailOfferenteController.text.isEmpty){
+                                                  statusCode = await OffertaService.creaOfferta(widget.annuncioSelezionato, offertaController.text);
+                                                } else {
+                                                  statusCode = await OffertaService.creaOfferta(widget.annuncioSelezionato, offertaController.text, nomeOfferente: nomeOfferenteController.text, cognomeOfferente: cognomeOfferenteController.text, emailOfferente: emailOfferenteController.text);
+                                                }
                                                 Navigator.pop(context);
                                                 controllaStatusCode(statusCode, context);
                                                 setState(() {
@@ -261,6 +325,9 @@ class _CreaOffertaPageState extends State<CreaOffertaPage> {
                                                   areDataRetrieved = false;
                                                   areServersAvailable = false;
                                                   offertaController.text = "";
+                                                  nomeOfferenteController.text = "";
+                                                  cognomeOfferenteController.text = "";
+                                                  emailOfferenteController.text = "";
                                                 });
                                                 getStoricoOfferte();
                                               } on TimeoutException {

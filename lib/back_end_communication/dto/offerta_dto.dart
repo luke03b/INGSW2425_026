@@ -6,20 +6,26 @@ class OffertaDto implements DTO {
 
   final String? id;
   final AnnuncioDto annuncio;
-  final UtenteDto cliente;
+  final UtenteDto? cliente;
   final double prezzo;
   final DateTime? data;
   final String? stato;
   final double? controproposta;
+  final String? nomeOfferente;
+  final String? cognomeOfferente;
+  final String? emailOfferente;
 
   OffertaDto({
     this.id,
     required this.annuncio,
-    required this.cliente,
+    this.cliente,
     required this.prezzo,
     this.data,
     this.stato,
     this.controproposta,
+    this.nomeOfferente,
+    this.cognomeOfferente,
+    this.emailOfferente
   });
 
   @override
@@ -27,9 +33,12 @@ class OffertaDto implements DTO {
    return {
       'id': id,
       'annuncio': annuncio.toJson(),
-      'cliente': cliente.toJson(),
+      'cliente': cliente?.toJson(),
       'prezzo': prezzo,
       'controProposta' : controproposta,
+      'nomeOfferente' : nomeOfferente,
+      'cognomeOfferente' : cognomeOfferente,
+      'emailOfferente' : emailOfferente,
     };
   }
 
@@ -38,10 +47,13 @@ class OffertaDto implements DTO {
       id : json["id"],
       annuncio: AnnuncioDto.fromJson(json["annuncio"]),
       prezzo: json["prezzo"],
-      data: DateTime.parse(json["data"]),
+      data: json["data"] != null ? DateTime.parse(json["data"]) : null,
       stato: json["stato"],
-      cliente: UtenteDto.fromJson(json["cliente"]),
+      cliente: json["cliente"] != null ? UtenteDto.fromJson(json["cliente"]) : null,
       controproposta: json["controProposta"],
+      nomeOfferente: json["nomeOfferente"],
+      cognomeOfferente: json["cognomeOfferente"],
+      emailOfferente: json["emailOfferente"],
     );
   }
 }

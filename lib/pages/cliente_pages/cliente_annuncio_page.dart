@@ -492,7 +492,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                     Row(children: [
                     SizedBox(width: 5,),
                     Expanded(child: MyElevatedButtonRectWidget(text: "Offerta", onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => CreaOffertaPage(annuncioSelezionato: widget.annuncioSelezionato)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => CreaOffertaPage(annuncioSelezionato: widget.annuncioSelezionato, isOffertaManuale: false,)));
                     }, color: context.onSecondary)),
                     SizedBox(width: 5,),
                     Expanded(child: MyElevatedButtonRectWidget(text: "Visita", onPressed: (){
