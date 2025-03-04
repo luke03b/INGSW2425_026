@@ -202,14 +202,14 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                                                                   areServersAvailable = false;
                                                                                 });
                                                                                 getStoricoOfferte();
-                                                                              }on TimeoutException {
+                                                                              } on TimeoutException {
                                                                                 Navigator.pop(context);
                                                                                 Navigator.pop(context);
                                                                                 showDialog(
                                                                                   context: context, 
                                                                                   builder: (BuildContext context) => MyInfoDialog(
                                                                                     title: "Connessione non riuscita", 
-                                                                                    bodyText: "Offerta non rifiutata, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
+                                                                                    bodyText: "Offerta non accettata, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
                                                                                     buttonText: "Ok", 
                                                                                     onPressed: () {Navigator.pop(context);}
                                                                                   )
@@ -222,7 +222,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                                                                   context: context, 
                                                                                   builder: (BuildContext context) => MyInfoDialog(
                                                                                     title: "Errore",
-                                                                                    bodyText: "Offerta non rifiutata.", 
+                                                                                    bodyText: "Offerta non accettata.", 
                                                                                     buttonText: "Ok", 
                                                                                     onPressed: () {Navigator.pop(context);}
                                                                                   )

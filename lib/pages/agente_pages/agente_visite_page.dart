@@ -99,11 +99,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                                       getVisiteInAttesa();
                                     }
                                   ),
-              (true, true, false) => Column(
-                children: [
-                  MyUiMessagesWidgets.myText(context, "Non hai visite prenotate per questo annuncio")
-                ],
-              ),
+              (true, true, false) => MyUiMessagesWidgets.myText(context, "Non hai visite prenotate per questo annuncio"),
               (true, true, true) => myCarouselSlider(context),
             }
           );

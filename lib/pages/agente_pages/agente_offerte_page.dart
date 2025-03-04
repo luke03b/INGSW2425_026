@@ -33,16 +33,45 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
   int _currentSliderIndex = 0;
   bool areServersAvailable = false;
   bool areDataRetrieved = false;
-  bool hasAnnuncioOfferte = false;
-  List<OffertaDto> listaOfferte = [];
+  bool hasAnnuncioOfferteInAttesa = false;
+  bool hasAnnuncioOffertaAccettata = false;
+  List<OffertaDto> listaOfferteInAttesa = [];
+  OffertaDto? offertaAccettata;
 
   void getOfferteInAttesa() async {
     try{
       List<OffertaDto> data = await OffertaService.recuperaOfferteConStatoByAnnuncio(widget.annuncioSelezionato, Enumerations.statoOfferte[0]);
       if (mounted) {
         setState(() {
-          listaOfferte = data;
-          hasAnnuncioOfferte = listaOfferte.isNotEmpty;
+          listaOfferteInAttesa = data;
+          hasAnnuncioOfferteInAttesa = listaOfferteInAttesa.isNotEmpty;
+          areDataRetrieved = true;
+          areServersAvailable = true;
+        });
+      }
+    } on TimeoutException {
+      if (mounted) {
+        setState(() {
+          areServersAvailable = false;
+          areDataRetrieved = true;
+        });
+      }
+    } catch (error) {
+      setState(() {
+        areServersAvailable = false;
+        areDataRetrieved = true;
+      });
+      print('Errore con il recupero delle offerte (il server potrebbe non essere raggiungibile) $error');
+    }
+  }
+
+  void getOffertaAccettata() async {
+    try{
+      List<OffertaDto> data = await OffertaService.recuperaOfferteConStatoByAnnuncio(widget.annuncioSelezionato, Enumerations.statoOfferte[1]);
+      if (mounted) {
+        setState(() {
+          offertaAccettata = data.first;
+          hasAnnuncioOffertaAccettata = data.isNotEmpty;
           areDataRetrieved = true;
           areServersAvailable = true;
         });
@@ -70,6 +99,9 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
     // Esegui getAnnunci dopo la fase di build
     Future.delayed(Duration.zero, () {
       getOfferteInAttesa();
+      if(!hasAnnuncioOfferteInAttesa){
+        getOffertaAccettata();
+      }
     });
   }
 
@@ -88,36 +120,142 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
         elevation: 5,
         shadowColor: context.shadow,
       ),
-      body: switch ((areDataRetrieved, areServersAvailable, hasAnnuncioOfferte)) {
-                (false, _, _) => MyUiMessagesWidgets.myTextWithLoading(context, "Sto recuperando le offerte sull'annuncio, un po' di pazienza"),
-                (true, false, _) => MyUiMessagesWidgets.myErrorWithButton(context, 
-                                      "Server non raggiungibili. Controlla la tua connessione a internet e riprova", 
-                                      "Riprova", 
-                                      (){
-                                        setState(() {
-                                          hasAnnuncioOfferte = false;
-                                          areDataRetrieved = false;
-                                          areServersAvailable = false;
-                                        });
-                                        getOfferteInAttesa();
-                                      }
-                                    ),
-                (true, true, false) => MyUiMessagesWidgets.myTextWithButton(
+      body: switch ((areDataRetrieved, areServersAvailable, hasAnnuncioOfferteInAttesa, hasAnnuncioOffertaAccettata)) {
+              (false, _, _, _) =>
+                MyUiMessagesWidgets.myTextWithLoading(
+                  context, 
+                  "Sto recuperando le offerte sull'annuncio, un po' di pazienza"
+                ),
+
+              (true, false, _, _) =>
+                MyUiMessagesWidgets.myErrorWithButton(
+                  context, 
+                  "Server non raggiungibili. Controlla la tua connessione a internet e riprova", 
+                  "Riprova", 
+                  () {
+                    setState(() {
+                      hasAnnuncioOfferteInAttesa = false;
+                      areDataRetrieved = false;
+                      areServersAvailable = false;
+                    });
+                    getOfferteInAttesa();
+                    if(!hasAnnuncioOfferteInAttesa) {
+                      getOffertaAccettata();
+                    }
+                  }
+                ),
+
+              (true, true, false, false) =>
+                MyUiMessagesWidgets.myTextWithButton(
                   context, 
                   "Non hai offerte per questo annuncio", 
                   "Aggiungi offerta", 
                   () async {
-                    await Navigator.push(context, MaterialPageRoute(builder: (context) => CreaOffertaPage(annuncioSelezionato: widget.annuncioSelezionato, isOffertaManuale: true,)));
+                    await Navigator.push(
+                      context, 
+                      MaterialPageRoute(builder: (context) => CreaOffertaPage(
+                        annuncioSelezionato: widget.annuncioSelezionato, 
+                        isOffertaManuale: true,
+                      ))
+                    );
                     setState(() {
-                      hasAnnuncioOfferte = false;
+                      hasAnnuncioOfferteInAttesa = false;
                       areDataRetrieved = false;
                       areServersAvailable = false;
                     });
                     getOfferteInAttesa();
                   }
                 ),
-                (true, true, true) => myOffertePage(context),
-              }
+
+              (true, true, true, false) =>
+                myOffertePage(context),
+
+              (true, true, _, true) =>
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    MyUiMessagesWidgets.myText(
+                      context, 
+                      "Questo annuncio ha un'offerta accettata", 
+                    ),
+                    SizedBox(height: 10,),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: context.primaryContainer,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(height: MediaQuery.of(context).size.height/50,),
+                          Row(
+                            children: [
+                              SizedBox(width: MediaQuery.of(context).size.width/45,),
+                              SizedBox(width: MediaQuery.of(context).size.width/45,),
+                              Text("Data offerta: ", style: TextStyle(fontSize:GRANDEZZA_SCRITTE_GRANDI, fontWeight: FontWeight.bold, color: context.outline)),
+                              Text(FormatStrings.formattaDataGGMMAAAAeHHMM(offertaAccettata!.data!), style: TextStyle(fontSize: GRANDEZZA_SCRITTE_GRANDI, fontWeight: FontWeight.bold, color: context.outline)),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(width: MediaQuery.of(context).size.width/45,),
+                              SizedBox(width: MediaQuery.of(context).size.width/45,),
+                              Text(FormatStrings.formatNumber(offertaAccettata!.prezzo), style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: context.outline)),
+                              Text(" EUR", style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: context.outline)),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(width: MediaQuery.of(context).size.width/45,),
+                              SizedBox(width: MediaQuery.of(context).size.width/45,),
+                              Text("Nome: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: context.outline)),
+                              offertaAccettata!.cliente != null ? 
+                                Text(offertaAccettata!.cliente!.nome, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline)) 
+                                : 
+                                Text(offertaAccettata!.nomeOfferente!, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline))
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(width: MediaQuery.of(context).size.width/45,),
+                              SizedBox(width: MediaQuery.of(context).size.width/45,),
+                              Text("Cognome: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: context.outline)),
+                              offertaAccettata!.cliente != null ? 
+                              Text(offertaAccettata!.cliente!.cognome, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline)) 
+                              : 
+                              Text(offertaAccettata!.cognomeOfferente!, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline))
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(width: MediaQuery.of(context).size.width/45,),
+                              SizedBox(width: MediaQuery.of(context).size.width/45,),
+                              Text("Email: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: context.outline)),
+                              Expanded(
+                                child: FittedBox(
+                                  alignment: Alignment.centerLeft,
+                                  fit: BoxFit.scaleDown,
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: offertaAccettata!.cliente != null ? 
+                                      Text(offertaAccettata!.cliente!.email, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline)) 
+                                      : 
+                                      Text(offertaAccettata!.emailOfferente!, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline))
+                                  )
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: MediaQuery.of(context).size.height/130,),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+            }
+
     );
   }
 
@@ -164,7 +302,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
               Expanded(child: MyAddButtonWidget(onPressed: () async {
                 await Navigator.push(context, MaterialPageRoute(builder: (context) => CreaOffertaPage(annuncioSelezionato: widget.annuncioSelezionato, isOffertaManuale: true,)));
                 setState(() {
-                  hasAnnuncioOfferte = false;
+                  hasAnnuncioOfferteInAttesa = false;
                   areDataRetrieved = false;
                   areServersAvailable = false;
                 });
@@ -173,7 +311,6 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
               color: context.onSecondary)),
               SizedBox(width: 5,),
               ],),
-              SizedBox(height: 10,)
             ],
           )
         ),
@@ -186,7 +323,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
     Color coloreScritte = context.outline;
 
     return CarouselSlider(
-      items: listaOfferte.asMap().entries.map((entry) {
+      items: listaOfferteInAttesa.asMap().entries.map((entry) {
         int indice = entry.key;
         OffertaDto offertaCorrente = entry.value;
         double scaleFactor = indice == _currentSliderIndex ? 1.0 : 1.0;
@@ -265,8 +402,18 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                   Expanded(
                     child: MyElevatedButtonRectWidget(
                             text: "Analizza",
-                            onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnalizzaOffertaPage(offertaSelezionata: offertaCorrente)));
+                            onPressed: () async {
+                              await Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnalizzaOffertaPage(offertaSelezionata: offertaCorrente)));
+                              setState(() {
+                                hasAnnuncioOfferteInAttesa = false;
+                                areDataRetrieved = false;
+                                areServersAvailable = false;
+                                hasAnnuncioOffertaAccettata = false;
+                              });
+                              getOfferteInAttesa();
+                              if(!hasAnnuncioOfferteInAttesa) {
+                                getOffertaAccettata();
+                              }
                             },
                             color: context.onSecondary,
                           )
@@ -295,7 +442,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                                                                         Navigator.pop(context);
                                                                         StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Offerta rifiutata", "Errore", "Offerta non rifiutata");
                                                                         setState(() {
-                                                                          hasAnnuncioOfferte = false;
+                                                                          hasAnnuncioOfferteInAttesa = false;
                                                                           areDataRetrieved = false;
                                                                           areServersAvailable = false;
                                                                         });
