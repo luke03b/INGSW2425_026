@@ -5,6 +5,7 @@ import 'package:domus_app/back_end_communication/communication_utils/url_builder
 import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/filtri_ricerca_dto.dart';
 import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 class AnnuncioController {
@@ -16,10 +17,10 @@ class AnnuncioController {
       UrlBuilder.ENDPOINT_ANNUNCI
     );
 
-    print("\n\n\n\n\n\n\n\n\n\n\n");
-    print(url);
-    print("\n\n\n\n\n\n\n\n\n\n\n");
-    print(json.encode(annuncio));
+    debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
+    debugPrint(url.toString());
+    debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
+    debugPrint(json.encode(annuncio));
     
     final response = await http.post(
       url,
@@ -64,9 +65,9 @@ class AnnuncioController {
       queryParams: filtriRicerca.toJson()
     );
 
-    print("\n\n\n\n\n\n\n\n\n\n\n");
-    print(url);
-    print("\n\n\n\n\n\n\n\n\n\n\n");
+    debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
+    debugPrint(url.toString());
+    debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
 
     final response = await http.get(
       url,
@@ -92,9 +93,9 @@ class AnnuncioController {
       queryParams: {'idCliente' : cliente.id}
     );
 
-    print("\n\n\n\n\n\n\n\n\n\n\n");
-    print(url);
-    print("\n\n\n\n\n\n\n\n\n\n\n");
+    debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
+    debugPrint(url.toString());
+    debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
 
     final response = await http.get(
       url,
@@ -124,9 +125,9 @@ class AnnuncioController {
       }
     );
 
-    print("\n\n\n\n\n\n\n\n\n\n\n");
-    print(url);
-    print("\n\n\n\n\n\n\n\n\n\n\n");
+    debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
+    debugPrint(url.toString());
+    debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
 
     final response = await http.get(
       url,

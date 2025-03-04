@@ -28,10 +28,6 @@ class AgenteAnnuncioPage extends StatefulWidget {
 class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
   final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
 
-  // static const CameraPosition _kGooglePlex = CameraPosition(
-  //   target: LatLng(40.8189507, 14.1896127),
-  //   zoom: 14.4746,
-  // );
   int _currentIndex = 0;
 
   @override
@@ -63,18 +59,43 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
             children: [
               Card(
                 color: context.primaryContainer,
-                // color: const Color.fromARGB(255, 228, 246, 255),
                 child: Column(
                   children: [
-                    myCarouselSlider(context, listaImmagini),
+                    Stack(
+                      children: [
+                        myCarouselSlider(context, listaImmagini),
+                        Visibility(
+                          visible: widget.annuncioSelezionato.stato == "CONCLUSO", 
+                          child: Positioned(
+                            top: 20,
+                            left: 20,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                              decoration: BoxDecoration(
+                                color: context.error,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                widget.annuncioSelezionato.tipoAnnuncio == "VENDITA" ? "Venduto" : "Affittato",
+                                style: TextStyle(
+                                  color: context.onError,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     AnimatedSmoothIndicator(
                       activeIndex: _currentIndex,
                       count: listaImmagini.length,
                       effect: ScrollingDotsEffect(
                         dotHeight: 8.0,
                         dotWidth: 8.0,
-                        activeDotColor: context.onSecondary
-                      )
+                        activeDotColor: context.onSecondary,
+                      ),
                     ),
                     SizedBox(height: 10,)
                   ],
@@ -370,17 +391,17 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                                   //Colonna contenente nomi
                                   Column(
                                     children: [
-                                      Container(
+                                      SizedBox(
                                         width: 270,
                                         child: Text("Scuole", style: TextStyle(fontSize: 18.0, color: coloriPulsanti),)
                                       ),
                                       SizedBox(height: 18,),
-                                      Container(
+                                      SizedBox(
                                         width: 270,
                                         child: Text("Parchi pubblici", style: TextStyle(fontSize: 18.0, color: coloriPulsanti))
                                       ),
                                       SizedBox(height: 18,),
-                                      Container(
+                                      SizedBox(
                                         width: 270,
                                         child: Text("Fermate mezzi pubblici", style: TextStyle(fontSize: 18.0, color: coloriPulsanti))
                                       ),
@@ -459,8 +480,8 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                   Expanded(
                     child: MyElevatedButtonRectWidget(
                       text: "Offerte",
-                      onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteOffertePage(annuncioSelezionato: widget.annuncioSelezionato,)));
+                      onPressed: () async {
+                        await Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteOffertePage(annuncioSelezionato: widget.annuncioSelezionato,)));
                       },
                   color: context.onSecondary)),
                   SizedBox(width: 5,),

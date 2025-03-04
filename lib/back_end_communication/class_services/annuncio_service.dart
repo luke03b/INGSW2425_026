@@ -9,12 +9,12 @@ import 'package:domus_app/services/aws_cognito.dart';
 import 'package:http/http.dart' as http;
 
 class AnnuncioService {
-  static Future<int> creaAnnuncio(String tipoAnnuncio, String prezzo, String superficie, String indirizzo,
+  static Future<int> creaAnnuncio(String tipoAnnuncio, String stato, String prezzo, String superficie, String indirizzo,
     String descrizione, bool isGarageSelected, bool isAscensoreSelected, bool isPiscinaSelected,
     bool isArredatoSelected, bool isBalconeSelected, bool isGiardinoSelected, String stanze, String numeroPiano,
     String sceltaClasseEnergetica, String sceltaPiano, double latitudine, double longitudine, UtenteDto agente) async {
 
-    AnnuncioDto nuovoAnnuncio = _creaAnnuncioDto(tipoAnnuncio, prezzo, superficie, indirizzo, descrizione, isGarageSelected,
+    AnnuncioDto nuovoAnnuncio = _creaAnnuncioDto(tipoAnnuncio, stato, prezzo, superficie, indirizzo, descrizione, isGarageSelected,
       isAscensoreSelected, isPiscinaSelected, isArredatoSelected, isBalconeSelected, isGiardinoSelected, stanze, numeroPiano,
       sceltaClasseEnergetica, sceltaPiano, latitudine, longitudine, agente);
 
@@ -25,7 +25,7 @@ class AnnuncioService {
       }
   }
 
-  static AnnuncioDto _creaAnnuncioDto(String tipoAnnuncio, String prezzo, String superficie, String indirizzo,
+  static AnnuncioDto _creaAnnuncioDto(String tipoAnnuncio, String stato, String prezzo, String superficie, String indirizzo,
     String descrizione, bool isGarageSelected, bool isAscensoreSelected, bool isPiscinaSelected,
     bool isArredatoSelected, bool isBalconeSelected, bool isGiardinoSelected, String stanze, String numeroPiano,
     String sceltaClasseEnergetica, String sceltaPiano, double latitudine, double longitudine, UtenteDto agente){
@@ -49,6 +49,7 @@ class AnnuncioService {
 
     return AnnuncioDto(
       tipoAnnuncio: tipoAnnuncio.toUpperCase(),
+      stato: stato.toUpperCase(),
       prezzo: prezzoDouble, 
       superficie: superficieInt, 
       numStanze: nStanzeInt, 
@@ -83,7 +84,7 @@ class AnnuncioService {
       }
 
     } on TimeoutException {
-      throw TimeoutException("Errore nel recupero dell'utente.");
+      throw TimeoutException("Errore nel recupero degli annunci dell'agente.");
     }
   }
 

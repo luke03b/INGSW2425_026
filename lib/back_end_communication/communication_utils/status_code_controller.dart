@@ -2,7 +2,7 @@ import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
 
 class StatusCodeController {
-  static void controllaStatusCodeAndShowPopUp(BuildContext context, int inputStatusCode, int expectedStatusCode, String isAllOkTitle, String isAllOkText, String wrongTitle, String wrongText) {
+  static controllaStatusCodeAndShowPopUp(BuildContext context, int inputStatusCode, int expectedStatusCode, String isAllOkTitle, String isAllOkText, String wrongTitle, String wrongText) async {
     if (inputStatusCode == expectedStatusCode) {
       Navigator.pop(context);
       showDialog(

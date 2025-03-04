@@ -98,7 +98,7 @@ class _ClienteEliminazioneAccountPageState extends State<ClienteEliminazioneAcco
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 375,
                     child: IconButton(onPressed: () async {
                         bool isAllOk = await AWSServices().signInWithGoogle();

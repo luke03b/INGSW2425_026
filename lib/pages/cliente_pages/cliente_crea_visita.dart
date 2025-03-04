@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:domus_app/back_end_communication/class_services/previsioni_meteo_service.dart';
 import 'package:domus_app/back_end_communication/class_services/visita_service.dart';
+import 'package:domus_app/back_end_communication/communication_utils/status_code_controller.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/previsioni_meteo_dto.dart';
 import 'package:domus_app/back_end_communication/dto/visita_dto.dart';
@@ -299,7 +300,7 @@ class _ClienteFasceOrarieVisitaState extends State<ClienteFasceOrarieVisita> {
                   try {
                     int statusCode = await VisitaService.creaVisita(widget.annuncioSelezionato, widget.selectedDate, time);
                     Navigator.pop(context);
-                    await controllaStatusCode(statusCode, context);
+                    await StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 201, "Conferma", "Visita creata", "Errore", "Visita non creata");
                     Navigator.pop(context);
                     Navigator.pop(context);
                     Navigator.pop(context);
@@ -349,29 +350,4 @@ class _ClienteFasceOrarieVisitaState extends State<ClienteFasceOrarieVisita> {
     },
   );
 }
-
-
-  Future<void> controllaStatusCode(int statusCode, BuildContext context) async {
-    if (statusCode == 201) {
-      showDialog(
-        context: context, 
-        builder: (BuildContext context) => MyInfoDialog(
-          title: "Conferma", 
-          bodyText: "Visita creata", 
-          buttonText: "Ok", 
-          onPressed: () {Navigator.pop(context);}
-        )
-      );
-    } else {
-      showDialog(
-        context: context, 
-        builder: (BuildContext context) => MyInfoDialog(
-          title: "Errore", 
-          bodyText: "Visita non creata, controllare i campi e riprovare.", 
-          buttonText: "Ok", 
-          onPressed: () {Navigator.pop(context);}
-        )
-      );
-    }
-  }
 }

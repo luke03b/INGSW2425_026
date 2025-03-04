@@ -50,8 +50,8 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
 
-  double? latitude = null;
-  double? longitude = null;
+  double? latitude;
+  double? longitude;
 
   bool _isGarageSelected = false;
 
@@ -725,11 +725,11 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                   LoadingHelper.showLoadingDialogNotDissmissible(context, color: context.secondary);
                   try{
                     UtenteDto? utenteLoggato = await recuperaIdUtenteLoggato();
-                    int statusCode = await AnnuncioService.creaAnnuncio(selectedVendiAffitta[0] ? "VENDITA" : "AFFITTO", prezzoController.text, superficieController.text, indirizzoController.text,
+                    int statusCode = await AnnuncioService.creaAnnuncio(selectedVendiAffitta[0] ? "VENDITA" : "AFFITTO", "DISPONIBILE", prezzoController.text, superficieController.text, indirizzoController.text,
                       descrizioneController.text, _isGarageSelected, _isAscensoreSelected, _isPiscinaSelected, _isArredatoSelected, _isBalconeSelected, _isGiardinoSelected, stanzeController.text,
                       numeroPianoController.text, sceltaClasseEnergetica, sceltaPiano, latitude ?? 0.0, longitude ?? 0.0, utenteLoggato);
                     Navigator.pop(context);
-                    StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 201, "Conferma", "Annuncio creato", "Errore", "Annuncio non creato");
+                    await StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 201, "Conferma", "Annuncio creato", "Errore", "Annuncio non creato");
                   } on TimeoutException {
                     Navigator.pop(context);
                     showDialog(

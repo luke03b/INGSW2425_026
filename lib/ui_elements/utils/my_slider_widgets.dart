@@ -5,7 +5,7 @@ class RadiusSlider extends StatefulWidget {
   final Function(double) onChanged;
   final double initialRadius;
   
-  const RadiusSlider({Key? key, required this.onChanged, required this.initialRadius}) : super(key: key);
+  const RadiusSlider({super.key, required this.onChanged, required this.initialRadius});
 
   @override
   _RadiusSliderState createState() => _RadiusSliderState();
@@ -26,7 +26,7 @@ class _RadiusSliderState extends State<RadiusSlider> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(
+        SizedBox(
           width: 340,
           child: Slider(
             value: _radius,

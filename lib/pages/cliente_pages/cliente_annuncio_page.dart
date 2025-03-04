@@ -402,12 +402,12 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                                   //Colonna contenente nomi
                                   Column(
                                     children: [
-                                      Container(
+                                      SizedBox(
                                         width: 270,
                                         child: Text("Scuole", style: TextStyle(fontSize: 18.0, color: context.outline),)
                                       ),
                                       SizedBox(height: 18,),
-                                      Container(
+                                      SizedBox(
                                         width: 270,
                                         child: Text("Parchi pubblici", style: TextStyle(fontSize: 18.0, color: context.outline))
                                       ),

@@ -197,7 +197,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                                                                         int statusCode = await VisitaService.aggiornaStatoVisita(visitaCorrente, Enumerations.statoOfferte[1]);
                                                                         Navigator.pop(context);
                                                                         Navigator.pop(context);
-                                                                        StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Visita accettata", "Errore", "Visita non accettata");
+                                                                        await StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Visita accettata", "Errore", "Visita non accettata");
                                                                         setState(() {
                                                                           hasAnnuncioVisite = false;
                                                                           areDataRetrieved = false;
@@ -259,7 +259,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                                                                         int statusCode = await VisitaService.aggiornaStatoVisita(visitaCorrente, Enumerations.statoOfferte[2]);
                                                                         Navigator.pop(context);
                                                                         Navigator.pop(context);
-                                                                        StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Visita rifiutata", "Errore", "Visita non rifiutata");
+                                                                        await StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Visita rifiutata", "Errore", "Visita non rifiutata");
                                                                         setState(() {
                                                                           hasAnnuncioVisite = false;
                                                                           areDataRetrieved = false;

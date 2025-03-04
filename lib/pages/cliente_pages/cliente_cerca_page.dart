@@ -30,7 +30,7 @@ class CercaPage extends StatefulWidget {
 class _CercaPageState extends State<CercaPage> {
   List<AnnuncioDto> annunciRecentiList = [];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
+  final AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
 
   final TextEditingController _indirizzoController = TextEditingController();
 

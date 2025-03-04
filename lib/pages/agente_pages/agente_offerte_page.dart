@@ -70,7 +70,9 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
       List<OffertaDto> data = await OffertaService.recuperaOfferteConStatoByAnnuncio(widget.annuncioSelezionato, Enumerations.statoOfferte[1]);
       if (mounted) {
         setState(() {
-          offertaAccettata = data.first;
+          if(data.isNotEmpty){
+            offertaAccettata = data.first;
+          }
           hasAnnuncioOffertaAccettata = data.isNotEmpty;
           areDataRetrieved = true;
           areServersAvailable = true;
@@ -443,7 +445,7 @@ class _AgenteOffertePageState extends State<AgenteOffertePage> {
                                                                         int statusCode = await OffertaService.aggiornaStatoOfferta(offertaCorrente, Enumerations.statoOfferte[2]);
                                                                         Navigator.pop(context);
                                                                         Navigator.pop(context);
-                                                                        StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Offerta rifiutata", "Errore", "Offerta non rifiutata");
+                                                                        await StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Offerta rifiutata", "Errore", "Offerta non rifiutata");
                                                                         setState(() {
                                                                           hasAnnuncioOfferteInAttesa = false;
                                                                           areDataRetrieved = false;

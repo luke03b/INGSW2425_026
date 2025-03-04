@@ -4,6 +4,7 @@ import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
 class AnnuncioDto implements DTO{
   String? idAnnuncio;
   String tipoAnnuncio;
+  String stato;
   double prezzo;
   int superficie;
   int numStanze;
@@ -27,6 +28,7 @@ class AnnuncioDto implements DTO{
 
    AnnuncioDto({
     required this.tipoAnnuncio,
+    required this.stato,
     required this.prezzo,
     required this.superficie,
     required this.numStanze,
@@ -55,6 +57,7 @@ class AnnuncioDto implements DTO{
     return {
       'id' : idAnnuncio,
       "tipo_annuncio": tipoAnnuncio,
+      "stato" : stato,
       "prezzo": prezzo,
       "superficie": superficie,
       "numStanze": numStanze,
@@ -82,6 +85,7 @@ class AnnuncioDto implements DTO{
     return AnnuncioDto(
       idAnnuncio: json['id'],
       tipoAnnuncio: json['tipo_annuncio'],
+      stato: json["stato"],
       prezzo: json['prezzo'],
       superficie: json['superficie'],
       numStanze: json['numStanze'],

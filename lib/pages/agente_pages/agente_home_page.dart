@@ -221,8 +221,14 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
               SizedBox(height: 10,),
               Row(children: [
               SizedBox(width: 5,),
-              Expanded(child: MyAddButtonWidget(onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteCreaAnnuncioPage()));
+              Expanded(child: MyAddButtonWidget(onPressed: () async {
+                await Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteCreaAnnuncioPage()));
+                setState(() {
+                  hasUserAnnunci = false;
+                  areDataRetrieved = false;
+                  areServersAvailable = false;
+                });
+                getAnnunciAgente();
               },
               color: context.onSecondary)),
               SizedBox(width: 5,),

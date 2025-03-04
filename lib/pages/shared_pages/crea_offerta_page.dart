@@ -320,7 +320,7 @@ class _CreaOffertaPageState extends State<CreaOffertaPage> {
                                                   statusCode = await OffertaService.creaOfferta(widget.annuncioSelezionato, offertaController.text, nomeOfferente: nomeOfferenteController.text, cognomeOfferente: cognomeOfferenteController.text, emailOfferente: emailOfferenteController.text);
                                                 }
                                                 Navigator.pop(context);
-                                                StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 201, "Conferma", "Offerta inviata", "Errore", "Offerta non inviata");
+                                                await StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 201, "Conferma", "Offerta inviata", "Errore", "Offerta non inviata");
                                                 setState(() {
                                                   hasAnnuncioOfferte = false;
                                                   areDataRetrieved = false;

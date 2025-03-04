@@ -34,7 +34,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
 
   void getStoricoOfferte() async {
     try{
-      List<OffertaDto> data = await OffertaService.recuperaTutteOfferteByAnnuncio(widget.offertaSelezionata.annuncio!);
+      List<OffertaDto> data = await OffertaService.recuperaTutteOfferteByAnnuncio(widget.offertaSelezionata.annuncio);
       if (mounted) {
         setState(() {
           listaStoricoOfferte = data;
@@ -106,7 +106,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         Text("Prezzo iniziale: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                        Text(FormatStrings.formatNumber(widget.offertaSelezionata.annuncio!.prezzo), style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
+                        Text(FormatStrings.formatNumber(widget.offertaSelezionata.annuncio.prezzo), style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
                         Text(" EUR", style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
                       ],
                     ),
@@ -195,7 +195,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                                                                 int statusCode = await OffertaService.aggiornaStatoOfferta(widget.offertaSelezionata, Enumerations.statoOfferte[1]);
                                                                                 Navigator.pop(context);
                                                                                 Navigator.pop(context);
-                                                                                StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Offerta accettata", "Errore", "Offerta non accettata");
+                                                                                await StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Offerta accettata", "Errore", "Offerta non accettata");
                                                                                 setState(() {
                                                                                   hasAnnuncioOfferte = false;
                                                                                   areDataRetrieved = false;
@@ -258,7 +258,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                                                               int statusCode = await OffertaService.aggiornaStatoOfferta(widget.offertaSelezionata, Enumerations.statoOfferte[2]);
                                                                               Navigator.pop(context);
                                                                               Navigator.pop(context);
-                                                                              StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Offerta rifiutata", "Errore", "Offerta non rifiutata");
+                                                                              await StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Offerta rifiutata", "Errore", "Offerta non rifiutata");
                                                                               setState(() {
                                                                                 hasAnnuncioOfferte = false;
                                                                                 areDataRetrieved = false;
@@ -436,7 +436,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                                       int statusCode = await OffertaService.aggiornaStatoOfferta(widget.offertaSelezionata, Enumerations.statoOfferte[3], controproposta: double.parse(contropropostaController.text));
                                                       Navigator.pop(context);
                                                       Navigator.pop(context);
-                                                      StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Controproposta inviata", "Errore", "Controproposta non inviata");
+                                                      await StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Controproposta inviata", "Errore", "Controproposta non inviata");
                                                       setState(() {
                                                         hasAnnuncioOfferte = false;
                                                         areDataRetrieved = false;

@@ -126,7 +126,7 @@ class _OffertePageState extends State<OffertePage> {
         double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.7;
         return GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(annuncioSelezionato: offertaSelezionata.annuncio!,)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(annuncioSelezionato: offertaSelezionata.annuncio,)));
           },
           child: Container(
             width: MediaQuery.of(context).size.width,
@@ -192,7 +192,7 @@ class _OffertePageState extends State<OffertePage> {
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(FormatStrings.formatNumber(offertaSelezionata.annuncio!.prezzo), style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
+                    Text(FormatStrings.formatNumber(offertaSelezionata.annuncio.prezzo), style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
                     Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
                   ],
                 ),
@@ -203,7 +203,7 @@ class _OffertePageState extends State<OffertePage> {
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     Expanded(
                       child: AutoSizeText(
-                        offertaSelezionata.annuncio!.indirizzo,
+                        offertaSelezionata.annuncio.indirizzo,
                         style: TextStyle(
                           fontSize: scaleFactor * 18,
                           fontWeight: FontWeight.normal,
