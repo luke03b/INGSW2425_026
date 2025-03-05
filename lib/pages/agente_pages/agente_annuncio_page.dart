@@ -179,6 +179,15 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                       SizedBox(width: 10.0),
                       Text(FormatStrings.formatNumber(annuncioSelezionato!.prezzo), style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: coloriPulsanti),),
                       Text(" EUR", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                      Visibility(
+                          visible: annuncioSelezionato!.tipoAnnuncio == "AFFITTO", 
+                          child: Row(
+                            children: [
+                              SizedBox(width: 3,),
+                              Text("/Mese", style: TextStyle(color: context.outline, fontWeight: FontWeight.bold, fontSize: 30),),
+                            ],
+                          )
+                        )
                     ],
                   ),
                   

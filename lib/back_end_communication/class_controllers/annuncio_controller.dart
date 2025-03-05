@@ -112,7 +112,7 @@ class AnnuncioController {
     return response;
   }
 
-  static Future<http.Response> chiamataHTTPrecuperaAnnunciByAgenteSubConOffertePrenotazioni(sub, offerte, prenotazioni) async {
+  static Future<http.Response> chiamataHTTPrecuperaAnnunciByAgenteSubConOffertePrenotazioni(String sub, bool offerte, bool prenotazioni, bool disponibili) async {
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
       UrlBuilder.LOCALHOST_ANDROID, 
@@ -121,7 +121,8 @@ class AnnuncioController {
       queryParams: {
         'sub': sub,
         'offerte' : offerte.toString(),
-        'prenotazioni' : prenotazioni.toString()
+        'prenotazioni' : prenotazioni.toString(),
+        'disponibili' : disponibili.toString()
       }
     );
 

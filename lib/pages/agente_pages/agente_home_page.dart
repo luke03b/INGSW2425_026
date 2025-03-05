@@ -26,6 +26,7 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
   static const double GRANDEZZA_ICONE_PICCOLE = 20;
   int _currentSliderIndex = 0;
   List<bool> selectedOffertePrenotazioni = <bool>[false, false];
+  bool selectedDisponibili = false;
   bool hasUserAnnunci = false;
   bool areDataRetrieved = false;
   bool areServersAvailable = false;
@@ -58,10 +59,10 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
     }
   }
 
-  Future<void> getAnnunciConOffertePrenotazioniAgente() async {
+  Future<void> getAnnunciConOffertePrenotazioniEDisponibilitaAgente() async {
     try {
 
-      List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciByAgenteLoggatoConOffertePrenotazioniInAttesa(selectedOffertePrenotazioni[0], selectedOffertePrenotazioni[1]);
+      List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciByAgenteLoggatoConOffertePrenotazioniInAttesa(selectedOffertePrenotazioni[0], selectedOffertePrenotazioni[1], selectedDisponibili);
 
       if (mounted) {
         setState(() {
@@ -110,13 +111,13 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
       ),
       body: Stack(
         children: [
-          switch ((areDataRetrieved, areServersAvailable, hasUserAnnunci, selectedOffertePrenotazioni[0], selectedOffertePrenotazioni[1])) {
-            (false, _, _, _, _) => MyUiMessagesWidgets.myTextWithLoading(
+          switch ((areDataRetrieved, areServersAvailable, hasUserAnnunci, selectedOffertePrenotazioni[0], selectedOffertePrenotazioni[1], selectedDisponibili)) {
+            (false, _, _, _, _, _) => MyUiMessagesWidgets.myTextWithLoading(
               context, 
               "Sto recuperando i tuoi annunci, un po' di pazienza"
             ),
 
-            (true, false, _, _, _) => MyUiMessagesWidgets.myErrorWithButton(
+            (true, false, _, _, _, _) => MyUiMessagesWidgets.myErrorWithButton(
               context, 
               "Server non raggiungibili. Controlla la tua connessione a internet e riprova", 
               "Riprova", 
@@ -131,25 +132,25 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
             ),
 
             // Caso: selectedOffertePrenotazioni[0] è true e non ci sono annunci
-            (true, true, false, true, false) => MyUiMessagesWidgets.myText(
+            (true, true, false, true, false, false) => MyUiMessagesWidgets.myText(
               context,
               "Non ci sono annunci con offerte.",
             ),
 
             // Caso: selectedOffertePrenotazioni[1] è true e non ci sono annunci
-            (true, true, false, false, true) => MyUiMessagesWidgets.myText(
+            (true, true, false, false, true, false) => MyUiMessagesWidgets.myText(
               context,
               "Non ci sono annunci con prenotazioni.",
             ),
 
             // Caso: entrambi selectedOffertePrenotazioni[0] e [1] sono true e non ci sono annunci
-            (true, true, false, true, true) => MyUiMessagesWidgets.myText(
+            (true, true, false, true, true, false) => MyUiMessagesWidgets.myText(
               context,
               "Non ci sono annunci con offerte e prenotazioni."
             ),
 
             // Caso: nessun filtro attivo e non ci sono annunci
-            (true, true, false, false, false) => MyUiMessagesWidgets.myTextWithButton(
+            (true, true, false, false, false, false) => MyUiMessagesWidgets.myTextWithButton(
               context,
               "Benvenuto! Non hai ancora annunci. Aggiungine subito uno",
               "Aggiungi annuncio",
@@ -158,57 +159,81 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
               }
             ),
 
+            (true, true, false, true, true, true) => MyUiMessagesWidgets.myText(context, "Non ci sono annunci non venduti o non affittati con offerte e prenotazioni"),
+
+            (true, true, false, false, true, true) => MyUiMessagesWidgets.myText(context, "Non ci sono annunci non venduti o non affittati con prenotazioni"),
+
+            (true, true, false, false, false, true) => MyUiMessagesWidgets.myText(context, "Non ci sono annunci non venduti o non affittati"),
+
+            (true, true, false, true, false, true) => MyUiMessagesWidgets.myText(context, "Non ci sono annunci non venduti o non affittati con offerte"),
+
             // Caso: ci sono annunci, quindi mostra il carousel
-            (true, true, true, _, _) => myCarouselSlider(context),
+            (true, true, true, _, _, _) => myCarouselSlider(context),
           },
           Align(
             alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 63),
-              child: Card(
-                elevation: 3,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
-                color: context.primaryContainer,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(width: 10,),
-                    Icon(Icons.filter_alt_outlined, color: context.onPrimary,),
-                    Text("Filtri", style: TextStyle(color: context.onPrimary, fontWeight: FontWeight.bold),),
-                    SizedBox(width: 10,),
-                    ToggleButtons(
-                      borderRadius: BorderRadius.circular(100),
-                      isSelected: selectedOffertePrenotazioni,
-                      onPressed: (int index) async {
-                        setState(() {
-                          selectedOffertePrenotazioni[index] = !selectedOffertePrenotazioni[index];
-                          hasUserAnnunci = false;
-                          areDataRetrieved = false;
-                          areServersAvailable = false;
-                        });
-                        await getAnnunciConOffertePrenotazioniAgente();
-                      },
+            child: Card(
+              elevation: 3,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+              color: context.primaryContainer,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(width: 10,),
+                  Icon(Icons.filter_alt_outlined, color: context.onPrimary,),
+                  Text("Filtri", style: TextStyle(color: context.onPrimary, fontWeight: FontWeight.bold),),
+                  SizedBox(width: 10,),
+                  ToggleButtons(
+                    borderRadius: BorderRadius.circular(100),
+                    isSelected: selectedOffertePrenotazioni,
+                    onPressed: (int index) async {
+                      setState(() {
+                        selectedOffertePrenotazioni[index] = !selectedOffertePrenotazioni[index];
+                        hasUserAnnunci = false;
+                        areDataRetrieved = false;
+                        areServersAvailable = false;
+                      });
+                      await getAnnunciConOffertePrenotazioniEDisponibilitaAgente();
+                    },
+                    children: [
+                      Row(
+                        children: [
+                          Icon(selectedOffertePrenotazioni[0] ? Icons.radio_button_on : Icons.radio_button_off, color: selectedOffertePrenotazioni[0] ? context.onSecondary : context.onPrimary, size: 18,),
+                          SizedBox(width: 6,),
+                          Text("Offerte", style: TextStyle(color: selectedOffertePrenotazioni[0] ? context.onSecondary : context.onPrimary),),
+                          SizedBox(width: 10,)
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Icon(selectedOffertePrenotazioni[1] ? Icons.radio_button_on : Icons.radio_button_off, color: selectedOffertePrenotazioni[1] ? context.onSecondary : context.onPrimary, size: 18,),
+                          SizedBox(width: 6,),
+                          Text("Prenotazioni", style: TextStyle(color: selectedOffertePrenotazioni[1] ? context.onSecondary : context.onPrimary),),
+                          SizedBox(width: 15,)
+                        ],
+                      ),
+                    ]
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      setState(() {
+                        selectedDisponibili = !selectedDisponibili;
+                        hasUserAnnunci = false;
+                        areDataRetrieved = false;
+                        areServersAvailable = false;
+                      });
+                      await getAnnunciConOffertePrenotazioniEDisponibilitaAgente();
+                    },
+                    child: Row(
                       children: [
-                        Row(
-                          children: [
-                            Icon(selectedOffertePrenotazioni[0] ? Icons.radio_button_on : Icons.radio_button_off, color: selectedOffertePrenotazioni[0] ? context.onSecondary : context.onPrimary, size: 18,),
-                            SizedBox(width: 6,),
-                            Text("Offerte", style: TextStyle(color: selectedOffertePrenotazioni[0] ? context.onSecondary : context.onPrimary),),
-                            SizedBox(width: 10,)
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Icon(selectedOffertePrenotazioni[1] ? Icons.radio_button_on : Icons.radio_button_off, color: selectedOffertePrenotazioni[1] ? context.onSecondary : context.onPrimary, size: 18,),
-                            SizedBox(width: 6,),
-                            Text("Prenotazioni", style: TextStyle(color: selectedOffertePrenotazioni[1] ? context.onSecondary : context.onPrimary),),
-                            SizedBox(width: 15,)
-                          ],
-                        ),
-                      ]
+                        Icon(selectedDisponibili ? Icons.check_box : Icons.square_outlined, color: selectedDisponibili ? context.onSecondary : context.onPrimary, size: 18,),
+                        SizedBox(width: 6,),
+                        Text("Disponibili", style: TextStyle(color: selectedDisponibili ? context.onSecondary : context.onPrimary),),
+                        SizedBox(width: 15,)
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             )
           ),
@@ -251,11 +276,11 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
           onTap: () async {
             await Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPage(idAnnuncioSelezionato: annuncioCorrente.idAnnuncio!)));
             setState(() {
-                  hasUserAnnunci = false;
-                  areDataRetrieved = false;
-                  areServersAvailable = false;
-                });
-                getAnnunciAgente();
+              hasUserAnnunci = false;
+              areDataRetrieved = false;
+              areServersAvailable = false;
+            });
+            getAnnunciAgente();
           },
           child: Stack(
             children: [
@@ -291,6 +316,15 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         Text(FormatStrings.formatNumber(annuncioCorrente.prezzo), style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: context.outline)),
                         Text(" EUR", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: context.outline)),
+                        Visibility(
+                          visible: annuncioCorrente.tipoAnnuncio == "AFFITTO", 
+                          child: Row(
+                            children: [
+                              SizedBox(width: 3,),
+                              Text("/Mese", style: TextStyle(color: context.outline, fontWeight: FontWeight.bold, fontSize: scaleFactor * GRANDEZZA_SCRITTE),),
+                            ],
+                          )
+                        )
                       ],
                     ),
                     Row(

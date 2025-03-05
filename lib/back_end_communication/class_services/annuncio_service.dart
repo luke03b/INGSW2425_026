@@ -135,14 +135,14 @@ class AnnuncioService {
     return _recuperaAnnunciRecentementeVisusalizzatiCliente(cliente);
   }
 
-  static Future<List<AnnuncioDto>> recuperaAnnunciByAgenteLoggatoConOffertePrenotazioniInAttesa(bool offerte, bool prenotazioni) async{
+  static Future<List<AnnuncioDto>> recuperaAnnunciByAgenteLoggatoConOffertePrenotazioniInAttesa(bool offerte, bool prenotazioni, bool disponibili) async{
     String? sub = await AWSServices().recuperaSubUtenteLoggato();
-    return _recuperaAnnunciByAgenteSubConOffertePrenotazioniInAttesa(sub!, offerte, prenotazioni);
+    return _recuperaAnnunciByAgenteSubConOffertePrenotazioniInAttesa(sub!, offerte, prenotazioni, disponibili);
   }
 
-   static Future<List<AnnuncioDto>> _recuperaAnnunciByAgenteSubConOffertePrenotazioniInAttesa(String sub, bool offerte, bool prenotazioni) async {
+   static Future<List<AnnuncioDto>> _recuperaAnnunciByAgenteSubConOffertePrenotazioniInAttesa(String sub, bool offerte, bool prenotazioni, bool disponibili) async {
     try{
-      http.Response response = await AnnuncioController.chiamataHTTPrecuperaAnnunciByAgenteSubConOffertePrenotazioni(sub, offerte, prenotazioni);
+      http.Response response = await AnnuncioController.chiamataHTTPrecuperaAnnunciByAgenteSubConOffertePrenotazioni(sub, offerte, prenotazioni, disponibili);
       
       if(response.statusCode == 200){
         List<dynamic> data = json.decode(response.body);
