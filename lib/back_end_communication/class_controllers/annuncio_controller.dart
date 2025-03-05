@@ -143,4 +143,34 @@ class AnnuncioController {
     
     return response;
   }
+
+  static Future<http.Response> chiamataHTTPrecuperaAnnunciById(String idAnnuncio) async {
+    final url = UrlBuilder.createUrl(
+      UrlBuilder.PROTOCOL_HTTP, 
+      UrlBuilder.LOCALHOST_ANDROID, 
+      port: UrlBuilder.PORTA_SPRINGBOOT, 
+      UrlBuilder.ENDPOINT_GET_ANNUNCI_BY_ID, 
+      queryParams: {
+        "idAnnuncio" : idAnnuncio
+      }
+    );
+
+    debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
+    debugPrint(url.toString());
+    debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    ).timeout(
+      const Duration(seconds: 30),
+      onTimeout: () {
+        throw TimeoutException("Il server non risponde.");
+      },
+    );
+    
+    return response;
+  }
 }

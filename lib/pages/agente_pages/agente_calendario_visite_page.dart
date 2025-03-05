@@ -251,7 +251,7 @@ class _AgenteCalendarioPrenotazioniPageState extends State<AgenteCalendarioPreno
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: ListTile(
-                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPage(annuncioSelezionato: value[index].annuncio))),
+                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPage(idAnnuncioSelezionato: value[index].annuncio.idAnnuncio!))),
                               title: Column(
                                 children: [
                                   Text(value[index].annuncio.indirizzo, style: TextStyle(color: context.outline),),

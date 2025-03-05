@@ -248,58 +248,88 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
         AnnuncioDto annuncioCorrente = entry.value;
         double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.8;
         return GestureDetector(
-          onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPage(annuncioSelezionato: annuncioCorrente)));
+          onTap: () async {
+            await Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPage(idAnnuncioSelezionato: annuncioCorrente.idAnnuncio!)));
+            setState(() {
+                  hasUserAnnunci = false;
+                  areDataRetrieved = false;
+                  areServersAvailable = false;
+                });
+                getAnnunciAgente();
           },
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-              color: context.primaryContainer,
-              borderRadius: BorderRadius.circular(10),
-              shape: BoxShape.rectangle,
-            ),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
-                  child: SizedBox(
-                    // child: Image.asset(casaCorrente['image1']))),
-                    child: Image.asset('lib/assets/casa3_1_placeholder.png'))),
-                Row(
-                  children: [
-                    Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
-                    Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
-                    // Expanded(child: Image.asset(casaCorrente['image2'])),
-                    // Expanded(child: Image.asset(casaCorrente['image3'])),
-                  ],
+          child: Stack(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                decoration: BoxDecoration(
+                  color: context.primaryContainer,
+                  borderRadius: BorderRadius.circular(10),
+                  shape: BoxShape.rectangle,
                 ),
-                SizedBox(
-                  height: scaleFactor * MediaQuery.of(context).size.height/50,
-                ),
-                Row(
+                child: Column(
                   children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(FormatStrings.formatNumber(annuncioCorrente.prezzo), style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: context.outline)),
-                    Text(" EUR", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: context.outline)),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.location_on, size: scaleFactor * GRANDEZZA_ICONE, color: context.outline,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(annuncioCorrente.indirizzo, style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline), softWrap: true,)),
+                    ClipRRect(
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
+                      child: SizedBox(
+                        // child: Image.asset(casaCorrente['image1']))),
+                        child: Image.asset('lib/assets/casa3_1_placeholder.png'))),
+                    Row(
+                      children: [
+                        Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
+                        Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
+                        // Expanded(child: Image.asset(casaCorrente['image2'])),
+                        // Expanded(child: Image.asset(casaCorrente['image3'])),
+                      ],
                     ),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
+                    SizedBox(
+                      height: scaleFactor * MediaQuery.of(context).size.height/50,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Text(FormatStrings.formatNumber(annuncioCorrente.prezzo), style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: context.outline)),
+                        Text(" EUR", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: context.outline)),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Icon(Icons.location_on, size: scaleFactor * GRANDEZZA_ICONE, color: context.outline,),
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(annuncioCorrente.indirizzo, style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline), softWrap: true,)),
+                        ),
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                      ],
+                    ),
                   ],
-                ),
-              ],
+                ),  
             ),
+            if (annuncioCorrente.stato == "CONCLUSO")
+              Positioned(
+                top: 10,
+                left: 10,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: context.error,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    annuncioCorrente.tipoAnnuncio == "VENDITA" ? "Venduto" : "Affittato",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: context.onError,
+                    ),
+                  ),
+                ),
+              ),
+            ]
           ),
         );
       }).toList(),

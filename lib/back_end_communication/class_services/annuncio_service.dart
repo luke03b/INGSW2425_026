@@ -158,4 +158,20 @@ class AnnuncioService {
     }
    }
 
+   static Future<AnnuncioDto> recuperaAnnuncioById(String idAnnuncio) async {
+      try{
+      http.Response response = await AnnuncioController.chiamataHTTPrecuperaAnnunciById(idAnnuncio);
+      
+      if(response.statusCode == 200){
+        AnnuncioDto annuncio = AnnuncioDto.fromJson(json.decode(response.body));
+        return annuncio;        
+      }else{
+        throw Exception("Errore nel recupero dell'annuncio");
+      }
+
+    } on TimeoutException {
+      throw TimeoutException("Errore nel recupero dell'annuncio. Server non raggiungibili");
+    }
+   }
+
 }
