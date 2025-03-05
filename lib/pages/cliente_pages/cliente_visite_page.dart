@@ -190,6 +190,15 @@ class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     Text(FormatStrings.formatNumber(visitaCorrente.annuncio.prezzo), style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
                     Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
+                    Visibility(
+                      visible: visitaCorrente.annuncio.tipoAnnuncio == "AFFITTO", 
+                      child: Row(
+                        children: [
+                          SizedBox(width: 3,),
+                          Text("/Mese", style: TextStyle(color: context.outline, fontWeight: FontWeight.normal, fontSize: scaleFactor * 22),),
+                        ],
+                      )
+                    )
                   ],
                 ),
                 Row(

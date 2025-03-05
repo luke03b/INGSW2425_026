@@ -128,96 +128,147 @@ class _OffertePageState extends State<OffertePage> {
           onTap: (){
             Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(annuncioSelezionato: offertaSelezionata.annuncio,)));
           },
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-              color: context.primaryContainer,
-              borderRadius: BorderRadius.circular(10),
-              shape: BoxShape.rectangle,
-            ),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
-                  child: SizedBox(
-                    child: Image.asset('lib/assets/casa3_1_placeholder.png'))),
-                Row(
-                  children: [
-                    Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
-                    Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
-                  ],
+          child: Stack(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                decoration: BoxDecoration(
+                  color: context.primaryContainer,
+                  borderRadius: BorderRadius.circular(10),
+                  shape: BoxShape.rectangle,
                 ),
-                SizedBox(
-                  height: scaleFactor * MediaQuery.of(context).size.height/50,
-                ),
-                Row(
+                child: Column(
                   children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text("La tua offerta: ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: context.outline)),
-                    Text(FormatStrings.formatNumber(offertaSelezionata.prezzo), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: context.outline)),
-                    Text(" EUR", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: context.outline)),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!)))),
-                    Visibility(
-                      visible: FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!) == "Controproposta",
-                      child: Row(
-                        children: [
-                          Text(": ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!)))),
-                          Text(FormatStrings.formatNumber(offertaSelezionata.controproposta ?? 0), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: selettoreColoreStatoOfferta(FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!)))),
-                          Text(" EUR", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: selettoreColoreStatoOfferta(FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!)))),
-                        ],
-                      ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
+                      child: SizedBox(
+                        child: Image.asset('lib/assets/casa3_1_placeholder.png'))),
+                    Row(
+                      children: [
+                        Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
+                        Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
+                      ],
+                    ),
+                    SizedBox(
+                      height: scaleFactor * MediaQuery.of(context).size.height/50,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Text("La tua offerta: ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: context.outline)),
+                        Text(FormatStrings.formatNumber(offertaSelezionata.prezzo), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: context.outline)),
+                        Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.normal, color: context.outline)),
+                        Visibility(
+                          visible: offertaSelezionata.annuncio.tipoAnnuncio == "AFFITTO", 
+                          child: Row(
+                            children: [
+                              SizedBox(width: 3,),
+                              Text("/Mese", style: TextStyle(color: context.outline, fontWeight: FontWeight.normal, fontSize: scaleFactor * 22),),
+                            ],
+                          )
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Text(FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!)))),
+                        Visibility(
+                          visible: FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!) == "Controproposta",
+                          child: Row(
+                            children: [
+                              Text(": ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoOfferta(FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!)))),
+                              Text(FormatStrings.formatNumber(offertaSelezionata.controproposta ?? 0), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: selettoreColoreStatoOfferta(FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!)))),
+                              Text(" EUR", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: selettoreColoreStatoOfferta(FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!)))),
+                              Visibility(
+                                visible: offertaSelezionata.annuncio.tipoAnnuncio == "AFFITTO", 
+                                child: Row(
+                                  children: [
+                                    SizedBox(width: 3,),
+                                    Text("/Mese", style: TextStyle(color: selettoreColoreStatoOfferta(FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!)), fontWeight: FontWeight.normal, fontSize: scaleFactor * 22),),
+                                  ],
+                                )
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Text("Data offerta: ", style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.bold, color: context.outline)),
+                        Text(FormatStrings.formattaDataGGMMAAAAeHHMM(offertaSelezionata.data!), style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.normal, color: context.outline)),
+                      ],
+                    ),
+                    SizedBox(
+                      height: scaleFactor * MediaQuery.of(context).size.height/75,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Text(FormatStrings.formatNumber(offertaSelezionata.annuncio.prezzo), style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
+                        Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
+                        Visibility(
+                          visible: offertaSelezionata.annuncio.tipoAnnuncio == "AFFITTO", 
+                          child: Row(
+                            children: [
+                              SizedBox(width: 3,),
+                              Text("/Mese", style: TextStyle(color: context.outline, fontWeight: FontWeight.normal, fontSize: scaleFactor * 20),),
+                            ],
+                          )
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Icon(Icons.location_on, size: scaleFactor * 22, color: context.outline,),
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Expanded(
+                          child: AutoSizeText(
+                            offertaSelezionata.annuncio.indirizzo,
+                            style: TextStyle(
+                              fontSize: scaleFactor * 18,
+                              fontWeight: FontWeight.normal,
+                              color: context.outline,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            minFontSize: 12,
+                          ),
+                        )
+                      ],
                     ),
                   ],
                 ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text("Data offerta: ", style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.bold, color: context.outline)),
-                    Text(FormatStrings.formattaDataGGMMAAAAeHHMM(offertaSelezionata.data!), style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.normal, color: context.outline)),
-                  ],
+              ),
+              if (offertaSelezionata.annuncio.stato == "CONCLUSO")
+              Positioned(
+                top: 10,
+                left: 10,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: context.error,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    offertaSelezionata.annuncio.tipoAnnuncio == "VENDITA" ? "Venduto" : "Affittato",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: context.onError,
+                    ),
+                  ),
                 ),
-                SizedBox(
-                  height: scaleFactor * MediaQuery.of(context).size.height/75,
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(FormatStrings.formatNumber(offertaSelezionata.annuncio.prezzo), style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
-                    Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.location_on, size: scaleFactor * 22, color: context.outline,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Expanded(
-                      child: AutoSizeText(
-                        offertaSelezionata.annuncio.indirizzo,
-                        style: TextStyle(
-                          fontSize: scaleFactor * 18,
-                          fontWeight: FontWeight.normal,
-                          color: context.outline,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        minFontSize: 12,
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       }).toList(),

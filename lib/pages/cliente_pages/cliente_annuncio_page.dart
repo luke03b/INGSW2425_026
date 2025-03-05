@@ -97,7 +97,33 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                 // color: const Color.fromARGB(255, 228, 246, 255),
                 child: Column(
                   children: [
-                    myCarouselSlider(context, listaImmagini),
+                    Stack(
+                      children: [
+                        myCarouselSlider(context, listaImmagini),
+                        Visibility(
+                          visible: widget.annuncioSelezionato.stato == "CONCLUSO", 
+                          child: Positioned(
+                            top: 20,
+                            left: 20,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                              decoration: BoxDecoration(
+                                color: context.error,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                widget.annuncioSelezionato.tipoAnnuncio == "VENDITA" ? "Venduto" : "Affittato",
+                                style: TextStyle(
+                                  color: context.onError,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     AnimatedSmoothIndicator(
                       activeIndex: _currentIndex,
                       count: listaImmagini.length,
@@ -107,7 +133,7 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                         activeDotColor: context.onSecondary
                       )
                     ),
-                    SizedBox(height: 10,)
+                    SizedBox(height: 10,),
                   ],
                 ),
               ),
@@ -128,6 +154,15 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                         SizedBox(width: 10.0),
                         Text(FormatStrings.formatNumber(widget.annuncioSelezionato.prezzo), style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: context.outline),),
                         Text(" EUR", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: context.outline),),
+                        Visibility(
+                          visible: widget.annuncioSelezionato.tipoAnnuncio == "AFFITTO", 
+                          child: Row(
+                            children: [
+                              SizedBox(width: 3,),
+                              Text("/Mese", style: TextStyle(color: context.outline, fontWeight: FontWeight.bold, fontSize: 30),),
+                            ],
+                          )
+                        )
                       ],
                     ),
         

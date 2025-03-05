@@ -115,11 +115,11 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
     return CarouselSlider(
       items: annunciList.asMap().entries.map((entry) {
         int indice = entry.key;
-        AnnuncioDto casaCorrente = entry.value;
+        AnnuncioDto annuncioCorrente = entry.value;
         double scaleFactor = indice == _currentSliderIndex ? 1.0 : 1.0;
         return GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(annuncioSelezionato: casaCorrente)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(annuncioSelezionato: annuncioCorrente)));
           },
           child: Container(
             width: MediaQuery.of(context).size.width,
@@ -151,8 +151,17 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(FormatStrings.formatNumber(casaCorrente.prezzo), style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: context.outline)),
+                    Text(FormatStrings.formatNumber(annuncioCorrente.prezzo), style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: context.outline)),
                     Text(" EUR", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: context.outline)),
+                    Visibility(
+                      visible: annuncioCorrente.tipoAnnuncio == "AFFITTO", 
+                      child: Row(
+                        children: [
+                          SizedBox(width: 3,),
+                          Text("/Mese", style: TextStyle(color: context.outline, fontWeight: FontWeight.bold, fontSize: scaleFactor * GRANDEZZA_SCRITTE),),
+                        ],
+                      )
+                    )
                   ],
                 ),
                 Row(
@@ -163,7 +172,7 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
                     Expanded(
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text(casaCorrente.indirizzo, style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline), softWrap: true,)),
+                          child: Text(annuncioCorrente.indirizzo, style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline), softWrap: true,)),
                       ),
                   ],
                 ),

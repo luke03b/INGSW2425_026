@@ -403,60 +403,84 @@ class _CercaPageState extends State<CercaPage> {
           onTap: (){
             Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(annuncioSelezionato: annuncioCorrente)));
           },
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-              color: context.primaryContainer, 
-              borderRadius: BorderRadius.circular(10),
-              shape: BoxShape.rectangle,
-            ),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
-                  child: SizedBox(
-                    child: Image.asset("lib/assets/casa1_1_placeholder.png"))),
-                Row(
-                  children: [
-                    Expanded(child: Image.asset("lib/assets/casa1_1_placeholder.png")),
-                    Expanded(child: Image.asset("lib/assets/casa1_1_placeholder.png")),
-                  ],
+          child: Stack(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                decoration: BoxDecoration(
+                  color: context.primaryContainer, 
+                  borderRadius: BorderRadius.circular(10),
+                  shape: BoxShape.rectangle,
                 ),
-                SizedBox(
-                  height: scaleFactor * MediaQuery.of(context).size.height/50,
-                ),
-                Row(
+                child: Column(
                   children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(FormatStrings.formatNumber(annuncioCorrente.prezzo), style: TextStyle(fontSize: scaleFactor * 23, fontWeight: FontWeight.bold, color: context.outline)),
-                    Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline),),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.location_on, size: scaleFactor * 22, color: context.outline,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Expanded(
-                      child: AutoSizeText(
-                        annuncioCorrente.indirizzo,
-                        style: TextStyle(
-                          fontSize: scaleFactor * 18,
-                          fontWeight: FontWeight.normal,
-                          color: context.outline,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        minFontSize: 12,
-                      ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
+                      child: SizedBox(
+                        child: Image.asset("lib/assets/casa1_1_placeholder.png"))),
+                    Row(
+                      children: [
+                        Expanded(child: Image.asset("lib/assets/casa1_1_placeholder.png")),
+                        Expanded(child: Image.asset("lib/assets/casa1_1_placeholder.png")),
+                      ],
                     ),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
+                    SizedBox(
+                      height: scaleFactor * MediaQuery.of(context).size.height/50,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Text(FormatStrings.formatNumber(annuncioCorrente.prezzo), style: TextStyle(fontSize: scaleFactor * 23, fontWeight: FontWeight.bold, color: context.outline)),
+                        Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline),),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Icon(Icons.location_on, size: scaleFactor * 22, color: context.outline,),
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Expanded(
+                          child: AutoSizeText(
+                            annuncioCorrente.indirizzo,
+                            style: TextStyle(
+                              fontSize: scaleFactor * 18,
+                              fontWeight: FontWeight.normal,
+                              color: context.outline,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            minFontSize: 12,
+                          ),
+                        ),
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              if (annuncioCorrente.stato == "CONCLUSO")
+              Positioned(
+                top: 10,
+                left: 10,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: context.error,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    annuncioCorrente.tipoAnnuncio == "VENDITA" ? "Venduto" : "Affittato",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: context.onError,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       }).toList(),
