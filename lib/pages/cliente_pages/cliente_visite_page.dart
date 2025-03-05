@@ -123,106 +123,130 @@ class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
           onTap: (){
             Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(annuncioSelezionato: visitaCorrente.annuncio)));
           },
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-              color: context.primaryContainer,
-              borderRadius: BorderRadius.circular(10),
-              shape: BoxShape.rectangle,
-            ),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
-                  child: SizedBox(
-                    child: Image.asset('lib/assets/casa3_1_placeholder.png'))),
-                Row(
-                  children: [
-                    Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
-                    Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
-                  ],
+          child: Stack(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                decoration: BoxDecoration(
+                  color: context.primaryContainer,
+                  borderRadius: BorderRadius.circular(10),
+                  shape: BoxShape.rectangle,
                 ),
-                SizedBox(
-                  height: scaleFactor * MediaQuery.of(context).size.height/50,
-                ),
-                Row(
+                child: Column(
                   children: [
-                    SizedBox(width: MediaQuery.of(context).size.width / 45),
-                    SizedBox(width: MediaQuery.of(context).size.width / 45),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    ClipRRect(
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
+                      child: SizedBox(
+                        child: Image.asset('lib/assets/casa3_1_placeholder.png'))),
+                    Row(
                       children: [
-                        Text(
-                          "Data prenotazione: ",
-                          style: TextStyle(
-                            fontSize: scaleFactor * 22,
-                            fontWeight: FontWeight.bold,
-                            color: context.outline,
-                          ),
+                        Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
+                        Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
+                      ],
+                    ),
+                    SizedBox(
+                      height: scaleFactor * MediaQuery.of(context).size.height/50,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: MediaQuery.of(context).size.width / 45),
+                        SizedBox(width: MediaQuery.of(context).size.width / 45),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Data prenotazione: ",
+                              style: TextStyle(
+                                fontSize: scaleFactor * 22,
+                                fontWeight: FontWeight.bold,
+                                color: context.outline,
+                              ),
+                            ),
+                            AutoSizeText(
+                              "${FormatStrings.formattaDataGGMMAAAA(visitaCorrente.data)} dalle ${FormatStrings.formattaOrario(visitaCorrente.orarioInizio)} alle ${FormatStrings.formattaOrario(visitaCorrente.orarioFine!)}",
+                              style: TextStyle(
+                                fontSize: scaleFactor * 18,
+                                fontWeight: FontWeight.normal,
+                                color: context.outline,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              minFontSize: 12,
+                              maxFontSize: 20,
+                            ),
+                          ],
                         ),
-                        AutoSizeText(
-                          "${FormatStrings.formattaDataGGMMAAAA(visitaCorrente.data)} dalle ${FormatStrings.formattaOrario(visitaCorrente.orarioInizio)} alle ${FormatStrings.formattaOrario(visitaCorrente.orarioFine!)}",
-                          style: TextStyle(
-                            fontSize: scaleFactor * 18,
-                            fontWeight: FontWeight.normal,
-                            color: context.outline,
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Text(FormatStrings.mappaStatoVisita(visitaCorrente.stato!), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoPrenotazione(FormatStrings.mappaStatoVisita(visitaCorrente.stato!)))),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Text(FormatStrings.formatNumber(visitaCorrente.annuncio.prezzo), style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
+                        Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
+                        Visibility(
+                          visible: visitaCorrente.annuncio.tipoAnnuncio == "AFFITTO", 
+                          child: Row(
+                            children: [
+                              SizedBox(width: 3,),
+                              Text("/Mese", style: TextStyle(color: context.outline, fontWeight: FontWeight.bold, fontSize: scaleFactor * 20),),
+                            ],
+                          )
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Icon(Icons.location_on, size: scaleFactor * 22, color: context.outline,),
+                        SizedBox(width: MediaQuery.of(context).size.width/45,),
+                        Expanded(
+                          child: AutoSizeText(
+                            visitaCorrente.annuncio.indirizzo,
+                            style: TextStyle(
+                              fontSize: scaleFactor * 18,
+                              fontWeight: FontWeight.normal,
+                              color: context.outline,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            minFontSize: 12,
                           ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          minFontSize: 12,
-                          maxFontSize: 20,
-                        ),
+                        )
                       ],
                     ),
                   ],
                 ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(FormatStrings.mappaStatoVisita(visitaCorrente.stato!), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: selettoreColoreStatoPrenotazione(FormatStrings.mappaStatoVisita(visitaCorrente.stato!)))),
-                  ],
+              ),
+              if (visitaCorrente.annuncio.stato == "CONCLUSO")
+              Positioned(
+                top: 10,
+                left: 10,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: context.error,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    visitaCorrente.annuncio.tipoAnnuncio == "VENDITA" ? "Venduto" : "Affittato",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: context.onError,
+                    ),
+                  ),
                 ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Text(FormatStrings.formatNumber(visitaCorrente.annuncio.prezzo), style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
-                    Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.bold, color: context.outline)),
-                    Visibility(
-                      visible: visitaCorrente.annuncio.tipoAnnuncio == "AFFITTO", 
-                      child: Row(
-                        children: [
-                          SizedBox(width: 3,),
-                          Text("/Mese", style: TextStyle(color: context.outline, fontWeight: FontWeight.normal, fontSize: scaleFactor * 22),),
-                        ],
-                      )
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Icon(Icons.location_on, size: scaleFactor * 22, color: context.outline,),
-                    SizedBox(width: MediaQuery.of(context).size.width/45,),
-                    Expanded(
-                      child: AutoSizeText(
-                        visitaCorrente.annuncio.indirizzo,
-                        style: TextStyle(
-                          fontSize: scaleFactor * 18,
-                          fontWeight: FontWeight.normal,
-                          color: context.outline,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        minFontSize: 12,
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       }).toList(),
