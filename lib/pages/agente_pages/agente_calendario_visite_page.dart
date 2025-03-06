@@ -218,7 +218,25 @@ class _AgenteCalendarioPrenotazioniPageState extends State<AgenteCalendarioPreno
                             color: context.primary,
                             shape: BoxShape.circle),
                         outsideDaysVisible: false,
-                      ),
+                      ),                
+                          calendarBuilders: CalendarBuilders(
+                              markerBuilder: (context, date, events) {
+                                if (events.isNotEmpty) {
+                                  return Positioned(
+                                    bottom: 6,  
+                                    child: Container(
+                                      width: 7,  
+                                      height: 6,
+                                      decoration: BoxDecoration(
+                                        color: context.error,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                  );
+                                }
+                                return SizedBox.shrink();
+                              },
+                            ),
                       onDaySelected: _onDaySelected,
                       onRangeSelected: _onRangeSelected,
                       onFormatChanged: (format) {

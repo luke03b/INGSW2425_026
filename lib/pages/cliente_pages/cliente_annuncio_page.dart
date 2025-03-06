@@ -487,14 +487,14 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                       Row(
                         children: [
                           SizedBox(width: 10.0),
-                          Text("Agente immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
+                          Text("Agenzia immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
                           Text(widget.annuncioSelezionato.agente.agenziaImmobiliare!.nome, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline))
                         ],
                       ),
                       Row(
                         children: [
                           SizedBox(width: 10.0),
-                          Text("Agenzia immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
+                          Text("Agente immobiliare: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: context.outline),),
                           Text("${widget.annuncioSelezionato.agente.nome} ${widget.annuncioSelezionato.agente.cognome}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: context.outline))
                         ],
                       ),
