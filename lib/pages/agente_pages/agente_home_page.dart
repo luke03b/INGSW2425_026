@@ -154,8 +154,14 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
               context,
               "Benvenuto! Non hai ancora annunci. Aggiungine subito uno",
               "Aggiungi annuncio",
-              () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteCreaAnnuncioPage()));
+              () async {
+                await Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteCreaAnnuncioPage()));
+                setState(() {
+                  hasUserAnnunci = false;
+                  areDataRetrieved = false;
+                  areServersAvailable = false;
+                });
+                getAnnunciAgente();
               }
             ),
 
@@ -237,31 +243,34 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
               ),
             )
           ),
-          Positioned(
-          bottom: 0,
-          left: 250,
-          right: -60,
-          child: Column(
-            children: [
-              SizedBox(height: 10,),
-              Row(children: [
-              SizedBox(width: 5,),
-              Expanded(child: MyAddButtonWidget(onPressed: () async {
-                await Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteCreaAnnuncioPage()));
-                setState(() {
-                  hasUserAnnunci = false;
-                  areDataRetrieved = false;
-                  areServersAvailable = false;
-                });
-                getAnnunciAgente();
-              },
-              color: context.onSecondary)),
-              SizedBox(width: 5,),
-              ],),
-              SizedBox(height: 10,)
-            ],
-          )
-        )]
+          Visibility(
+            visible: hasUserAnnunci,
+            child: Positioned(
+                    bottom: 0,
+                    left: 250,
+                    right: -60,
+                    child: Column(
+                      children: [
+                        SizedBox(height: 10,),
+                        Row(children: [
+                        SizedBox(width: 5,),
+                        Expanded(child: MyAddButtonWidget(onPressed: () async {
+                          await Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteCreaAnnuncioPage()));
+                          setState(() {
+                            hasUserAnnunci = false;
+                            areDataRetrieved = false;
+                            areServersAvailable = false;
+                          });
+                          getAnnunciAgente();
+                        },
+                        color: context.onSecondary)),
+                        SizedBox(width: 5,),
+                        ],),
+                        SizedBox(height: 10,)
+                      ],
+                    )
+                  ),
+          )]
       ),
     );
   }

@@ -483,11 +483,11 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                                 //colonna contenente valori
                                 Column(
                                   children: [
-                                    Icon(annuncioSelezionato!.vicinoScuole! ? Icons.check :  Icons.close, size: 30, color: coloriPulsanti,),
+                                    Icon(annuncioSelezionato!.vicinoScuole! ? Icons.check :  Icons.close, size: 30, color: annuncioSelezionato!.vicinoScuole! ? Colors.green :  context.error),
                                     SizedBox(height: 22,),
-                                    Icon(annuncioSelezionato!.vicinoParchi! ? Icons.check :  Icons.close, size: 30, color: coloriPulsanti),
+                                    Icon(annuncioSelezionato!.vicinoParchi! ? Icons.check :  Icons.close, size: 30, color: annuncioSelezionato!.vicinoScuole! ? Colors.green :  context.error),
                                     SizedBox(height: 22,),
-                                    Icon(annuncioSelezionato!.vicinoTrasporti! ? Icons.check :  Icons.close, size: 30, color: coloriPulsanti),                       
+                                    Icon(annuncioSelezionato!.vicinoTrasporti! ? Icons.check :  Icons.close, size: 30, color: annuncioSelezionato!.vicinoScuole! ? Colors.green :  context.error),                       
                                   ],
                                 ),
                               ],

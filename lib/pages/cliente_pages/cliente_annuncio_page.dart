@@ -185,7 +185,6 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                       ],
                     ),
         
-        
                     // Expanded(child: Divider(height: 50, thickness: 2, indent: 20, endIndent: 10, color: Colors.black)),
                     Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
         
@@ -459,11 +458,11 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                                   //colonna contenente valori
                                   Column(
                                     children: [
-                                      Icon(widget.annuncioSelezionato.vicinoScuole! ? Icons.check :  Icons.close, size: 30, color: context.outline),
+                                      Icon(widget.annuncioSelezionato.vicinoScuole! ? Icons.check :  Icons.close, size: 30, color: widget.annuncioSelezionato.vicinoScuole! ? Colors.green :  context.error),
                                       SizedBox(height: 16,),
-                                      Icon(widget.annuncioSelezionato.vicinoParchi! ? Icons.check :  Icons.close, size: 30, color: context.outline),
+                                      Icon(widget.annuncioSelezionato.vicinoParchi! ? Icons.check :  Icons.close, size: 30, color: widget.annuncioSelezionato.vicinoParchi! ? Colors.green :  context.error),
                                       SizedBox(height: 16,),
-                                      Icon(widget.annuncioSelezionato.vicinoTrasporti! ? Icons.check :  Icons.close, size: 30, color: context.outline),                    
+                                      Icon(widget.annuncioSelezionato.vicinoTrasporti! ? Icons.check :  Icons.close, size: 30, color: widget.annuncioSelezionato.vicinoTrasporti! ? Colors.green :  context.error),                    
                                     ],
                                   ),
                                 ],
@@ -501,47 +500,54 @@ class _ClienteAnnuncioPageState extends State<ClienteAnnuncioPage> {
                       ),
                     ],
                   ),
-
-                  Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
-                  SizedBox(height: 65,)
-        
-                    
+                  
+                  Visibility(
+                    visible: widget.annuncioSelezionato.stato == "DISPONIBILE",
+                    child: Column(
+                      children: [
+                        Divider(height: 15, thickness: 1, indent: 0, endIndent: 0, color: Colors.grey),
+                        SizedBox(height: 65,)
+                      ],
+                    ),
+                  ) 
                   ],
                 ),
               ),
             ],
           )
         ),
-        Positioned(
-          bottom: -5,
-          left: 0,
-          right: 0,
-          child: Stack(
-            children: [
-              Card(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-                color: context.primaryContainer,
-                child: Column(
-                  children: [
-                    SizedBox(height: 10,),
-                    Row(children: [
-                    SizedBox(width: 5,),
-                    Expanded(child: MyElevatedButtonRectWidget(text: "Offerta", onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => CreaOffertaPage(annuncioSelezionato: widget.annuncioSelezionato, isOffertaManuale: false,)));
-                    }, color: context.onSecondary)),
-                    SizedBox(width: 5,),
-                    Expanded(child: MyElevatedButtonRectWidget(text: "Visita", onPressed: (){
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteCreaPrenotazionePage(casaSelezionata: widget.casaSelezionata)));
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteCreaVisitaPage(annuncioSelezionato: widget.annuncioSelezionato,)));
-                    }, color: context.onSecondary)),
-                    SizedBox(width: 5,),
-                    ],),
-                    SizedBox(height: 10,)
-                  ],
+        Visibility(
+          visible: widget.annuncioSelezionato.stato == "DISPONIBILE",
+          child: Positioned(
+            bottom: -5,
+            left: 0,
+            right: 0,
+            child: Stack(
+              children: [
+                Card(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                  color: context.primaryContainer,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10,),
+                      Row(children: [
+                      SizedBox(width: 5,),
+                      Expanded(child: MyElevatedButtonRectWidget(text: "Offerta", onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => CreaOffertaPage(annuncioSelezionato: widget.annuncioSelezionato, isOffertaManuale: false,)));
+                      }, color: context.onSecondary)),
+                      SizedBox(width: 5,),
+                      Expanded(child: MyElevatedButtonRectWidget(text: "Visita", onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteCreaVisitaPage(annuncioSelezionato: widget.annuncioSelezionato,)));
+                      }, color: context.onSecondary)),
+                      SizedBox(width: 5,),
+                      ],),
+                      SizedBox(height: 10,)
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          )
+              ],
+            )
+          ),
         )]
       )
     );

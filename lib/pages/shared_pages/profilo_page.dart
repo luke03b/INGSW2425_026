@@ -1,3 +1,5 @@
+import 'package:domus_app/back_end_communication/class_services/utente_service.dart';
+import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
 import 'package:domus_app/costants/costants.dart';
 import 'package:domus_app/pages/admin_pages/admin_crea_nuovo_admin_o_agente_page.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_eliminazione_account_page.dart';
@@ -318,16 +320,18 @@ class _ProfiloPageState extends State<ProfiloPage> {
 
   Future<void> recuperaCredenzialiUtenteLoggato() async{
     AWSServices AWSInstance = AWSServices();
-    String? nomeUtenteLoggatoTemp = await AWSInstance.recuperaNomeUtenteLoggato();
-    String? cognomeUtenteLoggatoTemp = await AWSInstance.recuperaCognomeUtenteLoggato();
-    String? mailUtenteLoggatoTemp = await AWSInstance.recuperaEmailUtenteLoggato();
-    String? gruppoUtenteLoggatoTemp = await AWSInstance.recuperaGruppoUtenteLoggato();
+    // String? nomeUtenteLoggatoTemp = await AWSInstance.recuperaNomeUtenteLoggato();
+    // String? cognomeUtenteLoggatoTemp = await AWSInstance.recuperaCognomeUtenteLoggato();
+    // String? mailUtenteLoggatoTemp = await AWSInstance.recuperaEmailUtenteLoggato();
+    // String? gruppoUtenteLoggatoTemp = await AWSInstance.recuperaGruppoUtenteLoggato();
+    String? subUtenteLoggato = await AWSInstance.recuperaSubUtenteLoggato();
+    UtenteDto utenteLoggato = await UtenteService.recuperaUtenteBySub(subUtenteLoggato!);
 
     setState(() {
-      nomeUtenteLoggato = nomeUtenteLoggatoTemp;
-      cognomeUtenteLoggato = cognomeUtenteLoggatoTemp;
-      mailUtenteLoggato = mailUtenteLoggatoTemp;
-      gruppoUtenteLoggato = gruppoUtenteLoggatoTemp;
+      nomeUtenteLoggato = utenteLoggato.nome;
+      cognomeUtenteLoggato = utenteLoggato.cognome;
+      mailUtenteLoggato = utenteLoggato.email;
+      gruppoUtenteLoggato = utenteLoggato.tipo;
     });
   }
 }
