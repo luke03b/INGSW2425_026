@@ -28,22 +28,26 @@ class _RadiusSliderState extends State<RadiusSlider> {
       children: [
         SizedBox(
           width: 340,
-          child: Slider(
-            value: _radius,
-            min: 1,
-            max: 10,
-            divisions: 9,
-            activeColor: Theme.of(context).colorScheme.onSecondary,
-            inactiveColor: Theme.of(context).colorScheme.secondary,
-            label: '$_radius km',
-            onChanged: (value) {
-              setState(() {
-                _radius = value;
-              });
+          child:SliderTheme(
+            data: SliderTheme.of(context).copyWith(
+            valueIndicatorColor: Theme.of(context).colorScheme.error, // Colore della label
+            valueIndicatorTextStyle: TextStyle(color: Colors.white), // Colore del testo nella label
+            ),child:Slider(
+                value: _radius,
+                 min: 1,
+                 max: 10,
+                 divisions: 9,
+                 activeColor: Theme.of(context).colorScheme.onSecondary,
+                 inactiveColor: Theme.of(context).colorScheme.secondary,
+                 label: "$_radius km",
+                 onChanged: (value) {
+                 setState(() {
+                 _radius = value;
+                });
               widget.onChanged(value);
-            },
+              },
+            )),
           ),
-        ),
         const SizedBox(width: 8),
         Text(
           "${_radius.toStringAsFixed(0)} km",
