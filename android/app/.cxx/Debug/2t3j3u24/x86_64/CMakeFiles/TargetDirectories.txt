@@ -1,2 +1,0 @@
-C:/Users/Alessio/dev/INGSW2425_026/android/app/.cxx/Debug/2t3j3u24/x86_64/CMakeFiles/edit_cache.dir
-C:/Users/Alessio/dev/INGSW2425_026/android/app/.cxx/Debug/2t3j3u24/x86_64/CMakeFiles/rebuild_cache.dir
