@@ -5,6 +5,8 @@ import 'package:domus_app/pages/auth_pages/initial_page.dart';
 import 'package:domus_app/pages/auth_pages/password_dimenticata_page.dart';
 import 'package:domus_app/ui_elements/theme/theme_provider.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'amplifyconfiguration.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_controllore_pagine.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_controllore_pagine2.dart';
