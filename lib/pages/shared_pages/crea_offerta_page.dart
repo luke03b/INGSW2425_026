@@ -351,7 +351,7 @@ class _CreaOffertaPageState extends State<CreaOffertaPage> {
                                                   context: context, 
                                                   builder: (BuildContext context) => MyInfoDialog(
                                                     title: "Errore",
-                                                    bodyText: "Offerta non inviata. Hai già fatto un'offerta per questo annuncio, attendi che un agente la esamini.", 
+                                                    bodyText: "Offerta non inviata. $e", 
                                                     buttonText: "Ok", 
                                                     onPressed: () {Navigator.pop(context);}
                                                   )

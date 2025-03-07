@@ -12,10 +12,14 @@ import 'package:http/http.dart' as http;
 class VisitaService {
 
   static Future<int> creaVisita(AnnuncioDto annuncio, String data, String orarioInizio) async {
-    String? sub = await AWSServices().recuperaSubUtenteLoggato();
-    UtenteDto? cliente = await UtenteService.recuperaUtenteBySub(sub!);
+    try{
+      String? sub = await AWSServices().recuperaSubUtenteLoggato();
+      UtenteDto? cliente = await UtenteService.recuperaUtenteBySub(sub!);
 
-    return _creaVisitaCliente(cliente, annuncio, data, orarioInizio);
+      return _creaVisitaCliente(cliente, annuncio, data, orarioInizio);
+    } catch (e) {
+      throw Exception(e.toString());
+    }
   }
 
   static Future<int> _creaVisitaCliente(UtenteDto cliente, AnnuncioDto annuncio, String data, String orarioInizio) async {
@@ -25,10 +29,12 @@ class VisitaService {
       
       if(response.statusCode == 201){
         return response.statusCode;        
-      }else{
-        throw Exception("Errore nell'inserimento della visita");
+      }else if (response.statusCode == 400) {
+        final Map<String, dynamic> errorBody = jsonDecode(response.body);
+        throw Exception(errorBody["error"]);
+      } else {
+        throw Exception("Errore sconosciuto: ${response.statusCode} ${response.body}");
       }
-
     } on TimeoutException {
       throw TimeoutException("Errore nell'inserimento della visita (i server potrebbero non essere raggiungibili).");
     }

@@ -186,15 +186,32 @@ class _ProfiloPageState extends State<ProfiloPage> {
 
           GestureDetector(
               onTap: () async {
-                final Uri url = Uri.parse("https://www.instagram.com/househunters004/");
-                if (await canLaunchUrl(url)) {
-                  await launchUrl(url, mode: LaunchMode.externalApplication);
-                } else {
-                  showDialog(
-                    context: context, 
-                    builder: (BuildContext context) => MyInfoDialog(title: "Errore", bodyText: "Non è stato possibile aprire instagram", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
-                  );
-                }
+                showDialog(
+                  context : context,
+                  builder : (BuildContext context) => MyOptionsDialog(
+                    title: "Instagram", 
+                    bodyText: "Sarai reindirizzato all'account instagram di HouseHunters. Vuoi proseguire?", 
+                    leftButtonText: "No",
+                    leftButtonColor: context.secondary, 
+                    rightButtonText: "Si", 
+                    rightButtonColor: context.tertiary, 
+                    onPressLeftButton: () {
+                      Navigator.pop(context);
+                    }, 
+                    onPressRightButton: () async {
+                      final Uri url = Uri.parse("https://www.instagram.com/househunters004/");
+                      if (await canLaunchUrl(url)) {
+                        Navigator.pop(context);
+                        await launchUrl(url, mode: LaunchMode.externalApplication);
+                      } else {
+                        showDialog(
+                          context: context, 
+                          builder: (BuildContext context) => MyInfoDialog(title: "Errore", bodyText: "Non è stato possibile aprire instagram", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
+                        );
+                      }
+                    }
+                  )
+                );
               },
               child: Card(
               color: context.primaryContainer,

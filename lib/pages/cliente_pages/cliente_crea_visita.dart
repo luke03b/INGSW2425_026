@@ -122,6 +122,7 @@ class _ClienteCreaVisitaPageState extends State<ClienteCreaVisitaPage> {
                         areOursServersAvailable = false;
                         areOpenMeteoServersAvailable = false;
                       });
+                      recuperaPrevisioniMeteo(widget.annuncioSelezionato.latitudine, widget.annuncioSelezionato.longitudine);
                       getVisiteAnnuncio();
                     },
                   ),
@@ -140,6 +141,7 @@ class _ClienteCreaVisitaPageState extends State<ClienteCreaVisitaPage> {
                         areOpenMeteoServersAvailable = false;
                         areOursServersAvailable = false;
                       });
+                      recuperaPrevisioniMeteo(widget.annuncioSelezionato.latitudine, widget.annuncioSelezionato.longitudine);
                       getVisiteAnnuncio();
                     },
                   ),
@@ -303,7 +305,6 @@ class _ClienteFasceOrarieVisitaState extends State<ClienteFasceOrarieVisita> {
                     await StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 201, "Conferma", "Visita creata", "Errore", "Visita non creata");
                     Navigator.pop(context);
                     Navigator.pop(context);
-                    Navigator.pop(context);
                   } on TimeoutException {
                     Navigator.pop(context);
                     showDialog(
@@ -321,7 +322,7 @@ class _ClienteFasceOrarieVisitaState extends State<ClienteFasceOrarieVisita> {
                       context: context, 
                       builder: (BuildContext context) => MyInfoDialog(
                         title: "Errore",
-                        bodyText: "Visita non creata. Hai già inoltrato una richiesta di visita per questo annuncio. Prima di poterne creare un'altra devi aspettare che un agente la esamini e la rifiuti.", 
+                        bodyText: "Visita non creata. $e.", 
                         buttonText: "Ok", 
                         onPressed: () {Navigator.pop(context);},
                       )
