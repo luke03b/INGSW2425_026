@@ -6,6 +6,7 @@ import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
 import 'package:domus_app/ui_elements/utils/my_text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ClienteEliminazioneAccountPage extends StatefulWidget {
   final String? emailUtente;
@@ -167,6 +168,8 @@ class _ClienteEliminazioneAccountPageState extends State<ClienteEliminazioneAcco
                                           onPressRightButton: () async {
                                             bool isUserDeleted = await deleteUser(widget.emailUtente ?? mailController.text, passwordController.text);
                                             isUserDeleted &= await UtenteService.eliminaUtenteDalNostroDb(await AWSServices().recuperaSubUtenteLoggato());
+                                            final prefs = await SharedPreferences.getInstance();
+                                            await prefs.remove('userToken');
                                             if(isUserDeleted){
                                               Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);
                                             } else {

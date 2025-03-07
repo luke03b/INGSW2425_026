@@ -63,6 +63,8 @@ class VisitaController {
         throw TimeoutException("Il server non risponde.");
       },
     );
+
+    debugPrint(response.body);
     
     return response;
   }
