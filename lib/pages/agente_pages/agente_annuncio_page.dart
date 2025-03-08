@@ -4,7 +4,7 @@ import 'package:domus_app/back_end_communication/class_services/annuncio_service
 import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
 import 'package:domus_app/pages/agente_pages/agente_offerte_page.dart';
 import 'package:domus_app/pages/agente_pages/agente_visite_page.dart';
-import 'package:domus_app/services/formatStrings.dart';
+import 'package:domus_app/ui_elements/utils/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_ui_messages_widgets.dart';
 import 'package:flutter/foundation.dart';
@@ -485,9 +485,9 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                                   children: [
                                     Icon(annuncioSelezionato!.vicinoScuole! ? Icons.check :  Icons.close, size: 30, color: annuncioSelezionato!.vicinoScuole! ? Colors.green :  context.error),
                                     SizedBox(height: 22,),
-                                    Icon(annuncioSelezionato!.vicinoParchi! ? Icons.check :  Icons.close, size: 30, color: annuncioSelezionato!.vicinoScuole! ? Colors.green :  context.error),
+                                    Icon(annuncioSelezionato!.vicinoParchi! ? Icons.check :  Icons.close, size: 30, color: annuncioSelezionato!.vicinoParchi! ? Colors.green :  context.error),
                                     SizedBox(height: 22,),
-                                    Icon(annuncioSelezionato!.vicinoTrasporti! ? Icons.check :  Icons.close, size: 30, color: annuncioSelezionato!.vicinoScuole! ? Colors.green :  context.error),                       
+                                    Icon(annuncioSelezionato!.vicinoTrasporti! ? Icons.check :  Icons.close, size: 30, color: annuncioSelezionato!.vicinoTrasporti! ? Colors.green :  context.error),                       
                                   ],
                                 ),
                               ],

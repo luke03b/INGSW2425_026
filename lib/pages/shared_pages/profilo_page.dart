@@ -4,7 +4,7 @@ import 'package:domus_app/costants/costants.dart';
 import 'package:domus_app/pages/admin_pages/admin_crea_nuovo_admin_o_agente_page.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_eliminazione_account_page.dart';
 import 'package:domus_app/pages/shared_pages/cambia_password_page.dart';
-import 'package:domus_app/services/aws_cognito.dart';
+import 'package:domus_app/amazon_services/aws_cognito.dart';
 import 'package:domus_app/ui_elements/theme/theme_provider.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
@@ -12,6 +12,7 @@ import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfiloPage extends StatefulWidget {
@@ -342,13 +343,28 @@ class _ProfiloPageState extends State<ProfiloPage> {
     // String? mailUtenteLoggatoTemp = await AWSInstance.recuperaEmailUtenteLoggato();
     // String? gruppoUtenteLoggatoTemp = await AWSInstance.recuperaGruppoUtenteLoggato();
     String? subUtenteLoggato = await AWSInstance.recuperaSubUtenteLoggato();
-    UtenteDto utenteLoggato = await UtenteService.recuperaUtenteBySub(subUtenteLoggato!);
-
-    setState(() {
-      nomeUtenteLoggato = utenteLoggato.nome;
-      cognomeUtenteLoggato = utenteLoggato.cognome;
-      mailUtenteLoggato = utenteLoggato.email;
-      gruppoUtenteLoggato = utenteLoggato.tipo;
-    });
+    try{
+      UtenteDto utenteLoggato = await UtenteService.recuperaUtenteBySub(subUtenteLoggato!);
+      setState(() {
+        nomeUtenteLoggato = utenteLoggato.nome;
+        cognomeUtenteLoggato = utenteLoggato.cognome;
+        mailUtenteLoggato = utenteLoggato.email;
+        gruppoUtenteLoggato = utenteLoggato.tipo;
+      });
+    } catch (e) {
+      showDialog(
+        context: context, 
+        builder: (BuildContext context) => MyInfoDialog(
+          title: "Errore", 
+          bodyText: "$e", 
+          buttonText: "Ok", 
+          onPressed: () async {
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.remove('userToken');
+            Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);
+          }
+        )
+      );
+    }
   }
 }

@@ -1,7 +1,7 @@
 import 'package:domus_app/back_end_communication/class_services/utente_service.dart';
 import 'package:domus_app/back_end_communication/dto/agenzia_immobiliare_dto.dart';
 import 'package:domus_app/costants/costants.dart';
-import 'package:domus_app/services/aws_cognito.dart';
+import 'package:domus_app/amazon_services/aws_cognito.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
 import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';

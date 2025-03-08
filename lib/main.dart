@@ -1,5 +1,6 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:domus_app/api_utils/api_key_provider.dart';
 import 'package:domus_app/pages/agente_pages/agente_controllore_pagine.dart';
 import 'package:domus_app/pages/auth_pages/initial_page.dart';
 import 'package:domus_app/pages/auth_pages/password_dimenticata_page.dart';
@@ -15,6 +16,7 @@ import 'pages/auth_pages/login_page.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
+  await ApiKeyProvider.initializeDotEnv();
   runApp(ChangeNotifierProvider(
       create: (context) => ThemeProvider(),
       child: const MyApp(),

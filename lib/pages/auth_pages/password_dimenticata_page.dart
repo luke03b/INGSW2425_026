@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:domus_app/services/aws_cognito.dart';
+import 'package:domus_app/amazon_services/aws_cognito.dart';
 import 'package:domus_app/ui_elements/theme/theme_provider.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';

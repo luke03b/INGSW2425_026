@@ -5,7 +5,7 @@ import 'package:domus_app/back_end_communication/class_services/annuncio_service
 import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
 import 'package:domus_app/pages/agente_pages/agente_annuncio_page.dart';
 import 'package:domus_app/pages/agente_pages/agente_crea_annuncio_page.dart';
-import 'package:domus_app/services/formatStrings.dart';
+import 'package:domus_app/ui_elements/utils/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
 import 'package:domus_app/ui_elements/utils/my_ui_messages_widgets.dart';

@@ -8,7 +8,7 @@ import 'package:domus_app/back_end_communication/dto/offerta_dto.dart';
 import 'package:domus_app/costants/enumerations.dart';
 import 'package:domus_app/pages/agente_pages/agente_analisi_offerta_page.dart';
 import 'package:domus_app/pages/shared_pages/crea_offerta_page.dart';
-import 'package:domus_app/services/formatStrings.dart';
+import 'package:domus_app/ui_elements/utils/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
 import 'package:domus_app/ui_elements/utils/my_loading.dart';

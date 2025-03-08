@@ -5,7 +5,7 @@ import 'package:domus_app/back_end_communication/communication_utils/status_code
 import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/previsioni_meteo_dto.dart';
 import 'package:domus_app/back_end_communication/dto/visita_dto.dart';
-import 'package:domus_app/services/formatStrings.dart';
+import 'package:domus_app/ui_elements/utils/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
 import 'package:domus_app/ui_elements/utils/my_previsioni_meteo_ui_provider.dart';

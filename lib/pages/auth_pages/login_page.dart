@@ -1,5 +1,5 @@
 import 'package:domus_app/costants/costants.dart';
-import 'package:domus_app/services/aws_cognito.dart';
+import 'package:domus_app/amazon_services/aws_cognito.dart';
 import 'package:domus_app/ui_elements/theme/theme_provider.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
@@ -100,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                     width: 375,
                     child: IconButton(onPressed: () async {
                         bool isAllOk = await AWSServices().signInWithGoogle();
-                        if (await isAllOk) {
+                        if (isAllOk) {
                           Navigator.pop(context); Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (r) => false);
                         } else {
                           showDialog(

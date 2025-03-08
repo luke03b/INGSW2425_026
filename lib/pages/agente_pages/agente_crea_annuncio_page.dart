@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:io'; 
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:domus_app/api_utils/api_key_provider.dart';
 import 'package:domus_app/back_end_communication/class_services/annuncio_service.dart';
 import 'package:domus_app/back_end_communication/class_services/utente_service.dart';
 import 'package:domus_app/back_end_communication/communication_utils/status_code_controller.dart';
 import 'package:domus_app/costants/enumerations.dart';
 import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
-import 'package:domus_app/services/aws_cognito.dart';
+import 'package:domus_app/amazon_services/aws_cognito.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
 import 'package:domus_app/ui_elements/utils/my_loading.dart';
@@ -48,7 +50,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
 
   final TextEditingController indirizzoController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
+  final AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
 
   double? latitude;
   double? longitude;
@@ -317,7 +319,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                                 isIndirizzoOk = true;
                               });},
                               textEditingController: indirizzoController,
-                              googleAPIKey: "AIzaSyBUkzr-VCtKVyTTfssndaWR5Iy5TyfM0as",
+                              googleAPIKey: ApiKeyProvider.googleMapsApiKey,
                               decoration: InputDecoration(
                                 hintText: 'Inserire un indirizzo',
                                 hintStyle: TextStyle(color: coloreScritte),
@@ -333,7 +335,6 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                                 }
                                 return null;
                               },
-                              // proxyURL: _yourProxyURL,
                               maxLines: 1,
                               overlayContainerBuilder: (child) => Material(
                                 elevation: 1.0,
@@ -343,10 +344,10 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                               ),
                               fetchCoordinates: true,
                               onPlaceDetailsWithCoordinatesReceived: (prediction) {
-                                print('placeDetails ${prediction.lat} , ${prediction.lng}');
+                                safePrint('placeDetails ${prediction.lat} , ${prediction.lng}');
                                 latitude = double.tryParse(prediction.lat ?? '');
                                 longitude = double.tryParse(prediction.lng ?? '');
-                                print('new coordinates $latitude , $longitude');
+                                safePrint('new coordinates $latitude , $longitude');
                               },
                               onSuggestionClicked: (Prediction prediction) =>
                                   indirizzoController.text = prediction.description!,

@@ -6,7 +6,7 @@ import 'package:domus_app/back_end_communication/class_services/utente_service.d
 import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/offerta_dto.dart';
 import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
-import 'package:domus_app/services/aws_cognito.dart';
+import 'package:domus_app/amazon_services/aws_cognito.dart';
 import 'package:http/http.dart' as http;
 
 class OffertaService {

@@ -1,12 +1,12 @@
 import 'package:domus_app/back_end_communication/dto/dto.dart';
 
 class AgenziaImmobiliareDto implements DTO {
-  final String id;
+  final String? id;
   final String nome;
   final String partitaIva;
 
   AgenziaImmobiliareDto({
-    required this.id,
+    this.id,
     required this.nome,
     required this.partitaIva,
   });
