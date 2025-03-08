@@ -56,7 +56,7 @@ class AnnuncioDto implements DTO{
   Map<String, dynamic> toJson() {
     return {
       'id' : idAnnuncio,
-      "tipo_annuncio": tipoAnnuncio,
+      "tipoAnnuncio": tipoAnnuncio,
       "stato" : stato,
       "prezzo": prezzo,
       "superficie": superficie,
@@ -67,24 +67,24 @@ class AnnuncioDto implements DTO{
       "arredo": arredo,
       "balcone": balcone,
       "giardino": giardino,
-      "classe_energetica": classeEnergetica,
+      "classeEnergetica": classeEnergetica,
       "piano": piano,
-      "numero_piano": numeroPiano,
+      "numeroPiano": numeroPiano,
       "agente": agente.toJson(),
       "indirizzo": indirizzo,
       "latitudine": latitudine,
       "longitudine": longitudine,
       "descrizione": descrizione,
-      "vicino_scuole": vicinoScuole,
-      "vicino_parchi": vicinoParchi,
-      "vicino_trasporti": vicinoTrasporti,
+      "vicinoScuole": vicinoScuole,
+      "vicinoParchi": vicinoParchi,
+      "vicinoTrasporti": vicinoTrasporti,
     };
   }
 
   static AnnuncioDto fromJson(Map<String, dynamic> json) {
     return AnnuncioDto(
       idAnnuncio: json['id'],
-      tipoAnnuncio: json['tipo_annuncio'],
+      tipoAnnuncio: json['tipoAnnuncio'],
       stato: json["stato"],
       prezzo: json['prezzo'],
       superficie: json['superficie'],
@@ -95,17 +95,17 @@ class AnnuncioDto implements DTO{
       arredo: json['arredo'],
       balcone: json['balcone'],
       giardino: json['giardino'],
-      classeEnergetica: json['classe_energetica'],
+      classeEnergetica: json['classeEnergetica'],
       piano: json['piano'],
-      numeroPiano: json['numero_piano'],
+      numeroPiano: json['numeroPiano'],
       agente: UtenteDto.fromJson(json['agente']),
       indirizzo: json['indirizzo'],
       latitudine: json['latitudine'],
       longitudine: json['longitudine'],
       descrizione: json['descrizione'],
-      vicinoScuole: json['vicino_scuole'],
-      vicinoParchi: json['vicino_parchi'],
-      vicinoTrasporti: json['vicino_trasporti'],
+      vicinoScuole: json['vicinoScuole'],
+      vicinoParchi: json['vicinoParchi'],
+      vicinoTrasporti: json['vicinoTrasporti'],
     );
   }
 }

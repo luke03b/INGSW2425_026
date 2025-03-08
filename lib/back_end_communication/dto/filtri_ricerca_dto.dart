@@ -50,7 +50,7 @@ class FiltriRicercaDto implements DTO {
   @override
   Map<String, dynamic> toJson() {
     return _filterQueryParams({
-      'tipo_annuncio' : tipoAnnuncio.toString().toUpperCase(),
+      'tipoAnnuncio' : tipoAnnuncio.toString().toUpperCase(),
       'latitudine': latitudine.toString(),
       'longitudine': longitudine.toString(),
       'raggioKm' : raggioRicerca.toString(),
@@ -66,9 +66,9 @@ class FiltriRicercaDto implements DTO {
       'giardino' : giardino.toString(),
       'piscina' : piscina.toString(),
       'balcone' : balcone.toString(),
-      'vicino_scuole' : vicinoScuole.toString(),
-      'vicino_parchi' : vicinoParchi.toString(),
-      'vicino_trasporti' : vicinoMezzi.toString(),
+      'vicinoScuole' : vicinoScuole.toString(),
+      'vicinoParchi' : vicinoParchi.toString(),
+      'vicinoTrasporti' : vicinoMezzi.toString(),
       'piano' : piano.toString().toUpperCase(),
       'classeEnergetica' : classeEnergetica.toString().toUpperCase(),
     });

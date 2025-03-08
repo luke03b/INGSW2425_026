@@ -353,6 +353,7 @@ class _ProfiloPageState extends State<ProfiloPage> {
       });
     } catch (e) {
       showDialog(
+        barrierDismissible: false,
         context: context, 
         builder: (BuildContext context) => MyInfoDialog(
           title: "Errore", 
