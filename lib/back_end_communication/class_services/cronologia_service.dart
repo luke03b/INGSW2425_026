@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:domus_app/back_end_communication/class_controllers/cronologia_controller.dart';
 import 'package:domus_app/back_end_communication/class_services/utente_service.dart';
-import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/cronologia_dto.dart';
 import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
 import 'package:domus_app/amazon_services/aws_cognito.dart';

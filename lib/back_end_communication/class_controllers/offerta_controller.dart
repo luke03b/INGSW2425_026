@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:domus_app/back_end_communication/communication_utils/url_builder.dart';
-import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/offerta_dto.dart';
 import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
 import 'package:flutter/material.dart';

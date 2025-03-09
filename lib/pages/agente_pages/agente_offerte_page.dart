@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/back_end_communication/class_services/offerta_service.dart';
 import 'package:domus_app/back_end_communication/communication_utils/status_code_controller.dart';
-import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/offerta_dto.dart';
 import 'package:domus_app/costants/enumerations.dart';
 import 'package:domus_app/pages/agente_pages/agente_analisi_offerta_page.dart';

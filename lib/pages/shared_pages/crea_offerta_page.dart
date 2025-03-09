@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:domus_app/back_end_communication/class_services/offerta_service.dart';
 import 'package:domus_app/back_end_communication/communication_utils/status_code_controller.dart';
-import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/offerta_dto.dart';
 import 'package:domus_app/ui_elements/utils/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domus_app/back_end_communication/class_services/annuncio_service.dart';
-import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
 import 'package:domus_app/pages/agente_pages/agente_offerte_page.dart';
 import 'package:domus_app/pages/agente_pages/agente_visite_page.dart';
 import 'package:domus_app/ui_elements/utils/formatStrings.dart';

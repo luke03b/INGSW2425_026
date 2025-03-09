@@ -3,8 +3,14 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/api_utils/api_key_provider.dart';
 import 'package:domus_app/back_end_communication/class_services/annuncio_service.dart';
-import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
-import 'package:domus_app/back_end_communication/dto/filtri_ricerca_dto.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio/caratteristiche.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio/coordinate.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio/filtri_ricerca_dto.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio/intervallo_prezzo.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio/intervallo_stanze.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio/intervallo_superficie.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio/vicinanze.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
 import 'package:domus_app/ui_elements/utils/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
@@ -350,27 +356,36 @@ class _CercaPageState extends State<CercaPage> {
 
   FiltriRicercaDto setCriteriRicerca() {
     FiltriRicercaDto filtriRicerca = FiltriRicercaDto(
-      latitudine: latitudine ?? 0.0, 
-      longitudine: longitudine ?? 0.0, 
+      coordinate: Coordinate(latitudine: latitudine ?? 0.0, longitudine: longitudine ?? 0.0), 
       tipoAnnuncio: selectedCompraAffitta.first ? "VENDITA" : "AFFITTO",
       raggioRicerca: raggioRicerca,
-      prezzoMin : _prezzoMinController.text.isNotEmpty ? _prezzoMinController.text : null,
-      prezzoMax : _prezzoMaxController.text.isNotEmpty ? _prezzoMaxController.text : null,
-      superficieMin : _superficieMinController.text.isNotEmpty ? _superficieMinController.text : null,
-      superficieMax : _superficieMaxController.text.isNotEmpty ? _superficieMaxController.text : null,
-      nStanzeMin : _numeroStanzeMinController.text.isNotEmpty ?  _numeroStanzeMinController.text : null,
-      nStanzeMax : _numeroStanzeMaxController.text.isNotEmpty ? _numeroStanzeMaxController.text : null,
-      garage : _isGarageSelected ? _isGarageSelected : null,
-      ascensore : _isAscensoreSelected ? _isAscensoreSelected : null,
-      arredato : _isArredatoSelected ? _isArredatoSelected : null,
-      giardino : _isGiardinoSelected ? _isGiardinoSelected : null,
-      piscina : _isPiscinaSelected ? _isPiscinaSelected : null,
-      balcone : _isBalconeSelected ? _isBalconeSelected : null,
-      vicinoScuole : _isVicinoScuoleSelected ? _isVicinoScuoleSelected : null,
-      vicinoParchi : _isVicinoParchiSelected ? _isVicinoParchiSelected : null,
-      vicinoMezzi : _isVicinoMezziPubbliciSelected ? _isVicinoMezziPubbliciSelected : null,
+      intervalloPrezzo: IntervalloPrezzo(
+        prezzoMinimo: _prezzoMinController.text.isNotEmpty ? double.tryParse(_prezzoMinController.text) : null, 
+        prezzoMassimo: _prezzoMaxController.text.isNotEmpty ? double.tryParse(_prezzoMaxController.text) : null,
+      ),
+      intervalloSuperficie: IntervalloSuperficie(
+        superficieMinima: _superficieMinController.text.isNotEmpty ? int.parse(_superficieMinController.text) : null,
+        superficieMassima: _superficieMaxController.text.isNotEmpty ? int.parse(_superficieMaxController.text) : null,
+      ),
+      intervalloStanze: IntervalloStanze(
+        numStanzeMinime: _numeroStanzeMinController.text.isNotEmpty ? int.parse(_numeroStanzeMinController.text) : null,
+        numStanzeMassime: _numeroStanzeMaxController.text.isNotEmpty ? int.parse(_numeroStanzeMaxController.text) : null,
+      ),
+      caratteristiche: Caratteristiche(
+        garage: _isGarageSelected ? true : null,
+        ascensore: _isAscensoreSelected ? true : null,
+        piscina: _isPiscinaSelected ? true : null,
+        arredo: _isArredatoSelected ? true : null,
+        balcone: _isBalconeSelected ? true : null,
+        giardino: _isGiardinoSelected ? true : null,
+      ),
+      vicinanze: Vicinanze(
+        vicinoScuole : _isVicinoScuoleSelected ? _isVicinoScuoleSelected : null,
+        vicinoParchi : _isVicinoParchiSelected ? _isVicinoParchiSelected : null,
+        vicinoTrasporti : _isVicinoMezziPubbliciSelected ? _isVicinoMezziPubbliciSelected : null,
+      ),
       piano : sceltaPiano == "Tutti" ? null : sceltaPiano,
-      classeEnergetica : sceltaClasseEnergetica == "Tutte" ? null :  sceltaClasseEnergetica,
+      classeEnergetica : sceltaClasseEnergetica == "Tutte" ? null : sceltaClasseEnergetica,
     );
     return filtriRicerca;
   }

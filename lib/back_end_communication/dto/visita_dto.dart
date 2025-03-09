@@ -1,4 +1,4 @@
-import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/dto.dart';
 import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
 

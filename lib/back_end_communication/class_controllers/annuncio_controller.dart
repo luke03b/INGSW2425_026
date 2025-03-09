@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:domus_app/back_end_communication/communication_utils/url_builder.dart';
-import 'package:domus_app/back_end_communication/dto/annuncio_dto.dart';
-import 'package:domus_app/back_end_communication/dto/filtri_ricerca_dto.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio/filtri_ricerca_dto.dart';
 import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -57,23 +57,28 @@ class AnnuncioController {
   }
 
    static Future<http.Response> chiamataHTTPrecuperaAnnunciByCriteriDiRicerca(FiltriRicercaDto filtriRicerca) async {
+    
+    debugPrint("\n\n\n\n\n\n");
+    debugPrint(json.encode(filtriRicerca));
+    debugPrint("\n\n\n\n\n\n");
+    
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
       UrlBuilder.LOCALHOST_ANDROID, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
-      UrlBuilder.ENDPOINT_ANNUNCI,
-      queryParams: filtriRicerca.toJson()
+      UrlBuilder.ENDPOINT_ANNUNCI_FILTRI_RICERCA,
     );
 
     debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
     debugPrint(url.toString());
     debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
 
-    final response = await http.get(
+    final response = await http.post(
       url,
       headers: {
         'Content-Type': 'application/json',
       },
+      body: json.encode(filtriRicerca),
     ).timeout(
       const Duration(seconds: 30),
       onTimeout: () {
