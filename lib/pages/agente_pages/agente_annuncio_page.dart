@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domus_app/back_end_communication/class_services/annuncio_service.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
@@ -60,7 +61,7 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
         areServersAvailable = false;
         areDataRetrieved = true;
       });
-      print('Errore con il recupero degli annunci (il server potrebbe non essere raggiungibile) $error');
+      safePrint('Errore con il recupero degli annunci (il server potrebbe non essere raggiungibile) $error');
     }
   }
 

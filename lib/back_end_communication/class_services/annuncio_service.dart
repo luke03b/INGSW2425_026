@@ -166,7 +166,7 @@ class AnnuncioService {
         AnnuncioDto annuncio = AnnuncioDto.fromJson(json.decode(response.body));
         return annuncio;        
       }else{
-        throw Exception("Errore nel recupero dell'annuncio");
+        throw Exception(response.body);
       }
 
     } on TimeoutException {
