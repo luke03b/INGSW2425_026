@@ -49,9 +49,9 @@ class UtenteService{
 
   static Future<bool> eliminaUtenteDalNostroDb(String? sub) async {
     try {
-        return await UtenteController.eliminaUtenteDalNostroDb(sub) == 200;
-      } on TimeoutException {
-        throw TimeoutException("Il server non risponde.");
-      }
+      return await UtenteController.eliminaUtenteDalNostroDb(sub) == 200;
+    } on TimeoutException {
+      throw TimeoutException("Il server non risponde.");
+    }
   }
 }

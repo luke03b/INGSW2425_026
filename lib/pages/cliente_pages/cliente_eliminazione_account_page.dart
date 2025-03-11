@@ -173,7 +173,12 @@ class _ClienteEliminazioneAccountPageState extends State<ClienteEliminazioneAcco
                                             if(isUserDeleted){
                                               Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);
                                             } else {
-                                              showDialog(context: context, builder: (BuildContext content) => MyInfoDialog(title: "Errore", bodyText: "Qualcosa è andato storto con l'eliminazione dell'account di ${widget.emailUtente}.", buttonText: "Ok", onPressed: (){Navigator.pop(context);})
+                                              showDialog(context: context, builder: (BuildContext content) => MyInfoDialog(
+                                                  title: "Errore", 
+                                                  bodyText: "Qualcosa è andato storto con l'eliminazione dell'account di ${widget.emailUtente}.", 
+                                                  buttonText: "Ok", 
+                                                  onPressed: (){Navigator.pop(context);}
+                                                )
                                               );
                                             }
                                           }

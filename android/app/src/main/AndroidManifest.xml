@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
+        android:enableOnBackInvokedCallback="true"
         android:label="domus_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

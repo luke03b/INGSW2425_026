@@ -113,7 +113,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       showDialog(
         barrierDismissible: false,
         context: context, 
-        builder: (BuildContext context) => MyInfoDialog(title: 'Errore', bodyText: 'Qualcosa è andato storto. Riprova :/', buttonText: 'Ok', onPressed: (){Navigator.pop(context);})
+        builder: (BuildContext context) => MyInfoDialog(title: 'Errore', bodyText: 'Qualcosa è andato storto. Riprova', buttonText: 'Ok', onPressed: (){Navigator.pop(context);})
       );
     }
   }
