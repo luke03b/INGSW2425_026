@@ -306,11 +306,11 @@ class _CreaOffertaPageState extends State<CreaOffertaPage> {
         builder: (BuildContext context) => MyOptionsDialog(
                                             title: "Conferma",
                                             bodyText: "Sei sicuro di voler inviare un'offerta di ${offertaController.text} EUR?",
-                                            leftButtonText: "Si",
-                                            leftButtonColor: context.tertiary,
-                                            rightButtonText: "No",
-                                            rightButtonColor: context.secondary,
-                                            onPressLeftButton: () async {
+                                            leftButtonText: "No",
+                                            leftButtonColor: context.secondary,
+                                            rightButtonText: "Si",
+                                            rightButtonColor: context.tertiary,
+                                            onPressRightButton: () async {
                                               LoadingHelper.showLoadingDialogNotDissmissible(context, color: context.secondary);
                                               try {
                                                 int statusCode;
@@ -358,7 +358,7 @@ class _CreaOffertaPageState extends State<CreaOffertaPage> {
                                                 );
                                               }
                                             },
-                                            onPressRightButton: (){Navigator.pop(context);}
+                                            onPressLeftButton: (){Navigator.pop(context);}
                                           )
         );
       }
