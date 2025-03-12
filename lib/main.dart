@@ -4,7 +4,8 @@ import 'package:domus_app/api_utils/api_key_provider.dart';
 import 'package:domus_app/pages/agente_pages/agente_controllore_pagine.dart';
 import 'package:domus_app/pages/auth_pages/initial_page.dart';
 import 'package:domus_app/pages/auth_pages/password_dimenticata_page.dart';
-import 'package:domus_app/ui_elements/theme/theme_provider.dart';
+import 'package:domus_app/providers/theme_provider.dart';
+//import 'package:domus_app/ui_elements/theme/theme_provider.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'amplifyconfiguration.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_controllore_pagine.dart';
@@ -14,7 +15,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'pages/auth_pages/login_page.dart';
 import 'package:provider/provider.dart';
+import 'package:domus_app/providers/visita_provider.dart';
 
+
+
+void main() async {
+  await ApiKeyProvider.initializeDotEnv();
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        ChangeNotifierProvider(create: (context) => VisitaProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
+}
+
+
+/*
 void main() async {
   await ApiKeyProvider.initializeDotEnv();
   runApp(ChangeNotifierProvider(
@@ -23,7 +42,7 @@ void main() async {
     ),
   );
 }
-
+*/
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 

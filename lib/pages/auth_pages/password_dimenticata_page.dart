@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:domus_app/amazon_services/aws_cognito.dart';
-import 'package:domus_app/ui_elements/theme/theme_provider.dart';
+import 'package:domus_app/providers/theme_provider.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
 import 'package:domus_app/ui_elements/utils/my_countdown_timer_widgets.dart';

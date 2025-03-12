@@ -3,7 +3,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/back_end_communication/class_services/cronologia_service.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
-import 'package:domus_app/pages/cliente_pages/cliente_crea_visita.dart';
+import 'package:domus_app/pages/cliente_pages/visita_pages/cliente_crea_visita.dart';
 import 'package:domus_app/pages/shared_pages/crea_offerta_page.dart';
 import 'package:domus_app/ui_elements/utils/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
