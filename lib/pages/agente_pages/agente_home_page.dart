@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/back_end_communication/class_services/annuncio_service.dart';
+import 'package:domus_app/back_end_communication/class_services/immagini_service.dart';
+import 'package:domus_app/back_end_communication/communication_utils/url_builder.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
+import 'package:domus_app/back_end_communication/dto/immagini_dto.dart';
 import 'package:domus_app/pages/agente_pages/agente_annuncio_page.dart';
 import 'package:domus_app/pages/agente_pages/agente_crea_annuncio_page.dart';
 import 'package:domus_app/ui_elements/utils/formatStrings.dart';
@@ -34,6 +37,20 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
   Future<void> getAnnunciAgente() async {
     try {
       List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciByAgenteLoggato();
+
+      for(AnnuncioDto annuncio in data){
+        List<ImmaginiDto> immaginiPerAnnuncio = await ImmaginiService.recuperaTutteImmaginiByAnnuncio(annuncio);
+        ImmaginiDto.ordinaImmaginiPerNumero(immaginiPerAnnuncio);
+        annuncio.listaImmagini = immaginiPerAnnuncio;
+      }
+
+      for(AnnuncioDto annuncio in data){
+        if(annuncio.listaImmagini != null && annuncio.listaImmagini!.isNotEmpty){
+          for(ImmaginiDto immagine in annuncio.listaImmagini!){
+            immagine.imageBytes = await ImmaginiService.recuperaFileImmagine(immagine.url); 
+          }
+        }
+      }
       
       if (mounted) {
         setState(() {
@@ -55,7 +72,7 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
         areServersAvailable = false;
         areDataRetrieved = true;
       });
-      print('Errore con il recupero degli annunci (il server potrebbe non essere raggiungibile) $error');
+      print('Errore 1 con il recupero degli annunci (il server potrebbe non essere raggiungibile) $error');
     }
   }
 
@@ -85,7 +102,7 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
         areServersAvailable = false;
         areDataRetrieved = true;
       });
-      print('Errore con il recupero degli annunci (il server potrebbe non essere raggiungibile) $error');
+      print('Errore 2 con il recupero degli annunci (il server potrebbe non essere raggiungibile) $error');
     }
   }
 
@@ -309,11 +326,25 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
                       child: SizedBox(
                         // child: Image.asset(casaCorrente['image1']))),
-                        child: Image.asset('lib/assets/casa3_1_placeholder.png'))),
+                        // child: Image.asset('lib/assets/casa3_1_placeholder.png'))),
+                        child: (annuncioCorrente.listaImmagini == null || annuncioCorrente.listaImmagini!.isEmpty) ? Image.asset('lib/assets/blank_house.png') :
+                        (annuncioCorrente.listaImmagini!.first.imageBytes == null || annuncioCorrente.listaImmagini!.first.imageBytes!.isEmpty) ? Image.asset('lib/assets/blank_house.png') :
+                        Image.memory(annuncioCorrente.listaImmagini!.first.imageBytes!, errorBuilder: (context, error, stackTrace) {
+                          return Image.asset('lib/assets/blank_house.png');
+                        },)
+                      )),
                     Row(
                       children: [
-                        Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
-                        Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
+                        Expanded(child: (annuncioCorrente.listaImmagini == null || annuncioCorrente.listaImmagini!.isEmpty) ? Image.asset('lib/assets/blank_house.png') :
+                        (annuncioCorrente.listaImmagini!.elementAt(1).imageBytes == null || annuncioCorrente.listaImmagini!.elementAt(1).imageBytes!.isEmpty) ? Image.asset('lib/assets/blank_house.png') :
+                        Image.memory(annuncioCorrente.listaImmagini!.elementAt(1).imageBytes!, errorBuilder: (context, error, stackTrace) {
+                          return Image.asset('lib/assets/blank_house.png');
+                        },)),
+                        Expanded(child: (annuncioCorrente.listaImmagini == null || annuncioCorrente.listaImmagini!.isEmpty) ? Image.asset('lib/assets/blank_house.png') :
+                        (annuncioCorrente.listaImmagini!.elementAt(2).imageBytes == null || annuncioCorrente.listaImmagini!.elementAt(2).imageBytes!.isEmpty) ? Image.asset('lib/assets/blank_house.png') :
+                        Image.memory(annuncioCorrente.listaImmagini!.elementAt(2).imageBytes!, errorBuilder: (context, error, stackTrace) {
+                          return Image.asset('lib/assets/blank_house.png');
+                        },)),
                         // Expanded(child: Image.asset(casaCorrente['image2'])),
                         // Expanded(child: Image.asset(casaCorrente['image3'])),
                       ],

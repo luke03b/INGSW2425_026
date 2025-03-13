@@ -1,4 +1,8 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class UrlBuilder {
+  static String get S3_BUCKET_NAME => dotenv.env['S3_BUCKET_NAME'] ?? '';
+  static String get S3_BUCKET_REGION => dotenv.env['S3_BUCKET_REGION'] ?? '';
   static final String PROTOCOL_HTTP = "http";
   static final String PROTOCOL_HTTPS = "https";
   static final String HOSTNAME_OPEN_METEO = "api.open-meteo.com";
@@ -23,8 +27,10 @@ class UrlBuilder {
   static final String ENDPOINT_GET_VISITE_AGENTE_STATO = "api/visite/agente/stato";
   static final String ENDPOINT_GET_ANNUNCI_BY_ID = "api/annunci/id";
   static final String ENDPOINT_ANNUNCI_FILTRI_RICERCA = "api/annunci/filtriRicerca";
-  static final String ENDPOINT_IMMAGINI_S3_PRESIGNED_URL = "api/immagini/presigned-url";
+  static final String ENDPOINT_IMMAGINI_S3_PRESIGNED_URL = "api/immagini/upload-presigned-url";
   static final String ENDPOINT_IMMAGINI_S3_SAVE = "api/immagini/save";
+  static final String ENDPOINT_GET_IMMAGINI = "api/immagini";
+  static final String ENDPOINT_IMMAGINI_S3_DOWNLOAD_PRESIGNED_URL = "api/immagini/download-presigned-url";
 
   static Uri createUrl(String protocol, String hostName, String path, {String? port,  Map<String, dynamic>? queryParams}) {
     Uri uri;
@@ -39,5 +45,9 @@ class UrlBuilder {
     }
 
     return uri;
+  }
+
+  static Uri createS3Url(String nomeImmagine){
+    return Uri.parse("$PROTOCOL_HTTPS://$S3_BUCKET_NAME.s3.$S3_BUCKET_REGION.amazonaws.com/$nomeImmagine");
   }
 }

@@ -1,4 +1,5 @@
 import 'package:domus_app/back_end_communication/dto/dto.dart';
+import 'package:domus_app/back_end_communication/dto/immagini_dto.dart';
 import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
 
 class AnnuncioDto implements DTO{
@@ -25,6 +26,7 @@ class AnnuncioDto implements DTO{
   bool? vicinoParchi;
   bool? vicinoScuole;
   bool? vicinoTrasporti;
+  List<ImmaginiDto>? listaImmagini;
 
    AnnuncioDto({
     required this.tipoAnnuncio,
@@ -50,6 +52,7 @@ class AnnuncioDto implements DTO{
     this.vicinoParchi,
     this.vicinoTrasporti,
     this.idAnnuncio,
+    this.listaImmagini
   });
 
   @override

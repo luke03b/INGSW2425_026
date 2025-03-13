@@ -90,7 +90,7 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
             onPressed: () { Navigator.pop(context); Navigator.pop(context);}
           )
         );
-      print('Errore con il recupero degli annunci (il server potrebbe non essere raggiungibile) $error');
+      print('Errore 3 con il recupero degli annunci (il server potrebbe non essere raggiungibile) $error');
     }
   }
 
