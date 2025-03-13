@@ -2,10 +2,8 @@ import 'package:domus_app/ui_elements/utils/weather_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
-import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
 import 'package:domus_app/ui_elements/utils/my_ui_messages_widgets.dart';
 import 'package:domus_app/providers/visita_provider.dart';
-import 'package:domus_app/ui_elements/utils/weather_list_widget.dart';
 
 class ClienteCreaVisitaPage extends StatefulWidget {
   final AnnuncioDto annuncioSelezionato;
@@ -17,9 +15,10 @@ class ClienteCreaVisitaPage extends StatefulWidget {
 }
 
 class _ClienteCreaVisitaPageState extends State<ClienteCreaVisitaPage> {
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  
+   @override
+  void initState() {
+    super.initState();
     final visitaProvider = Provider.of<VisitaProvider>(context, listen: false);
     visitaProvider.recuperaPrevisioniMeteo(widget.annuncioSelezionato.latitudine, widget.annuncioSelezionato.longitudine);
     visitaProvider.getVisiteAnnuncio(widget.annuncioSelezionato);

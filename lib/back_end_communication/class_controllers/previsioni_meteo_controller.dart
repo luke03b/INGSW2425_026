@@ -16,7 +16,7 @@ class PrevisioniMeteoController {
         'daily' : "temperature_2m_max,temperature_2m_min,weathercode",
         'hourly' : "temperature_2m,weathercode",
         'timezone' : "Europe/Rome",
-        'forecast_days' : "14",
+        'forecast_days' : "15",
       }
     );
 
@@ -35,9 +35,7 @@ class PrevisioniMeteoController {
         throw TimeoutException("Il server non risponde.");
       },
     );
-    
+
     return response;
-
-
   }
 }

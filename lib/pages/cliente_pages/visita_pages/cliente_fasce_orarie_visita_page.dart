@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:domus_app/ui_elements/utils/my_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/previsioni_meteo_dto.dart';
@@ -40,9 +41,14 @@ class _ClienteFasceOrarieVisitaState extends State<ClienteFasceOrarieVisita> {
 
     // Converti le visite prenotate in un set di orari prenotati per un confronto rapido
     final Set<String> orariPrenotati = widget.listaVisite
-        .where((visita) => visita.data == dataBuona)
-        .map((visita) => visita.orarioInizio)
-        .toSet();
+      .where((visita) => visita.data == dataBuona)
+      .map((visita) {
+        // Estrai solo l'ora dall'orario prenotato e formatta come "HH:00"
+        final oraPrenotata = int.parse(visita.orarioInizio.split(":")[0]);
+        return "${oraPrenotata.toString().padLeft(2, '0')}:00";
+      })
+      .toSet();
+
 
     // Filtra i dati orari per la data selezionata e rimuove quelli già prenotati
     final filteredData = List.generate(times.length, (index) {
@@ -101,12 +107,13 @@ class _ClienteFasceOrarieVisitaState extends State<ClienteFasceOrarieVisita> {
                   onPressLeftButton: (){Navigator.pop(context);}, 
                   onPressRightButton: () async {
                     try {
+                      LoadingHelper.showLoadingDialogNotDissmissible(context);
                       int statusCode = await VisitaService.creaVisita(widget.annuncioSelezionato, widget.selectedDate, time);
                       Navigator.pop(context);
+                      Navigator.pop(context);
                       await StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 201, "Conferma", "Visita creata", "Errore", "Visita non creata");
-                      Navigator.pop(context);
-                      Navigator.pop(context);
                     } on TimeoutException {
+                      Navigator.pop(context);
                       Navigator.pop(context);
                       showDialog(
                         context: context, 
@@ -119,11 +126,12 @@ class _ClienteFasceOrarieVisitaState extends State<ClienteFasceOrarieVisita> {
                       );
                     } catch (e) {
                       Navigator.pop(context);
+                      Navigator.pop(context);
                       showDialog(
                         context: context, 
                         builder: (BuildContext context) => MyInfoDialog(
                           title: "Errore",
-                          bodyText: "Visita non creata. $e.", 
+                          bodyText: "Visita non creata. ${e.toString()}.", 
                           buttonText: "Ok", 
                           onPressed: () {Navigator.pop(context);},
                         )

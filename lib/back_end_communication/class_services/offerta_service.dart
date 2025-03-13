@@ -40,7 +40,7 @@ class OffertaService {
         return response.statusCode;        
       } else if (response.statusCode == 400) {
         final Map<String, dynamic> errorBody = jsonDecode(response.body);
-        throw Exception(errorBody["error"]);
+        throw Exception(errorBody);
       } else {
         throw Exception("Errore sconosciuto: ${response.statusCode} ${response.body}");
       }

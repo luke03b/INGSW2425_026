@@ -18,7 +18,7 @@ class VisitaService {
 
       return _creaVisitaCliente(cliente, annuncio, data, orarioInizio);
     } catch (e) {
-      throw Exception(e.toString());
+      throw Exception(e);
     }
   }
 
@@ -29,9 +29,9 @@ class VisitaService {
       
       if(response.statusCode == 201){
         return response.statusCode;        
-      }else if (response.statusCode == 400) {
+      }else if (response.statusCode >= 400) {
         final Map<String, dynamic> errorBody = jsonDecode(response.body);
-        throw Exception(errorBody["error"]);
+        throw Exception(errorBody);
       } else {
         throw Exception("Errore sconosciuto: ${response.statusCode} ${response.body}");
       }
