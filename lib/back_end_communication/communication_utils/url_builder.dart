@@ -23,6 +23,8 @@ class UrlBuilder {
   static final String ENDPOINT_GET_VISITE_AGENTE_STATO = "api/visite/agente/stato";
   static final String ENDPOINT_GET_ANNUNCI_BY_ID = "api/annunci/id";
   static final String ENDPOINT_ANNUNCI_FILTRI_RICERCA = "api/annunci/filtriRicerca";
+  static final String ENDPOINT_IMMAGINI_S3_PRESIGNED_URL = "api/immagini/presigned-url";
+  static final String ENDPOINT_IMMAGINI_S3_SAVE = "api/immagini/save";
 
   static Uri createUrl(String protocol, String hostName, String path, {String? port,  Map<String, dynamic>? queryParams}) {
     Uri uri;

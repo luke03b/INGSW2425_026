@@ -9,7 +9,7 @@ import 'package:domus_app/amazon_services/aws_cognito.dart';
 import 'package:http/http.dart' as http;
 
 class AnnuncioService {
-  static Future<int> creaAnnuncio(String tipoAnnuncio, String stato, String prezzo, String superficie, String indirizzo,
+  static Future<http.Response> creaAnnuncio(String tipoAnnuncio, String stato, String prezzo, String superficie, String indirizzo,
     String descrizione, bool isGarageSelected, bool isAscensoreSelected, bool isPiscinaSelected,
     bool isArredatoSelected, bool isBalconeSelected, bool isGiardinoSelected, String stanze, String numeroPiano,
     String sceltaClasseEnergetica, String sceltaPiano, double latitudine, double longitudine, UtenteDto agente) async {

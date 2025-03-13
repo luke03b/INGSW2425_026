@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 class AnnuncioController {
-  static Future<int> inviaAnnuncio(AnnuncioDto annuncio) async {
+  static Future<http.Response> inviaAnnuncio(AnnuncioDto annuncio) async {
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
       UrlBuilder.LOCALHOST_ANDROID, 
@@ -35,7 +35,7 @@ class AnnuncioController {
       },
     );
     
-    return response.statusCode;
+    return response;
   }
 
   static Future<http.Response> chiamataHTTPrecuperaAnnunciByAgenteSub(String sub) async {
