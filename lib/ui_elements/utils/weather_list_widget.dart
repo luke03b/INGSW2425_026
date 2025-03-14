@@ -23,8 +23,9 @@ class WeatherListWidget extends StatelessWidget {
     final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
     final filteredDates = previsioniMeteo.daily.time
-        .where((date) => date != today)
-        .toList();
+      .where((date) => date != today && DateTime.parse(date).weekday != DateTime.sunday)
+      .toList();
+
 
     final filteredMaxTemps = <double>[];
     final filteredMinTemps = <double>[];

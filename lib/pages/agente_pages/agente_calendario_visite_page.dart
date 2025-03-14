@@ -31,7 +31,7 @@ class _AgenteCalendarioPrenotazioniPageState extends State<AgenteCalendarioPreno
   bool hasAgenteVisite = false;
   List<VisitaDto> listaVisite = [];
 
-  void getVisiteInAttesa() async {
+  void getVisiteAccettate() async {
     try{
       List<VisitaDto> data = await VisitaService.recuperaTutteOfferteConStatoByAgenteLoggato(Enumerations.statoVisite[1]);
       if (mounted) {
@@ -64,7 +64,7 @@ class _AgenteCalendarioPrenotazioniPageState extends State<AgenteCalendarioPreno
     
     // Esegui getAnnunci dopo la fase di build
     Future.delayed(Duration.zero, () {
-      getVisiteInAttesa();
+      getVisiteAccettate();
     });
   }
 
@@ -165,7 +165,7 @@ class _AgenteCalendarioPrenotazioniPageState extends State<AgenteCalendarioPreno
                   areDataRetrieved = false;
                   areServersAvailable = false;
                 });
-                getVisiteInAttesa();
+                getVisiteAccettate();
               }
             ),
             (true, true, false) => MyUiMessagesWidgets.myText(context, "Non hai visite prenotate"),
@@ -180,15 +180,15 @@ class _AgenteCalendarioPrenotazioniPageState extends State<AgenteCalendarioPreno
               TableCalendar<VisitaDto>(
                       weekendDays: [DateTime.sunday],
                       enabledDayPredicate: (day) {
-                      // Rende la domenica non cliccabile
-                        return day.weekday != DateTime.sunday;
+                        // Permette di selezionare solo i giorni a partire dal 1 gennaio 2025 (escludendo le domeniche)
+                        return day.isAfter(DateTime(2024, 12, 31)) && day.weekday != DateTime.sunday;
                       },
                       headerStyle: HeaderStyle(
                         formatButtonVisible: false,
                         titleCentered: true,
                         titleTextStyle: TextStyle(fontSize: 17.0, color: context.onSecondary),
                       ),
-                      firstDay: DateTime.now(),
+                      firstDay: DateTime(2025, 1, 1),
                       lastDay: DateTime.now().add(Duration(days: 14)),
                       focusedDay: _focusedDay,
                       selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
