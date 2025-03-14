@@ -32,20 +32,20 @@ class ImmaginiService {
     }
   }
 
-  static Future<Uint8List> recuperaFileImmagine(String fileName) async{
+  static Future<String> recuperaFileImmagine(String fileName) async{
     try{
       http.Response response = await ImmaginiController.chiamataHTTPrecuperaS3UrlImmagineByNome(fileName);
       
       if(response.statusCode == 200){
-        Uri dat = Uri.parse(response.body);
+        return response.body;
 
-        http.Response response2 = await S3Services.chiamataHTTPrecuperaImmaginiByUrl(dat);
+        // http.Response response2 = await S3Services.chiamataHTTPrecuperaImmaginiByUrl(dat);
 
-        if (response2.statusCode == 200) {
-          return response2.bodyBytes;
-        }else{
-          throw Exception("Errore nel recupero del file immagine");
-        }
+        // if (response2.statusCode == 200) {
+        //   return response2.bodyBytes;
+        // }else{
+        //   throw Exception("Errore nel recupero del file immagine");
+        // }
       }else{
         throw Exception("Errore nel recupero del link immagine");
       }

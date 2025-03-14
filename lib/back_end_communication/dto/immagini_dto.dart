@@ -9,13 +9,13 @@ class ImmaginiDto implements DTO{
   final String? id;
   final AnnuncioDto annuncio;
   final String url;
-  Uint8List? imageBytes;
+  String? urlS3;
 
   ImmaginiDto({
     this.id,
     required this.annuncio,
     required this.url,
-    this.imageBytes
+    this.urlS3
   });
 
   @override
