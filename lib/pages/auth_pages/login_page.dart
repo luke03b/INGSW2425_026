@@ -169,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
       showDialog(
         barrierDismissible: false,
         context: context,
-        builder: (BuildContext context) => MyInfoDialog(title: 'Errore', bodyText: 'L\'utente non ha un ruolo, registrarsi e riprovare', buttonText: 'Ok', onPressed: () {Navigator.pop(context);}));
+        builder: (BuildContext context) => MyInfoDialog(title: 'Errore', bodyText: 'Qualcosa è andato storto. Riprovare', buttonText: 'Ok', onPressed: () {Navigator.pop(context);}));
     }
   }
 }
