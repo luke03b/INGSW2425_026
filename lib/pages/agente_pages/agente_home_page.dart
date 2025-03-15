@@ -80,6 +80,19 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
     try {
 
       List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciByAgenteLoggatoConOffertePrenotazioniInAttesa(selectedOffertePrenotazioni[0], selectedOffertePrenotazioni[1], selectedDisponibili);
+      for(AnnuncioDto annuncio in data){
+        List<ImmaginiDto> immaginiPerAnnuncio = await ImmaginiService.recuperaTutteImmaginiByAnnuncio(annuncio);
+        ImmaginiDto.ordinaImmaginiPerNumero(immaginiPerAnnuncio);
+        annuncio.listaImmagini = immaginiPerAnnuncio;
+      }
+
+      for(AnnuncioDto annuncio in data){
+        if(annuncio.listaImmagini != null && annuncio.listaImmagini!.isNotEmpty){
+          for(ImmaginiDto immagine in annuncio.listaImmagini!){
+            immagine.urlS3 = await ImmaginiService.recuperaFileImmagine(immagine.url); 
+          }
+        }
+      }
 
       if (mounted) {
         setState(() {

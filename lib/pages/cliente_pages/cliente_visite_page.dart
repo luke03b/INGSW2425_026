@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:domus_app/back_end_communication/class_services/immagini_service.dart';
 import 'package:domus_app/back_end_communication/class_services/visita_service.dart';
+import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
+import 'package:domus_app/back_end_communication/dto/immagini_dto.dart';
 import 'package:domus_app/back_end_communication/dto/visita_dto.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
 import 'package:domus_app/ui_elements/utils/formatStrings.dart';
@@ -44,6 +47,20 @@ class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
     try {
 
       List<VisitaDto> data = await VisitaService.recuperaAnnunciConVisiteByClienteLoggato();
+
+      for(VisitaDto visita in data){
+        List<ImmaginiDto> immaginiPerAnnuncio = await ImmaginiService.recuperaTutteImmaginiByAnnuncio(visita.annuncio);
+        ImmaginiDto.ordinaImmaginiPerNumero(immaginiPerAnnuncio);
+        visita.annuncio.listaImmagini = immaginiPerAnnuncio;
+      }
+
+      for(VisitaDto visita in data){
+        if(visita.annuncio.listaImmagini != null && visita.annuncio.listaImmagini!.isNotEmpty){
+          for(ImmaginiDto immagine in visita.annuncio.listaImmagini!){
+            immagine.urlS3 = await ImmaginiService.recuperaFileImmagine(immagine.url); 
+          }
+        }
+      }
 
       if (mounted) {
         setState(() {
@@ -138,11 +155,96 @@ class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
                     ClipRRect(
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
                       child: SizedBox(
-                        child: Image.asset('lib/assets/casa3_1_placeholder.png'))),
+                        width: double.infinity,
+                        height: 200,
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                // color: Colors.black,
+                                image: DecorationImage(image: AssetImage('lib/assets/blank_house.png'),
+                                fit: BoxFit.cover)
+                              ),
+                            ),
+                            Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: (visitaCorrente.annuncio.listaImmagini != null && visitaCorrente.annuncio.listaImmagini!.isNotEmpty && visitaCorrente.annuncio.listaImmagini!.length>=1  &&
+                                        visitaCorrente.annuncio.listaImmagini!.first.urlS3 != null && visitaCorrente.annuncio.listaImmagini!.first.urlS3!.isNotEmpty) ?
+                                        Image.network(visitaCorrente.annuncio.listaImmagini!.first.urlS3!, 
+                                          errorBuilder: (context, error, stackTrace) {
+                                          return Image.asset('lib/assets/blank_house.png');}, 
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                          fit: BoxFit.cover,) : 
+                                        SizedBox.shrink()))
+                          ],
+                        ),
+                      ),
+                    ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
-                        Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
+                        Expanded(
+                          child: SizedBox(
+                          height: 110,
+                          child: Stack(
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(image: AssetImage('lib/assets/blank_house.png'),
+                                  fit: BoxFit.cover)
+                                ),
+                              ),
+                              Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: (visitaCorrente.annuncio.listaImmagini != null && visitaCorrente.annuncio.listaImmagini!.isNotEmpty && visitaCorrente.annuncio.listaImmagini!.length>=2  &&
+                                        visitaCorrente.annuncio.listaImmagini!.elementAt(1).urlS3 != null && visitaCorrente.annuncio.listaImmagini!.elementAt(1).urlS3!.isNotEmpty) ?
+                                        Image.network(visitaCorrente.annuncio.listaImmagini!.elementAt(1).urlS3!, 
+                                          errorBuilder: (context, error, stackTrace) {
+                                          return Image.asset('lib/assets/blank_house.png');}, 
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                          fit: BoxFit.cover,) : 
+                                        SizedBox.shrink()))
+                            ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: SizedBox(
+                          height: 110,
+                          child: Stack(
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(image: AssetImage('lib/assets/blank_house.png'),
+                                  fit: BoxFit.cover)
+                                ),
+                              ),
+                              Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: (visitaCorrente.annuncio.listaImmagini != null && visitaCorrente.annuncio.listaImmagini!.isNotEmpty && visitaCorrente.annuncio.listaImmagini!.length>=3  &&
+                                        visitaCorrente.annuncio.listaImmagini!.elementAt(2).urlS3 != null && visitaCorrente.annuncio.listaImmagini!.elementAt(2).urlS3!.isNotEmpty) ?
+                                        Image.network(visitaCorrente.annuncio.listaImmagini!.elementAt(2).urlS3!, 
+                                          errorBuilder: (context, error, stackTrace) {
+                                          return Image.asset('lib/assets/blank_house.png');}, 
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                          fit: BoxFit.cover,) : 
+                                        SizedBox.shrink()))
+                            ],
+                          ),
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(

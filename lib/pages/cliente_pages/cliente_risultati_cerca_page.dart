@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/back_end_communication/class_services/annuncio_service.dart';
+import 'package:domus_app/back_end_communication/class_services/immagini_service.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio/filtri_ricerca_dto.dart';
+import 'package:domus_app/back_end_communication/dto/immagini_dto.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
 import 'package:domus_app/ui_elements/utils/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
@@ -36,6 +38,7 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
   @override
   void initState() {
     super.initState();
+    getAnnunci();
   }
 
   @override
@@ -43,9 +46,9 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
     super.didChangeDependencies();
     
     // Esegui getAnnunci dopo la fase di build
-    Future.delayed(Duration.zero, () {
-      getAnnunci();
-    });
+    // Future.delayed(Duration.zero, () {
+    //   getAnnunci();
+    // });
   }
 
   Future<void> getAnnunci() async {
@@ -56,6 +59,20 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
       });
 
       List<AnnuncioDto> data = await AnnuncioService.recuperaAnnunciByCriteriDiRicerca(widget.filtriRicerca);
+
+      for(AnnuncioDto annuncio in data){
+        List<ImmaginiDto> immaginiPerAnnuncio = await ImmaginiService.recuperaTutteImmaginiByAnnuncio(annuncio);
+        ImmaginiDto.ordinaImmaginiPerNumero(immaginiPerAnnuncio);
+        annuncio.listaImmagini = immaginiPerAnnuncio;
+      }
+
+      for(AnnuncioDto annuncio in data){
+        if(annuncio.listaImmagini != null && annuncio.listaImmagini!.isNotEmpty){
+          for(ImmaginiDto immagine in annuncio.listaImmagini!){
+            immagine.urlS3 = await ImmaginiService.recuperaFileImmagine(immagine.url); 
+          }
+        }
+      }
 
       if (mounted) {
         setState(() {
@@ -80,16 +97,18 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
         );
       }
     } catch (error) {
-      Navigator.pop(context);
-      showDialog(
-          context: context, 
-          builder: (BuildContext context) => MyInfoDialog(
-            title: "Connessione non riuscita", 
-            bodyText: "Non è stato possibile recuperare gli annunci, Probabilmente i server non sono raggiungibili.", 
-            buttonText: "Ok", 
-            onPressed: () { Navigator.pop(context); Navigator.pop(context);}
-          )
-        );
+      if (mounted) {
+        Navigator.pop(context);
+        showDialog(
+            context: context, 
+            builder: (BuildContext context) => MyInfoDialog(
+              title: "Connessione non riuscita", 
+              bodyText: "Non è stato possibile recuperare gli annunci, Probabilmente i server non sono raggiungibili.", 
+              buttonText: "Ok", 
+              onPressed: () { Navigator.pop(context); Navigator.pop(context);}
+            )
+          );
+      }
       print('Errore 3 con il recupero degli annunci (il server potrebbe non essere raggiungibile) $error');
     }
   }
@@ -132,18 +151,100 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
             child: Column(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
-                  child: SizedBox(
-                    // child: Image.asset(casaCorrente['image1']))),
-                    child: Image.asset('lib/assets/casa3_1_placeholder.png'),
-                  )
-                ),
-                Row(
-                  children: [
-                    Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
-                    Expanded(child: Image.asset('lib/assets/casa3_1_placeholder.png')),
-                  ],
-                ),
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 200,
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                // color: Colors.black,
+                                image: DecorationImage(image: AssetImage('lib/assets/blank_house.png'),
+                                fit: BoxFit.cover)
+                              ),
+                            ),
+                            Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: (annuncioCorrente.listaImmagini != null && annuncioCorrente.listaImmagini!.isNotEmpty && annuncioCorrente.listaImmagini!.length>=1  &&
+                                        annuncioCorrente.listaImmagini!.first.urlS3 != null && annuncioCorrente.listaImmagini!.first.urlS3!.isNotEmpty) ?
+                                        Image.network(annuncioCorrente.listaImmagini!.first.urlS3!, 
+                                          errorBuilder: (context, error, stackTrace) {
+                                          return Image.asset('lib/assets/blank_house.png');}, 
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                          fit: BoxFit.cover,) : 
+                                        SizedBox.shrink()))
+                          ],
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          child: SizedBox(
+                          height: 110,
+                          child: Stack(
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(image: AssetImage('lib/assets/blank_house.png'),
+                                  fit: BoxFit.cover)
+                                ),
+                              ),
+                              Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: (annuncioCorrente.listaImmagini != null && annuncioCorrente.listaImmagini!.isNotEmpty && annuncioCorrente.listaImmagini!.length>=2  &&
+                                        annuncioCorrente.listaImmagini!.elementAt(1).urlS3 != null && annuncioCorrente.listaImmagini!.elementAt(1).urlS3!.isNotEmpty) ?
+                                        Image.network(annuncioCorrente.listaImmagini!.elementAt(1).urlS3!, 
+                                          errorBuilder: (context, error, stackTrace) {
+                                          return Image.asset('lib/assets/blank_house.png');}, 
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                          fit: BoxFit.cover,) : 
+                                        SizedBox.shrink()))
+                            ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: SizedBox(
+                          height: 110,
+                          child: Stack(
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(image: AssetImage('lib/assets/blank_house.png'),
+                                  fit: BoxFit.cover)
+                                ),
+                              ),
+                              Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: (annuncioCorrente.listaImmagini != null && annuncioCorrente.listaImmagini!.isNotEmpty && annuncioCorrente.listaImmagini!.length>=3  &&
+                                        annuncioCorrente.listaImmagini!.elementAt(2).urlS3 != null && annuncioCorrente.listaImmagini!.elementAt(2).urlS3!.isNotEmpty) ?
+                                        Image.network(annuncioCorrente.listaImmagini!.elementAt(2).urlS3!, 
+                                          errorBuilder: (context, error, stackTrace) {
+                                          return Image.asset('lib/assets/blank_house.png');}, 
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                          fit: BoxFit.cover,) : 
+                                        SizedBox.shrink()))
+                            ],
+                          ),
+                          ),
+                        ),
+                      ],
+                    ),
                 SizedBox(
                   height: scaleFactor * MediaQuery.of(context).size.height/50,
                 ),

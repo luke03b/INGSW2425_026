@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domus_app/back_end_communication/class_services/annuncio_service.dart';
+import 'package:domus_app/back_end_communication/class_services/immagini_service.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
+import 'package:domus_app/back_end_communication/dto/immagini_dto.dart';
 import 'package:domus_app/pages/agente_pages/agente_offerte_page.dart';
 import 'package:domus_app/pages/agente_pages/agente_visite_page.dart';
 import 'package:domus_app/ui_elements/utils/formatStrings.dart';
@@ -40,6 +42,16 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
   Future<void> getAnnuncioById() async {
     try {
       AnnuncioDto data = await AnnuncioService.recuperaAnnuncioById(widget.idAnnuncioSelezionato);
+
+      List<ImmaginiDto> immaginiPerAnnuncio = await ImmaginiService.recuperaTutteImmaginiByAnnuncio(data);
+      ImmaginiDto.ordinaImmaginiPerNumero(immaginiPerAnnuncio);
+      data.listaImmagini = immaginiPerAnnuncio;
+
+      if(data.listaImmagini != null && data.listaImmagini!.isNotEmpty){
+        for(ImmaginiDto immagine in data.listaImmagini!){
+          immagine.urlS3 = await ImmaginiService.recuperaFileImmagine(immagine.url); 
+        }
+      }
       
       if (mounted) {
         setState(() {
@@ -75,11 +87,21 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
   Widget build(BuildContext context) {
     Color coloriPulsanti = context.outline;
 
-    final List<Widget> listaImmagini = [
-      Image.asset('lib/assets/casa3_1_placeholder.png'),
-      Image.asset('lib/assets/casa3_1_placeholder.png'),
-      Image.asset('lib/assets/casa3_1_placeholder.png'),
-    ];
+    final List<Widget> listaImmagini = [];
+
+    if (annuncioSelezionato != null && annuncioSelezionato!.listaImmagini != null && annuncioSelezionato!.listaImmagini!.isNotEmpty) {
+      for(ImmaginiDto immagine in annuncioSelezionato!.listaImmagini!){
+        if(immagine.urlS3 != null && immagine.urlS3!.isNotEmpty){
+          listaImmagini.add(Image.network(immagine.urlS3!, width: double.infinity, height: double.infinity, fit: BoxFit.cover));
+        }
+      }
+    }
+
+    if (listaImmagini.isEmpty) {
+      listaImmagini.add(Image.asset('lib/assets/blank_house.png'));
+    }
+
+    
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -123,6 +145,9 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
               color: context.primaryContainer,
               child: Column(
                 children: [
+                  SizedBox(
+                      height: MediaQuery.of(context).size.height/100,
+                  ),
                   Stack(
                     children: [
                       myCarouselSlider(context, listaImmagini),
@@ -149,6 +174,9 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                         ),
                       ),
                     ],
+                  ),
+                  SizedBox(
+                      height: MediaQuery.of(context).size.height/100,
                   ),
                   AnimatedSmoothIndicator(
                     activeIndex: _currentIndex,
