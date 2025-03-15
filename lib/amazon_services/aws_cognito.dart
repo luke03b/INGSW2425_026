@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
@@ -12,14 +14,46 @@ class AWSServices {
   final userPool = CognitoUserPool('eu-central-1_7QWCMoxQB', '56jim6pepm0s7g852hkn6soij2');
   final region =  'eu-central-1';
 
+  static const LOGIN_CREDENZIALI = 'CREDENZIALI';
+  static const LOGIN_GOOGLE = 'GOOGLE'; 
+  static const SAVED_LOGIN_TYPE = 'tipoLogin';
+  static const SAVED_USER_TOKEN = 'userToken';
+  static const SAVED_NOME = 'nome';
+  static const SAVED_COGNOME = 'cognome';
+  static const SAVED_EMAIL = 'email';
+  static const SAVED_SUB = 'sub';
+  static const SAVED_GROUP = 'group';
+  static const SAVED_EXPIRATION = 'exp';
+
+
 
   Future<bool> isUserLoggedIn() async{
     final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('userToken');
+    final String? tipoLogin = prefs.getString('tipoLogin');
 
-    //il token esiste e non è scaduto
-    if (token != null && !JwtDecoder.isExpired(token)){
-      return true;
+    if(tipoLogin != null){
+      if (tipoLogin == LOGIN_CREDENZIALI) {
+
+        //controlla scadenza token credenziali
+        final token = prefs.getString(SAVED_USER_TOKEN);
+
+        //il token esiste e non è scaduto
+        if (token != null && !JwtDecoder.isExpired(token)){
+          return true;
+        }
+
+        return false;
+      } else if (tipoLogin == LOGIN_GOOGLE){
+
+        //controlla scadenza token google manuale
+        final scadenza = prefs.getString('scadenza');
+        if (scadenza != null){
+          DateTime expiryDate = DateTime.fromMillisecondsSinceEpoch(int.parse(scadenza) * 1000);
+          return DateTime.now().isBefore(expiryDate);
+        }
+
+        return false;
+      }
     }
 
     return false;
@@ -28,16 +62,8 @@ class AWSServices {
   Future<bool> isUserAdmin() async{
     //recupera il token dalla memoria
     final prefs = await SharedPreferences.getInstance();
-    final idToken = prefs.getString('userToken');
-
-    //decodifica il token
-    Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
-
-    //recupera il gruppo dell'utente
-    String? group = payload['custom:group'];
-    debugPrint('User groups: $group');
-    debugPrint('User is: ');
-    debugPrint(group);
+    String? group = prefs.getString(SAVED_GROUP);
+    debugPrint("gruppo dell'utente $group");
 
     if(group == TipoRuolo.ADMIN){
       return true;
@@ -60,9 +86,26 @@ class AWSServices {
       //recupera il token dell'utente
       final idToken = session?.idToken.jwtToken;
 
-      //salva il token in memoria
+      //decodifica il token
+      Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
+      debugPrint("Salvo le seguenti informazioni nelle shared preferences");
+      debugPrint(LOGIN_CREDENZIALI);
+      debugPrint(idToken);
+      debugPrint(payload['name']);
+      debugPrint(payload['family_name']);
+      debugPrint(payload['email']);
+      debugPrint(payload['sub']);
+      debugPrint(payload['custom:group']);
+
+      //salva le informazioni dell'utente in memoria
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('userToken', idToken!);
+      await prefs.setString('tipoLogin', LOGIN_CREDENZIALI);
+      await prefs.setString('userToken', idToken);
+      await prefs.setString('nome', payload['name']);
+      await prefs.setString('cognome', payload['family_name']);
+      await prefs.setString('email', payload['email']);
+      await prefs.setString('sub', payload['sub']);
+      await prefs.setString('group', payload['custom:group']);
 
       String? group = await recuperaGruppoUtenteLoggato();
       return group;
@@ -122,20 +165,21 @@ class AWSServices {
   Future signOut() async{
     //recupera il token dalla memoria
     final prefs = await SharedPreferences.getInstance();
-    final idToken = prefs.getString('userToken');
-
-    //decodifica il token
-    Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
-
-    //recupera la mail
-    dynamic email = payload['email'];
+    final email = prefs.getString(SAVED_EMAIL);
 
     //effettua il logout dell'utente (rende i token non validi)
     final cognitoUser = CognitoUser(email, userPool);
     await cognitoUser.signOut();
 
     //pulisce il token dalla memoria del sistema
-    await prefs.remove('userToken');
+    await prefs.remove(SAVED_USER_TOKEN);
+    await prefs.remove(SAVED_NOME);
+    await prefs.remove(SAVED_COGNOME);
+    await prefs.remove(SAVED_EMAIL);
+    await prefs.remove(SAVED_SUB);
+    await prefs.remove(SAVED_GROUP);
+    await prefs.remove(SAVED_LOGIN_TYPE);
+    await prefs.remove(SAVED_EXPIRATION);
   }
 
   Future<bool> startPasswordDimenticataProcedure(email) async{
@@ -174,65 +218,44 @@ class AWSServices {
   Future<String?> recuperaEmailUtenteLoggato() async {
     //recupera il token dalla memoria
     final prefs = await SharedPreferences.getInstance();
-    final idToken = prefs.getString('userToken');
+    String? email = prefs.getString(SAVED_EMAIL);
 
-    //decodifica il token
-    Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
-
-    //recupera la mail
-    String? email = payload['email'];
     return email;
   }
 
   Future<String?> recuperaNomeUtenteLoggato() async {
     //recupera il token dalla memoria
     final prefs = await SharedPreferences.getInstance();
-    final idToken = prefs.getString('userToken');
+    String? nome = prefs.getString(SAVED_NOME);
+    debugPrint("recupera nome utente loggato: $nome");
 
-    //decodifica il token
-    Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
-
-    //recupera la mail
-    String? nome = payload['name'];
     return nome;
   }
 
   Future<String?> recuperaCognomeUtenteLoggato() async {
     //recupera il token dalla memoria
     final prefs = await SharedPreferences.getInstance();
-    final idToken = prefs.getString('userToken');
+    String? cognome = prefs.getString(SAVED_COGNOME);
+    debugPrint("recupera cognome utente loggato: $cognome");
 
-    //decodifica il token
-    Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
-
-    //recupera la mail
-    String? cognome = payload['family_name'];
     return cognome;
   }
 
   Future<String?> recuperaGruppoUtenteLoggato() async {
     //recupera il token dalla memoria
     final prefs = await SharedPreferences.getInstance();
-    final idToken = prefs.getString('userToken');
+    String? gruppo = prefs.getString(SAVED_GROUP);
+    debugPrint("recupera gruppo utente loggato: $gruppo");
 
-    //decodifica il token
-    Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
-
-    //recupera la mail
-    String? gruppo = payload['custom:group'];
     return gruppo;
   }
 
   Future<String?> recuperaSubUtenteLoggato() async {
     //recupera il token dalla memoria
     final prefs = await SharedPreferences.getInstance();
-    final idToken = prefs.getString('userToken');
+    String? sub = prefs.getString(SAVED_SUB);
+    debugPrint("recupera sub utente loggato: $sub");
 
-    //decodifica il token
-    Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
-
-    //recupera la mail
-    String? sub = payload['sub'];
     return sub;
   }
 
@@ -273,21 +296,46 @@ class AWSServices {
     try {
       final result = await Amplify.Auth.signInWithWebUI(provider: AuthProvider.google);
       
-      safePrint('Result: $result');
       if (result.isSignedIn){
-        // final CognitoAuthSession? result = await Amplify.Auth.getAuthSession();
-        // final String? token = result?.userPoolTokensResult.value.accessToken.raw;
-         try {
-          final cognitoPlugin = 
-              Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
+        
+        try {
+          final cognitoPlugin = Amplify.Auth.getPlugin(AmplifyAuthCognito.pluginKey);
           final result = await cognitoPlugin.fetchAuthSession();
-          final accessToken = 
-              result.userPoolTokensResult.value.accessToken.toJson();
-          safePrint("Current user's access token: $accessToken");
 
-          //salva il token in memoria
+          final idToken = result.userPoolTokensResult.value.idToken;
+
+          debugPrint("Salvo le seguenti informazioni nelle shared preferences");
+          debugPrint(LOGIN_GOOGLE);
+          debugPrint(idToken.name!);
+          debugPrint(idToken.familyName!);
+          debugPrint(idToken.email!);
+
+          Map<String, dynamic> jsonMap = jsonDecode(idToken.toString());
+          debugPrint(jsonMap['claims']['sub']);
+          debugPrint(jsonMap['claims']['exp'].toString());
+          
+          debugPrint(TipoRuolo.CLIENTE);
+
+          //salva le informazioni del token in memoria
           final prefs = await SharedPreferences.getInstance();
-          await prefs.setString('userToken', accessToken);
+          await prefs.setString(SAVED_LOGIN_TYPE, LOGIN_GOOGLE);
+          await prefs.setString(SAVED_NOME, idToken.name!);
+          await prefs.setString(SAVED_COGNOME, idToken.familyName!);
+          await prefs.setString(SAVED_EMAIL, idToken.email!);
+          await prefs.setString(SAVED_SUB, jsonMap['claims']['sub']);
+          await prefs.setString(SAVED_EXPIRATION, jsonMap['claims']['exp'].toString());
+          await prefs.setString(SAVED_GROUP, TipoRuolo.CLIENTE);
+
+          try {
+            int statuscode = await UtenteService.creaUtente(jsonMap['claims']['sub'], TipoRuolo.CLIENTE, idToken.name!, idToken.familyName!, idToken.email!, null);
+            safePrint("status code richiesta creazione utente: $statuscode");
+            return true;
+          } catch (e) {
+            safePrint(e);
+            return false;
+          }
+
+          
         } on AuthException catch (e) {
           safePrint('Error retrieving auth session: ${e.message}');
         }
