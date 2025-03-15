@@ -8,7 +8,7 @@ class VisitaDto implements DTO {
   UtenteDto cliente;
   DateTime data;
   String orarioInizio;
-  String? orarioFine;
+  String orarioFine;
   String? stato;
 
   VisitaDto({
@@ -16,7 +16,7 @@ class VisitaDto implements DTO {
     required this.cliente,
     required this.data,
     required this.orarioInizio,
-    this.orarioFine,
+    required this.orarioFine,
     this.stato,
     this.id,
   });

@@ -7,6 +7,7 @@ import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart'
 import 'package:domus_app/back_end_communication/dto/utente_dto.dart';
 import 'package:domus_app/back_end_communication/dto/visita_dto.dart';
 import 'package:domus_app/amazon_services/aws_cognito.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class VisitaService {
@@ -23,9 +24,23 @@ class VisitaService {
   }
 
   static Future<int> _creaVisitaCliente(UtenteDto cliente, AnnuncioDto annuncio, String data, String orarioInizio) async {
-    VisitaDto offerta = VisitaDto(annuncio: annuncio, cliente: cliente, data: DateTime.parse(data), orarioInizio: orarioInizio);
+
+    int orarioInizioInt = int.parse(orarioInizio.split(":")[0]);
+
+    debugPrint("orario di inizio visita int: ${orarioInizioInt.toString()}");
+    debugPrint("orario di inizio visita int: ${orarioInizioInt.toString()}");
+    debugPrint("orario di inizio visita int: ${orarioInizioInt.toString()}");
+    debugPrint("orario di inizio visita int: ${orarioInizioInt.toString()}");
+    debugPrint((orarioInizioInt + 1).toString());
+    debugPrint((orarioInizioInt + 1).toString());
+    debugPrint((orarioInizioInt + 1).toString());
+    debugPrint((orarioInizioInt + 1).toString());
+
+    String orarioFine = "${orarioInizioInt + 1}:00";
+
+    VisitaDto visita = VisitaDto(annuncio: annuncio, cliente: cliente, data: DateTime.parse(data), orarioInizio: orarioInizio, orarioFine: orarioFine);
     try{
-      http.Response response = await VisitaController.chiamataHTTPcreaVisitaCliente(offerta);
+      http.Response response = await VisitaController.chiamataHTTPcreaVisitaCliente(visita);
       
       if(response.statusCode == 201){
         return response.statusCode;        
