@@ -439,7 +439,7 @@ class _CercaPageState extends State<CercaPage> {
       items: annunciRecentiList.asMap().entries.map((entry) {
         int indice = entry.key;
         AnnuncioDto annuncioCorrente = entry.value;
-        double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.5;
+        double scaleFactor = indice == _currentSliderIndex ? 0.9 : 0.5;
         return GestureDetector(
           onTap: (){
             Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(annuncioSelezionato: annuncioCorrente)));
