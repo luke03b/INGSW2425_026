@@ -4,11 +4,16 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/back_end_communication/class_services/immagini_service.dart';
 import 'package:domus_app/back_end_communication/class_services/offerta_service.dart';
+import 'package:domus_app/back_end_communication/communication_utils/status_code_controller.dart';
 import 'package:domus_app/back_end_communication/dto/immagini_dto.dart';
 import 'package:domus_app/back_end_communication/dto/offerta_dto.dart';
+import 'package:domus_app/costants/enumerations.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
 import 'package:domus_app/ui_elements/utils/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
+import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_loading.dart';
+import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
 import 'package:domus_app/ui_elements/utils/my_ui_messages_widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -30,16 +35,7 @@ class _OffertePageState extends State<OffertePage> {
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    
-    // Esegui getAnnunci dopo la fase di build
-    Future.delayed(Duration.zero, () {
-      getAnnunciConOfferte();
-    });
+    getAnnunciConOfferte();
   }
 
   Future<void> getAnnunciConOfferte() async {
@@ -259,7 +255,7 @@ class _OffertePageState extends State<OffertePage> {
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         Text("La tua offerta: ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: context.outline)),
-                        Text(FormatStrings.formatNumber(offertaSelezionata.prezzo), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: context.outline)),
+                        Text((FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!) == "Accettata" || FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!) == "Rifiutata") && offertaSelezionata.controproposta != null ? FormatStrings.formatNumber(offertaSelezionata.controproposta!) : FormatStrings.formatNumber(offertaSelezionata.prezzo), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: context.outline)),
                         Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.normal, color: context.outline)),
                         Visibility(
                           visible: offertaSelezionata.annuncio.tipoAnnuncio == "AFFITTO", 
@@ -292,11 +288,137 @@ class _OffertePageState extends State<OffertePage> {
                                     Text("/Mese", style: TextStyle(color: selettoreColoreStatoOfferta(FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!)), fontWeight: FontWeight.normal, fontSize: scaleFactor * 22),),
                                   ],
                                 )
-                              )
+                              ),
                             ],
                           ),
                         ),
                       ],
+                    ),
+                    Visibility(
+                      visible: FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!) == "Controproposta",
+                      child: Row(
+                        children: [
+                          SizedBox(width: 17,),
+                          SizedBox(
+                            width: 150,
+                            child: MyElevatedButtonRectWidget(
+                              text: "Accetta", 
+                              onPressed: () async {
+                                showDialog(
+                                  context: 
+                                  context, builder: (BuildContext context) => MyOptionsDialog(
+                                    title: "Accettare controproposta", 
+                                    bodyText: "Si vuole accettare la controproposta di ${FormatStrings.formatNumber(offertaSelezionata.controproposta!)}?", 
+                                    leftButtonText: "No", 
+                                    leftButtonColor: context.secondary, 
+                                    rightButtonText: "Si", 
+                                    rightButtonColor: context.tertiary, 
+                                    onPressLeftButton: () async {
+                                      Navigator.pop(context);
+                                    },
+                                    onPressRightButton: () async {
+                                      LoadingHelper.showLoadingDialog(context);
+                                      try {
+                                        int statusCode = await OffertaService.aggiornaStatoOfferta(offertaSelezionata, Enumerations.statoOfferte[1]);
+                                        await StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Controproposta accettata", "Errore", "Controproposta non accettata");
+                                        setState(() {
+                                          hasUserOfferte = false;
+                                          areDataRetrieved = false;
+                                          areServersAvailable = false;
+                                        });
+                                        getAnnunciConOfferte();
+                                      }on TimeoutException {
+                                        showDialog(
+                                          context: context, 
+                                          builder: (BuildContext context) => MyInfoDialog(
+                                            title: "Connessione non riuscita", 
+                                            bodyText: "Controproposta non accettata, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
+                                            buttonText: "Ok", 
+                                            onPressed: () {Navigator.pop(context);}
+                                          )
+                                        );
+                                      } catch (e) {
+                                        print(e);
+                                        showDialog(
+                                          context: context, 
+                                          builder: (BuildContext context) => MyInfoDialog(
+                                            title: "Errore",
+                                            bodyText: "Controproposta non accettata.", 
+                                            buttonText: "Ok", 
+                                            onPressed: () {Navigator.pop(context);}
+                                          )
+                                        );
+                                      }
+                                    }
+                                  )
+                                );
+                              }, 
+                              color: context.tertiary
+                            ),
+                          ),
+                          SizedBox(width: 8,),
+                          SizedBox(
+                            width: 150,
+                            child: MyElevatedButtonRectWidget(
+                              text: "Rifiuta", 
+                              onPressed: () async {
+                                showDialog(
+                                  context: 
+                                  context, builder: (BuildContext context) => MyOptionsDialog(
+                                    title: "Rifiutare controproposta", 
+                                    bodyText: "Si vuole rifiutare la controproposta di ${FormatStrings.formatNumber(offertaSelezionata.controproposta!)}?", 
+                                    leftButtonText: "No", 
+                                    leftButtonColor: context.secondary, 
+                                    rightButtonText: "Si", 
+                                    rightButtonColor: context.tertiary, 
+                                    onPressLeftButton: () async {
+                                      Navigator.pop(context);
+                                    }, 
+                                    onPressRightButton: () async {
+                                      LoadingHelper.showLoadingDialog(context);
+                                      try {
+                                        int statusCode = await OffertaService.aggiornaStatoOfferta(offertaSelezionata, Enumerations.statoOfferte[2]);
+                                        await StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Controproposta rifiutata", "Errore", "Controproposta non rifiutata");
+                                        setState(() {
+                                          hasUserOfferte = false;
+                                          areDataRetrieved = false;
+                                          areServersAvailable = false;
+                                        });
+                                        getAnnunciConOfferte();
+                                      }on TimeoutException {
+                                        showDialog(
+                                          context: context, 
+                                          builder: (BuildContext context) => MyInfoDialog(
+                                            title: "Connessione non riuscita", 
+                                            bodyText: "Controproposta non rifiutata, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
+                                            buttonText: "Ok", 
+                                            onPressed: () {Navigator.pop(context);}
+                                          )
+                                        );
+                                      } catch (e) {
+                                        print(e);
+                                        showDialog(
+                                          context: context, 
+                                          builder: (BuildContext context) => MyInfoDialog(
+                                            title: "Errore",
+                                            bodyText: "Controproposta non rifiutata.", 
+                                            buttonText: "Ok", 
+                                            onPressed: () {Navigator.pop(context);}
+                                          )
+                                        );
+                                      }
+                                    }
+                                  )
+                                );
+                              }, 
+                              color: context.secondary
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: scaleFactor * MediaQuery.of(context).size.height/75,
                     ),
                     Row(
                       children: [
@@ -305,9 +427,6 @@ class _OffertePageState extends State<OffertePage> {
                         Text("Data offerta: ", style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.bold, color: context.outline)),
                         Text(FormatStrings.formattaDataGGMMAAAAeHHMM(offertaSelezionata.data!), style: TextStyle(fontSize: scaleFactor * 17, fontWeight: FontWeight.normal, color: context.outline)),
                       ],
-                    ),
-                    SizedBox(
-                      height: scaleFactor * MediaQuery.of(context).size.height/75,
                     ),
                     Row(
                       children: [
@@ -375,7 +494,7 @@ class _OffertePageState extends State<OffertePage> {
       }).toList(),
       options: CarouselOptions(
         enableInfiniteScroll: false,
-        viewportFraction: 0.68,
+        viewportFraction: 0.752,
         height: 753,
         enlargeCenterPage: true,
         scrollDirection: Axis.vertical,

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/back_end_communication/class_services/annuncio_service.dart';
 import 'package:domus_app/back_end_communication/class_services/immagini_service.dart';
@@ -271,10 +272,18 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
                     Icon(Icons.location_on, size: scaleFactor * GRANDEZZA_ICONE, color: context.outline,),
                     SizedBox(width: MediaQuery.of(context).size.width/45,),
                     Expanded(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(annuncioCorrente.indirizzo, style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: context.outline), softWrap: true,)),
+                      child: AutoSizeText(
+                        annuncioCorrente.indirizzo,
+                        style: TextStyle(
+                          fontSize: scaleFactor * 18,
+                          fontWeight: FontWeight.normal,
+                          color: context.outline,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        minFontSize: 12,
                       ),
+                    )
                   ],
                 ),
               ],
