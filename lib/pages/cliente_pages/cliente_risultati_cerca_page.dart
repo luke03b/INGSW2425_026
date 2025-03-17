@@ -7,7 +7,7 @@ import 'package:domus_app/back_end_communication/class_services/immagini_service
 import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio/filtri_ricerca_dto.dart';
 import 'package:domus_app/back_end_communication/dto/immagini_dto.dart';
-import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
+import 'package:domus_app/pages/shared_pages/annuncio_page.dart';
 import 'package:domus_app/ui_elements/utils/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_loading.dart';
@@ -139,7 +139,7 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
         double scaleFactor = indice == _currentSliderIndex ? 1.0 : 1.0;
         return GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(annuncioSelezionato: annuncioCorrente)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AnnuncioPage(idAnnuncioSelezionato: annuncioCorrente.idAnnuncio!)));
           },
           child: Container(
             width: MediaQuery.of(context).size.width,

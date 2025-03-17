@@ -12,7 +12,7 @@ class AnnuncioController {
   static Future<http.Response> inviaAnnuncio(AnnuncioDto annuncio) async {
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
-      UrlBuilder.LOCALHOST_ANDROID, 
+      UrlBuilder.INDIRIZZO_IN_USO, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_ANNUNCI
     );
@@ -39,7 +39,7 @@ class AnnuncioController {
   }
 
   static Future<http.Response> chiamataHTTPrecuperaAnnunciByAgenteSub(String sub) async {
-    final url = UrlBuilder.createUrl(UrlBuilder.PROTOCOL_HTTP, UrlBuilder.LOCALHOST_ANDROID, port: UrlBuilder.PORTA_SPRINGBOOT, UrlBuilder.ENDPOINT_ANNUNCI_AGENTE, queryParams: {'sub': sub});
+    final url = UrlBuilder.createUrl(UrlBuilder.PROTOCOL_HTTP, UrlBuilder.INDIRIZZO_IN_USO, port: UrlBuilder.PORTA_SPRINGBOOT, UrlBuilder.ENDPOINT_ANNUNCI_AGENTE, queryParams: {'sub': sub});
 
     final response = await http.get(
       url,
@@ -64,7 +64,7 @@ class AnnuncioController {
     
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
-      UrlBuilder.LOCALHOST_ANDROID, 
+      UrlBuilder.INDIRIZZO_IN_USO, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_ANNUNCI_FILTRI_RICERCA,
     );
@@ -92,7 +92,7 @@ class AnnuncioController {
   static Future<http.Response> chiamataHTTPrecuperaAnnunciRecentementeVisusalizzatiCliente(UtenteDto cliente) async {
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
-      UrlBuilder.LOCALHOST_ANDROID, 
+      UrlBuilder.INDIRIZZO_IN_USO, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_GET_ANNUNCI_RECENTI,
       queryParams: {'idCliente' : cliente.id}
@@ -120,7 +120,7 @@ class AnnuncioController {
   static Future<http.Response> chiamataHTTPrecuperaAnnunciByAgenteSubConOffertePrenotazioni(String sub, bool offerte, bool prenotazioni, bool disponibili) async {
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
-      UrlBuilder.LOCALHOST_ANDROID, 
+      UrlBuilder.INDIRIZZO_IN_USO, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_GET_ANNUNCI_CON_OFFERTE_PRENOTAZIONI, 
       queryParams: {
@@ -153,7 +153,7 @@ class AnnuncioController {
   static Future<http.Response> chiamataHTTPrecuperaAnnunciById(String idAnnuncio) async {
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
-      UrlBuilder.LOCALHOST_ANDROID, 
+      UrlBuilder.INDIRIZZO_IN_USO, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_GET_ANNUNCI_BY_ID, 
       queryParams: {

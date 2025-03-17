@@ -7,7 +7,7 @@ import 'package:domus_app/back_end_communication/class_services/visita_service.d
 import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/immagini_dto.dart';
 import 'package:domus_app/back_end_communication/dto/visita_dto.dart';
-import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
+import 'package:domus_app/pages/shared_pages/annuncio_page.dart';
 import 'package:domus_app/ui_elements/utils/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_ui_messages_widgets.dart';
@@ -138,7 +138,7 @@ class _ClientePrenotazioniPageState extends State<ClientePrenotazioniPage> {
         double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.7;
         return GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(annuncioSelezionato: visitaCorrente.annuncio)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AnnuncioPage(idAnnuncioSelezionato: visitaCorrente.annuncio.idAnnuncio!)));
           },
           child: Stack(
             children: [

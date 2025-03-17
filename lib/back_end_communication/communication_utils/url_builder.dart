@@ -8,6 +8,7 @@ class UrlBuilder {
   static final String HOSTNAME_OPEN_METEO = "api.open-meteo.com";
   static final String LOCALHOST_ANDROID = "10.0.2.2";
   static final String LOCALHOST_WINDOWS = "localhost";
+  static final String INDIRIZZO_IN_USO = LOCALHOST_ANDROID;
   static final String PORTA_SPRINGBOOT = "8080";
   static final String ENDPOINT_OPEN_METEO = "/v1/forecast";
   static final String ENDPOINT_ANNUNCI = "api/annunci";
@@ -31,6 +32,8 @@ class UrlBuilder {
   static final String ENDPOINT_IMMAGINI_S3_SAVE = "api/immagini/save";
   static final String ENDPOINT_GET_IMMAGINI = "api/immagini";
   static final String ENDPOINT_IMMAGINI_S3_DOWNLOAD_PRESIGNED_URL = "api/immagini/download-presigned-url";
+
+
 
   static Uri createUrl(String protocol, String hostName, String path, {String? port,  Map<String, dynamic>? queryParams}) {
     Uri uri;

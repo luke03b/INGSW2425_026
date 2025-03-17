@@ -12,7 +12,7 @@ class VisitaController {
   static Future<http.Response> chiamataHTTPrecuperaVisiteAnnuncio(AnnuncioDto annuncio) async {
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
-      UrlBuilder.LOCALHOST_ANDROID, 
+      UrlBuilder.INDIRIZZO_IN_USO, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_GET_VISITE_ANNUNCIO, 
       queryParams: { "idAnnuncio" : annuncio.idAnnuncio }
@@ -41,7 +41,7 @@ class VisitaController {
     debugPrint(UrlBuilder.ENDPOINT_POST_VISITE);
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
-      UrlBuilder.LOCALHOST_ANDROID, 
+      UrlBuilder.INDIRIZZO_IN_USO, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_POST_VISITE,
     );
@@ -72,7 +72,7 @@ class VisitaController {
   static Future<http.Response> chiamataHTTPrecuperaVisiteByCliente(UtenteDto cliente) async {
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
-      UrlBuilder.LOCALHOST_ANDROID, 
+      UrlBuilder.INDIRIZZO_IN_USO, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_GET_VISITE_CLIENTE, 
       queryParams: { "idCliente" : cliente.id }
@@ -100,7 +100,7 @@ class VisitaController {
   static Future<http.Response> chiamataHTTPrecuperaVisiteConStatoByAnnuncio(AnnuncioDto annuncio, String stato) async {
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
-      UrlBuilder.LOCALHOST_ANDROID, 
+      UrlBuilder.INDIRIZZO_IN_USO, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_GET_VISITE_STATO,
       queryParams: { 
@@ -131,7 +131,7 @@ class VisitaController {
   static Future<http.Response> chiamataHTTPrecuperaTutteVisiteConStatoByAgente(String stato, String sub) async {
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
-      UrlBuilder.LOCALHOST_ANDROID, 
+      UrlBuilder.INDIRIZZO_IN_USO, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_GET_VISITE_AGENTE_STATO,
       queryParams: { 
@@ -162,7 +162,7 @@ class VisitaController {
   static Future<http.Response> chiamataHTTPaggiornaStatoVisita(VisitaDto visita, String stato) async {
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
-      UrlBuilder.LOCALHOST_ANDROID, 
+      UrlBuilder.INDIRIZZO_IN_USO, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_GET_VISITE_ANNUNCIO,
       queryParams: {"stato" : stato.toUpperCase()},

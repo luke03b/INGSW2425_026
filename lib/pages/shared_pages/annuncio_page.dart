@@ -1,12 +1,18 @@
 import 'dart:async';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:domus_app/amazon_services/aws_cognito.dart';
 import 'package:domus_app/back_end_communication/class_services/annuncio_service.dart';
+import 'package:domus_app/back_end_communication/class_services/cronologia_service.dart';
 import 'package:domus_app/back_end_communication/class_services/immagini_service.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/immagini_dto.dart';
+import 'package:domus_app/costants/costants.dart';
 import 'package:domus_app/pages/agente_pages/agente_offerte_page.dart';
 import 'package:domus_app/pages/agente_pages/agente_visite_page.dart';
+import 'package:domus_app/pages/cliente_pages/cliente_visite_page.dart';
+import 'package:domus_app/pages/cliente_pages/visita_pages/cliente_crea_visita.dart';
+import 'package:domus_app/pages/shared_pages/crea_offerta_page.dart';
 import 'package:domus_app/ui_elements/utils/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_ui_messages_widgets.dart';
@@ -20,17 +26,17 @@ import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class AgenteAnnuncioPage extends StatefulWidget {
+class AnnuncioPage extends StatefulWidget {
   final String idAnnuncioSelezionato;
   
 
-  const AgenteAnnuncioPage({super.key, required this.idAnnuncioSelezionato});
+  const AnnuncioPage({super.key, required this.idAnnuncioSelezionato});
 
   @override
-  State<AgenteAnnuncioPage> createState() => _AgenteAnnuncioPageState();
+  State<AnnuncioPage> createState() => _AnnuncioPageState();
 }
 
-class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
+class _AnnuncioPageState extends State<AnnuncioPage> {
   final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
   AnnuncioDto? annuncioSelezionato;
   bool existsAnnuncio = false;
@@ -51,6 +57,10 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
         for(ImmaginiDto immagine in data.listaImmagini!){
           immagine.urlS3 = await ImmaginiService.recuperaFileImmagine(immagine.url); 
         }
+      }
+
+      if (await AWSServices().recuperaGruppoUtenteLoggato() == TipoRuolo.CLIENTE) {
+        await getAnnunciRecenti(data);
       }
       
       if (mounted) {
@@ -74,6 +84,25 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
         areDataRetrieved = true;
       });
       safePrint('Errore con il recupero degli annunci (il server potrebbe non essere raggiungibile) $error');
+    }
+  }
+
+  Future<void> getAnnunciRecenti(AnnuncioDto annuncio) async {
+    try {
+      int statusCode = await CronologiaService.aggiornaCronologiaUtente(annuncio);
+
+      if(statusCode == 201) {
+        print("cronologia utente aggiornata correttamente");
+      } else {
+        print("errore");
+      }
+
+    } on TimeoutException {
+      if (mounted) {
+        print("non è stato possibile aggiornare la cronologia perché i server non sono raggiungibili");
+      }
+    } catch (error) {
+      print('Errore con l\'aggiornamento della cronologia dell\'utente (il server potrebbe non essere raggiungibile) $error');
     }
   }
 
@@ -580,7 +609,13 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                   child: MyElevatedButtonRectWidget(
                     text: "Offerte",
                     onPressed: () async {
-                      await Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteOffertePage(annuncioSelezionato: annuncioSelezionato!,)));
+                      String? ruoloUtenteLoggato = await AWSServices().recuperaGruppoUtenteLoggato();
+                      debugPrint(ruoloUtenteLoggato);
+                      if (ruoloUtenteLoggato == TipoRuolo.ADMIN || ruoloUtenteLoggato == TipoRuolo.AGENTE) {
+                        await Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteOffertePage(annuncioSelezionato: annuncioSelezionato!,)));
+                      } else if (ruoloUtenteLoggato == TipoRuolo.CLIENTE) {
+                        await Navigator.push(context, MaterialPageRoute(builder: (context) => CreaOffertaPage(annuncioSelezionato: annuncioSelezionato!, isOffertaManuale: false,)));
+                      }
                       setState(() {
                         existsAnnuncio = false;
                         areDataRetrieved = false;
@@ -594,7 +629,13 @@ class _AgenteAnnuncioPageState extends State<AgenteAnnuncioPage> {
                   child: MyElevatedButtonRectWidget(
                     text: "Prenotazioni",
                     onPressed: () async {
-                      await Navigator.push(context, MaterialPageRoute(builder: (context) => AgentePrenotazioniPage(annuncioSelezionato: annuncioSelezionato!)));
+                      String? ruoloUtenteLoggato = await AWSServices().recuperaGruppoUtenteLoggato();
+                      debugPrint(ruoloUtenteLoggato);
+                      if (ruoloUtenteLoggato == TipoRuolo.ADMIN || ruoloUtenteLoggato == TipoRuolo.AGENTE) {
+                        await Navigator.push(context, MaterialPageRoute(builder: (context) => AgentePrenotazioniPage(annuncioSelezionato: annuncioSelezionato!,)));
+                      } else if (ruoloUtenteLoggato == TipoRuolo.CLIENTE) {
+                        await Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteCreaVisitaPage(annuncioSelezionato: annuncioSelezionato!,)));
+                      }
                       setState(() {
                         existsAnnuncio = false;
                         areDataRetrieved = false;

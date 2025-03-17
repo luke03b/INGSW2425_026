@@ -6,7 +6,7 @@ import 'package:domus_app/back_end_communication/class_services/immagini_service
 import 'package:domus_app/back_end_communication/communication_utils/url_builder.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
 import 'package:domus_app/back_end_communication/dto/immagini_dto.dart';
-import 'package:domus_app/pages/agente_pages/agente_annuncio_page.dart';
+import 'package:domus_app/pages/shared_pages/annuncio_page.dart';
 import 'package:domus_app/pages/agente_pages/agente_crea_annuncio_page.dart';
 import 'package:domus_app/ui_elements/utils/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
@@ -315,12 +315,14 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
         double scaleFactor = indice == _currentSliderIndex ? 1.0 : 0.8;
         return GestureDetector(
           onTap: () async {
-            await Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPage(idAnnuncioSelezionato: annuncioCorrente.idAnnuncio!)));
-            setState(() {
-              hasUserAnnunci = false;
-              areDataRetrieved = false;
-              areServersAvailable = false;
-            });
+            await Navigator.push(context, MaterialPageRoute(builder: (context) => AnnuncioPage(idAnnuncioSelezionato: annuncioCorrente.idAnnuncio!)));
+            if (mounted) {
+              setState(() {
+                hasUserAnnunci = false;
+                areDataRetrieved = false;
+                areServersAvailable = false;
+              });              
+            }
             getAnnunciAgente();
           },
           child: Stack(

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:domus_app/back_end_communication/class_services/visita_service.dart';
 import 'package:domus_app/back_end_communication/dto/visita_dto.dart';
 import 'package:domus_app/costants/enumerations.dart';
-import 'package:domus_app/pages/agente_pages/agente_annuncio_page.dart';
+import 'package:domus_app/pages/shared_pages/annuncio_page.dart';
 import 'package:domus_app/ui_elements/utils/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_ui_messages_widgets.dart';
@@ -269,7 +269,7 @@ class _AgenteCalendarioPrenotazioniPageState extends State<AgenteCalendarioPreno
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: ListTile(
-                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteAnnuncioPage(idAnnuncioSelezionato: value[index].annuncio.idAnnuncio!))),
+                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AnnuncioPage(idAnnuncioSelezionato: value[index].annuncio.idAnnuncio!))),
                               title: Column(
                                 children: [
                                   Text(value[index].annuncio.indirizzo, style: TextStyle(color: context.outline),),

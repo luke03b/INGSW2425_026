@@ -9,7 +9,7 @@ class CronologiaController {
   static Future<http.Response> chiamataHTTPaggiornaCronologiaCliente(CronologiaDto cronologia) async {
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
-      UrlBuilder.LOCALHOST_ANDROID, 
+      UrlBuilder.INDIRIZZO_IN_USO, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_POST_ANNUNCI_RECENTI,
     );

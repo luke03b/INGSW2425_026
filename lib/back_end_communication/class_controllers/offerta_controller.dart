@@ -12,7 +12,7 @@ class OffertaController {
   static Future<http.Response> chiamataHTTPcreaOfferta(OffertaDto offerta) async {
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
-      UrlBuilder.LOCALHOST_ANDROID, 
+      UrlBuilder.INDIRIZZO_IN_USO, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_POST_OFFERTE,
     );
@@ -44,7 +44,7 @@ class OffertaController {
     print(annuncio.idAnnuncio);
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
-      UrlBuilder.LOCALHOST_ANDROID, 
+      UrlBuilder.INDIRIZZO_IN_USO, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_GET_OFFERTE, 
       queryParams: { "idAnnuncio" : annuncio.idAnnuncio }
@@ -72,7 +72,7 @@ class OffertaController {
   static Future<http.Response> chiamataHTTPrecuperaAnnunciConOfferteCliente(UtenteDto cliente) async {
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
-      UrlBuilder.LOCALHOST_ANDROID, 
+      UrlBuilder.INDIRIZZO_IN_USO, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_GET_ANNUNCI_OFFERTE,
       queryParams: {'idCliente' : cliente.id}
@@ -108,7 +108,7 @@ class OffertaController {
 
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
-      UrlBuilder.LOCALHOST_ANDROID, 
+      UrlBuilder.INDIRIZZO_IN_USO, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_GET_OFFERTE,
       queryParams: queryParams,
@@ -138,7 +138,7 @@ class OffertaController {
   static Future<http.Response> chiamataHTTPrecuperaOfferteConStatoByAnnuncio(AnnuncioDto annuncio, String stato) async {
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
-      UrlBuilder.LOCALHOST_ANDROID, 
+      UrlBuilder.INDIRIZZO_IN_USO, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_GET_OFFERTE_STATO, 
       queryParams: { 

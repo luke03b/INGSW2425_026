@@ -13,7 +13,7 @@ class ImmaginiController {
     print(annuncio.idAnnuncio);
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
-      UrlBuilder.LOCALHOST_ANDROID, 
+      UrlBuilder.INDIRIZZO_IN_USO, 
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_GET_IMMAGINI, 
       queryParams: { "idAnnuncio" : annuncio.idAnnuncio }
@@ -41,7 +41,7 @@ class ImmaginiController {
   static Future<http.Response> chiamataHTTPrecuperaS3UrlImmagineByNome(String nomeImmagine) async{
     final url = UrlBuilder.createUrl(
       UrlBuilder.PROTOCOL_HTTP, 
-      UrlBuilder.LOCALHOST_ANDROID,
+      UrlBuilder.INDIRIZZO_IN_USO,
       port: UrlBuilder.PORTA_SPRINGBOOT, 
       UrlBuilder.ENDPOINT_IMMAGINI_S3_DOWNLOAD_PRESIGNED_URL,
       queryParams: {"fileName" : nomeImmagine}

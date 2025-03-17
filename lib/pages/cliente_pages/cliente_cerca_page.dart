@@ -13,7 +13,7 @@ import 'package:domus_app/back_end_communication/dto/annuncio/intervallo_stanze.
 import 'package:domus_app/back_end_communication/dto/annuncio/intervallo_superficie.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio/vicinanze.dart';
 import 'package:domus_app/back_end_communication/dto/immagini_dto.dart';
-import 'package:domus_app/pages/cliente_pages/cliente_annuncio_page.dart';
+import 'package:domus_app/pages/shared_pages/annuncio_page.dart';
 import 'package:domus_app/ui_elements/utils/formatStrings.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
@@ -442,7 +442,7 @@ class _CercaPageState extends State<CercaPage> {
         double scaleFactor = indice == _currentSliderIndex ? 0.9 : 0.5;
         return GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteAnnuncioPage(annuncioSelezionato: annuncioCorrente)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AnnuncioPage(idAnnuncioSelezionato: annuncioCorrente.idAnnuncio!)));
           },
           child: Stack(
             children: [

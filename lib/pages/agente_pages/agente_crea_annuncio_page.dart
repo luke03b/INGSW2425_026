@@ -1037,7 +1037,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
 
       final urlGetPresigned = UrlBuilder.createUrl(
           UrlBuilder.PROTOCOL_HTTP,
-          UrlBuilder.LOCALHOST_ANDROID,
+          UrlBuilder.INDIRIZZO_IN_USO,
           port: UrlBuilder.PORTA_SPRINGBOOT,
           UrlBuilder.ENDPOINT_IMMAGINI_S3_PRESIGNED_URL,
           queryParams: {"fileName": nomeImmagine});
@@ -1078,7 +1078,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
 
       final urlSaveImage = UrlBuilder.createUrl(
         UrlBuilder.PROTOCOL_HTTP,
-        UrlBuilder.LOCALHOST_ANDROID,
+        UrlBuilder.INDIRIZZO_IN_USO,
         port: UrlBuilder.PORTA_SPRINGBOOT,
         UrlBuilder.ENDPOINT_IMMAGINI_S3_SAVE
       );
