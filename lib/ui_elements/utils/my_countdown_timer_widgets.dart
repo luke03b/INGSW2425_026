@@ -20,19 +20,26 @@ class _CountdownTimerState extends State<CountdownTimer> {
   double progress = 1.0;
   Timer? timer;
   bool isRunning = false;
+  bool firstTime = true;
 
   @override
   void initState(){
     super.initState();
     remainingTime = widget.totalTime;
+    startTimer();
   }
 
   void startTimer() {
     if (isRunning) return;
 
-    widget.onPressed();
+    if(!firstTime) {
+      widget.onPressed();
+    }
 
     setState(() {
+      if(firstTime) {
+        firstTime = false;
+      }
       isRunning = true;
       remainingTime = widget.totalTime;
       progress = 1.0;
