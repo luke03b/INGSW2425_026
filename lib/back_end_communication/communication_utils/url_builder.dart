@@ -32,6 +32,7 @@ class UrlBuilder {
   static final String ENDPOINT_IMMAGINI_S3_SAVE = "api/immagini/save";
   static final String ENDPOINT_GET_IMMAGINI = "api/immagini";
   static final String ENDPOINT_IMMAGINI_S3_DOWNLOAD_PRESIGNED_URL = "api/immagini/download-presigned-url";
+  static final String ENDPOINT_METEO = "api/meteo";
 
 
 

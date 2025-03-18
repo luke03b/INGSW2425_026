@@ -7,16 +7,13 @@ class PrevisioniMeteoController {
   static Future<http.Response> chiamataHTTPrecuperaPrevisioniMeteo(double latitudine, double longitudine) async {
 
     final Uri url = UrlBuilder.createUrl(
-      UrlBuilder.PROTOCOL_HTTPS, 
-      UrlBuilder.HOSTNAME_OPEN_METEO, 
-      UrlBuilder.ENDPOINT_OPEN_METEO,
+      UrlBuilder.PROTOCOL_HTTP, 
+      UrlBuilder.INDIRIZZO_IN_USO, 
+      UrlBuilder.ENDPOINT_METEO,
+      port: UrlBuilder.PORTA_SPRINGBOOT,
       queryParams: {
-        'latitude' : latitudine.toString(),
-        'longitude' : longitudine.toString(),
-        'daily' : "temperature_2m_max,temperature_2m_min,weathercode",
-        'hourly' : "temperature_2m,weathercode",
-        'timezone' : "Europe/Rome",
-        'forecast_days' : "15",
+        'latitudine' : latitudine.toString(),
+        'longitudine' : longitudine.toString(),
       }
     );
 
