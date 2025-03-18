@@ -6,9 +6,10 @@ class UrlBuilder {
   static final String PROTOCOL_HTTP = "http";
   static final String PROTOCOL_HTTPS = "https";
   static final String HOSTNAME_OPEN_METEO = "api.open-meteo.com";
+  static final String IP_SERVER = "4.211.205.28";
   static final String LOCALHOST_ANDROID = "10.0.2.2";
   static final String LOCALHOST_WINDOWS = "localhost";
-  static final String INDIRIZZO_IN_USO = LOCALHOST_ANDROID;
+  static final String INDIRIZZO_IN_USO = IP_SERVER;
   static final String PORTA_SPRINGBOOT = "8080";
   static final String ENDPOINT_OPEN_METEO = "/v1/forecast";
   static final String ENDPOINT_ANNUNCI = "api/annunci";
