@@ -2,6 +2,7 @@ import 'package:domus_app/costants/costants.dart';
 import 'package:domus_app/amazon_services/aws_cognito.dart';
 import 'package:domus_app/providers/theme_provider.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
+import 'package:domus_app/ui_elements/utils/my_loading.dart';
 import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -143,18 +144,19 @@ class _RegistrationPageState extends State<RegistrationPage> {
   }
 
   Future<void> registraETornaAlLogin(BuildContext context) async {
+    LoadingHelper.showLoadingDialogNotDissmissible(context, color: context.secondary);
     Future<bool> isAllOk = register(nomeController.text, cognomeController.text, mailController.text, passwordController.text, TipoRuolo.CLIENTE);
     if (await isAllOk) {
       showDialog(
         barrierDismissible: false,
         context: context, 
-        builder: (BuildContext context) => MyInfoDialog(title: 'Registrazione Completata', bodyText: 'Verrai reindirizzato al Login', buttonText: 'Ok', onPressed: (){Navigator.pop(context); Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);})
+        builder: (BuildContext context) => MyInfoDialog(title: 'Registrazione Completata', bodyText: 'Verrai reindirizzato al Login', buttonText: 'Ok', onPressed: (){Navigator.pop(context); Navigator.pop(context); Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);})
       );
     } else {
       showDialog(
         barrierDismissible: false,
         context: context, 
-        builder: (BuildContext context) => MyInfoDialog(title: 'Errore', bodyText: 'Qualcosa è andato storto. Riprova', buttonText: 'Ok', onPressed: (){Navigator.pop(context);})
+        builder: (BuildContext context) => MyInfoDialog(title: 'Errore', bodyText: 'Qualcosa è andato storto. Riprova', buttonText: 'Ok', onPressed: (){Navigator.pop(context); Navigator.pop(context);})
       );
     }
   }

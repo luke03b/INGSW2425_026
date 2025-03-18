@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:domus_app/back_end_communication/dto/annuncio/annuncio_dto.dart';
@@ -107,7 +108,7 @@ class _ClienteFasceOrarieVisitaState extends State<ClienteFasceOrarieVisita> {
                   onPressLeftButton: (){Navigator.pop(context);}, 
                   onPressRightButton: () async {
                     try {
-                      LoadingHelper.showLoadingDialogNotDissmissible(context);
+                      LoadingHelper.showLoadingDialogNotDissmissible(context, color: context.secondary);
                       int statusCode = await VisitaService.creaVisita(widget.annuncioSelezionato, widget.selectedDate, time);
                       Navigator.pop(context);
                       Navigator.pop(context);
