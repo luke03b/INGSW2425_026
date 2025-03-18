@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/back_end_communication/class_services/offerta_service.dart';
 import 'package:domus_app/back_end_communication/communication_utils/status_code_controller.dart';

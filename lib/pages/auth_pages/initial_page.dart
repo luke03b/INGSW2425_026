@@ -21,10 +21,10 @@ class _InitialPageState extends State<InitialPage> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
-            body: Center(child: CircularProgressIndicator()), // Schermata di caricamento
+            body: Center(child: CircularProgressIndicator()), 
           );
         } else if (snapshot.hasError || snapshot.data == false) {          
-          return LoginPage(); // Mostra la pagina di login
+          return LoginPage(); 
         } else {
           return FutureBuilder(
             future: scegliPaginaDaCaricare(),

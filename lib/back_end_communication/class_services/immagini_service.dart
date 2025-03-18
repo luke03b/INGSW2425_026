@@ -39,13 +39,6 @@ class ImmaginiService {
       if(response.statusCode == 200){
         return response.body;
 
-        // http.Response response2 = await S3Services.chiamataHTTPrecuperaImmaginiByUrl(dat);
-
-        // if (response2.statusCode == 200) {
-        //   return response2.bodyBytes;
-        // }else{
-        //   throw Exception("Errore nel recupero del file immagine");
-        // }
       }else{
         throw Exception("Errore nel recupero del link immagine");
       }

@@ -5,7 +5,6 @@ import 'package:domus_app/pages/agente_pages/agente_controllore_pagine.dart';
 import 'package:domus_app/pages/auth_pages/initial_page.dart';
 import 'package:domus_app/pages/auth_pages/password_dimenticata_page.dart';
 import 'package:domus_app/providers/theme_provider.dart';
-//import 'package:domus_app/ui_elements/theme/theme_provider.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'amplifyconfiguration.dart';
 import 'package:domus_app/pages/cliente_pages/cliente_controllore_pagine.dart';
@@ -33,16 +32,7 @@ void main() async {
 }
 
 
-/*
-void main() async {
-  await ApiKeyProvider.initializeDotEnv();
-  runApp(ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
-      child: const MyApp(),
-    ),
-  );
-}
-*/
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -58,15 +48,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _configureAmplify() async {
-    // Add any Amplify plugins you want to use
+    
     final authPlugin = AmplifyAuthCognito();
     await Amplify.addPlugin(authPlugin);
 
-    // You can use addPlugins if you are going to be adding multiple plugins
-    // await Amplify.addPlugins([authPlugin, analyticsPlugin]);
-
-    // Once Plugins are added, configure Amplify
-    // Note: Amplify can only be configured once.
     try {
       await Amplify.configure(amplifyconfig);
     } on AmplifyAlreadyConfiguredException {
@@ -78,7 +63,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return Selector<ThemeProvider, ThemeMode>(
-      selector: (_, provider) => provider.themeMode, // Ascolta solo il tema
+      selector: (_, provider) => provider.themeMode, 
       builder: (context, themeMode, child) {
         return MaterialApp(
           title: 'House Hunters',

@@ -69,7 +69,6 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     
-    // Esegui getAnnunci dopo la fase di build
     Future.delayed(Duration.zero, () {
       getStoricoOfferte();
     });
@@ -328,7 +327,6 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                         )
                       ],
                     ),
-                    // MyTextFieldOnlyPositiveNumbers(controller: contropropostaController, text: "Controproposta", colore: coloreScritte),
                     SizedBox(height: MediaQuery.of(context).size.height/50,),
                     MyElevatedButtonRectWidget(text: "Invia", onPressed: () async {
                                       await inviaControproposta(context);

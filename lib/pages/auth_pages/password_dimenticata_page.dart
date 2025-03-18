@@ -107,7 +107,7 @@ class _PasswordDimenticataPageState extends State<PasswordDimenticataPage> {
                   colore: coloriScritte,
                 ),
               ),
-              //codiceTextField
+      
               Visibility(
                 visible: _isPasswordFieldVisible,
                 child: SizedBox(
@@ -138,7 +138,7 @@ class _PasswordDimenticataPageState extends State<PasswordDimenticataPage> {
               ),
               const Spacer(flex: 1),
 
-              //passwordTextField
+         
               Visibility(
                 visible: _isPasswordFieldVisible,
                 child: SizedBox(

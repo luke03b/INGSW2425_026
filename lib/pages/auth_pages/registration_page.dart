@@ -37,41 +37,41 @@ class _RegistrationPageState extends State<RegistrationPage> {
           child: Column(
             children: [
               const Spacer(flex: 5),
-              //Logo
+            
               themeProvider.themeMode == ThemeMode.light ? Image.asset('lib/assets/HouseHunter.png', height: 140) : Image.asset('lib/assets/HouseHunterChiaro.png', height: 140,),
               const Spacer(flex: 5),
 
-              //nomeTextField
+            
               SizedBox(
                 width: MediaQuery.sizeOf(context).width * 0.92,
                 child: MyTextFieldPrefixIcon(controller: nomeController, text: "nome", icon: const Icon(Icons.face), color: coloriScritte,)),
               const Spacer(),   
 
-              //cognomeTextField
+          
               SizedBox(
                 width: MediaQuery.sizeOf(context).width * 0.92,
                 child: MyTextFieldPrefixIcon(controller: cognomeController, text: "cognome", icon: const Icon(FontAwesomeIcons.idCard), color: coloriScritte,)),
               const Spacer(),
 
-              //emailTextField
+           
               SizedBox(
                 width: MediaQuery.sizeOf(context).width * 0.92,
                 child: MyTextFieldPrefixIcon(controller: mailController, text: "email", icon: const Icon(Icons.person), color: coloriScritte,)),
               const Spacer(),
 
-              //passwordTextField
+           
               SizedBox(
                 width: MediaQuery.sizeOf(context).width * 0.92,
                 child: MyPasswordFieldWidget(controller: passwordController, text: "password", icon: const Icon(Icons.lock), color: coloriScritte,)),
               const Spacer(),
 
-              //Altre Opzioni
+            
               MyTextButtonWidget(text: "Hai già un account?", 
                 onPressed: (){Navigator.pushNamedAndRemoveUntil(context, '/LoginPage', (r) => false);},
                 colore: coloriScritte),
               const Spacer(flex: 5),
 
-              //RegistratiButton
+          
               MyElevatedButtonWidget(text: "Registrati", onPressed: () async{
                 await registraETornaAlLogin(context);
               }, color: context.tertiary,),

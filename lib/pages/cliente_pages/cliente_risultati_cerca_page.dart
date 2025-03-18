@@ -46,15 +46,11 @@ class _RisultatiCercaPageState extends State<RisultatiCercaPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     
-    // Esegui getAnnunci dopo la fase di build
-    // Future.delayed(Duration.zero, () {
-    //   getAnnunci();
-    // });
   }
 
   Future<void> getAnnunci() async {
     try {
-      // Apri il loading dialog DOPO la fase di build
+    
       Future.delayed(Duration.zero, () {
         LoadingHelper.showLoadingDialogNotDissmissible(context, color: context.secondary);
       });

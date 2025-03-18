@@ -109,7 +109,6 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
     final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
 
     if (selectedImages != null && selectedImages.isNotEmpty) {
-      // Limita la selezione in modo che non vengano aggiunte più di 15 foto in totale
       final int maxImages = 15;
       final int remainingSpace = maxImages - imageList!.length;
 
@@ -118,7 +117,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
             ? remainingSpace
             : selectedImages.length;
         imageList!.addAll(selectedImages.take(
-            imagesToAdd)); // Aggiungi solo il numero di immagini che possono essere caricate
+            imagesToAdd)); 
         setState(() {});
       }
     }
@@ -173,7 +172,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                     child: GridView.builder(
                       shrinkWrap: true,
                       physics:
-                          const NeverScrollableScrollPhysics(), // Per evitare problemi di scorrimento
+                          const NeverScrollableScrollPhysics(),
                       itemCount: imageList!.length + 1,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
@@ -488,9 +487,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                           ))
                     ],
                   ),
-                ),
-                // Divider(),
-                // MyLocationsPredictions(location: "Via Dalmazia 13, Napoli (NA), 80124", press: (){}),
+                ),           
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -528,13 +525,10 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                   children: [
                     SizedBox(width: 10.0),
 
-                    //Colonna comunista
                     Column(
                       children: [
-                        //Riga contenente tre colonne
                         Row(
                           children: [
-                            //Colonna contenente icone
                             Column(
                               children: [
                                 Icon(
@@ -564,8 +558,6 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                             SizedBox(
                               width: 10,
                             ),
-
-                            //Colonna contenente nomi
                             Column(
                               children: [
                                 Text(
@@ -593,8 +585,6 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                             SizedBox(
                               width: 10,
                             ),
-
-                            //colonna contenente switch
                             Column(
                               children: [
                                 Switch(
@@ -632,8 +622,6 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                     ),
 
                     SizedBox(width: 30.0),
-
-                    //Colonna fascista
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -669,8 +657,6 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                             SizedBox(
                               width: 10,
                             ),
-
-                            //Colonna contenente nomi
                             Column(
                               children: [
                                 Text(
@@ -697,7 +683,6 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                               width: 10,
                             ),
 
-                            //colonna contenente switch
                             Column(
                               children: [
                                 Switch(
@@ -789,7 +774,6 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                   ],
                 ),
 
-                //Selettore Piano
                 SizedBox(
                   height: 50,
                   width: MediaQuery.sizeOf(context).width / 1,
@@ -812,14 +796,14 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                                 color: isPianoOk
                                     ? context.outline
                                     : context
-                                        .error), // Colore della linea quando non è in focus
+                                        .error), 
                           ),
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                                 color: isPianoOk
                                     ? context.onSecondary
                                     : context.error,
-                                width: 2.0), // Colore della linea quando scrivi
+                                width: 2.0), 
                           ),
                         ),
                         initialSelection: listaPiani.first,
@@ -876,7 +860,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                   ),
                 ),
 
-                //Selettore Classe Energetica
+         
                 SizedBox(
                   height: 50,
                   width: MediaQuery.sizeOf(context).width / 1,
@@ -899,14 +883,14 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
                                 color: isClasseEnergeticaOk
                                     ? context.outline
                                     : context
-                                        .error), // Colore della linea quando non è in focus
+                                        .error), 
                           ),
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                                 color: isClasseEnergeticaOk
                                     ? context.onSecondary
                                     : context.error,
-                                width: 2.0), // Colore della linea quando scrivi
+                                width: 2.0), 
                           ),
                         ),
                         initialSelection: listaClassiEnergetiche.first,

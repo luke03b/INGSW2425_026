@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:domus_app/back_end_communication/class_services/visita_service.dart';
 import 'package:domus_app/back_end_communication/dto/visita_dto.dart';
 import 'package:domus_app/costants/enumerations.dart';
@@ -62,7 +61,6 @@ class _AgenteCalendarioPrenotazioniPageState extends State<AgenteCalendarioPreno
   void didChangeDependencies() {
     super.didChangeDependencies();
     
-    // Esegui getAnnunci dopo la fase di build
     Future.delayed(Duration.zero, () {
       getVisiteAccettate();
     });

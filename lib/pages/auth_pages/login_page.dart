@@ -35,23 +35,22 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             children: [
               const Spacer(flex: 5),
-              //Logo
+             
               SafeArea(child: themeProvider.themeMode == ThemeMode.light ? Image.asset('lib/assets/HouseHunter.png', height: 140) : Image.asset('lib/assets/HouseHunterChiaro.png', height: 140)),
               const Spacer(flex: 5),
         
-              //mailTextField
+         
               SizedBox(
                 width: MediaQuery.sizeOf(context).width * 0.92,
                 child: MyTextFieldPrefixIcon(controller: mailController, text: "email", icon: Icon(Icons.person), color: coloriScritte,)),
               const Spacer(flex: 1),
         
-              //passwordTextField
               SizedBox(
                 width: MediaQuery.sizeOf(context).width * 0.92,
                 child: MyPasswordFieldWidget(controller: passwordController, text: "password", icon: Icon(Icons.lock), color: coloriScritte,)),
               const Spacer(flex: 1),
         
-              //Altre Opzioni
+          
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -75,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
 
               const Spacer(flex: 8),
 
-              //LoginButton
+         
               MyElevatedButtonWidget(text: "Login",
               onPressed: ()
                 async { await loginECambioPagina(context);},

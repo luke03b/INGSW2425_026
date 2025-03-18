@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:domus_app/back_end_communication/class_services/visita_service.dart';
 import 'package:domus_app/back_end_communication/communication_utils/status_code_controller.dart';
@@ -64,7 +63,6 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     
-    // Esegui getAnnunci dopo la fase di build
     Future.delayed(Duration.zero, () {
       getVisiteInAttesa();
     });
