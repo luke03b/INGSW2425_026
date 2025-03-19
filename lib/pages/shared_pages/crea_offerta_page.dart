@@ -116,7 +116,12 @@ class _CreaOffertaPageState extends State<CreaOffertaPage> {
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         Text("Prezzo iniziale: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
-                        Text(FormatStrings.formatNumber(widget.annuncioSelezionato.prezzo), style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
+                        Expanded(
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(FormatStrings.formatNumber(widget.annuncioSelezionato.prezzo), style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte))))),
                         Text(" EUR", style: TextStyle(fontSize: GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: coloreScritte)),
                       ],
                     ),
@@ -313,10 +318,10 @@ class _CreaOffertaPageState extends State<CreaOffertaPage> {
                                             onPressRightButton: () async {
                                               LoadingHelper.showLoadingDialogNotDissmissible(context, color: context.secondary);
                                               try {
-                                                int statusCode;
+                                                int statusCode = 400;
                                                 if(nomeOfferenteController.text.isEmpty && cognomeOfferenteController.text.isEmpty && emailOfferenteController.text.isEmpty){
                                                   statusCode = await OffertaService.creaOfferta(widget.annuncioSelezionato, offertaController.text);
-                                                } else {
+                                                } else if(nomeOfferenteController.text.isNotEmpty && cognomeOfferenteController.text.isNotEmpty && emailOfferenteController.text.isNotEmpty){
                                                   statusCode = await OffertaService.creaOfferta(widget.annuncioSelezionato, offertaController.text, nomeOfferente: nomeOfferenteController.text, cognomeOfferente: cognomeOfferenteController.text, emailOfferente: emailOfferenteController.text);
                                                 }
                                                 Navigator.pop(context);

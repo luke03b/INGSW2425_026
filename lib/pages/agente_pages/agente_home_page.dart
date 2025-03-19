@@ -435,22 +435,28 @@ class _AgenteHomePageState extends State<AgenteHomePage> {
                     SizedBox(
                       height: scaleFactor * MediaQuery.of(context).size.height/50,
                     ),
-                    Row(
-                      children: [
-                        SizedBox(width: MediaQuery.of(context).size.width/45,),
-                        SizedBox(width: MediaQuery.of(context).size.width/45,),
-                        Text(FormatStrings.formatNumber(annuncioCorrente.prezzo), style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: context.outline)),
-                        Text(" EUR", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: context.outline)),
-                        Visibility(
-                          visible: annuncioCorrente.tipoAnnuncio == "AFFITTO", 
-                          child: Row(
-                            children: [
-                              SizedBox(width: 3,),
-                              Text("/Mese", style: TextStyle(color: context.outline, fontWeight: FontWeight.bold, fontSize: scaleFactor * GRANDEZZA_SCRITTE),),
-                            ],
-                          )
-                        )
-                      ],
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Row(
+                          children: [
+                            SizedBox(width: MediaQuery.of(context).size.width/45,),
+                            SizedBox(width: MediaQuery.of(context).size.width/45,),
+                            Text(FormatStrings.formatNumber(annuncioCorrente.prezzo), style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: context.outline)),
+                            Text(" EUR", style: TextStyle(fontSize: scaleFactor * GRANDEZZA_SCRITTE, fontWeight: FontWeight.bold, color: context.outline)),
+                            Visibility(
+                              visible: annuncioCorrente.tipoAnnuncio == "AFFITTO", 
+                              child: Row(
+                                children: [
+                                  SizedBox(width: 3,),
+                                  Text("/Mese", style: TextStyle(color: context.outline, fontWeight: FontWeight.bold, fontSize: scaleFactor * GRANDEZZA_SCRITTE),),
+                                ],
+                              )
+                            )
+                          ],
+                        ),
+                      ),
                     ),
                     Row(
                       children: [

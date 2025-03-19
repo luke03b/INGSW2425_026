@@ -370,7 +370,12 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                     return ListTile(
                                       title: Column(
                                         children: [
-                                          Text("${FormatStrings.formatNumber(elemento.prezzo)} EUR", style: TextStyle(color: coloreScritte),),
+                                          Expanded(
+                                            child: FittedBox(
+                                              fit: BoxFit.scaleDown,
+                                              child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child:Text("${FormatStrings.formatNumber(elemento.prezzo)} EUR", style: TextStyle(color: coloreScritte),)))),
                                           Text("Data offerta: ${FormatStrings.formattaDataGGMMAAAAeHHMM(elemento.data!)}", style: TextStyle(color: coloreScritte),),
                                           Divider(color: coloreScritte, thickness: 0.7,),
                                         ],
@@ -402,7 +407,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
     }
 
     try {
-      int nuovaControproposta = int.parse(contropropostaController.text);
+      double nuovaControproposta = double.parse(contropropostaController.text);
 
       if(widget.offertaSelezionata.prezzo >= nuovaControproposta){
         showDialog(

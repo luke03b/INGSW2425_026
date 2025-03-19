@@ -255,7 +255,12 @@ class _OffertePageState extends State<OffertePage> {
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         Text("La tua offerta: ", style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.bold, color: context.outline)),
-                        Text((FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!) == "Accettata" || FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!) == "Rifiutata") && offertaSelezionata.controproposta != null ? FormatStrings.formatNumber(offertaSelezionata.controproposta!) : FormatStrings.formatNumber(offertaSelezionata.prezzo), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: context.outline)),
+                        Expanded(
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child:Text((FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!) == "Accettata" || FormatStrings.mappaStatoOfferta(offertaSelezionata.stato!) == "Rifiutata") && offertaSelezionata.controproposta != null ? FormatStrings.formatNumber(offertaSelezionata.controproposta!) : FormatStrings.formatNumber(offertaSelezionata.prezzo), style: TextStyle(fontSize: scaleFactor * 22, fontWeight: FontWeight.normal, color: context.outline))))),
                         Text(" EUR", style: TextStyle(fontSize: scaleFactor * 20, fontWeight: FontWeight.normal, color: context.outline)),
                         Visibility(
                           visible: offertaSelezionata.annuncio.tipoAnnuncio == "AFFITTO", 

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domus_app/amazon_services/aws_cognito.dart';
@@ -232,21 +233,27 @@ class _AnnuncioPageState extends State<AnnuncioPage> {
                     ],
                   ),
 
-                  Row(
-                    children: [
-                      SizedBox(width: 10.0),
-                      Text(FormatStrings.formatNumber(annuncioSelezionato!.prezzo), style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: coloriPulsanti),),
-                      Text(" EUR", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: coloriPulsanti),),
-                      Visibility(
-                          visible: annuncioSelezionato!.tipoAnnuncio == "AFFITTO", 
-                          child: Row(
-                            children: [
-                              SizedBox(width: 3,),
-                              Text("/Mese", style: TextStyle(color: context.outline, fontWeight: FontWeight.bold, fontSize: 30),),
-                            ],
-                          )
-                        )
-                    ],
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Row(
+                        children: [
+                          SizedBox(width: 10.0),
+                          Text(FormatStrings.formatNumber(annuncioSelezionato!.prezzo), style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                          Text(" EUR", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: coloriPulsanti),),
+                          Visibility(
+                              visible: annuncioSelezionato!.tipoAnnuncio == "AFFITTO", 
+                              child: Row(
+                                children: [
+                                  SizedBox(width: 3,),
+                                  Text("/Mese", style: TextStyle(color: context.outline, fontWeight: FontWeight.bold, fontSize: 30),),
+                                ],
+                              )
+                            )
+                        ],
+                      ),
+                    ),
                   ),
                   
                   Row(
