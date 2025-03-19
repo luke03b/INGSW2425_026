@@ -3,6 +3,7 @@ import 'package:domus_app/amazon_services/aws_cognito.dart';
 import 'package:domus_app/providers/theme_provider.dart';
 import 'package:domus_app/ui_elements/theme/ui_constants.dart';
 import 'package:domus_app/ui_elements/utils/my_buttons_widgets.dart';
+import 'package:domus_app/ui_elements/utils/my_loading.dart';
 import 'package:domus_app/ui_elements/utils/my_pop_up_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -150,6 +151,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> loginECambioPagina(BuildContext context) async {
+    LoadingHelper.showLoadingDialogNotDissmissible(context, color: context.secondary);
     String? group = await login(mailController.text, passwordController.text);
     if (group != null){
       setState(() {
@@ -159,16 +161,18 @@ class _LoginPageState extends State<LoginPage> {
     
     if (userGroup == TipoRuolo.ADMIN || userGroup == TipoRuolo.AGENTE){
       debugPrint('Admin action or Agente action');
+      Navigator.pop(context);
       Navigator.pushNamedAndRemoveUntil(context, '/ControllorePagineAgente', (r) => false);
     } else if (userGroup == TipoRuolo.CLIENTE) {
       debugPrint('Cliente action');
+      Navigator.pop(context);
       Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (r) => false);
     } else {
       debugPrint('Errore Action');
       showDialog(
         barrierDismissible: false,
         context: context,
-        builder: (BuildContext context) => MyInfoDialog(title: 'Errore', bodyText: 'Qualcosa è andato storto. Riprovare', buttonText: 'Ok', onPressed: () {Navigator.pop(context);}));
+        builder: (BuildContext context) => MyInfoDialog(title: 'Errore', bodyText: 'Qualcosa è andato storto. Riprovare', buttonText: 'Ok', onPressed: () {Navigator.pop(context); Navigator.pop(context);}));
     }
   }
 }
