@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domus_app/amazon_services/aws_cognito.dart';
@@ -609,8 +610,7 @@ class _AnnuncioPageState extends State<AnnuncioPage> {
                   child: MyElevatedButtonRectWidget(
                     text: "Offerte",
                     onPressed: () async {
-                      String? ruoloUtenteLoggato = await AWSServices().recuperaGruppoUtenteLoggato();
-                      debugPrint(ruoloUtenteLoggato);
+                      String? ruoloUtenteLoggato = await AWSServices().recuperaGruppoUtenteLoggato();                   
                       if (ruoloUtenteLoggato == TipoRuolo.ADMIN || ruoloUtenteLoggato == TipoRuolo.AGENTE) {
                         await Navigator.push(context, MaterialPageRoute(builder: (context) => AgenteOffertePage(annuncioSelezionato: annuncioSelezionato!,)));
                       } else if (ruoloUtenteLoggato == TipoRuolo.CLIENTE) {
@@ -630,7 +630,6 @@ class _AnnuncioPageState extends State<AnnuncioPage> {
                     text: "Prenotazioni",
                     onPressed: () async {
                       String? ruoloUtenteLoggato = await AWSServices().recuperaGruppoUtenteLoggato();
-                      debugPrint(ruoloUtenteLoggato);
                       if (ruoloUtenteLoggato == TipoRuolo.ADMIN || ruoloUtenteLoggato == TipoRuolo.AGENTE) {
                         await Navigator.push(context, MaterialPageRoute(builder: (context) => AgentePrenotazioniPage(annuncioSelezionato: annuncioSelezionato!,)));
                       } else if (ruoloUtenteLoggato == TipoRuolo.CLIENTE) {
