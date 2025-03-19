@@ -194,7 +194,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                                                                     onPressRightButton: () async {
                                                                       LoadingHelper.showLoadingDialogNotDissmissible(context, color: context.secondary);
                                                                       try {
-                                                                        int statusCode = await VisitaService.aggiornaStatoVisita(visitaCorrente, Enumerations.statoOfferte[1]);
+                                                                        int statusCode = await VisitaService.aggiornaStatoVisita(visitaCorrente, Enumerations.statoVisite[1]);
                                                                         Navigator.pop(context);
                                                                         Navigator.pop(context);
                                                                         await StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Visita accettata", "Errore", "Visita non accettata");
@@ -211,7 +211,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                                                                           context: context, 
                                                                           builder: (BuildContext context) => MyInfoDialog(
                                                                             title: "Connessione non riuscita", 
-                                                                            bodyText: "Offerta non rifiutata, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
+                                                                            bodyText: "Visita non gestita, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
                                                                             buttonText: "Ok", 
                                                                             onPressed: () {Navigator.pop(context);}
                                                                           )
@@ -224,7 +224,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                                                                           context: context, 
                                                                           builder: (BuildContext context) => MyInfoDialog(
                                                                             title: "Errore",
-                                                                            bodyText: "Offerta non rifiutata.", 
+                                                                            bodyText: "Visita non gestita.", 
                                                                             buttonText: "Ok", 
                                                                             onPressed: () {Navigator.pop(context);}
                                                                           )
@@ -256,7 +256,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                                                                     onPressRightButton: () async {
                                                                       LoadingHelper.showLoadingDialogNotDissmissible(context, color: context.secondary);
                                                                       try {
-                                                                        int statusCode = await VisitaService.aggiornaStatoVisita(visitaCorrente, Enumerations.statoOfferte[2]);
+                                                                        int statusCode = await VisitaService.aggiornaStatoVisita(visitaCorrente, Enumerations.statoVisite[2]);
                                                                         Navigator.pop(context);
                                                                         Navigator.pop(context);
                                                                         await StatusCodeController.controllaStatusCodeAndShowPopUp(context, statusCode, 200, "Conferma", "Visita rifiutata", "Errore", "Visita non rifiutata");
@@ -273,7 +273,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                                                                           context: context, 
                                                                           builder: (BuildContext context) => MyInfoDialog(
                                                                             title: "Connessione non riuscita", 
-                                                                            bodyText: "Offerta non rifiutata, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
+                                                                            bodyText: "Visita non gestita, la connessione con i nostri server non è stata stabilita correttamente. Riprova più tardi.", 
                                                                             buttonText: "Ok", 
                                                                             onPressed: () {Navigator.pop(context);}
                                                                           )
@@ -286,7 +286,7 @@ class _AgentePrenotazioniPageState extends State<AgentePrenotazioniPage> {
                                                                           context: context, 
                                                                           builder: (BuildContext context) => MyInfoDialog(
                                                                             title: "Errore",
-                                                                            bodyText: "Offerta non rifiutata.", 
+                                                                            bodyText: "Visita non gestita.", 
                                                                             buttonText: "Ok", 
                                                                             onPressed: () {Navigator.pop(context);}
                                                                           )
