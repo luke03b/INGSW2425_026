@@ -12,6 +12,7 @@ migrate_working_dir/
 
 # File da ignorare
 .env
+*class_diagram/
 
 # IntelliJ related
 *.iml
