@@ -281,7 +281,7 @@ class _AnnuncioPageState extends State<AnnuncioPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: ReadMoreText(
                       colorClickableText: context.onSecondary,
-                      annuncioSelezionato!.descrizione,
+                      utf8.decode(latin1.encode(annuncioSelezionato!.descrizione)),
                       textAlign: TextAlign.justify,
                       trimCollapsedText: "    mostra altro",
                       trimExpandedText: "    mostra meno",
