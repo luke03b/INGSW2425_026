@@ -1026,17 +1026,11 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
           UrlBuilder.ENDPOINT_IMMAGINI_S3_PRESIGNED_URL,
           queryParams: {"fileName": nomeImmagine});
 
-      // debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
-      // debugPrint(urlGetPresigned.toString());
-      // debugPrint(image.name);
-      // debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
+  
       var responsePresignedUrl = await http.get(
         urlGetPresigned,
       );
-      // debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
-      // debugPrint(responsePresignedUrl.body);
-      // debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
-
+ 
       if (responsePresignedUrl.statusCode >= 400) {
         print("Errore nel recuperare il presigned URL");
         return;
@@ -1044,17 +1038,14 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
 
       String presignedUrl = responsePresignedUrl.body;
 
-      // 2. Carica l'immagine su S3 con il presigned URL
+ 
       var uploadResponse = await http.put(
         Uri.parse(presignedUrl),
         body: await image.readAsBytes(),
         headers: {"Content-Type": "image/jpeg"},
       );
 
-      // debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
-      // debugPrint(uploadResponse.body);
-      // debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
-
+ 
       if (uploadResponse.statusCode >= 400) {
         print("Errore nel caricamento su S3");
         return;
@@ -1072,11 +1063,7 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
         "annuncio": {"id": annuncioDto.idAnnuncio}
       });
 
-      // debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
-      // debugPrint(bodyTry);
-      // debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
 
-      // 3. Salva il link nel database
       var saveResponse = await http.post(
         urlSaveImage,
         headers: {"Content-Type": "application/json"},
@@ -1091,10 +1078,6 @@ class _AgenteCreaAnnuncioPageState extends State<AgenteCreaAnnuncioPage> {
           throw TimeoutException("Il server non risponde.");
         },
       );
-
-      // debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
-      // debugPrint(saveResponse.body);
-      // debugPrint("\n\n\n\n\n\n\n\n\n\n\n");
 
       if (saveResponse.statusCode >= 200 && saveResponse.statusCode <= 299) {
         print("Immagine caricata con successo!");

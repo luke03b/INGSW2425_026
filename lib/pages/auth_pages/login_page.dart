@@ -160,15 +160,12 @@ class _LoginPageState extends State<LoginPage> {
     }
     
     if (userGroup == TipoRuolo.ADMIN || userGroup == TipoRuolo.AGENTE){
-      debugPrint('Admin action or Agente action');
       Navigator.pop(context);
       Navigator.pushNamedAndRemoveUntil(context, '/ControllorePagineAgente', (r) => false);
     } else if (userGroup == TipoRuolo.CLIENTE) {
-      debugPrint('Cliente action');
       Navigator.pop(context);
       Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (r) => false);
     } else {
-      debugPrint('Errore Action');
       showDialog(
         barrierDismissible: false,
         context: context,
