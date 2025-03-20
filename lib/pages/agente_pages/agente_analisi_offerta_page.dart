@@ -141,7 +141,7 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                       children: [
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
                         SizedBox(width: MediaQuery.of(context).size.width/45,),
-                        Text("Nome: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
+                        Text("Cognome: ", style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.bold, color: coloreScritte)),
                         widget.offertaSelezionata.cliente != null ? 
                           Text(widget.offertaSelezionata.cliente!.cognome, style: TextStyle(fontSize: GRANDEZZA_SCRITTE_PICCOLE, fontWeight: FontWeight.normal, color: coloreScritte)) 
                           : 
