@@ -369,13 +369,14 @@ class _AgenteAnalizzaOffertaPageState extends State<AgenteAnalizzaOffertaPage> {
                                     final elemento = listaStoricoOfferte[index];
                                     return ListTile(
                                       title: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Expanded(
-                                            child: FittedBox(
-                                              fit: BoxFit.scaleDown,
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child:Text("${FormatStrings.formatNumber(elemento.prezzo)} EUR", style: TextStyle(color: coloreScritte),)))),
+                                          FittedBox(
+                                            fit: BoxFit.scaleDown,
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child:Text("${FormatStrings.formatNumber(elemento.prezzo)} EUR", style: TextStyle(color: coloreScritte),))),
                                           Text("Data offerta: ${FormatStrings.formattaDataGGMMAAAAeHHMM(elemento.data!)}", style: TextStyle(color: coloreScritte),),
                                           Divider(color: coloreScritte, thickness: 0.7,),
                                         ],
