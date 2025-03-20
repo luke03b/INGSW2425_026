@@ -26,7 +26,7 @@ class AppTheme {
       onPrimary:  Color(0xFF373436),
       secondary:  Color.fromARGB(255, 138, 150, 156),
       onSecondary:  Color.fromARGB(255, 8, 79, 161),
-      tertiary:  Color.fromARGB(255, 233, 135, 7),
+      tertiary:  Color.fromARGB(255, 8, 79, 161),
       onTertiary:  Color.fromARGB(255, 8, 79, 161),
       error:  Color.fromARGB(255, 218, 41, 28),
       onError:  Color.fromARGB(255, 231, 236, 239),

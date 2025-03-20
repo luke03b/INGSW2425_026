@@ -154,7 +154,7 @@ class MyMapDialog extends StatelessWidget {
                 onPressed: (){
                   onPressLeftButton();
                 }, 
-                child: Text(leftButtonText, style: TextStyle(color: context.onPrimary,),)
+                child: Text(leftButtonText, style: TextStyle(color: context.onError,),)
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -164,7 +164,7 @@ class MyMapDialog extends StatelessWidget {
                 onPressed: (){
                   onPressRightButton();
                 }, 
-                child: Text(rightButtonText, style: TextStyle(color: context.onPrimary,),)
+                child: Text(rightButtonText, style: TextStyle(color: context.onError,),)
               ),
             ],
           );
