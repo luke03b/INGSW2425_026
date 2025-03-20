@@ -122,7 +122,17 @@ class _AnnuncioPageState extends State<AnnuncioPage> {
     if (annuncioSelezionato != null && annuncioSelezionato!.listaImmagini != null && annuncioSelezionato!.listaImmagini!.isNotEmpty) {
       for(ImmaginiDto immagine in annuncioSelezionato!.listaImmagini!){
         if(immagine.urlS3 != null && immagine.urlS3!.isNotEmpty){
-          listaImmagini.add(Image.network(immagine.urlS3!, width: double.infinity, height: double.infinity, fit: BoxFit.cover));
+          listaImmagini.add(
+            Image.network(
+              immagine.urlS3!, 
+              width: double.infinity, 
+              height: double.infinity, 
+              fit: BoxFit.cover, 
+              errorBuilder: (context, error, stackTrace) {
+                return Image.asset('lib/assets/blank_house.png');
+              },
+            )
+          );
         }
       }
     }
