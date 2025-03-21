@@ -85,68 +85,6 @@ class _ClienteEliminazioneAccountPageState extends State<ClienteEliminazioneAcco
                 color: context.error),
 
               const Spacer(flex: 8),
-
-              Row(
-                children: [
-                  Expanded(child: Divider(height: 50, thickness: 2, indent: 20, endIndent: 10, color: coloriScritte,)),
-                  Text("oppure", style: TextStyle(color: coloriScritte),),
-                  Expanded(child: Divider(height: 50, thickness: 2, indent: 10, endIndent: 20, color: coloriScritte,)),
-                ],
-              ),
-
-              const Spacer(flex: 1),
-        
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SizedBox(
-                    width: 375,
-                    child: IconButton(onPressed: () async {
-                        bool isAllOk = await AWSServices().signInWithGoogle();
-                        if (await isAllOk) {
-                          Navigator.pop(context); Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (r) => false);
-                        } else {
-                          showDialog(
-                            barrierDismissible: false,
-                            context: context, 
-                            builder: (BuildContext context) => MyInfoDialog(title: 'Errore', bodyText: 'Qualcosa è andato storto. Riprova :/', buttonText: 'Ok', onPressed: (){Navigator.pop(context);})
-                          );
-                        }
-                      },
-                      style: ButtonStyle(
-                          backgroundColor: WidgetStateProperty.all(context.surface),
-                          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4),
-                              side: BorderSide(color: context.onSecondary),
-                            ),
-                          ),
-                        ),
-                        icon: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              "Login con Google",
-                              style: TextStyle(
-                                color: context.onSecondary,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 20,
-                              ),
-                            ),
-                            SizedBox(width: 8),
-                            SvgPicture.asset(
-                              'lib/assets/google_logo.svg',
-                              width: 25,
-                              colorFilter: ColorFilter.mode(context.onSecondary, BlendMode.srcIn),
-                            ),
-                          ]
-                        )
-                    ),
-                  )
-                ],
-              ),
-
-              const Spacer(flex: 10),
             ],
           ),
         ),

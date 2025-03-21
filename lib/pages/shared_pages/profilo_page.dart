@@ -28,6 +28,7 @@ class _ProfiloPageState extends State<ProfiloPage> {
   String? cognomeUtenteLoggato;
   String? mailUtenteLoggato;
   String? gruppoUtenteLoggato;
+  String? tipoLoginUtenteLoggato;
 
    @override
   void initState() {
@@ -167,19 +168,22 @@ class _ProfiloPageState extends State<ProfiloPage> {
             ),
           ),
 
-          GestureDetector(
-              onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => CambiaPasswordPage(emailUtente: mailUtenteLoggato,)));},
-              child: Card(
-              color: context.primaryContainer,
-              child: ListTile(
-                title: Text("Modifica password", style: TextStyle(color: context.outline),),
-                leading: Icon(Icons.password, color: context.outline,),
-                trailing: Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  spacing: 12,
-                  children: <Widget>[
-                    Icon(Icons.arrow_circle_right_outlined, color: context.outline,),
-                  ],
+          Visibility(
+            visible: !(tipoLoginUtenteLoggato == AWSServices.LOGIN_GOOGLE),
+            child: GestureDetector(
+                onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => CambiaPasswordPage(emailUtente: mailUtenteLoggato,)));},
+                child: Card(
+                color: context.primaryContainer,
+                child: ListTile(
+                  title: Text("Modifica password", style: TextStyle(color: context.outline),),
+                  leading: Icon(Icons.password, color: context.outline,),
+                  trailing: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 12,
+                    children: <Widget>[
+                      Icon(Icons.arrow_circle_right_outlined, color: context.outline,),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -278,7 +282,7 @@ class _ProfiloPageState extends State<ProfiloPage> {
           ),
 
           Visibility(
-            visible: gruppoUtenteLoggato == TipoRuolo.CLIENTE,
+            visible: gruppoUtenteLoggato == TipoRuolo.CLIENTE && !(tipoLoginUtenteLoggato == AWSServices.LOGIN_GOOGLE),
             child: GestureDetector(
               onTap: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ClienteEliminazioneAccountPage(emailUtente: mailUtenteLoggato,)));
@@ -343,6 +347,7 @@ class _ProfiloPageState extends State<ProfiloPage> {
     // String? mailUtenteLoggatoTemp = await AWSInstance.recuperaEmailUtenteLoggato();
     // String? gruppoUtenteLoggatoTemp = await AWSInstance.recuperaGruppoUtenteLoggato();
     String? subUtenteLoggato = await AWSInstance.recuperaSubUtenteLoggato();
+    String? tipoLogin = await AWSInstance.recuperaTipoLoginUtenteLoggato();
     try{
       UtenteDto utenteLoggato = await UtenteService.recuperaUtenteBySub(subUtenteLoggato!);
       setState(() {
@@ -350,6 +355,7 @@ class _ProfiloPageState extends State<ProfiloPage> {
         cognomeUtenteLoggato = utenteLoggato.cognome;
         mailUtenteLoggato = utenteLoggato.email;
         gruppoUtenteLoggato = utenteLoggato.tipo;
+        tipoLoginUtenteLoggato = tipoLogin;
       });
     } catch (e) {
       showDialog(

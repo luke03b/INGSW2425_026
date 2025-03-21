@@ -63,7 +63,6 @@ class AWSServices {
     //recupera il token dalla memoria
     final prefs = await SharedPreferences.getInstance();
     String? group = prefs.getString(SAVED_GROUP);
-    debugPrint("gruppo dell'utente $group");
 
     if(group == TipoRuolo.ADMIN){
       return true;
@@ -73,7 +72,6 @@ class AWSServices {
   }
 
   Future<String?> signIn(email, password) async {
-    debugPrint('Authenticating User...');
     final cognitoUser = CognitoUser(email, userPool);
     final authDetails = AuthenticationDetails(username: email, password: password);
 
@@ -81,21 +79,12 @@ class AWSServices {
     try{
       //effettua il Login dell'utente
       session = await cognitoUser.authenticateUser(authDetails);
-      debugPrint('Login Success...');
 
       //recupera il token dell'utente
       final idToken = session?.idToken.jwtToken;
 
       //decodifica il token
       Map<String, dynamic> payload = JwtDecoder.decode(idToken!);
-      debugPrint("Salvo le seguenti informazioni nelle shared preferences");
-      debugPrint(LOGIN_CREDENZIALI);
-      debugPrint(idToken);
-      debugPrint(payload['name']);
-      debugPrint(payload['family_name']);
-      debugPrint(payload['email']);
-      debugPrint(payload['sub']);
-      debugPrint(payload['custom:group']);
 
       //salva le informazioni dell'utente in memoria
       final prefs = await SharedPreferences.getInstance();
@@ -144,7 +133,6 @@ class AWSServices {
   }
 
   Future<bool> register(name, surname, email, password, userGroup, AgenziaImmobiliareDto? agenziaImmobiliare) async{
-    debugPrint('Registering User...');
     final userAttributes = [
       AttributeArg(name: 'name', value: name),
       AttributeArg(name: 'family_name', value: surname),
@@ -227,7 +215,6 @@ class AWSServices {
     //recupera il token dalla memoria
     final prefs = await SharedPreferences.getInstance();
     String? nome = prefs.getString(SAVED_NOME);
-    debugPrint("recupera nome utente loggato: $nome");
 
     return nome;
   }
@@ -236,7 +223,6 @@ class AWSServices {
     //recupera il token dalla memoria
     final prefs = await SharedPreferences.getInstance();
     String? cognome = prefs.getString(SAVED_COGNOME);
-    debugPrint("recupera cognome utente loggato: $cognome");
 
     return cognome;
   }
@@ -245,7 +231,6 @@ class AWSServices {
     //recupera il token dalla memoria
     final prefs = await SharedPreferences.getInstance();
     String? gruppo = prefs.getString(SAVED_GROUP);
-    debugPrint("recupera gruppo utente loggato: $gruppo");
 
     return gruppo;
   }
@@ -254,9 +239,16 @@ class AWSServices {
     //recupera il token dalla memoria
     final prefs = await SharedPreferences.getInstance();
     String? sub = prefs.getString(SAVED_SUB);
-    debugPrint("recupera sub utente loggato: $sub");
 
     return sub;
+  }
+
+  Future<String?> recuperaTipoLoginUtenteLoggato() async {
+    //recupera il token dalla memoria
+    final prefs = await SharedPreferences.getInstance();
+    String? tipoLogin = prefs.getString(SAVED_LOGIN_TYPE);
+
+    return tipoLogin;
   }
 
   Future<bool> cambiaPasswordUtenteLoggato(email, oldPassword, newPassword) async {
@@ -304,17 +296,7 @@ class AWSServices {
 
           final idToken = result.userPoolTokensResult.value.idToken;
 
-          debugPrint("Salvo le seguenti informazioni nelle shared preferences");
-          debugPrint(LOGIN_GOOGLE);
-          debugPrint(idToken.name!);
-          debugPrint(idToken.familyName!);
-          debugPrint(idToken.email!);
-
           Map<String, dynamic> jsonMap = jsonDecode(idToken.toString());
-          debugPrint(jsonMap['claims']['sub']);
-          debugPrint(jsonMap['claims']['exp'].toString());
-          
-          debugPrint(TipoRuolo.CLIENTE);
 
           //salva le informazioni del token in memoria
           final prefs = await SharedPreferences.getInstance();
